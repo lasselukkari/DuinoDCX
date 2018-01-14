@@ -3,7 +3,7 @@ DuinoDCX
 ========
 Standalone WIFI remote controller for the [Behringer Ultradrive Pro (DCX2496)](http://www.musictri.be/p/P0B6H)
 
-![DuinoDCX Screen Shot](images/screenshot.png?raw=true)
+![DuinoDCX Screen Shot](https://i.imgur.com/dEzK3mx.png)
 
 ## Disclaimer
 This is not a production ready application. I take no responsibility if your sound system gets destroyed by using this.
@@ -24,7 +24,7 @@ Install the [Arduino IDE](https://www.arduino.cc/en/Main/Software) and the suppo
 [ESP32](https://github.com/espressif/arduino-esp32#installation-instructions) boards.
 
 ### Required parts
-![DuinoDCX Hardware](images/esp32-rs232.jpg?raw=true)
+![DuinoDCX Hardware](https://i.imgur.com/zYhEit9.jpg)
 
 * ESP32 development board (5€)
 * RS232 To TTL converter (1€)
