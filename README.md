@@ -20,8 +20,9 @@ http://duinodcx.herokuapp.com/
 [![DuinoDCX Demo Video](https://img.youtube.com/vi/Z5CDjev1ydA/0.jpg)](https://www.youtube.com/watch?v=Z5CDjev1ydA)
 
 ## Installation
-Install the [Arduino IDE](https://www.arduino.cc/en/Main/Software) and the support for the
-[ESP32](https://github.com/espressif/arduino-esp32#installation-instructions) boards.
+Install the [Arduino IDE](https://www.arduino.cc/en/Main/Software) and the support for the [ESP32](https://github.com/espressif/arduino-esp32#installation-instructions) boards.
+
+__Important:__ There is currently a bug in ESP32 core that causes the serial port to malfunction after software reset. Apply the changes described [here](https://github.com/espressif/arduino-esp32/issues/662#issuecomment-351399862) until the bug is fixed upstream.
 
 ### Required parts
 ![DuinoDCX Hardware](https://i.imgur.com/zYhEit9.jpg)
