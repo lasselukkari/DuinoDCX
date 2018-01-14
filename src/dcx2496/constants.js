@@ -576,7 +576,7 @@ const LOG_ZERO_TO_4000_MS = [
   '4000'
 ];
 const OUTPUT_NAMES = [
-  'full-range',
+  'Full-range',
   'Subwoofer',
   'Low',
   'Low-mid',
