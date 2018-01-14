@@ -1,0 +1,11 @@
+.channels-container{
+    max-width: 380px;
+    margin: 20px auto;
+}
+
+.channel-group{
+    display: flex;
+    align-items: flex-end;
+    height: 240px;
+    float: left;
+}

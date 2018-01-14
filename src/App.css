@@ -1,0 +1,48 @@
+body {
+  min-height: 2000px;
+  padding-top: 60px;
+}
+
+.recharts-default-tooltip {
+  background-color: #272b30 !important;
+}
+
+.Device-loading {
+  margin-top: 50px;
+  animation: Device-loading-spin infinite 2s linear;
+  height: 150px;
+  width: 150px;
+}
+
+@keyframes Device-loading-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.block-ui {
+  position: relative;
+  min-height: 3em;
+}
+
+.block-ui-container {
+  position: absolute;
+  z-index: 1010;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 100%;
+  min-height: 2em;
+  cursor: not-allowed;
+  overflow: hidden;
+}
+.block-ui-container:focus {
+  outline: none;
+}
+.block-ui-overlay {
+  width: 100%;
+  height: 100%;
+}
+
+
+
