@@ -10,7 +10,7 @@ This is not a production ready application. I take no responsibility if your sou
 
 The project has been so far tested with two different devices that both have the v1.17 firmware. It has not been tested with the latest revision of the DCX2496. It is highly possible that some adjustments have to made for other versions.
 
-The project is free software and there are is no official support provided for it. 
+The project is free software and there is no official support. 
 
 ## Demo
 ### Demo UI
