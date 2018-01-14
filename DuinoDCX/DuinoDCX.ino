@@ -346,11 +346,6 @@ void readCommands() {
               int param = serialBuffer[PARAM_BYTE + offset];
               int valueHigh = serialBuffer[VALUE_HI_BYTE + offset];
               int valueLow = serialBuffer[VALUE_LOW_BYTE + offset];
-
-              Serial.println(channel);
-              Serial.println(param);
-              Serial.println(valueHigh);
-              Serial.println(valueLow);
                             
               if (!channel) {
                 patchBuffer(deviceId, valueLow, valueHigh, setupLocations[param - (param <= 11 ? 2 : 10)]);
