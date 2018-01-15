@@ -263,7 +263,6 @@ void patchBuffer(int id, int low, int high, DataLocation l) {
   }
 
   if (l.high.byte > 0) {
-    Serial.println(l.high.byte);
     int highByte = high >> 1;
     if (l.high.part == 0) {
       dumps0[id][l.high.byte] = highByte;
