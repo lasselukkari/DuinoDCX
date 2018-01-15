@@ -312,7 +312,7 @@ void readCommands() {
 
             if (part == 0) {
               if (serialRead == PART_0_LENGTH) {
-                Serial.println("Dump part 0  response received");
+                Serial.println("Dump part 0 response received");
                 memcpy(&dumps0[deviceId], serialBuffer, PART_0_LENGTH);
                 dumpPart1(deviceId);
               }
