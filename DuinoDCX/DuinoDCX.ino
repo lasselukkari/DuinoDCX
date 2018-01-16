@@ -103,7 +103,6 @@ void createDirectCommand(Request &req, Response &res) {
         }
 
         Ultradrive.write(serverBuffer, bytesRead);
-        Serial.println("Direct command sent");
       }
     }
   }
@@ -207,35 +206,30 @@ void getDevices(Request &req, Response &res) {
 // Sends the search command to the device to device serial port
 void search() {
   Ultradrive.write(searchCommand, 10);
-  Serial.println("Search command sent");
 }
 
 // Sends a command that sets the trasmit mode to two way sync
 void setTransmitMode(int deviceId) {
   transmitModeCommand[ID_BYTE] = deviceId;
   Ultradrive.write(transmitModeCommand, 10);
-  Serial.println("Transmit mode command sent");
 }
 
 // Instructs the device to dump the first part off full memory dump
 void dumpPart0(int deviceId) {
   dumpPart0Command[ID_BYTE] = deviceId;
   Ultradrive.write(dumpPart0Command, 11);
-  Serial.println("Dump part 0 command sent");
 }
 
 // Instructs the device to dump the second part off full memory dump
 void dumpPart1(int deviceId) {
   dumpPart1Command[ID_BYTE] = deviceId;
   Ultradrive.write(dumpPart1Command, 11);
-  Serial.println("Dump part 1 command sent");
 }
 
 // Pings the device. Device responds with a message that contains current channgel levels
 void ping(int deviceId) {
   pingCommand[ID_BYTE] = deviceId;
   Ultradrive.write(pingCommand, 11);
-  Serial.println("Ping command sent");
 }
 
 // Patches the state of single command param in in the stored memory dumps
@@ -295,7 +289,6 @@ void readCommands() {
       switch (command) {
         case SEARCH_RESPONSE: {
             if (serialRead == SEARCH_RESPONSE_LENGTH) {
-              Serial.println("Search response received");
               memcpy(&searchResponses[deviceId], serialBuffer, SEARCH_RESPONSE_LENGTH);
 
               if (!ttls[deviceId]) {
@@ -312,13 +305,11 @@ void readCommands() {
 
             if (part == 0) {
               if (serialRead == PART_0_LENGTH) {
-                Serial.println("Dump part 0 response received");
                 memcpy(&dumps0[deviceId], serialBuffer, PART_0_LENGTH);
                 dumpPart1(deviceId);
               }
             } else if (part == 1) {
               if (serialRead == PART_1_LENGTH) {
-                Serial.println("Dump part 1 response received");
                 memcpy(&dumps1[deviceId], serialBuffer, PART_1_LENGTH);
                 ping(deviceId);
               }
@@ -328,7 +319,6 @@ void readCommands() {
           }
         case PING_RESPONSE: {
             if (serialRead == PING_RESPONSE_LENGTH) {
-              Serial.println("Ping response received");
               memcpy(&pingResponses[deviceId], serialBuffer, PING_RESPONSE_LENGTH);
               ttls[deviceId] = millis() + TIMEOUT_TIME;
             }
@@ -336,7 +326,6 @@ void readCommands() {
             break;
           }
         case DIRECT_COMMAND: {
-            Serial.println("Direct command received");
             int count = serialBuffer[PARAM_COUNT_BYTE];
 
             for (int i = 0; i < count; i++) {
