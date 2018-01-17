@@ -32,7 +32,6 @@ Input Channels
             <Panel
               bsSize="small"
               header="Frequency Response"
-              className="hidden-xs"
             >
               <EQPlot channels={channels}/>
             </Panel>

@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import {LineChart, Line, XAxis, YAxis, Legend, Tooltip} from 'recharts';
+import {LineChart, Line, XAxis, YAxis, Tooltip} from 'recharts';
 import windowSize from 'react-window-size';
 import TransferFunction from './TransferFunction';
 
@@ -61,7 +61,7 @@ class CrossoverPlot extends PureComponent {
     ];
     let width;
     if (windowWidth < 768) {
-      width = windowWidth / 10 * 9;
+      width = windowWidth - 70;
     } else if (windowWidth < 992) {
       width = 688;
     } else if (windowWidth < 1200) {
@@ -87,7 +87,6 @@ class CrossoverPlot extends PureComponent {
           labelFormatter={this.formatLabel}
           formatter={this.formatTooltip}
         />
-        <Legend/>
         {Object.keys(channels).map((channelId, index) => (
           <Line
             key={channelId}
@@ -98,7 +97,7 @@ class CrossoverPlot extends PureComponent {
             stroke={colors[index]}
           />
         ))}
-        <Legend/>
+
       </LineChart>
     );
   }

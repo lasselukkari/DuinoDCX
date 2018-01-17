@@ -484,9 +484,8 @@ void Request::reset() {
   m_clientObject->stop();
 
   HeaderNode* headerNode = m_headerTail;
-
   while (headerNode != NULL) {
-    memset(headerNode->buffer, 0, headerNode->size);
+    headerNode->buffer[0] = '\0';
     headerNode = headerNode->next;
   }
 

@@ -270,7 +270,7 @@ commands.setupCommands.forEach((command, index) => {
     this.setup[camelName] = value;
 
     const data = DCX2496._getCommandData(command, value);
-    this.setup[camelName] = DCX2496._reverseCommandData(command, data);
+    this.setup[camelName] = value;
     const commandNumber = index + (index > 9 ? 10 : 2);
 
     this.pushCommand(0, commandNumber, data);
@@ -287,10 +287,7 @@ commands.inputOutputCommands.forEach((command, index) => {
         constants.OUTPUTS.indexOf(channelId) + 5;
     const commandNumber = index + 2;
     const data = DCX2496._getCommandData(command, value);
-    this[group][channelId][camelName] = DCX2496._reverseCommandData(
-      command,
-      data
-    );
+    this[group][channelId][camelName] = value;
 
     return this.pushCommand(channelNumber, commandNumber, data);
   };
@@ -307,10 +304,7 @@ commands.eqCommands.forEach((command, index) => {
 
     const commandNumber = index + ((eq - 1) * 5) + 19;
     const data = DCX2496._getCommandData(command, value);
-    this[group][channelId].eqs[eq][camelName] = DCX2496._reverseCommandData(
-      command,
-      data
-    );
+    this[group][channelId].eqs[eq][camelName] = value;
 
     this.pushCommand(channelNumber, commandNumber, data);
   };
@@ -322,10 +316,7 @@ commands.outputCommands.forEach((command, index) => {
     const data = DCX2496._getCommandData(command, value);
     const output = constants.OUTPUTS.indexOf(channelId) + 5;
     const commandNumber = index + 64;
-    this.outputs[channelId][camelName] = DCX2496._reverseCommandData(
-      command,
-      data
-    );
+    this.outputs[channelId][camelName] = value;
 
     this.pushCommand(output, commandNumber, data);
   };

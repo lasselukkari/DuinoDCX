@@ -35,7 +35,6 @@ Output Channels
             <Panel
               bsSize="small"
               header="Frequency Response"
-              className="hidden-xs"
             >
               <EQPlot channels={channels}/>
             </Panel>
@@ -76,7 +75,6 @@ Output Channels
             <Panel
               bsSize="small"
               header="Frequency Response"
-              className="hidden-xs"
             >
               <CrossoverPlot channels={channels}/>
             </Panel>
