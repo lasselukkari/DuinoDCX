@@ -74,9 +74,8 @@ bool readingCommand;
 bool mdnsStarted;
 bool shouldRestart;
 
-// Webserver handler that procecesses incoming comannds from the client
-void createDirectCommand(Request &req, Response &res) {
-  if (int bytesRead = req.readBytesUntil(0xF7, serverBuffer, PART_0_LENGTH)) {
+void readCommands(Request &req){
+     if (int bytesRead = req.readBytesUntil(0xF7, serverBuffer, PART_0_LENGTH)) {
     serverBuffer[bytesRead++] = 0xF7;
 
     if (!memcmp(serverBuffer, vendorHeader, 5)) {
@@ -106,6 +105,13 @@ void createDirectCommand(Request &req, Response &res) {
       }
     }
   }
+}
+
+// Webserver handler that procecesses incoming comannds from the client
+void createDirectCommand(Request &req, Response &res) {
+    while(req.contentLeft()){
+        readCommands(req);
+    }
 
   res.noContent();
 }

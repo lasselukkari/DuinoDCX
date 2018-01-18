@@ -135,10 +135,13 @@ class Manager extends EventEmitter {
   }
 
   updateDevice(deviceId, data) {
-    this.devices[deviceId][data.param](data);
+    const commands = (Array.isArray(data)) ? data : [data];
+
+    commands.forEach(command => this.devices[deviceId][command.param](command));
+
     this.emit('update', this.devices[deviceId]);
-    const command = this.devices[deviceId].flushCommands();
-    this.sendCommand(command);
+    const message = this.devices[deviceId].flushCommands();
+    this.sendCommand(message);
   }
 }
 

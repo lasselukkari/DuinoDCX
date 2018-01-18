@@ -156,6 +156,18 @@ class ChannelLevels extends Component {
       isEqual(nextProps.device, device)
     );
   }
+
+  handleMuteAll = () => { // eslint-disable-line no-undef
+    const {onChange} = this.props;
+
+    const inputs = ['A', 'B', 'C']
+      .map(channelId => ({param: 'mute', group: 'inputs', channelId, value: true}));
+    const outputs = ['1', '2', '3', '4', '5', '6']
+      .map(channelId => ({param: 'mute', group: 'outputs', channelId, value: true}));
+
+    onChange(inputs.concat(outputs));
+  };
+
   render() {
     const {device, onChange, blocking} = this.props;
     const {inputs, outputs} = device;
@@ -196,6 +208,10 @@ Channel Levels
               })}
             </div>
             <Clearfix/>
+            <br/>
+            <Button className="center-block" onClick={this.handleMuteAll}>
+Mute All
+            </Button>
           </div>
           <Panel header="Input Gains">
             <Gains

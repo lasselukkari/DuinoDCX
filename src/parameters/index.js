@@ -4,7 +4,6 @@ import BoolParam from './BoolParam';
 import EnumParam from './EnumParam';
 import NumberParam from './NumberParam';
 
-
 const components = {};
 const commandTypes = {
   SETUP_COMMAND: 0,
