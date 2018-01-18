@@ -74,8 +74,8 @@ bool readingCommand;
 bool mdnsStarted;
 bool shouldRestart;
 
-void readCommands(Request &req){
-     if (int bytesRead = req.readBytesUntil(0xF7, serverBuffer, PART_0_LENGTH)) {
+void readCommands(Request &req) {
+  if (int bytesRead = req.readBytesUntil(0xF7, serverBuffer, PART_0_LENGTH)) {
     serverBuffer[bytesRead++] = 0xF7;
 
     if (!memcmp(serverBuffer, vendorHeader, 5)) {
@@ -109,9 +109,9 @@ void readCommands(Request &req){
 
 // Webserver handler that procecesses incoming comannds from the client
 void createDirectCommand(Request &req, Response &res) {
-    while(req.contentLeft()){
-        readCommands(req);
-    }
+  while (req.contentLeft()) {
+    readCommands(req);
+  }
 
   res.noContent();
 }
@@ -170,7 +170,7 @@ void getIp(Request &req, Response &res) {
 
 // Webserver handler that that resets the device
 void getRestart(Request &req, Response &res) {
-   shouldRestart = true;
+  shouldRestart = true;
   res.success("text/plain");
   res.print("Restarting now.");
 }
@@ -340,7 +340,7 @@ void readCommands() {
               int param = serialBuffer[PARAM_BYTE + offset];
               int valueHigh = serialBuffer[VALUE_HI_BYTE + offset];
               int valueLow = serialBuffer[VALUE_LOW_BYTE + offset];
-                            
+
               if (!channel) {
                 patchBuffer(deviceId, valueLow, valueHigh, setupLocations[param - (param <= 11 ? 2 : 10)]);
               } else if (channel <= 4) {
@@ -387,14 +387,14 @@ void setup() {
   Serial.println(ip);
 
   server.begin();
-  
+
   app.get("/api/devices", &getDevices);
   app.get("/api/devices/:id", &getDevice);
   app.post("/api/commands", &createDirectCommand);
   app.post("/connect.html", &createConnection);
   app.get("/ip", &getIp);
   app.get("/reset", &getRestart);
-  
+
   ServeStatic(&app);
 }
 
@@ -433,8 +433,8 @@ void loop() {
     app.process(&client);
   }
 
-  if(shouldRestart){
-  ESP.restart();
+  if (shouldRestart) {
+    ESP.restart();
   }
 }
 
