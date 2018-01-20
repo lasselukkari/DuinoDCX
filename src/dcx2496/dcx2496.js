@@ -147,14 +147,12 @@ class DCX2496 {
       const data = pingResponse[index + 8];
       this.state.channels[channelId].level = DCX2496._clearBit(data, 5);
       this.state.channels[channelId].limited = DCX2496._isBitSet(data, 5);
-      this.state.channels[channelId].muted = this.inputs[channelId].mute;
     });
 
     constants.OUTPUTS.forEach((channelId, index) => {
       const data = pingResponse[index + 11];
       this.state.channels[channelId].level = DCX2496._clearBit(data, 5);
       this.state.channels[channelId].limited = DCX2496._isBitSet(data, 5);
-      this.state.channels[channelId].muted = this.outputs[channelId].mute;
     });
 
     this.state.free = pingResponse[21];

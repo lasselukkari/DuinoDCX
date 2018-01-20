@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import cloneDeep from 'lodash.clonedeep';
+import isEqual from 'lodash.isequal';
 import {
   Navbar,
   Nav,
@@ -8,6 +9,7 @@ import {
   MenuItem,
   Glyphicon
 } from 'react-bootstrap';
+import {ToastContainer, toast, style} from 'react-toastify';
 
 import SVGInline from 'react-svg-inline';
 
@@ -37,13 +39,32 @@ class App extends Component {
     super(props);
     this.state = {device: {}, page: 'levels', blocking: true};
     this.manager = new Manager();
-    this.manager.on('update', newDevice => {
-      this.updateDevice(newDevice);
+    this.manager.on('update', (newDevice, isLocalUpdate) => {
+      this.updateDevice(newDevice, isLocalUpdate);
     });
+    this.toastId = null;
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    const {device, page, blocking} = this.state;
+
+    return !isEqual(device, nextState.device) || page !== nextState.page || blocking !== nextState.blocking;
   }
 
   componentDidMount() {
     this.manager.pollDevices();
+  }
+
+  componentDidUpdate(previousProps, previousState) {
+    const {isLocalUpdate, device} = this.state;
+    if (!isEqual(device, previousState.device) && !isEqual({}, previousState.device) && !isLocalUpdate) {
+      if (!toast.isActive(this.toastId)) {
+        this.toastId = toast.info('Remote changes loaded.', {
+          position: toast.POSITION.BOTTOM_LEFT,
+          style: style({width: '220px'})
+        });
+      }
+    }
   }
 
   handleBlockingChange = () => { // eslint-disable-line no-undef
@@ -64,11 +85,12 @@ class App extends Component {
     this.manager.selectedDevice = selectedDevice;
   };
 
-  updateDevice(newDevice) {
+  updateDevice(newDevice, isLocalUpdate) {
     this.setState(({blocking, page}) => ({
       device: cloneDeep(newDevice),
       page,
-      blocking
+      blocking,
+      isLocalUpdate
     }));
   }
 
@@ -139,6 +161,7 @@ Setup
             </Nav>
           </Navbar.Collapse>
         </Navbar>
+        <ToastContainer/>
         <div className="container">
           <div style={this.displayIfPage('levels')}>
             <ChannelLevels
