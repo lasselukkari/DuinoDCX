@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {Panel} from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import isEqual from 'lodash.isequal';
 import pc from './parameters';
@@ -38,14 +39,18 @@ class EQs extends Component {
 
     return (
       <BlockUi blocking={blocking}>
-        <br/>
-        <pc.EQ
-          value={eQ}
-          group={group}
-          channelId={channelId}
-          onChange={onChange}
-        />
-
+        <Panel
+          header={channel.channelName ?
+                    `${channelId} . ${channel.channelName}` :
+                    `Input ${channelId} Equalizer`}
+        >
+          <pc.EQ
+            value={eQ}
+            group={group}
+            channelId={channelId}
+            onChange={onChange}
+          />
+        </Panel>
         {activeEQs.map(eq => (
           <EQ
             key={group + channelId + eq.id}

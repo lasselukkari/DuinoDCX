@@ -14,12 +14,10 @@ class BoolParam extends Component {
 
   render() {
     const {
-      channelId,
       name,
       value,
       inverted,
-      includeLabel,
-      channelButton
+      includeLabel
     } = this.props;
     const onColor = inverted ? 'danger' : 'success';
 
@@ -40,7 +38,6 @@ class BoolParam extends Component {
             active={value}
             onClick={this.handleClick}
           >
-            {channelButton && `${channelId}: `}
             {value ? 'On' : 'Off'}
           </Button>
         </FormGroup>

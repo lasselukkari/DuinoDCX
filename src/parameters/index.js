@@ -54,8 +54,7 @@ const boolComponent = function ({name}, type) {
         eq,
         inverted,
         onChange,
-        includeLabel = false,
-        channelButton = false
+        includeLabel = false
       } = this.props;
       return (
         <BoolParam
@@ -69,7 +68,6 @@ const boolComponent = function ({name}, type) {
           inverted={inverted}
           onChange={onChange}
           includeLabel={includeLabel}
-          channelButton={channelButton}
         />
       );
     }
