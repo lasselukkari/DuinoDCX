@@ -42,9 +42,7 @@ class EQPlot extends PureComponent {
 
       return {
         data: tf.getMagnitude(),
-        channel: channels[key].name ?
-          `${key}. ${channels[key].name}` :
-          `Input ${key}`
+        channel: channels[key].channelName ? `${key}. ${channels[key].channelName}` : `Input ${key}`
       };
     });
     return frequencyPoints.map((hz, index) => {
@@ -106,8 +104,8 @@ class EQPlot extends PureComponent {
             type="monotone"
             tickFormatterkey={channelId}
             dataKey={
-              channels[channelId].name ?
-                `${channelId}. ${channels[channelId].name}` :
+              channels[channelId].channelName ?
+                `${channelId}. ${channels[channelId].channelName}` :
                 `Input ${channelId}`
             }
             dot={false}

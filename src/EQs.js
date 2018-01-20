@@ -1,41 +1,40 @@
 import React, {Component} from 'react';
-import {Row, Panel, Col} from 'react-bootstrap';
+import {Tabs, Tab} from 'react-bootstrap';
 import isEqual from 'lodash.isequal';
 
 import EQList from './EQList';
 
 class EQs extends Component {
   shouldComponentUpdate(nextProps) {
-    const {channels} = this.props;
-    return !isEqual(channels, nextProps.channels);
+    const {channels, blocking} = this.props;
+    return !isEqual(channels, nextProps.channels) || blocking !== nextProps.blocking;
   }
 
   render() {
-    const {channels, group, onChange, xs, sm, md, lg} = this.props;
+    const {channels, group, onChange, blocking} = this.props;
 
     return (
-      <Row className="show-grid">
+      <Tabs defaultActiveKey={Object.keys(channels)[0]} id="equalizers" animation={false}>
+
         {Object.keys(channels).map(channelId => {
           return (
-            <Col key={channelId} xs={xs} sm={sm} md={md} lg={lg}>
-              <Panel
-                header={
-                  channels[channelId].channelName ?
+            <Tab
+              key={channelId}
+              title={channels[channelId].channelName ?
                     `${channelId} . ${channels[channelId].channelName}` :
-                    `Channel ${channelId}`
-                }
-              >
-                <EQList
-                  channel={channels[channelId]}
-                  group={group}
-                  channelId={channelId}
-                  onChange={onChange}
-                />
-              </Panel>
-            </Col>
-          );
+                    `Input ${channelId}`}
+              eventKey={channelId}
+            >
+              <EQList
+                channel={channels[channelId]}
+                group={group}
+                channelId={channelId}
+                onChange={onChange}
+                blocking={blocking}
+              />
+            </Tab>);
         })}
-      </Row>
+      </Tabs>
     );
   }
 }

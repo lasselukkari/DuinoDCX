@@ -35,16 +35,15 @@ Input Channels
             >
               <EQPlot channels={channels}/>
             </Panel>
-            <BlockUi blocking={blocking}>
-              <EQs
-                onChange={onChange}
-                group="inputs"
-                channels={channels}
-                xs={12}
-                sm={12}
-                md={6}
-              />
-            </BlockUi>
+            <EQs
+              onChange={onChange}
+              group="inputs"
+              channels={channels}
+              blocking={blocking}
+              xs={12}
+              sm={12}
+              md={6}
+            />
           </Tab>
           <Tab title="Dynamic EQ" bsStyle="primary" eventKey="dynamicEQ">
             <BlockUi blocking={blocking}>
