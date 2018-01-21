@@ -44,7 +44,7 @@ class NumberParam extends Component {
   handleReduction = () => { // eslint-disable-line no-undef
     const {value, min, step, param, group, channelId, eq, onChange} = this.props;
     if (value - step >= min) {
-      onChange({param, group, channelId, eq, value: value + step});
+      onChange({param, group, channelId, eq, value: value - step});
     }
   };
 
