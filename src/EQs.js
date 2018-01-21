@@ -21,7 +21,7 @@ class EQs extends Component {
             <Tab
               key={channelId}
               title={channels[channelId].channelName ?
-                    `${channelId} . ${channels[channelId].channelName}` :
+                    `${channelId}. ${channels[channelId].channelName}` :
                     `Input ${channelId}`}
               eventKey={channelId}
             >

@@ -31,7 +31,7 @@ Input Channels
           <Tab title="EQ" bsStyle="primary" eventKey="eq">
             <Panel
               bsSize="small"
-              header="Frequency Response"
+              header="EQ Frequency Response: All Inputs"
             >
               <EQPlot channels={channels}/>
             </Panel>

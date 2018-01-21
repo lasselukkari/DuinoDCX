@@ -34,7 +34,7 @@ Output Channels
           <Tab title="EQ" bsStyle="primary" eventKey="eqs">
             <Panel
               bsSize="small"
-              header="Frequency Response"
+              header="EQ Frequency Response: All Outputs"
             >
               <EQPlot channels={channels}/>
             </Panel>
@@ -73,7 +73,7 @@ Output Channels
           <Tab title="Crossover" bsStyle="primary" eventKey="crossover">
             <Panel
               bsSize="small"
-              header="Frequency Response"
+              header="Crossover Frequency Response"
             >
               <CrossoverPlot channels={channels}/>
             </Panel>

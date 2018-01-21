@@ -63,15 +63,15 @@ class EQPlot extends PureComponent {
   render() {
     const {channels, windowWidth} = this.props;
     const colors = [
+      '#3498DB',
       '#307473',
       '#7A82AB',
       '#F0F3BD',
       '#375a7f',
-      '#18BC9C',
-      '#3498DB',
       '#F39C12',
       '#E74C3C',
-      '#95A5A6'
+      '#95A5A6',
+      '#18BC9C'
     ];
     let width;
     if (windowWidth < 768) {
