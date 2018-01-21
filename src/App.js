@@ -57,11 +57,21 @@ class App extends Component {
 
   componentDidUpdate(previousProps, previousState) {
     const {isLocalUpdate, device} = this.state;
-    if (!isEqual(device, previousState.device) && !isEqual({}, previousState.device) && !isLocalUpdate) {
-      if (!toast.isActive(this.toastId)) {
+
+    if (
+      !isLocalUpdate && !(
+        isEqual(device.setup, previousState.device.setup) &&
+        isEqual(device.inputs, previousState.device.inputs) &&
+        isEqual(device.outputs, previousState.device.outputs)
+      ) && !isEqual({}, previousState.device)
+    ) {
+      if (toast.isActive(this.toastId)) {
+        toast.update(this.toastId, {autoClose: 5000});
+      } else {
         this.toastId = toast.info('Remote changes loaded.', {
           position: toast.POSITION.BOTTOM_LEFT,
-          style: style({width: '220px'})
+          style: style({width: '220px'}),
+          autoClose: 5000
         });
       }
     }
