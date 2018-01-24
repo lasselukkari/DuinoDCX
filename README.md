@@ -8,7 +8,7 @@ Standalone WIFI remote controller for the [Behringer Ultradrive Pro (DCX2496)](h
 ## Disclaimer
 This is not a production ready application. I take no responsibility if you destroy your sound system using this.
 
-The project has been so far tested with two different devices that both have the v1.17 firmware. It has not been tested with the latest revision of the DCX2496. It is highly possible that some adjustments have to made for other versions.
+The project has been so far tested with three different devices that all have the v1.17 firmware. It has not been tested with the latest revision of the DCX2496. It is highly possible that some adjustments have to made for other versions.
 
 The project is free software and there is no official support. 
 
