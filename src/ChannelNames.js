@@ -19,10 +19,10 @@ class ChannelNames extends Component {
             <Col key={channelId} xs={xs} sm={sm} md={md} lg={lg}>
               <ChannelName
                 key={channelId}
-                channel={channels[channelId]}
                 group={group}
                 onChange={onChange}
                 channelId={channelId}
+                channelName={channels[channelId].channelName}
               />
             </Col>
           );

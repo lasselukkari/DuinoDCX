@@ -54,16 +54,24 @@ class EQs extends Component {
               onChange={onChange}
             />
           </Panel>
-          {activeEQs.map(eq => (
-            <EQ
-              key={group + channelId + eq.id}
-              onChange={onChange}
-              group={group}
-              eq={eq}
-              id={eq.id}
-              channelId={channelId}
-            />
-        ))}
+          {activeEQs.map(eq => {
+            const {eQType, eQFrequency, eqQ, eQShelving, eQGain} = eq;
+            return (
+              <EQ
+                key={group + channelId + eq.id}
+                onChange={onChange}
+                group={group}
+                eq={eq}
+                id={eq.id}
+                channelId={channelId}
+                eQType={eQType}
+                eQFrequency={eQFrequency}
+                eqQ={eqQ}
+                eQShelving={eQShelving}
+                eQGain={eQGain}
+              />
+            );
+          })}
         </BlockUi>
       </div>
     );

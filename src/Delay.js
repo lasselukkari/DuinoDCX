@@ -1,17 +1,10 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import {Panel} from 'react-bootstrap';
-import isEqual from 'lodash.isequal';
 import pc from './parameters';
 
-class Delay extends Component {
-  shouldComponentUpdate(nextProps) {
-    const {channel} = this.props;
-    return !isEqual(channel, nextProps.channel);
-  }
-
+class Delay extends PureComponent {
   render() {
-    const {channel, channelId, onChange, group} = this.props;
-    const {delay, shortDelay, longDelay, channelName} = channel;
+    const {delay, shortDelay, longDelay, channelName, channelId, onChange, group} = this.props;
 
     return (
       <Panel header={channelName ? `${channelId} . ${channelName}` : `Channel ${channelId}`}>

@@ -1,24 +1,18 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import {Panel, Row, Col} from 'react-bootstrap';
-import isEqual from 'lodash.isequal';
 
 import pc from './parameters';
 
-class EQ extends Component {
-  shouldComponentUpdate(nextProps) {
-    const {eq} = this.props;
-    return !isEqual(nextProps.eq, eq);
-  }
-
+class EQ extends PureComponent {
   render() {
-    const {eq, id, onChange, group, channelId} = this.props;
+    const {eQType, eQFrequency, eqQ, eQShelving, eQGain, id, onChange, group, channelId} = this.props;
 
     return (
       <Panel header={`Equalizer ${id}`}>
         <Row>
           <Col xs={12} sm={4}>
             <pc.EQType
-              value={eq.eQType}
+              value={eQType}
               eq={id}
               group={group}
               channelId={channelId}
@@ -28,7 +22,7 @@ class EQ extends Component {
           </Col>
           <Col xs={12} sm={4}>
             <pc.EQFrequency
-              value={eq.eQFrequency}
+              value={eQFrequency}
               eq={id}
               group={group}
               channelId={channelId}
@@ -37,9 +31,9 @@ class EQ extends Component {
             />
           </Col>
           <Col xs={12} sm={4}>
-            {eq.eQType === 'Bandpass' && (
+            {eQType === 'Bandpass' && (
             <pc.EQQ
-              value={eq.eqQ}
+              value={eqQ}
               eq={id}
               group={group}
               channelId={channelId}
@@ -47,9 +41,9 @@ class EQ extends Component {
               includeLabel
             />
           )}
-            {eq.eQType !== 'Bandpass' && (
+            {eQType !== 'Bandpass' && (
             <pc.EQShelving
-              value={eq.eQShelving}
+              value={eQShelving}
               eq={id}
               group={group}
               channelId={channelId}
@@ -60,7 +54,7 @@ class EQ extends Component {
           </Col>
         </Row>
         <pc.EQGain
-          value={eq.eQGain}
+          value={eQGain}
           eq={id}
           group={group}
           channelId={channelId}

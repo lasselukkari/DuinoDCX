@@ -1,18 +1,11 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import {Panel} from 'react-bootstrap';
-import isEqual from 'lodash.isequal';
 
 import pc from './parameters';
 
-class Phase extends Component {
-  shouldComponentUpdate(nextProps) {
-    const {channel} = this.props;
-    return !isEqual(channel, nextProps.channel);
-  }
-
+class Phase extends PureComponent {
   render() {
-    const {channel, channelId, onChange, group} = this.props;
-    const {channelName, polarity, phase} = channel;
+    const {channelName, polarity, phase, channelId, onChange, group} = this.props;
 
     return (
       <Panel header={channelName ? `${channelId} . ${channelName}` : `Channel ${channelId}`}>

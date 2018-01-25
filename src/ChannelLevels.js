@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, PureComponent} from 'react';
 import {Panel, Button, Clearfix, Glyphicon} from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import isEqual from 'lodash.isequal';
@@ -7,11 +7,7 @@ import Gains from './Gains';
 
 import './ChannelLevels.css'; // eslint-disable-line import/no-unassigned-import
 
-class MuteButton extends Component {
-  shouldComponentUpdate(nextProps) {
-    const {isMuted} = this.props;
-    return isMuted !== nextProps.isMuted;
-  }
+class MuteButton extends PureComponent {
 
   handleClick = () => { // eslint-disable-line no-undef
     const {channelId, isMuted, onChange, isOutput} = this.props;
@@ -46,12 +42,7 @@ class MuteButton extends Component {
   }
 }
 
-class ChannelLevel extends Component {
-  shouldComponentUpdate(nextProps) {
-    const {channel} = this.props;
-    return !isEqual(channel, nextProps.channel);
-  }
-
+class ChannelLevel extends PureComponent {
   handleClick = () => { // eslint-disable-line no-undef
     const {channelId, isMuted, isOutput, onChange} = this.props;
     onChange({
@@ -63,7 +54,7 @@ class ChannelLevel extends Component {
   };
 
   render() {
-    const {channel = {}, isOutput} = this.props;
+    const {limited, level, isOutput} = this.props;
     const style = {
       display: 'block',
       margin: '2px',
@@ -76,44 +67,44 @@ class ChannelLevel extends Component {
       <div>
         {isOutput && (
           <Button
-            bsStyle={channel.limited ? 'danger' : 'default'}
-            disabled={!channel.limited}
+            bsStyle={limited ? 'danger' : 'default'}
+            disabled={!limited}
             style={style}
           />
         )}
         <Button
-          bsStyle={channel.level >= 7 ? 'danger' : 'default'}
-          disabled={channel.level < 7}
+          bsStyle={level >= 7 ? 'danger' : 'default'}
+          disabled={level < 7}
           style={style}
         />
         <Button
-          bsStyle={channel.level >= 6 ? 'warning' : 'default'}
-          disabled={channel.level < 6}
+          bsStyle={level >= 6 ? 'warning' : 'default'}
+          disabled={level < 6}
           style={style}
         />
         <Button
-          bsStyle={channel.level >= 5 ? 'success' : 'default'}
-          disabled={channel.level < 5}
+          bsStyle={level >= 5 ? 'success' : 'default'}
+          disabled={level < 5}
           style={style}
         />
         <Button
-          bsStyle={channel.level >= 4 ? 'success' : 'default'}
-          disabled={channel.level < 4}
+          bsStyle={level >= 4 ? 'success' : 'default'}
+          disabled={level < 4}
           style={style}
         />
         <Button
-          bsStyle={channel.level >= 3 ? 'success' : 'default'}
-          disabled={channel.level < 3}
+          bsStyle={level >= 3 ? 'success' : 'default'}
+          disabled={level < 3}
           style={style}
         />
         <Button
-          bsStyle={channel.level >= 2 ? 'success' : 'default'}
-          disabled={channel.level < 2}
+          bsStyle={level >= 2 ? 'success' : 'default'}
+          disabled={level < 2}
           style={style}
         />
         <Button
-          bsStyle={channel.level >= 1 ? 'success' : 'default'}
-          disabled={channel.level < 1}
+          bsStyle={level >= 1 ? 'success' : 'default'}
+          disabled={level < 1}
           style={style}
         />
       </div>
@@ -121,23 +112,23 @@ class ChannelLevel extends Component {
   }
 }
 
-class ChannelControls extends Component {
+class ChannelControls extends PureComponent {
   render() {
-    const {channel, onChange, channelId, isOutput, isMuted} = this.props;
+    const {limited, level, onChange, channelId, isOutput, isMuted} = this.props;
 
     return (
       <div>
         <ChannelLevel
           key={'level-' + channelId}
-          channel={channel}
           channelId={channelId}
           onChange={onChange}
           isMuted={isMuted}
           isOutput={isOutput}
+          limited={limited}
+          level={level}
         />
         <MuteButton
           key={'mute-' + channelId}
-          channel={channel}
           channelId={channelId}
           onChange={onChange}
           isMuted={isMuted}
@@ -182,26 +173,30 @@ Channel Levels
           <div className="channels-container">
             <div className="channel-group">
               {['A', 'B', 'C'].map(channelId => {
+                const {limited, level} = device.state.channels[channelId];
                 return (
                   <ChannelControls
                     key={channelId}
-                    channel={device.state.channels[channelId]}
                     onChange={onChange}
                     channelId={channelId}
                     isMuted={inputs[channelId].mute}
+                    limited={limited}
+                    level={level}
                   />
                 );
               })}
             </div>
             <div className="channel-group">
               {['1', '2', '3', '4', '5', '6'].map(channelId => {
+                const {limited, level} = device.state.channels[channelId];
                 return (
                   <ChannelControls
                     key={channelId}
-                    channel={device.state.channels[channelId]}
                     onChange={onChange}
                     channelId={channelId}
                     isMuted={outputs[channelId].mute}
+                    limited={limited}
+                    level={level}
                     isOutput
                   />
                 );

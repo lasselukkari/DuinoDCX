@@ -13,12 +13,8 @@ import EQPlot from './plots/EQPlot';
 
 class Outputs extends Component {
   shouldComponentUpdate(nextProps) {
-    const {blocking, channels, setup} = this.props;
-    return !(
-      blocking === nextProps.blocking &&
-      isEqual(channels, nextProps.channels) &&
-      isEqual(setup, nextProps.setup)
-    );
+    const {blocking, channels} = this.props;
+    return !(blocking === nextProps.blocking && isEqual(channels, nextProps.channels));
   }
 
   render() {
