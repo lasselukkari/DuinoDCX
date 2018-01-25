@@ -16,14 +16,19 @@ class Delays extends Component {
     return (
       <Row className="show-grid">
         {Object.keys(channels).map(channelId => {
+          const channel = channels[channelId];
           return (
             <Col key={channelId} xs={xs} sm={sm} md={md} lg={lg}>
               <Delay
                 key={channelId}
-                channel={channels[channelId]}
+                channel
                 group={group}
                 channelId={channelId}
                 onChange={onChange}
+                delay={channel.delay}
+                shortDelay={channel.shortDelay}
+                longDelay={channel.longDelay}
+                channelName={channel.channelName}
               />
             </Col>
           );

@@ -15,14 +15,17 @@ class Phases extends Component {
     return (
       <Row className="show-grid">
         {Object.keys(channels).map(channelId => {
+          const {channelName, polarity, phase} = channels[channelId];
           return (
             <Col key={channelId} xs={xs} sm={sm} md={md} lg={lg}>
               <Phase
                 key={channelId}
-                channel={channels[channelId]}
                 group={group}
                 onChange={onChange}
                 channelId={channelId}
+                channelName={channelName}
+                polarity={polarity}
+                phase={phase}
               />
             </Col>
           );

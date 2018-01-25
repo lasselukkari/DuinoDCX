@@ -9,8 +9,7 @@ class OutputSource extends Component {
     return !isEqual(channel, nextProps.channel);
   }
   render() {
-    const {channel, channelId, onChange, group} = this.props;
-    const {channelName, source} = channel;
+    const {channelName, source, channelId, onChange, group} = this.props;
     return (
       <div>
         <h5>

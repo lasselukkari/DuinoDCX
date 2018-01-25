@@ -16,6 +16,7 @@ class Limiters extends Component {
     return (
       <Row className="show-grid">
         {Object.keys(channels).map(channelId => {
+          const {channelName, limiter, limiterThreshold, limiterRelease} = channels[channelId];
           return (
             <Col key={channelId} xs={12} sm={12} md={6}>
               <Limiter
@@ -24,6 +25,10 @@ class Limiters extends Component {
                 channelId={channelId}
                 group={group}
                 onChange={onChange}
+                channelName={channelName}
+                limiter={limiter}
+                limiterThreshold={limiterThreshold}
+                limiterRelease={limiterRelease}
               />
             </Col>
           );

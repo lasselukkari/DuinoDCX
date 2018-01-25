@@ -1,23 +1,18 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import {Panel} from 'react-bootstrap';
-import isEqual from 'lodash.isequal';
 
 import pc from './parameters';
 
-class Crossover extends Component {
-  shouldComponentUpdate(nextProps) {
-    const {channel} = this.props;
-    return !isEqual(channel, nextProps.channel);
-  }
+class Crossover extends PureComponent {
   render() {
-    const {channel, group, channelId, onChange} = this.props;
-    const {
-      highpassFilter,
+    const {highpassFilter,
       highpassFrequency,
       lowpassFilter,
       lowpassFrequency,
-      channelName
-    } = channel;
+      channelName,
+      group,
+      channelId,
+      onChange} = this.props;
 
     return (
       <Panel header={channelName ? `${channelId} . ${channelName}` : `Channel ${channelId}`}>

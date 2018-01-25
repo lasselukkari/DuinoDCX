@@ -10,12 +10,8 @@ import EQs from './EQs';
 
 class Inputs extends Component {
   shouldComponentUpdate(nextProps) {
-    const {blocking, channels, setup} = this.props;
-    return !(
-      nextProps.blocking === blocking &&
-      isEqual(nextProps.channels, channels) &&
-      isEqual(nextProps.setup, setup)
-    );
+    const {blocking, channels} = this.props;
+    return !(nextProps.blocking === blocking && isEqual(nextProps.channels, channels));
   }
 
   render() {

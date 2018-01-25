@@ -1,17 +1,10 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import {Panel, Row, Col} from 'react-bootstrap';
-import isEqual from 'lodash.isequal';
 import pc from './parameters';
 
-class DynamicEQ extends Component {
-  shouldComponentUpdate(nextProps) {
-    const {channel} = this.props;
-    return !isEqual(nextProps.channel, channel);
-  }
+class DynamicEQ extends PureComponent {
   render() {
-    const {channel, group, channelId, onChange} = this.props;
-    const {
-      channelName,
+    const {channelName,
       dynamicEQ,
       dynamicEQType,
       dynamicEQFrequency,
@@ -21,8 +14,10 @@ class DynamicEQ extends Component {
       dynamicEQAttack,
       dynamicEQRelease,
       dynamicEQRatio,
-      dynamicEQThreshold
-    } = channel;
+      dynamicEQThreshold,
+      group,
+      channelId,
+      onChange} = this.props;
 
     return (
       <Panel header={channelName ? `${channelId} . ${channelName}` : `Channel ${channelId}`}>
@@ -45,7 +40,7 @@ class DynamicEQ extends Component {
           <Col xs={12} sm={6}>
             <pc.DynamicEQFrequency
               value={dynamicEQFrequency}
-              group="outputs"
+              group={group}
               channelId={channelId}
               onChange={onChange}
               includeLabel

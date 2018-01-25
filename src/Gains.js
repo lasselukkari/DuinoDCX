@@ -15,14 +15,16 @@ class Gains extends Component {
     return (
       <Row className="show-grid">
         {Object.keys(channels).map(channelId => {
+          const {channelName, gain} = channels[channelId];
           return (
             <Col key={channelId} xs={xs} sm={sm} md={md} lg={lg}>
               <Gain
                 key={channelId}
-                channel={channels[channelId]}
                 group={group}
                 channelId={channelId}
                 onChange={onChange}
+                channelName={channelName}
+                gain={gain}
               />
             </Col>
           );
