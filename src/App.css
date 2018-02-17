@@ -8,15 +8,15 @@ body {
 }
 
 .Device-loading {
-  margin-top: 50px;
-  animation: Device-loading-spin infinite 2s linear;
   height: 150px;
-  width: 150px;
+  width: 200px;
 }
 
-@keyframes Device-loading-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+.line-scale > div {
+  width: 30px;
+  height: 150px;
+  border-radius: 10px;
+  margin: 5px;
 }
 
 .block-ui {
