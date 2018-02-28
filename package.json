@@ -56,7 +56,9 @@
       "it",
       "document",
       "fetch",
-      "window"
+      "window",
+      "FormData",
+      "URLSearchParams"
     ],
     "plugins": [
       "babel"

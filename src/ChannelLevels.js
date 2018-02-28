@@ -73,17 +73,12 @@ class ChannelLevel extends PureComponent {
           />
         )}
         <Button
-          bsStyle={level >= 7 ? 'danger' : 'default'}
-          disabled={level < 7}
-          style={style}
-        />
-        <Button
-          bsStyle={level >= 6 ? 'warning' : 'default'}
+          bsStyle={level >= 6 ? 'danger' : 'default'}
           disabled={level < 6}
           style={style}
         />
         <Button
-          bsStyle={level >= 5 ? 'success' : 'default'}
+          bsStyle={level >= 5 ? 'warning' : 'default'}
           disabled={level < 5}
           style={style}
         />

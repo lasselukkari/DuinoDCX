@@ -6,6 +6,6 @@
 .channel-group{
     display: flex;
     align-items: flex-end;
-    height: 240px;
+    height: 180px;
     float: left;
 }

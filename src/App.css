@@ -3,22 +3,6 @@ body {
   padding-top: 60px;
 }
 
-.recharts-default-tooltip {
-  background-color: #272b30 !important;
-}
-
-.Device-loading {
-  height: 150px;
-  width: 200px;
-}
-
-.line-scale > div {
-  width: 30px;
-  height: 150px;
-  border-radius: 10px;
-  margin: 5px;
-}
-
 .block-ui {
   position: relative;
   min-height: 3em;
@@ -36,13 +20,31 @@ body {
   cursor: not-allowed;
   overflow: hidden;
 }
+
 .block-ui-container:focus {
   outline: none;
 }
+
 .block-ui-overlay {
   width: 100%;
   height: 100%;
 }
 
+.content-loader{
+  margin-top: 30px;
+}
 
+.content-loader h5{
+  margin-top: 20px;
+}
 
+.recharts-default-tooltip {
+  background-color: #272b30 !important;
+}
+
+.line-scale > div {
+  width: 30px;
+  height: 144px;
+  border-radius: 10px;
+  margin: 5px;
+}
