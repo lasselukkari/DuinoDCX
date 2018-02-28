@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import cloneDeep from 'lodash.clonedeep';
 import isEqual from 'lodash.isequal';
 import {
+  Button,
+  Modal,
   Navbar,
   Nav,
   NavItem,
@@ -9,65 +11,45 @@ import {
   MenuItem,
   Glyphicon
 } from 'react-bootstrap';
-import {ToastContainer, toast, style} from 'react-toastify';
-import Spinner from 'react-spinkit';
 
+import Spinner from 'react-spinkit';
 
 import Manager from './dcx2496/manager';
 import Inputs from './Inputs';
 import Outputs from './Outputs';
 import Setup from './Setup';
 import ChannelLevels from './ChannelLevels';
+import Connection from './Connection';
 
 import 'bootswatch/slate/bootstrap.css'; // eslint-disable-line import/no-unassigned-import
 import './App.css'; // eslint-disable-line import/no-unassigned-import
 
-
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {device: {}, page: 'levels', blocking: true};
+    this.state = {device: {}, page: 'levels', blocking: true, showModal: false};
     this.manager = new Manager();
-    this.manager.on('update', (newDevice, isLocalUpdate) => {
-      this.updateDevice(newDevice, isLocalUpdate);
+    this.manager.on('update', newDevice => {
+      this.updateDevice(newDevice);
     });
     this.toastId = null;
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    const {device, page, blocking} = this.state;
+    const {device, page, blocking, showModal} = this.state;
 
-    return !isEqual(device, nextState.device) || page !== nextState.page || blocking !== nextState.blocking;
+    return !isEqual(device, nextState.device) ||
+      page !== nextState.page ||
+      blocking !== nextState.blocking ||
+      showModal !== nextState.showModal;
   }
 
   componentDidMount() {
     this.manager.pollDevices();
   }
 
-  componentDidUpdate(previousProps, previousState) {
-    const {isLocalUpdate, device} = this.state;
-
-    if (
-      !isLocalUpdate && !(
-        isEqual(device.setup, previousState.device.setup) &&
-        isEqual(device.inputs, previousState.device.inputs) &&
-        isEqual(device.outputs, previousState.device.outputs)
-      ) && !isEqual({}, previousState.device)
-    ) {
-      if (toast.isActive(this.toastId)) {
-        toast.update(this.toastId, {autoClose: 5000});
-      } else {
-        this.toastId = toast.info('Remote changes loaded.', {
-          position: toast.POSITION.BOTTOM_LEFT,
-          style: style({width: '220px'}),
-          autoClose: 5000
-        });
-      }
-    }
-  }
-
   handleBlockingChange = () => { // eslint-disable-line no-undef
-    this.setState(({device, page, blocking}) => ({device, page, blocking: !blocking}));
+    this.setState(({device, page, blocking, showModal}) => ({device, page, showModal, blocking: !blocking}));
   };
 
   handleDeviceUpdate = data => { // eslint-disable-line no-undef
@@ -76,7 +58,7 @@ class App extends Component {
   };
 
   handlePageChange = page => { // eslint-disable-line no-undef
-    this.setState(({blocking, device}) => ({device, page, blocking}));
+    this.setState(({blocking, device, showModal}) => ({device, page, blocking, showModal}));
     window.scrollTo(0, 0);
   };
 
@@ -84,12 +66,20 @@ class App extends Component {
     this.manager.selectedDevice = selectedDevice;
   };
 
-  updateDevice(newDevice, isLocalUpdate) {
-    this.setState(({blocking, page}) => ({
+  handleModalClose = () => { // eslint-disable-line no-undef
+    this.setState(({blocking, device, page}) => ({blocking, device, page, showModal: false}));
+  };
+
+  handleModalShow = () => { // eslint-disable-line no-undef
+    this.setState(({blocking, device, page}) => ({blocking, device, page, showModal: true}));
+  };
+
+  updateDevice(newDevice) {
+    this.setState(({blocking, page, showModal}) => ({
       device: cloneDeep(newDevice),
       page,
       blocking,
-      isLocalUpdate
+      showModal
     }));
   }
 
@@ -98,100 +88,196 @@ class App extends Component {
     return {display: page === name ? 'block' : 'none'};
   }
 
-  render() {
+  content() {
     const {blocking, device, page} = this.state;
 
     if (!device.ready) {
+      if (page === 'connection') {
+        return (
+          <div className="container">
+            <Connection/>
+          </div>
+        );
+      }
       return (
-        <div className="Device-loading center-block" alt="loading">
-          <Spinner name="line-scale" color="#3498DB"/>
+        <div className="text-center content-loader" alt="loading">
+          <Spinner fadeIn="none" name="line-scale" color="#3498DB"/>
+          <h5 className="text-center">
+            Searching for devices...
+          </h5>
         </div>
       );
     }
 
     return (
-      <div>
-        <Navbar className="navbar-fixed-top" collapseOnSelect fluid>
-          <Navbar.Header>
-            <Navbar.Brand>
-              {`${device.name} ${device.version} (${
-                device.state.free
-              } % free)`}
-            </Navbar.Brand>
-            <Navbar.Toggle/>
-          </Navbar.Header>
-          <Navbar.Collapse>
-            <Nav activeKey={page} onSelect={this.handlePageChange}>
-              <NavItem eventKey="levels">
-Levels
-              </NavItem>
-              <NavItem eventKey="inputs">
-Inputs
-              </NavItem>
-              <NavItem eventKey="outputs">
-Outputs
-              </NavItem>
-              <NavItem eventKey="setup">
-Setup
-              </NavItem>
-            </Nav>
-            <Nav pullRight onSelect={this.handleDeviceSelect}>
-              <NavDropdown title="Select Device" id="basic-nav-dropdown">
-                {this.manager.devices.map(({name, id}, deviceId) => (
-                  <MenuItem key={id} eventKey={deviceId}>
-                    {name}
-                  </MenuItem>
-                ))}
-              </NavDropdown>
-            </Nav>
-            <Nav
-              activeKey={blocking ? 'blocking' : 'unlocked'}
-              pullRight
-              onSelect={this.handleBlockingChange}
-            >
-              <NavItem style={{minWidth: '98px'}} eventKey="unlocked">
-                <Glyphicon
-                  style={{color: blocking ? '#62c462' : '#ee5f5b'}}
-                  glyph={blocking ? 'lock' : 'edit'}
-                />
-                {' '}
-                {blocking ? 'Locked' : 'Editing'}
-              </NavItem>
-            </Nav>
-          </Navbar.Collapse>
-        </Navbar>
-        <ToastContainer/>
-        <div className="container">
-          <div style={this.displayIfPage('levels')}>
-            <ChannelLevels
-              device={device}
-              onChange={this.handleDeviceUpdate}
-              blocking={blocking}
-            />
-          </div>
-          <div style={this.displayIfPage('inputs')}>
-            <Inputs
-              onChange={this.handleDeviceUpdate}
-              channels={device.inputs}
-              blocking={blocking}
-            />
-          </div>
-          <div style={this.displayIfPage('outputs')}>
-            <Outputs
-              onChange={this.handleDeviceUpdate}
-              channels={device.outputs}
-              blocking={blocking}
-            />
-          </div>
-          <div style={this.displayIfPage('setup')}>
-            <Setup
-              onChange={this.handleDeviceUpdate}
-              setup={device.setup}
-              outputs={device.outputs}
-              blocking={blocking}
-            />
-          </div>
+      <div className="container">
+        <div style={this.displayIfPage('levels')}>
+          <ChannelLevels
+            device={device}
+            onChange={this.handleDeviceUpdate}
+            blocking={blocking}
+          />
         </div>
+        <div style={this.displayIfPage('inputs')}>
+          <Inputs
+            onChange={this.handleDeviceUpdate}
+            channels={device.inputs}
+            blocking={blocking}
+          />
+        </div>
+        <div style={this.displayIfPage('outputs')}>
+          <Outputs
+            onChange={this.handleDeviceUpdate}
+            channels={device.outputs}
+            blocking={blocking}
+          />
+        </div>
+        <div style={this.displayIfPage('setup')}>
+          <Setup
+            onChange={this.handleDeviceUpdate}
+            setup={device.setup}
+            outputs={device.outputs}
+            blocking={blocking}
+          />
+        </div>
+      </div>
+    );
+  }
+
+  deviceMenu() {
+    const {device, page} = this.state;
+    if (device.ready) {
+      return (
+        <Nav activeKey={page} onSelect={this.handlePageChange}>
+          <NavItem eventKey="levels">
+            Levels
+          </NavItem>
+          <NavItem eventKey="inputs">
+            Inputs
+          </NavItem>
+          <NavItem eventKey="outputs">
+            Outputs
+          </NavItem>
+          <NavItem eventKey="setup">
+            Setup
+          </NavItem>
+        </Nav>
+      );
+    }
+    return null;
+  }
+
+  connectionMenu() {
+    const {showModal} = this.state;
+    return (
+      <Nav activeKey={showModal ? 'connection' : ''} onSelect={this.handleModalShow}>
+        <NavItem eventKey="connection">
+          Connection
+        </NavItem>
+      </Nav>
+    );
+  }
+
+  lockButton() {
+    const {device, blocking} = this.state;
+    if (device.ready) {
+      return (
+        <Nav
+          activeKey={blocking ? 'blocking' : 'unlocked'}
+          pullRight
+          onSelect={this.handleBlockingChange}
+        >
+          <NavItem style={{minWidth: '98px'}} eventKey="unlocked">
+            <Glyphicon
+              style={{color: blocking ? '#62c462' : '#ee5f5b'}}
+              glyph={blocking ? 'lock' : 'edit'}
+            />
+            {' '}
+            {blocking ? 'Locked' : 'Editing'}
+          </NavItem>
+        </Nav>
+      );
+    }
+    return null;
+  }
+
+  brand() {
+    const {device} = this.state;
+    if (device.ready) {
+      return (
+        <Navbar.Brand>
+          {`${device.name} ${device.version} (${device.state.free}% free)`}
+        </Navbar.Brand>
+      );
+    }
+    return (
+      <Navbar.Brand>
+        DuinoDCX
+      </Navbar.Brand>
+    );
+  }
+
+  deviceSelect(devices) {
+    if (devices.length > 0) {
+      return (
+        <Nav pullRight onSelect={this.handleDeviceSelect}>
+          <NavDropdown title="Select Device" id="basic-nav-dropdown">
+            {devices.map(({name, id}, deviceId) => (
+              <MenuItem key={id} eventKey={deviceId}>
+                {name}
+              </MenuItem>
+            ))}
+          </NavDropdown>
+        </Nav>
+      );
+    }
+    return null;
+  }
+
+  navbar() {
+    return (
+      <Navbar className="navbar-fixed-top" collapseOnSelect fluid>
+        <Navbar.Header>
+          {this.brand()}
+          <Navbar.Toggle/>
+        </Navbar.Header>
+        <Navbar.Collapse>
+          {this.deviceMenu()}
+          {this.connectionMenu()}
+          {this.deviceSelect(this.manager.devices)}
+          {this.lockButton()}
+        </Navbar.Collapse>
+      </Navbar>
+    );
+  }
+
+  conenctionModal() {
+    const {showModal} = this.state;
+    return (
+      <Modal show={showModal} onHide={this.handleModalClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>
+          Wifi Connection
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Connection/>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={this.handleModalClose}>
+          Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    );
+  }
+
+  render() {
+    return (
+      <div>
+        {this.navbar()}
+        {this.content()}
+        {this.conenctionModal()}
       </div>
     );
   }

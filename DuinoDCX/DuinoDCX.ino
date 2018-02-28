@@ -1,5 +1,3 @@
-#include <Preferences.h>
-#include <SPI.h>
 #include <WiFi.h>
 #include <ESPmDNS.h>
 #include "aWOT.h"
@@ -11,9 +9,8 @@
 #define MDNS_NAME "duinodcx"
 
 #define MAX_DEVICES 16
-#define PREFERENCES_ID "DuinoDCX"
-#define PREFERENCES_SSID_KEY "ssid"
-#define PREFERENCES_PASSWORD_KEY "password"
+#define POST_PARAM_SSID_KEY "ssid"
+#define POST_PARAM_PASSWORD_KEY "password"
 
 #define SSID_MAX_LENGTH 33
 #define PASSWORD_MAX_LENGHT 65
@@ -36,22 +33,26 @@
 #define VALUE_LOW_BYTE 11
 #define PART_BYTE 12
 
+#define COMMAND_START 240
+#define TERMINATOR 247
+
 #define PING_INTEVAL 1000
 #define TIMEOUT_TIME 10000
 #define SEARCH_INTEVAL 10000
-#define RESYNC_INTEVAL 100000
+#define RESYNC_INTEVAL 10000
+#define CONNECT_TIMEOUT 10000
 
-Preferences preferences;
 WiFiServer server(80);
 WebApp app;
+Router apiRouter("/api");
 HardwareSerial Ultradrive(2);
 
 byte vendorHeader[] = {0xF0, 0x00, 0x20, 0x32, 0x00};
-byte searchCommand[] = {0xF0, 0x00, 0x20, 0x32, 0x20, 0x0E, 0x40, 0xF7};
-byte transmitModeCommand[] = {0xF0, 0x00, 0x20, 0x32, 0x00, 0x0E, 0x3F, 0x0C, 0x00, 0xF7};
-byte dumpPart0Command[] = {0xF0, 0x00, 0x20, 0x32, 0x00, 0x0E, 0x50, 0x01, 0x00, 0x00, 0xF7};
-byte dumpPart1Command[] = {0xF0, 0x00, 0x20, 0x32, 0x00, 0x0E, 0x50, 0x01, 0x00, 0x01, 0xF7};
-byte pingCommand[] = {0xF0, 0x00, 0x20, 0x32, 0x00, 0x0E, 0x44, 0x00, 0x00, 0xF7};
+byte searchCommand[] = {0xF0, 0x00, 0x20, 0x32, 0x20, 0x0E, 0x40, TERMINATOR};
+byte transmitModeCommand[] = {0xF0, 0x00, 0x20, 0x32, 0x00, 0x0E, 0x3F, 0x0C, 0x00, TERMINATOR};
+byte dumpPart0Command[] = {0xF0, 0x00, 0x20, 0x32, 0x00, 0x0E, 0x50, 0x01, 0x00, 0x00, TERMINATOR};
+byte dumpPart1Command[] = {0xF0, 0x00, 0x20, 0x32, 0x00, 0x0E, 0x50, 0x01, 0x00, 0x01, TERMINATOR};
+byte pingCommand[] = {0xF0, 0x00, 0x20, 0x32, 0x00, 0x0E, 0x44, 0x00, 0x00, TERMINATOR};
 
 byte serialBuffer[PART_0_LENGTH];
 byte serverBuffer[PART_0_LENGTH];
@@ -75,8 +76,8 @@ bool mdnsStarted;
 bool shouldRestart;
 
 void readCommands(Request &req) {
-  if (int bytesRead = req.readBytesUntil(0xF7, serverBuffer, PART_0_LENGTH)) {
-    serverBuffer[bytesRead++] = 0xF7;
+  if (int bytesRead = req.readBytesUntil(TERMINATOR, serverBuffer, PART_0_LENGTH)) {
+    serverBuffer[bytesRead++] = TERMINATOR;
 
     if (!memcmp(serverBuffer, vendorHeader, 5)) {
       int deviceId = serverBuffer[ID_BYTE];
@@ -116,56 +117,90 @@ void createDirectCommand(Request &req, Response &res) {
   res.noContent();
 }
 
-// Webserver handler that that connects the device to a wifi access point
-void createConnection(Request &req, Response &res) {
+void getNetworks(Request &req, Response &res) {
+  int n = WiFi.scanNetworks();
+  res.success("application/json");
+
+  res.print("[");
+  for (int i = 0; i < n; ++i) {
+    res.print('"');
+    res.print(WiFi.SSID(i));
+    res.print('"');
+    if (i < n - 1) {
+      res.print(",");
+    }
+  }
+  res.print("]");
+}
+
+void getConnection(Request &req, Response &res) {
+  res.success("application/json");
+  res.print("{");
+
+  res.print("\"current\":");
+  res.print("\"");
+  res.print(WiFi.SSID());
+  res.print("\",");
+
+  res.print("\"ip\":");
+  res.print("\"");
+  res.print(WiFi.localIP());
+  res.print("\", ");
+
+  if (mdnsStarted) {
+    res.print("\"hostname\":");
+    res.print("\"");
+    res.print(MDNS_NAME ".local");
+    res.print("\"");
+  }
+
+  res.print("}");
+}
+
+void updateConnection(Request &req, Response &res) {
   char name[10];
   char value[PASSWORD_MAX_LENGHT];
+  long timeout;
 
-  req.postParam(name, 10, value, PASSWORD_MAX_LENGHT);
-  if (strcmp(name, PREFERENCES_SSID_KEY) == 0) {
-    preferences.putString(PREFERENCES_SSID_KEY, value);
-  } else if (strcmp(name, PREFERENCES_PASSWORD_KEY) == 0) {
-    preferences.putString(PREFERENCES_PASSWORD_KEY, value);
-  } else {
-    return res.fail();
+  while (req.contentLeft()) {
+    req.postParam(name, 10, value, PASSWORD_MAX_LENGHT);
+    if (strcmp(name, POST_PARAM_SSID_KEY) == 0) {
+      strcpy (ssidBuffer, value);
+    } else if (strcmp(name, POST_PARAM_PASSWORD_KEY) == 0) {
+      strcpy (passwordBuffer, value);
+    } else {
+      return res.fail();
+    }
   }
 
-  req.postParam(name, 10, value, PASSWORD_MAX_LENGHT);
-  if (strcmp(name, PREFERENCES_SSID_KEY) == 0) {
-    preferences.putString(PREFERENCES_SSID_KEY, value);
-  } else if (strcmp(name, PREFERENCES_PASSWORD_KEY) == 0) {
-    preferences.putString(PREFERENCES_PASSWORD_KEY, value);
-  } else {
-    return res.fail();
+  timeout = millis() + CONNECT_TIMEOUT;
+
+  while (WiFi.status() == WL_CONNECTED && millis() < timeout) {
+    WiFi.disconnect(true);
+    delay(1000);
   }
 
-  preferences.getString(PREFERENCES_SSID_KEY, ssidBuffer, SSID_MAX_LENGTH);
-  preferences.getString(PREFERENCES_PASSWORD_KEY, passwordBuffer, PASSWORD_MAX_LENGHT);
+  if (millis() > timeout) {
+    return res.fail();
+  }
 
   WiFi.begin(ssidBuffer, passwordBuffer);
 
-  long abortConnect = millis() + 10000;
-  while (WiFi.status() != WL_CONNECTED && millis() < abortConnect) {
-    delay(500);
-    Serial.print(".");
+  timeout = millis() + CONNECT_TIMEOUT;
+  while (WiFi.status() != WL_CONNECTED && millis() < timeout) {
+    delay(1000);
+  }
+
+  if (millis() > timeout) {
+    return res.fail();
   }
 
   if (WiFi.status() != WL_CONNECTED) {
-    res.print("Could not connect.");
-  } else {
-    mdnsStarted = MDNS.begin(MDNS_NAME);
-    res.seeOther("/ip");
-  }
-}
-
-// Webserver handler that that dispays the client mdns address and local ip if they are available
-void getIp(Request &req, Response &res) {
-  res.success("text/plain");
-  if (mdnsStarted) {
-    res.print(MDNS_NAME ".local ");
+    return res.fail();
   }
 
-  res.print(WiFi.localIP());
+  mdnsStarted = MDNS.begin(MDNS_NAME);
+  getConnection(req, res);
 }
 
 // Webserver handler that that resets the device
@@ -177,10 +212,12 @@ void getRestart(Request &req, Response &res) {
 
 // Webserver handler that that returns the state of a singe device
 void getDevice(Request &req, Response &res) {
-  char buffer [17];
   int id = atoi(req.route("id"));
-  int contentLength = PART_0_LENGTH + PART_1_LENGTH + PING_RESPONSE_LENGTH;
-  res.set("Content-Length", itoa(contentLength, buffer, 10));
+
+  if (id < 0 || id > MAX_DEVICES - 1) {
+    return res.fail();
+  }
+
   res.success("application/binary");
   res.write(dumps0[id], PART_0_LENGTH);
   res.write(dumps1[id], PART_1_LENGTH);
@@ -189,17 +226,7 @@ void getDevice(Request &req, Response &res) {
 
 // Webserver handler that that returns the short descripition of all devices
 void getDevices(Request &req, Response &res) {
-  char buffer [17];
-  int contentLength = 0;
   long now = millis();
-
-  for (int i = 0; i < MAX_DEVICES; i++) {
-    if (ttls[i] > now) {
-      contentLength += SEARCH_RESPONSE_LENGTH;
-    }
-  }
-
-  res.set("Content-Length", itoa(contentLength, buffer, 10));
 
   res.success("application/binary");
   for (int i = 0; i < MAX_DEVICES; i++) {
@@ -276,7 +303,7 @@ void patchBuffer(int id, int low, int high, DataLocation l) {
 void readCommands() {
   byte b = Ultradrive.read();
 
-  if (b == 0xF0) {
+  if (b == COMMAND_START) {
     readingCommand = true;
     serialRead = 0;
   }
@@ -285,7 +312,7 @@ void readCommands() {
     serialBuffer[serialRead++] = b;
   }
 
-  if (b == 0xF7) {
+  if (b == TERMINATOR) {
     readingCommand = false;
 
     if (!memcmp(serialBuffer, vendorHeader, 5)) {
@@ -362,13 +389,9 @@ void setup() {
   Serial.begin(115200);
   Ultradrive.begin(38400);
 
-  preferences.begin(PREFERENCES_ID, false);
-  preferences.getString(PREFERENCES_SSID_KEY, ssidBuffer, SSID_MAX_LENGTH);
-  preferences.getString(PREFERENCES_PASSWORD_KEY, passwordBuffer, PASSWORD_MAX_LENGHT);
+  WiFi.begin();
 
-  WiFi.begin(ssidBuffer, passwordBuffer);
-
-  long abortConnect = millis() + 10000;
+  long abortConnect = millis() + CONNECT_TIMEOUT;
   while (WiFi.status() != WL_CONNECTED && millis() < abortConnect) {
     delay(500);
     Serial.print(".");
@@ -388,12 +411,14 @@ void setup() {
 
   server.begin();
 
-  app.get("/api/devices", &getDevices);
-  app.get("/api/devices/:id", &getDevice);
-  app.post("/api/commands", &createDirectCommand);
-  app.post("/connect.html", &createConnection);
-  app.get("/ip", &getIp);
-  app.get("/reset", &getRestart);
+  apiRouter.get("/devices", &getDevices);
+  apiRouter.get("/devices/:id", &getDevice);
+  apiRouter.post("/commands", &createDirectCommand);
+  apiRouter.get("/connection", &getConnection);
+  apiRouter.patch("/connection", &updateConnection);
+  apiRouter.get("/networks", &getNetworks);
+  apiRouter.get("/reset", &getRestart);
+  app.use(&apiRouter);
 
   ServeStatic(&app);
 }

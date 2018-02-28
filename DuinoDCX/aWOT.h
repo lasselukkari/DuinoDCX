@@ -104,10 +104,6 @@ public:
   MethodType method();
   int contentLeft();
 
-  bool next();
-  void discontinue();
-  bool isDiscontinued();
-
   char * urlPath();
   int urlPathLength();
 
@@ -150,7 +146,6 @@ private:
   unsigned char m_pushback[32];
   int m_pushbackDepth;
   bool m_readingContent;
-  bool m_discontinued;
 
   char m_paramBuffer[SERVER_PARAM_LENGTH];
 
@@ -190,6 +185,9 @@ public:
   size_t write(uint8_t *ch, size_t size);
   int bytesSent();
 
+  void end();
+  bool ended();
+
   void set(const char* name, const char* value);
 
   void success(const char *contentType);
@@ -197,15 +195,13 @@ public:
   void noContent();
 
   void seeOther(const char *otherURL);
+  void notModified();
 
   void fail();
   void unauthorized();
   void forbidden();
   void notFound();
-  void notModified();
   void serverError();
-
-  void reset();
 
   //dummy implementations to fulfill Stream interface
   int available() {return 0;}
@@ -226,6 +222,7 @@ private:
 
   unsigned int m_headersCount;
   int m_bytesSent;
+  bool m_ended;
 };
 
 class Router {
@@ -308,3 +305,4 @@ private:
 };
 
 #endif
+
