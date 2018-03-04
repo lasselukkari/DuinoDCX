@@ -41,6 +41,7 @@
 #define SEARCH_INTEVAL 10000
 #define RESYNC_INTEVAL 10000
 #define CONNECT_TIMEOUT 10000
+#define RECONNECT_INTERVAL 20000
 
 WiFiServer server(80);
 WebApp app;
@@ -65,6 +66,7 @@ char ssidBuffer[SSID_MAX_LENGTH];
 char passwordBuffer[PASSWORD_MAX_LENGHT];
 
 long nextSearch;
+long nextReconnect;
 long ttls[MAX_DEVICES];
 long pingTimes[MAX_DEVICES];
 long resyncTimes[MAX_DEVICES];
@@ -74,6 +76,7 @@ int serialRead;
 bool readingCommand;
 bool mdnsStarted;
 bool shouldRestart;
+bool wasConnected;
 
 void readCommands(Request &req) {
   if (int bytesRead = req.readBytesUntil(TERMINATOR, serverBuffer, PART_0_LENGTH)) {
@@ -184,6 +187,7 @@ void updateConnection(Request &req, Response &res) {
     return res.fail();
   }
 
+  wasConnected = false;
   WiFi.begin(ssidBuffer, passwordBuffer);
 
   timeout = millis() + CONNECT_TIMEOUT;
@@ -191,14 +195,11 @@ void updateConnection(Request &req, Response &res) {
     delay(1000);
   }
 
-  if (millis() > timeout) {
-    return res.fail();
-  }
-
   if (WiFi.status() != WL_CONNECTED) {
     return res.fail();
   }
 
+  wasConnected = true;
   mdnsStarted = MDNS.begin(MDNS_NAME);
   getConnection(req, res);
 }
@@ -397,6 +398,10 @@ void setup() {
     Serial.print(".");
   }
 
+  if (WiFi.status() ==  WL_CONNECTED) {
+    wasConnected = true;
+  }
+
   Serial.println("");
   Serial.print("IP address: ");
   Serial.println(WiFi.localIP());
@@ -461,5 +466,11 @@ void loop() {
   if (shouldRestart) {
     ESP.restart();
   }
+
+  if (WiFi.status() != WL_CONNECTED && wasConnected && nextReconnect < now) {
+    WiFi.begin();
+    nextReconnect = now + RECONNECT_INTERVAL;
+  }
+
 }
 
