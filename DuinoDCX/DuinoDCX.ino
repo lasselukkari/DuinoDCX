@@ -29,6 +29,7 @@
 #define PARAM_COUNT_BYTE 7
 #define CHANNEL_BYTE 8
 #define PARAM_BYTE 9
+#define DUMP_PART_BYTE 9
 #define VALUE_HI_BYTE 10
 #define VALUE_LOW_BYTE 11
 #define PART_BYTE 12
@@ -51,8 +52,7 @@ HardwareSerial Ultradrive(2);
 byte vendorHeader[] = {0xF0, 0x00, 0x20, 0x32, 0x00};
 byte searchCommand[] = {0xF0, 0x00, 0x20, 0x32, 0x20, 0x0E, 0x40, TERMINATOR};
 byte transmitModeCommand[] = {0xF0, 0x00, 0x20, 0x32, 0x00, 0x0E, 0x3F, 0x0C, 0x00, TERMINATOR};
-byte dumpPart0Command[] = {0xF0, 0x00, 0x20, 0x32, 0x00, 0x0E, 0x50, 0x01, 0x00, 0x00, TERMINATOR};
-byte dumpPart1Command[] = {0xF0, 0x00, 0x20, 0x32, 0x00, 0x0E, 0x50, 0x01, 0x00, 0x01, TERMINATOR};
+byte dumpCommand[] = {0xF0, 0x00, 0x20, 0x32, 0x00, 0x0E, 0x50, 0x01, 0x00, 0x00, TERMINATOR};
 byte pingCommand[] = {0xF0, 0x00, 0x20, 0x32, 0x00, 0x0E, 0x44, 0x00, 0x00, TERMINATOR};
 
 byte serialBuffer[PART_0_LENGTH];
@@ -239,31 +239,26 @@ void getDevices(Request &req, Response &res) {
 
 // Sends the search command to the device to device serial port
 void search() {
-  Ultradrive.write(searchCommand, 10);
+  Ultradrive.write(searchCommand, sizeof(searchCommand));
 }
 
 // Sends a command that sets the trasmit mode to two way sync
 void setTransmitMode(int deviceId) {
   transmitModeCommand[ID_BYTE] = deviceId;
-  Ultradrive.write(transmitModeCommand, 10);
+  Ultradrive.write(transmitModeCommand, sizeof(transmitModeCommand));
 }
 
-// Instructs the device to dump the first part off full memory dump
-void dumpPart0(int deviceId) {
-  dumpPart0Command[ID_BYTE] = deviceId;
-  Ultradrive.write(dumpPart0Command, 11);
-}
-
-// Instructs the device to dump the second part off full memory dump
-void dumpPart1(int deviceId) {
-  dumpPart1Command[ID_BYTE] = deviceId;
-  Ultradrive.write(dumpPart1Command, 11);
+// Instructs the device to dump the part of it's memory
+void dump(int deviceId, int part) {
+  dumpCommand[ID_BYTE] = deviceId;
+  dumpCommand[DUMP_PART_BYTE] = part;
+  Ultradrive.write(dumpCommand, sizeof(dumpCommand));
 }
 
 // Pings the device. Device responds with a message that contains current channgel levels
 void ping(int deviceId) {
   pingCommand[ID_BYTE] = deviceId;
-  Ultradrive.write(pingCommand, 11);
+  Ultradrive.write(pingCommand, sizeof(pingCommand));
 }
 
 // Patches the state of single command param in in the stored memory dumps
@@ -328,7 +323,7 @@ void readCommands() {
               if (!ttls[deviceId]) {
                 resyncTimes[deviceId] = (millis() + RESYNC_INTEVAL);
                 setTransmitMode(deviceId);
-                dumpPart0(deviceId);
+                dump(deviceId, 0);
               }
             }
 
@@ -340,7 +335,7 @@ void readCommands() {
             if (part == 0) {
               if (serialRead == PART_0_LENGTH) {
                 memcpy(&dumps0[deviceId], serialBuffer, PART_0_LENGTH);
-                dumpPart1(deviceId);
+                dump(deviceId, 1);
               }
             } else if (part == 1) {
               if (serialRead == PART_1_LENGTH) {
@@ -442,8 +437,7 @@ void loop() {
 
       } else if (resyncTimes[i] < now) {
         resyncTimes[i] = (now + RESYNC_INTEVAL);
-        dumpPart0(i);
-
+        dump(i, 0);
       }
     }
 
@@ -471,6 +465,5 @@ void loop() {
     WiFi.begin();
     nextReconnect = now + RECONNECT_INTERVAL;
   }
-
 }
 
