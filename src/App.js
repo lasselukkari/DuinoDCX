@@ -172,7 +172,7 @@ class App extends Component {
     return (
       <Nav activeKey={showModal ? 'connection' : ''} onSelect={this.handleModalShow}>
         <NavItem eventKey="connection">
-          Connection
+          Wifi
         </NavItem>
       </Nav>
     );
@@ -187,13 +187,11 @@ class App extends Component {
           pullRight
           onSelect={this.handleBlockingChange}
         >
-          <NavItem style={{minWidth: '98px'}} eventKey="unlocked">
+          <NavItem eventKey="unlocked">
             <Glyphicon
               style={{color: blocking ? '#62c462' : '#ee5f5b'}}
               glyph={blocking ? 'lock' : 'edit'}
-            />
-            {' '}
-            {blocking ? 'Locked' : 'Editing'}
+            /> <span className="hidden-sm">{blocking ? 'Locked' : 'Editing'}</span>
           </NavItem>
         </Nav>
       );
@@ -221,7 +219,7 @@ class App extends Component {
     if (devices.length > 0) {
       return (
         <Nav pullRight onSelect={this.handleDeviceSelect}>
-          <NavDropdown title="Select Device" id="basic-nav-dropdown">
+          <NavDropdown title="Devices" id="basic-nav-dropdown">
             {devices.map(({name, id}, deviceId) => (
               <MenuItem key={id} eventKey={deviceId}>
                 {name}
