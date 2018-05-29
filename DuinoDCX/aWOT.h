@@ -36,20 +36,12 @@
 #define SERVER_DEFAULT_REQUEST_LENGTH 64
 #endif
 
-#ifndef SERVER_PARAM_LENGTH
-#define SERVER_PARAM_LENGTH 64
-#endif
-
 #ifndef SERVER_HEADERS_COUNT
 #define SERVER_HEADERS_COUNT 5
 #endif
 
 #ifndef SERVER_READ_TIMEOUT_IN_MS
 #define SERVER_READ_TIMEOUT_IN_MS 1000
-#endif
-
-#ifndef SERVER_URL_PATH_COMMAND_LENGTH
-#define SERVER_URL_PATH_COMMAND_LENGTH 8
 #endif
 
 #ifndef SERVER_FAIL_MESSAGE
@@ -109,20 +101,17 @@ public:
 
   void routeString(const char * routeString);
 
-  char ** route();
-  char * route(const char* name);
-  char * route(int number);
+  bool route(const char *key, char *paramBuffer, int paramBufferLen);
+  bool route(int number, char *paramBuffer, int paramBufferLen);
 
   char * query();
-  char * query(const char *key);
+  bool query(const char *key, char *paramBuffer, int paramBufferLen);
   bool queryComplete();
 
   bool postParam(char *name, int nameLen, char *value, int valueLen);
 
   char * header(const char *name);
-
-  void slicePath(int prefixLength);
-  void unSlicePath(int prefixLength);
+  void setPrefixLength(int prefixLength);
 
   int available();
   int read();
@@ -147,8 +136,6 @@ private:
   int m_pushbackDepth;
   bool m_readingContent;
 
-  char m_paramBuffer[SERVER_PARAM_LENGTH];
-
   int m_contentLeft;
   int m_bytesRead;
 
@@ -159,9 +146,7 @@ private:
 
   char * m_urlPath;
   int m_urlPathLength;
-
-  char * m_urlPathParts[SERVER_URL_PATH_COMMAND_LENGTH];
-  int m_urlPathPartsCount;
+  int m_prefixLength;
 
   int m_hexToInt(char *hex);
 
@@ -305,4 +290,3 @@ private:
 };
 
 #endif
-
