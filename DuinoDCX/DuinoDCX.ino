@@ -1,5 +1,9 @@
+#include <esp_wifi.h>
 #include <WiFi.h>
 #include <ESPmDNS.h>
+#include <WiFiUdp.h>
+#include <ArduinoOTA.h>
+#include <DNSServer.h>
 #include "aWOT.h"
 #include "StaticFiles.h"
 #include "DataLocations.h"
@@ -7,6 +11,10 @@
 #define SOFT_AP_SSID "DuinoDCX"
 #define SOFT_AP_PASSWORD "Ultradrive"
 #define MDNS_NAME "duinodcx"
+
+#define OTA_PASSWORD "Ultradrive"
+
+#define DNS_PORT 53
 
 #define MAX_DEVICES 16
 #define POST_PARAM_SSID_KEY "ssid"
@@ -44,7 +52,8 @@
 #define CONNECT_TIMEOUT 10000
 #define RECONNECT_INTERVAL 20000
 
-WiFiServer server(80);
+WiFiServer httpServer(80);
+DNSServer dnsServer;
 WebApp app;
 Router apiRouter("/api");
 HardwareSerial Ultradrive(2);
@@ -176,16 +185,7 @@ void updateConnection(Request &req, Response &res) {
     }
   }
 
-  timeout = millis() + CONNECT_TIMEOUT;
-
-  while (WiFi.status() == WL_CONNECTED && millis() < timeout) {
-    WiFi.disconnect(true);
-    delay(1000);
-  }
-
-  if (millis() > timeout) {
-    return res.fail();
-  }
+  esp_wifi_disconnect();
 
   wasConnected = false;
   WiFi.begin(ssidBuffer, passwordBuffer);
@@ -213,7 +213,9 @@ void getRestart(Request &req, Response &res) {
 
 // Webserver handler that that returns the state of a singe device
 void getDevice(Request &req, Response &res) {
-  int id = atoi(req.route("id"));
+  char idBuffer[64];
+  req.route("id", idBuffer, 64);
+  int id = atoi(idBuffer);
 
   if (id < 0 || id > MAX_DEVICES - 1) {
     return res.fail();
@@ -405,11 +407,16 @@ void setup() {
 
   WiFi.softAP(SOFT_AP_SSID, SOFT_AP_PASSWORD);
 
-  IPAddress ip = WiFi.softAPIP();
+  IPAddress apIP = WiFi.softAPIP();
   Serial.print("AP IP address: ");
-  Serial.println(ip);
+  Serial.println(apIP);
 
-  server.begin();
+  ArduinoOTA.setPassword(OTA_PASSWORD);
+  ArduinoOTA.begin();
+
+  dnsServer.start(DNS_PORT, "*", apIP);
+
+  httpServer.begin();
 
   apiRouter.get("/devices", &getDevices);
   apiRouter.get("/devices/:id", &getDevice);
@@ -451,7 +458,7 @@ void loop() {
     nextSearch = now + SEARCH_INTEVAL;
   }
 
-  WiFiClient client = server.available();
+  WiFiClient client = httpServer.available();
 
   if (client.connected()) {
     app.process(&client);
@@ -465,5 +472,8 @@ void loop() {
     WiFi.begin();
     nextReconnect = now + RECONNECT_INTERVAL;
   }
+
+  ArduinoOTA.handle();
+  dnsServer.processNextRequest();
 }
 

@@ -36,7 +36,6 @@ Request::Request() :
   m_queryComplete(false),
   m_urlPath(NULL),
   m_urlPathLength(0),
-  m_urlPathPartsCount(0),
   m_route(NULL) {
 }
 
@@ -46,12 +45,6 @@ void Request::init(Client *client, char* buff, int bufflen) {
   m_bytesRead = 0;
   m_urlPath = buff;
   m_urlPathLength = bufflen - 1;
-  HeaderNode* headerNode = m_headerTail;
-  while (headerNode != NULL) {
-    headerNode->buffer[0] = '\0';
-    headerNode = headerNode->next;
-  }
-
   m_pushbackDepth = 0;
   m_contentLeft = 0;
   m_readingContent = false;
@@ -183,46 +176,51 @@ void Request::routeString(const char * routeString) {
   m_route = routeString;
 }
 
-/* Returns the URL path as an array of strings sliced in parts by "/". */
-char ** Request::route() {
-  return m_urlPathParts;
-}
-
-/* Returns a single route parameter by name. For example with route users/:userId and request to URL /users/123 request.route("userId") would return a char pointer to "123" */
-char * Request::route(const char *name) {
-  byte part = 0;
-  byte i = 0;
+bool Request::route(const char * name, char *paramBuffer, int paramBufferLen) {
+  int part = 0;
+  int i = 0;
 
   while (m_route[i]) {
-    if (m_route[i] == ':') {
-      byte j = 0;
-      i++; //skip to the next char after :
-
-      while ((m_route[i] && name[j]) && m_route[i++] == name[j++])
-
-      if (!name[j] && (m_route[i] == '/' || !m_route[i])) {
-        return m_urlPathParts[part];
-      }
-    }
-
     if (m_route[i] == '/') {
       part++;
     }
 
-    i++;
+    if (m_route[i++] == ':') {
+      int j = 0;
+
+      while ((m_route[i] && name[j]) && m_route[i++] == name[j++])
+
+      if (!name[j] && (m_route[i] == '/' || !m_route[i])) {
+        return route(part, paramBuffer, paramBufferLen);
+      }
+    }
   }
 
-  return NULL;
+  return false;
 }
 
-/* Returns a single route parameter by positions in the path. For example with  request to URL users/123 request.route(0)
- * would return a char pointer to "users" */
-char * Request::route(int number) {
-  if (number <= m_urlPathPartsCount){
-      return m_urlPathParts[number];
-  } else {
-    return NULL;
-  } 
+bool Request::route(int number, char *paramBuffer, int paramBufferLen) {
+  memset(paramBuffer, 0, paramBufferLen);
+  int part = 0;
+  int i = 0;
+  int read = 0;
+  char * routeStart = m_urlPath + m_prefixLength;
+
+  while(routeStart[i]){
+    if (routeStart[i++] == '/'){
+      part++;
+
+      if (part == number){
+        while(routeStart[i] != '/' && read < paramBufferLen){
+          paramBuffer[read++] = routeStart[i++];
+        }
+
+        return true;
+      }
+    }
+  }
+
+  return false;
 }
 
 /* Return a char pointer to the request query placed after the ? character in the URL */
@@ -232,7 +230,8 @@ char * Request::query() {
 
 /* Returns a single query parameter by name. For example with  request to URL /search?query=word request.query("query")
  * would return a char pointer to "word" */
-char * Request::query(const char * key) {
+bool Request::query(const char * key, char *paramBuffer, int paramBufferLen) {
+  memset(paramBuffer, 0, paramBufferLen);
   int charsRead = 0;
 
   char *ch = strstr(m_query, key); 
@@ -243,26 +242,24 @@ char * Request::query(const char * key) {
     if (*ch == '=') { 
       ch++; 
 
-      while (*ch && *ch != '&' && charsRead < SERVER_PARAM_LENGTH) { 
+      while (*ch && *ch != '&' && charsRead < paramBufferLen) { 
         if (*ch == '%') { 
           char hex[3] = { ch[1], ch[2], 0 };
-          m_paramBuffer[charsRead++] = m_hexToInt(hex);
+          paramBuffer[charsRead++] = m_hexToInt(hex);
           ch += 3; 
         } else if( *ch=='+' ) { 
-          m_paramBuffer[charsRead++] = ' '; 
+          paramBuffer[charsRead++] = ' '; 
           ch++; 
         } else { 
-          m_paramBuffer[charsRead++] = *ch++; 
+          paramBuffer[charsRead++] = *ch++; 
         }
-      } 
+      }
 
-      m_paramBuffer[charsRead]= '\0';
-
-      return m_paramBuffer;
+      return true;
     } 
-  } 
+  }
 
-  return NULL;
+  return false;
 }
 
 /* Returns a boolean value indicating if the query was parsed completely or didn't it fit to the  buffer */
@@ -332,18 +329,7 @@ char * Request::header(const char *name) {
   HeaderNode* headerNode = m_headerTail;
 
   while(headerNode != NULL){
-    const char * nodeName = headerNode->name;
-
-    while (tolower(*nodeName) == tolower(*name)) {
-      if (*nodeName == '\0' || *name == '\0'){
-        break;
-      }
-
-      nodeName++;
-      name++;
-    }
-
-    if (*nodeName == '\0' && *name == '\0') {
+    if (strcmp(headerNode->name, name) == 0) {
       return headerNode->buffer;
     }
 
@@ -353,30 +339,8 @@ char * Request::header(const char *name) {
   return NULL;
 }
 
-void Request::slicePath(int prefixLength) {
-  m_urlPathPartsCount = 0;
-  m_urlPathParts[m_urlPathPartsCount] = m_urlPath + prefixLength;
-  m_urlPathPartsCount++;
-
-  for (char * p = m_urlPath + prefixLength; p < m_urlPath + m_urlPathLength; p++) {
-    if (*p == '/') {
-
-      *p = 0;
-      m_urlPathParts[m_urlPathPartsCount++] = p + 1;
-
-      if (m_urlPathPartsCount == SERVER_URL_PATH_COMMAND_LENGTH) {
-        break;
-      }
-    }
-  }
-}
-
-void Request::unSlicePath(int prefixLength) {
-  for (char * p = m_urlPath + prefixLength; p < m_urlPath + m_urlPathLength-prefixLength; p++) {
-    if (*p == 0) {
-      *p = '/';
-    }
-  }
+void Request::setPrefixLength(int prefixLength) {
+  m_prefixLength = prefixLength;
 }
 
 /*Returns the number of bytes available for reading.*/
@@ -477,6 +441,12 @@ bool Request::m_expect(const char *str) {
 void Request::reset() {
   m_clientObject->flush();
   m_clientObject->stop();
+
+  HeaderNode* headerNode = m_headerTail;
+  while (headerNode != NULL) {
+    headerNode->buffer[0] = '\0';
+    headerNode = headerNode->next;
+  }
 }
 
 void Request::m_readHeader(char *value, int valueLen) {
@@ -782,7 +752,7 @@ Router::Router(const char * urlPrefix) :
 
 bool Router::dispatchCommands(Request& request, Response& response) {
   bool routeFound = false;
-  byte prefixLength = strlen(m_urlPrefix);
+  int prefixLength = strlen(m_urlPrefix);
 
   if (strncmp(m_urlPrefix, request.urlPath(), prefixLength) == 0) {
     char * trimmedPath = request.urlPath() + prefixLength;
@@ -807,10 +777,9 @@ bool Router::dispatchCommands(Request& request, Response& response) {
             routeFound = true;
           }
 
+          request.setPrefixLength(prefixLength);
           request.routeString(command->urlPattern);
-          request.slicePath(prefixLength);
           command->command(request, response);
-          request.unSlicePath(prefixLength);
         }
       }
 
@@ -1074,4 +1043,3 @@ void WebApp::m_defaultFailCommand(Request &request, Response &response) {
 void WebApp::m_defaultNotFoundCommand(Request &request, Response &response) {
   response.notFound();
 }
-

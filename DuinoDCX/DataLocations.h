@@ -12,7 +12,6 @@ struct MiddleBit {
 struct LowByte {
   int part;
   int byte;
-  int index;
 };
 
 struct DataLocation {
