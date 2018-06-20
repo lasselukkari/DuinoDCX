@@ -38,7 +38,7 @@ class Manager extends EventEmitter {
       })
       .catch(err => {
         console.log(err);
-        setTimeout(() => this.pollSelectedDevice(), 1000);
+        setTimeout(() => this.pollSelectedDevice(), 500);
       });
   }
 
@@ -77,7 +77,7 @@ class Manager extends EventEmitter {
       if (!--this.bouncing) {
         this.bounce = false;
       }
-    }, 100);
+    }, 250);
 
     function hexStringToByte(str) {
       const a = [];
@@ -96,10 +96,6 @@ class Manager extends EventEmitter {
   }
 
   handleMessage(message) {
-    if (this.bounce) {
-      return;
-    }
-
     const dataType = message[DCX2496.constants.COMMAND_BYTE];
     const deviceId = message[DCX2496.constants.ID_BYTE];
 
@@ -113,6 +109,10 @@ class Manager extends EventEmitter {
         this.pollSelectedDevice();
       }
     } else if (dataType === DCX2496.constants.DUMP_RESPONSE) {
+      if (this.bounce) {
+        return;
+      }
+
       if (message[DCX2496.constants.PART_BYTE] === DCX2496.constants.PART_0) {
         this.tempDumps[deviceId] = message;
       } else if (
