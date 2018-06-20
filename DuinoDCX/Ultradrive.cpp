@@ -1,26 +1,239 @@
-struct HighByte {
-  int part;
-  int byte;
-};
+#include "Ultradrive.h"
 
-struct MiddleBit {
-  int part;
-  int byte;
-  int index;
-};
+Ultradrive::Ultradrive(Stream *stream) :
+  stream(stream), isFirstRun(true) {
+}
 
-struct LowByte {
-  int part;
-  int byte;
-};
+void Ultradrive::processIncoming(unsigned long now) {
+  if (isFirstRun) {
+    isFirstRun = false;
+    return search();
+  }
 
-struct DataLocation {
-  LowByte low;
-  MiddleBit middle;
-  HighByte high;
-};
+  if (stream->available() > 0) {
+    return readCommands();
+  } else {
+    for (int i = 0; i < MAX_DEVICES; i++) {
+      Device* device = &devices[i];
+      if (device->isNew) {
+        device->isNew = false;
+        device->lastPing = now;
+        setTransmitMode(i);
+        return ping(i);
+      } else if (device->lastPong != 0 && now - device->lastPong < TIMEOUT_TIME) {
+        if (device->dumpStarted) {
+          device->dumpStarted = false;
+          return dump(i, 1);
+        } else if (now - device->lastPing >= PING_INTEVAL) {
+          device->lastPing = now;
+          return ping(i);
+        } else if (now - device->lastResync >= RESYNC_INTEVAL) {
+          device->lastResync = now;
+          return dump(i, 0);
+        }
+      } else if (device->lastPong != 0) {
+        device->lastPong = 0;
+      }
+    }
 
-DataLocation setupLocations[22] =  {
+    if (now - lastSearch >= SEARCH_INTEVAL) {
+      lastSearch = now;
+      return search();
+    }
+  }
+}
+
+void Ultradrive::writeDevice(Stream* out, int deviceId) {
+  out->write(devices[deviceId].dump0, PART_0_LENGTH);
+  out->write(devices[deviceId].dump1, PART_1_LENGTH);
+  out->write(devices[deviceId].pingResponse, PING_RESPONSE_LENGTH);
+}
+
+void Ultradrive::writeDevices(Stream* out) {
+  for (int i = 0; i < MAX_DEVICES; i++) {
+    if (devices[i].lastPong) {
+      out->write(devices[i].searchResponse, SEARCH_RESPONSE_LENGTH);
+    }
+  }
+}
+
+void Ultradrive::processOutgoing(Stream* in) {
+  if (int bytesRead = in->readBytesUntil(TERMINATOR, serverBuffer, PART_0_LENGTH)) {
+    serverBuffer[bytesRead++] = TERMINATOR;
+
+    if (!memcmp(serverBuffer, vendorHeader, 5)) {
+      int deviceId = serverBuffer[ID_BYTE];
+      int command = serverBuffer[COMMAND_BYTE];
+
+      if (command == DIRECT_COMMAND) {
+        int count = serverBuffer[PARAM_COUNT_BYTE];
+
+        for (int i = 0; i < count; i++) {
+          int offset = (4 * i);
+          int channel = serverBuffer[CHANNEL_BYTE + offset];
+          int param = serverBuffer[PARAM_BYTE + offset];
+          int valueHigh = serverBuffer[VALUE_HI_BYTE + offset];
+          int valueLow = serverBuffer[VALUE_LOW_BYTE + offset];
+
+          if (!channel) {
+            patchBuffer(deviceId, valueLow, valueHigh, setupLocations[param - (param <= 11 ? 2 : 10)]);
+          } else if (channel <= 4) {
+            patchBuffer(deviceId, valueLow, valueHigh, inputLocations[channel - 1][param - 2]);
+          } else if (channel <= 10) {
+            patchBuffer(deviceId, valueLow, valueHigh, outputLocations[channel - 5][param - 2]);
+          }
+        }
+
+        stream->write(serverBuffer, bytesRead);
+      }
+    }
+  }
+}
+
+void Ultradrive::search() {
+  byte searchCommand[] = {0xF0, 0x00, 0x20, 0x32, 0x20, 0x0E, 0x40, TERMINATOR};
+  stream->write(searchCommand, sizeof(searchCommand));
+}
+
+void Ultradrive::setTransmitMode(int deviceId) {
+  byte transmitModeCommand[] = {0xF0, 0x00, 0x20, 0x32, (byte)deviceId, 0x0E, 0x3F, 0x0C, 0x00, TERMINATOR};
+  stream->write(transmitModeCommand, sizeof(transmitModeCommand));
+}
+
+void Ultradrive::ping( int deviceId) {
+  byte pingCommand[] = {0xF0, 0x00, 0x20, 0x32, (byte)deviceId, 0x0E, 0x44, 0x00, 0x00, TERMINATOR};
+  stream->write(pingCommand, sizeof(pingCommand));
+}
+
+void Ultradrive::dump(int deviceId, int part) {
+  byte dumpCommand[] = {0xF0, 0x00, 0x20, 0x32, (byte)deviceId, 0x0E, 0x50, 0x01, 0x00, (byte)part, TERMINATOR};
+  stream->write(dumpCommand, sizeof(dumpCommand));
+}
+
+void Ultradrive::readCommands() {
+  byte b = stream->read();
+
+  if (b == COMMAND_START) {
+    readingCommand = true;
+    serialRead = 0;
+  }
+
+  if (readingCommand && (serialRead < PART_0_LENGTH)) {
+    serialBuffer[serialRead++] = b;
+  }
+
+  if (b == TERMINATOR) {
+    readingCommand = false;
+    byte vendorHeader[] = {0xF0, 0x00, 0x20, 0x32, 0x00};
+
+    if (!memcmp(serialBuffer, vendorHeader, 5)) {
+      int deviceId = serialBuffer[ID_BYTE];
+      int command = serialBuffer[COMMAND_BYTE];
+      Device* device = &devices[deviceId];
+
+      switch (command) {
+        case SEARCH_RESPONSE: {
+            if (serialRead == SEARCH_RESPONSE_LENGTH) {
+              memcpy(&device->searchResponse, serialBuffer, SEARCH_RESPONSE_LENGTH);
+
+              if (!devices[deviceId].lastPong) {
+                device->isNew = true;
+              }
+            }
+
+            break;
+          }
+        case DUMP_RESPONSE: {
+            if (millis() - lastDirectCommand >= DEBOUNCE_INTEVAL) {
+              int part = serialBuffer[PART_BYTE];
+
+              if (part == 0) {
+                if (serialRead == PART_0_LENGTH) {
+                  memcpy(&device->dump0, serialBuffer, PART_0_LENGTH);
+                  device->dumpStarted = true;
+                }
+              } else if (part == 1) {
+                if (serialRead == PART_1_LENGTH) {
+                  memcpy(&device->dump1, serialBuffer, PART_1_LENGTH);
+                }
+              }
+            }
+
+            break;
+          }
+        case PING_RESPONSE: {
+            if (serialRead == PING_RESPONSE_LENGTH) {
+              memcpy(&device->pingResponse, serialBuffer, PING_RESPONSE_LENGTH);
+              device->lastPong = millis();
+            }
+
+            break;
+          }
+        case DIRECT_COMMAND: {
+            int count = serialBuffer[PARAM_COUNT_BYTE];
+
+            for (int i = 0; i < count; i++) {
+              int offset = (4 * i);
+              int channel = serialBuffer[CHANNEL_BYTE + offset];
+              int param = serialBuffer[PARAM_BYTE + offset];
+              int valueHigh = serialBuffer[VALUE_HI_BYTE + offset];
+              int valueLow = serialBuffer[VALUE_LOW_BYTE + offset];
+
+              if (!channel) {
+                patchBuffer(deviceId, valueLow, valueHigh, setupLocations[param - (param <= 11 ? 2 : 10)]);
+              } else if (channel <= 4) {
+                patchBuffer(deviceId, valueLow, valueHigh, inputLocations[channel - 1][param - 2]);
+              } else if (channel <= 10) {
+                patchBuffer(deviceId, valueLow, valueHigh, outputLocations[channel - 5][param - 2]);
+              }
+            }
+
+            break;
+          }
+        default: {}
+      }
+    }
+  }
+}
+
+void Ultradrive::patchBuffer(int deviceId, int low, int high, DataLocation l) {
+  Device* device = &devices[deviceId];
+
+  if (l.low.part == 0) {
+    device->dump0[l.low.byte] = low;
+  } else if (l.low.part == 1) {
+    device->dump1[l.low.byte] = low;
+  }
+
+  if (l.middle.byte > 0) {
+    if (l.middle.part == 0) {
+      if (high & 1) {
+        device->dump0[l.middle.byte] |= (1u << l.middle.index);
+      } else {
+        device->dump0[l.middle.byte] &= ~(1u << l.middle.index);
+      }
+    } else if (l.middle.part == 1) {
+      if (high & 1) {
+        device->dump1[l.middle.byte] |= (1u << l.middle.index);
+      } else {
+        device->dump1[l.middle.byte] &= ~(1u << l.middle.index);
+      }
+    }
+  }
+
+  if (l.high.byte > 0) {
+    int highByte = high >> 1;
+    if (l.high.part == 0) {
+      device->dump0[l.high.byte] = highByte;
+    } else if (l.high.part == 1) {
+      device->dump1[l.high.byte] = highByte;
+    }
+  }
+}
+
+byte Ultradrive::vendorHeader[5] = {0xF0, 0x00, 0x20, 0x32, 0x00};
+
+DataLocation Ultradrive::setupLocations[22] =  {
   {{0, 117}, { -1, -1, -1}, { -1, -1}},
   {{0, 119}, { -1, -1, -1}, { -1, -1}},
   {{0, 121}, { -1, -1, -1}, { -1, -1}},
@@ -37,7 +250,7 @@ DataLocation setupLocations[22] =  {
   {{0, 142}, {0, 148, 1}, {0, 143}},
   {{0, 144}, {0, 148, 3}, {0, 145}}
 };
-DataLocation inputLocations[4][62] =  {
+DataLocation Ultradrive::inputLocations[4][62] =  {
   {
     {{0, 146}, {0, 148, 5}, {0, 147}},
     {{0, 149}, { -1, -1, -1}, { -1, -1}},
@@ -292,7 +505,7 @@ DataLocation inputLocations[4][62] =  {
     {{0, 711}, { -1, -1, -1}, { -1, -1}}
   }
 };
-DataLocation outputLocations[6][74] =  {
+DataLocation Ultradrive::outputLocations[6][74] =  {
   {
     {{0, 713}, {0, 716, 4}, {0, 714}},
     {{0, 715}, { -1, -1, -1}, { -1, -1}},
@@ -745,4 +958,3 @@ DataLocation outputLocations[6][74] =  {
     {{1, 726}, {1, 732, 1}, {1, 727}}
   }
 };
-
