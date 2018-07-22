@@ -89,7 +89,7 @@ class Ultradrive {
     void setTransmitMode(int deviceId);
     void ping(int deviceId);
     void dump(int deviceId, int part);
-    void readCommands();
+    void readCommands(unsigned long now);
     void patchBuffer(int deviceId, int low, int high, DataLocation l);
 
     struct Device {

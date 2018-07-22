@@ -100,7 +100,7 @@ void updateConnection(Request &req, Response &res) {
   }
 
   MDNS.begin(MDNS_NAME);
-  
+
   return getConnection(req, res);
 }
 

@@ -5,40 +5,41 @@ Ultradrive::Ultradrive(Stream *stream) :
 }
 
 void Ultradrive::processIncoming(unsigned long now) {
+  while (stream->available() > 0) {
+    readCommands(now);
+  }
+
   if (isFirstRun) {
     isFirstRun = false;
+    lastSearch = now;
     return search();
   }
 
-  if (stream->available() > 0) {
-    return readCommands();
-  } else {
-    for (int i = 0; i < MAX_DEVICES; i++) {
-      Device* device = &devices[i];
-      if (device->isNew) {
-        device->isNew = false;
-        device->lastPing = now;
-        setTransmitMode(i);
-        return ping(i);
-      } else if (device->lastPong != 0 && now - device->lastPong < TIMEOUT_TIME) {
-        if (device->dumpStarted) {
-          device->dumpStarted = false;
-          return dump(i, 1);
-        } else if (now - device->lastPing >= PING_INTEVAL) {
-          device->lastPing = now;
-          return ping(i);
-        } else if (now - device->lastResync >= RESYNC_INTEVAL) {
-          device->lastResync = now;
-          return dump(i, 0);
-        }
-      } else if (device->lastPong != 0) {
-        device->lastPong = 0;
-      }
-    }
+  if (now - lastSearch >= SEARCH_INTEVAL) {
+    lastSearch = now;
+    return search();
+  }
 
-    if (now - lastSearch >= SEARCH_INTEVAL) {
-      lastSearch = now;
-      return search();
+  for (int i = 0; i < MAX_DEVICES; i++) {
+    Device* device = &devices[i];
+    if (device->isNew) {
+      device->isNew = false;
+      device->lastPing = now;
+      setTransmitMode(i);
+      return ping(i);
+    } else if (device->lastPong != 0 && now - device->lastPong < TIMEOUT_TIME) {
+      if (device->dumpStarted) {
+        device->dumpStarted = false;
+        return dump(i, 1);
+      } else if (now - device->lastPing >= PING_INTEVAL) {
+        device->lastPing = now;
+        return ping(i);
+      } else if (now - device->lastResync >= RESYNC_INTEVAL) {
+        device->lastResync = now;
+        return dump(i, 0);
+      }
+    } else if (device->lastPong != 0) {
+      device->lastPong = 0;
     }
   }
 }
@@ -110,7 +111,7 @@ void Ultradrive::dump(int deviceId, int part) {
   stream->write(dumpCommand, sizeof(dumpCommand));
 }
 
-void Ultradrive::readCommands() {
+void Ultradrive::readCommands(unsigned long now) {
   byte b = stream->read();
 
   if (b == COMMAND_START) {
@@ -144,18 +145,22 @@ void Ultradrive::readCommands() {
             break;
           }
         case DUMP_RESPONSE: {
-            if (millis() - lastDirectCommand >= DEBOUNCE_INTEVAL) {
-              int part = serialBuffer[PART_BYTE];
+            if (now - lastDirectCommand < DEBOUNCE_INTEVAL) {
+              serialRead = 0;
+              readingCommand = false;
+              break;
+            }
 
-              if (part == 0) {
-                if (serialRead == PART_0_LENGTH) {
-                  memcpy(&device->dump0, serialBuffer, PART_0_LENGTH);
-                  device->dumpStarted = true;
-                }
-              } else if (part == 1) {
-                if (serialRead == PART_1_LENGTH) {
-                  memcpy(&device->dump1, serialBuffer, PART_1_LENGTH);
-                }
+            int part = serialBuffer[PART_BYTE];
+
+            if (part == 0) {
+              if (serialRead == PART_0_LENGTH) {
+                memcpy(&device->dump0, serialBuffer, PART_0_LENGTH);
+                device->dumpStarted = true;
+              }
+            } else if (part == 1) {
+              if (serialRead == PART_1_LENGTH) {
+                memcpy(&device->dump1, serialBuffer, PART_1_LENGTH);
               }
             }
 
