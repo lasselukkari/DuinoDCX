@@ -38,7 +38,7 @@ class Manager extends EventEmitter {
       })
       .catch(err => {
         console.log(err);
-        setTimeout(() => this.pollSelectedDevice(), 500);
+        setTimeout(() => this.pollSelectedDevice(), 1000);
       });
   }
 
@@ -77,7 +77,7 @@ class Manager extends EventEmitter {
       if (!--this.bouncing) {
         this.bounce = false;
       }
-    }, 250);
+    }, 1000);
 
     function hexStringToByte(str) {
       const a = [];
