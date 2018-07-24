@@ -35,6 +35,7 @@ void Ultradrive::processIncoming(unsigned long now) {
         device->lastPing = now;
         return ping(i);
       } else if (now - device->lastResync >= RESYNC_INTEVAL) {
+        device->invalidateSync = false;
         device->lastResync = now;
         return dump(i, 0);
       }
@@ -67,6 +68,7 @@ void Ultradrive::processOutgoing(Stream* in) {
       int command = serverBuffer[COMMAND_BYTE];
 
       if (command == DIRECT_COMMAND) {
+        devices[deviceId].invalidateSync = true;
         int count = serverBuffer[PARAM_COUNT_BYTE];
 
         for (int i = 0; i < count; i++) {
@@ -145,7 +147,7 @@ void Ultradrive::readCommands(unsigned long now) {
             break;
           }
         case DUMP_RESPONSE: {
-            if (now - lastDirectCommand < DEBOUNCE_INTEVAL) {
+            if (device->invalidateSync == true) {
               serialRead = 0;
               readingCommand = false;
               break;

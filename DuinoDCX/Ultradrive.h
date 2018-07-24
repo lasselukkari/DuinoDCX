@@ -10,19 +10,15 @@
 #endif
 
 #ifndef TIMEOUT_TIME
-#define TIMEOUT_TIME 10000
+#define TIMEOUT_TIME 15000
 #endif
 
 #ifndef SEARCH_INTEVAL
-#define SEARCH_INTEVAL 10000
+#define SEARCH_INTEVAL 5000
 #endif
 
 #ifndef RESYNC_INTEVAL
-#define RESYNC_INTEVAL 10000
-#endif
-
-#ifndef DEBOUNCE_INTEVAL
-#define DEBOUNCE_INTEVAL 1000
+#define RESYNC_INTEVAL 5000
 #endif
 
 #define SEARCH_RESPONSE_LENGTH 26
@@ -94,6 +90,7 @@ class Ultradrive {
 
     struct Device {
       bool isNew;
+      bool invalidateSync;
       bool dumpStarted;
       byte dump0[PART_0_LENGTH];
       byte dump1[PART_1_LENGTH];
@@ -112,7 +109,6 @@ class Ultradrive {
 
     unsigned long lastSearch;
     unsigned long lastReconnect;
-    unsigned long lastDirectCommand;
     
     byte serialBuffer[PART_0_LENGTH];
     byte serverBuffer[PART_0_LENGTH];

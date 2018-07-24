@@ -1,9 +1,7 @@
 #include <esp_wifi.h>
 #include <WiFi.h>
 #include <ESPmDNS.h>
-#include <WiFiUdp.h>
 #include <ArduinoOTA.h>
-#include <DNSServer.h>
 #include "aWOT.h"
 #include "Ultradrive.h"
 #include "StaticFiles.h"
@@ -11,7 +9,7 @@
 #define MAX_DEVICES 16
 #define SOFT_AP_SSID "DuinoDCX"
 #define SOFT_AP_PASSWORD "Ultradrive"
-#define MDNS_NAME "duinodcx"
+#define MDNS_NAME "ultradrive"
 #define OTA_PASSWORD "Ultradrive"
 #define DNS_PORT 53
 #define POST_PARAM_SSID_KEY "ssid"
@@ -23,7 +21,6 @@
 
 WiFiServer httpServer(80);
 HardwareSerial UltradriveSerial(2);
-DNSServer dns;
 Ultradrive deviceManager(&UltradriveSerial);
 WebApp app;
 Router apiRouter("/api");
@@ -99,8 +96,6 @@ void updateConnection(Request &req, Response &res) {
     return res.fail();
   }
 
-  MDNS.begin(MDNS_NAME);
-
   return getConnection(req, res);
 }
 
@@ -149,8 +144,6 @@ void setup() {
   Serial.begin(115200);
   UltradriveSerial.begin(38400);
 
-  MDNS.begin(MDNS_NAME);
-
   WiFi.softAP(SOFT_AP_SSID, SOFT_AP_PASSWORD);
   IPAddress apIP = WiFi.softAPIP();
   Serial.print("AP IP address: ");
@@ -158,8 +151,6 @@ void setup() {
 
   ArduinoOTA.setPassword(OTA_PASSWORD);
   ArduinoOTA.begin();
-
-  dns.start(DNS_PORT, "*", apIP);
 
   httpServer.begin();
 
@@ -173,6 +164,8 @@ void setup() {
 
   ServeStatic(&app);
   checkWifi(RECONNECT_INTERVAL);
+  MDNS.begin(MDNS_NAME);
+  MDNS.addService("http", "tcp", 80);
 }
 
 void loop() {
@@ -181,6 +174,5 @@ void loop() {
   checkWifi(now);
   processWebServer();
   ArduinoOTA.handle();
-  dns.processNextRequest();
 }
 
