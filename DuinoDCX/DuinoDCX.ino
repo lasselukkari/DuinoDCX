@@ -8,10 +8,10 @@
 
 #define AUTH_BUFFER_LENGHT 200
 #define MAX_DEVICES 16
-#define BASIC_AUTH "Basic VWx0cmFkcml2ZTpEQ1gyNDk2" // Ultradrive:DCX2496 in base64
-#define SOFT_AP_SSID "Ultradrive"
-#define SOFT_AP_PASSWORD "DCX2496"
-#define OTA_PASSWORD "DCX2496"
+#define BASIC_AUTH "Basic RENYMjQ5NjpVbHRyYWRyaXZl" // DCX2496:Ultradrive in base64
+#define SOFT_AP_SSID "DCX2496"
+#define SOFT_AP_PASSWORD "Ultradrive"
+#define OTA_PASSWORD "Ultradrive"
 #define MDNS_NAME "ultradrive"
 #define POST_PARAM_SSID_KEY "ssid"
 #define POST_PARAM_PASSWORD_KEY "password"
