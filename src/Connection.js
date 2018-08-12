@@ -18,17 +18,16 @@ class Connection extends Component {
   }
 
   updateConnection() {
-    return fetch('/api/connection')
+    return fetch('/api/connection', {credentials: 'same-origin'})
       .then(handleFetchErrors)
       .then(response => response.json())
       .then(connection => {
-        this.setState(({password, networks}) =>
-          ({selected: connection.current, password, networks, ...connection}));
+        this.setState({selected: connection.current, ...connection});
       });
   }
 
   updateNetworks() {
-    return fetch('/api/networks')
+    return fetch('/api/networks', {credentials: 'same-origin'})
       .then(handleFetchErrors)
       .then(response => response.json())
       .then(networks => {
@@ -36,8 +35,7 @@ class Connection extends Component {
           return this.updateNetworks();
         }
 
-        this.setState(({password, ip, hostname, current, selected}) =>
-          ({password, ip, hostname, current, selected, networks}));
+        this.setState({networks});
       });
   }
 
@@ -59,22 +57,19 @@ class Connection extends Component {
 
   handleNetworkSelect= e => { // eslint-disable-line no-undef
     const selected = e.target.value;
-    this.setState(({password, networks, ip, hostname, current}) =>
-      ({networks, ip, hostname, selected, password, current}));
+    this.setState({selected});
   };
 
   handlePasswordChange= e => { // eslint-disable-line no-undef
     const password = e.target.value;
-    this.setState(({selected, networks, ip, hostname, current}) =>
-      ({networks, ip, hostname, selected, password, current}));
+    this.setState({password});
   };
 
   handleSubmit= e => { // eslint-disable-line no-undef
     e.preventDefault();
-    this.setState(({networks, selected, password, hostname}) =>
-      ({networks, selected, password, ip: null, hostname}));
+    this.setState({ip: null});
 
-    const {selected, password, networks} = this.state;
+    const {selected, password} = this.state;
     const formData = new FormData();
     formData.append('ssid', selected);
     formData.append('password', password);
@@ -82,11 +77,12 @@ class Connection extends Component {
 
     fetch('/api/connection', {
       method: 'PATCH',
-      body: data
+      body: data,
+      credentials: 'same-origin'
     }).then(handleFetchErrors)
       .then(response => response.json())
       .then(connection => {
-        this.setState({networks, ...connection, selected: connection.current, password: ''});
+        this.setState({...connection, selected: connection.current});
         this.pollWifi();
       }).catch(() => {
         toast.error(`Could not connect to network ${selected}`, {

@@ -6,12 +6,13 @@
 #include "Ultradrive.h"
 #include "StaticFiles.h"
 
+#define AUTH_BUFFER_LENGHT 200
 #define MAX_DEVICES 16
-#define SOFT_AP_SSID "DuinoDCX"
-#define SOFT_AP_PASSWORD "Ultradrive"
+#define BASIC_AUTH "Basic VWx0cmFkcml2ZTpEQ1gyNDk2" // Ultradrive:DCX2496 in base64
+#define SOFT_AP_SSID "Ultradrive"
+#define SOFT_AP_PASSWORD "DCX2496"
+#define OTA_PASSWORD "DCX2496"
 #define MDNS_NAME "ultradrive"
-#define OTA_PASSWORD "Ultradrive"
-#define DNS_PORT 53
 #define POST_PARAM_SSID_KEY "ssid"
 #define POST_PARAM_PASSWORD_KEY "password"
 #define SSID_MAX_LENGTH 33
@@ -25,9 +26,20 @@ Ultradrive deviceManager(&UltradriveSerial);
 WebApp app;
 Router apiRouter("/api");
 
+char authBuffer[AUTH_BUFFER_LENGHT];
 char ssidBuffer[SSID_MAX_LENGTH];
 char passwordBuffer[PASSWORD_MAX_LENGHT];
 unsigned long lastReconnect;
+
+void auth(Request &req, Response &res) {
+  char * authHeader = req.header("Authorization");
+
+  if (strcmp(authHeader, BASIC_AUTH) != 0) {
+    res.set("WWW-Authenticate", "Basic realm=\"Ultradrive\"");
+    res.unauthorized();
+    res.end();
+  }
+}
 
 void getNetworks(Request &req, Response &res) {
   int n = WiFi.scanNetworks();
@@ -153,6 +165,9 @@ void setup() {
   ArduinoOTA.begin();
 
   httpServer.begin();
+
+  app.readHeader("Authorization", authBuffer, AUTH_BUFFER_LENGHT);
+  app.use(&auth);
 
   apiRouter.get("/devices", &getDevices);
   apiRouter.get("/devices/:id", &getDevice);
