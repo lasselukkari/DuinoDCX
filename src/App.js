@@ -32,7 +32,6 @@ class App extends Component {
     this.manager.on('update', newDevice => {
       this.updateDevice(newDevice);
     });
-    this.toastId = null;
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -49,7 +48,7 @@ class App extends Component {
   }
 
   handleBlockingChange = () => { // eslint-disable-line no-undef
-    this.setState(({device, page, blocking, showModal}) => ({device, page, showModal, blocking: !blocking}));
+    this.setState(({blocking}) => ({blocking: !blocking}));
   };
 
   handleDeviceUpdate = data => { // eslint-disable-line no-undef
@@ -58,7 +57,7 @@ class App extends Component {
   };
 
   handlePageChange = page => { // eslint-disable-line no-undef
-    this.setState(({blocking, device, showModal}) => ({device, page, blocking, showModal}));
+    this.setState({page});
     window.scrollTo(0, 0);
   };
 
@@ -67,20 +66,15 @@ class App extends Component {
   };
 
   handleModalClose = () => { // eslint-disable-line no-undef
-    this.setState(({blocking, device, page}) => ({blocking, device, page, showModal: false}));
+    this.setState({showModal: false});
   };
 
   handleModalShow = () => { // eslint-disable-line no-undef
-    this.setState(({blocking, device, page}) => ({blocking, device, page, showModal: true}));
+    this.setState({showModal: true});
   };
 
-  updateDevice(newDevice) {
-    this.setState(({blocking, page, showModal}) => ({
-      device: cloneDeep(newDevice),
-      page,
-      blocking,
-      showModal
-    }));
+  updateDevice(device) {
+    this.setState({device: cloneDeep(device)});
   }
 
   displayIfPage(name) {
@@ -191,7 +185,11 @@ class App extends Component {
             <Glyphicon
               style={{color: blocking ? '#62c462' : '#ee5f5b'}}
               glyph={blocking ? 'lock' : 'edit'}
-            /> <span className="hidden-sm">{blocking ? 'Locked' : 'Editing'}</span>
+            />
+            {' '}
+            <span className="hidden-sm">
+              {blocking ? 'Locked' : 'Editing'}
+            </span>
           </NavItem>
         </Nav>
       );

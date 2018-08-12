@@ -16,7 +16,7 @@ class Manager extends EventEmitter {
   }
 
   pollSelectedDevice() {
-    fetch(`/api/devices/${this.selectedDevice}`)
+    fetch(`/api/devices/${this.selectedDevice}`, {credentials: 'same-origin'})
       .then(res => res.arrayBuffer())
       .then(messages => {
         let message = [];
@@ -43,7 +43,7 @@ class Manager extends EventEmitter {
   }
 
   pollDevices() {
-    fetch(`/api/devices`)
+    fetch(`/api/devices`, {credentials: 'same-origin'})
       .then(res => res.arrayBuffer())
       .then(messages => {
         let message = [];
@@ -90,6 +90,7 @@ class Manager extends EventEmitter {
 
     fetch(`/api/commands`, {
       method: 'POST',
+      credentials: 'same-origin',
       headers: {'Content-Type': 'application/binary'},
       body: hexStringToByte(data)
     }).catch(console.log);
