@@ -1,11 +1,11 @@
 #include "Ultradrive.h"
 
-Ultradrive::Ultradrive(Stream *stream) :
-  stream(stream), isFirstRun(true) {
+Ultradrive::Ultradrive(HardwareSerial *serial) :
+  serial(serial), isFirstRun(true) {
 }
 
 void Ultradrive::processIncoming(unsigned long now) {
-  while (stream->available() > 0) {
+  while (serial->available() > 0) {
     readCommands(now);
   }
 
@@ -45,22 +45,22 @@ void Ultradrive::processIncoming(unsigned long now) {
   }
 }
 
-void Ultradrive::writeDevice(Stream* out, int deviceId) {
-  out->write(devices[deviceId].dump0, PART_0_LENGTH);
-  out->write(devices[deviceId].dump1, PART_1_LENGTH);
-  out->write(devices[deviceId].pingResponse, PING_RESPONSE_LENGTH);
+void Ultradrive::writeDevice(Response* res, int deviceId) {
+  res->write(devices[deviceId].dump0, PART_0_LENGTH);
+  res->write(devices[deviceId].dump1, PART_1_LENGTH);
+  res->write(devices[deviceId].pingResponse, PING_RESPONSE_LENGTH);
 }
 
-void Ultradrive::writeDevices(Stream* out) {
+void Ultradrive::writeDevices(Response* res) {
   for (int i = 0; i < MAX_DEVICES; i++) {
     if (devices[i].lastPong) {
-      out->write(devices[i].searchResponse, SEARCH_RESPONSE_LENGTH);
+      res->write(devices[i].searchResponse, SEARCH_RESPONSE_LENGTH);
     }
   }
 }
 
-void Ultradrive::processOutgoing(Stream* in) {
-  if (int bytesRead = in->readBytesUntil(TERMINATOR, serverBuffer, PART_0_LENGTH)) {
+void Ultradrive::processOutgoing(Request* req) {
+  if (int bytesRead = req->readBytesUntil(TERMINATOR, serverBuffer, PART_0_LENGTH)) {
     serverBuffer[bytesRead++] = TERMINATOR;
 
     if (!memcmp(serverBuffer, vendorHeader, 5)) {
@@ -87,7 +87,7 @@ void Ultradrive::processOutgoing(Stream* in) {
           }
         }
 
-        stream->write(serverBuffer, bytesRead);
+        serial->write(serverBuffer, bytesRead);
       }
     }
   }
@@ -95,26 +95,26 @@ void Ultradrive::processOutgoing(Stream* in) {
 
 void Ultradrive::search() {
   byte searchCommand[] = {0xF0, 0x00, 0x20, 0x32, 0x20, 0x0E, 0x40, TERMINATOR};
-  stream->write(searchCommand, sizeof(searchCommand));
+  serial->write(searchCommand, sizeof(searchCommand));
 }
 
 void Ultradrive::setTransmitMode(int deviceId) {
   byte transmitModeCommand[] = {0xF0, 0x00, 0x20, 0x32, (byte)deviceId, 0x0E, 0x3F, 0x0C, 0x00, TERMINATOR};
-  stream->write(transmitModeCommand, sizeof(transmitModeCommand));
+  serial->write(transmitModeCommand, sizeof(transmitModeCommand));
 }
 
 void Ultradrive::ping( int deviceId) {
   byte pingCommand[] = {0xF0, 0x00, 0x20, 0x32, (byte)deviceId, 0x0E, 0x44, 0x00, 0x00, TERMINATOR};
-  stream->write(pingCommand, sizeof(pingCommand));
+  serial->write(pingCommand, sizeof(pingCommand));
 }
 
 void Ultradrive::dump(int deviceId, int part) {
   byte dumpCommand[] = {0xF0, 0x00, 0x20, 0x32, (byte)deviceId, 0x0E, 0x50, 0x01, 0x00, (byte)part, TERMINATOR};
-  stream->write(dumpCommand, sizeof(dumpCommand));
+  serial->write(dumpCommand, sizeof(dumpCommand));
 }
 
 void Ultradrive::readCommands(unsigned long now) {
-  byte b = stream->read();
+  byte b = serial->read();
 
   if (b == COMMAND_START) {
     readingCommand = true;

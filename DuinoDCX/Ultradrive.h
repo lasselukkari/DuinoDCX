@@ -46,6 +46,7 @@
 
 #include <Arduino.h>
 #include <Stream.h>
+#include "aWOT.h"
 
 
 struct HighByte {
@@ -74,11 +75,11 @@ struct DataLocation {
 class Ultradrive {
 
   public:
-    Ultradrive(Stream *stream);
+    Ultradrive(HardwareSerial *serial);
     void processIncoming(unsigned long now);
-    void processOutgoing(Stream* stream);
-    void writeDevice(Stream* stream, int deviceId);
-    void writeDevices(Stream* stream);
+    void processOutgoing(Request* req);
+    void writeDevice(Response* res, int deviceId);
+    void writeDevices(Response* res);
 
   private:
     void search();
@@ -101,7 +102,7 @@ class Ultradrive {
       unsigned long lastResync;
     } devices[MAX_DEVICES];
 
-    Stream *stream;
+    HardwareSerial *serial;
 
     bool isFirstRun;
     bool readingCommand;
@@ -109,14 +110,14 @@ class Ultradrive {
 
     unsigned long lastSearch;
     unsigned long lastReconnect;
-    
+
     byte serialBuffer[PART_0_LENGTH];
     byte serverBuffer[PART_0_LENGTH];
 
     static DataLocation setupLocations[22];
     static DataLocation inputLocations[4][62];
     static DataLocation outputLocations[6][74];
-    
+
     static byte vendorHeader[5];
 };
 
