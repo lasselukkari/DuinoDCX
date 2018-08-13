@@ -22,8 +22,6 @@ http://duinodcx.herokuapp.com/
 ## Installation
 Install the [Arduino IDE](https://www.arduino.cc/en/Main/Software) and the support for the [ESP32](https://github.com/espressif/arduino-esp32#installation-instructions) boards.
 
-__Important:__ There is currently a bug in ESP32 core that causes the serial port to malfunction after software reset. Apply the changes described [here](https://github.com/espressif/arduino-esp32/issues/662#issuecomment-351399862) until the bug is fixed upstream.
-
 ### Required parts
 ![DuinoDCX Hardware](https://i.imgur.com/zYhEit9.jpg)
 
@@ -39,16 +37,16 @@ __Important:__ There is currently a bug in ESP32 core that causes the serial por
 * RS232 `GROUND` to ESP32 `GROUND`
 
 ### Uploading
-Open the  `DuinoDCX/DuinoDCX.ino` Arduino sketch file using Arduino IDE and upload the project to the microcontroller.
+Open the  `DuinoDCX/DuinoDCX.ino` Arduino sketch file using Arduino IDE and upload the project to the microcontroller. Over the air uploads are supported.
 
 ### Connecting to the device
-By default the device creates a wifi network with SSID `DuinoDCX`. The default username and password are `DuinoDCX` and `Ultradrive`. 
+By default the device creates a wifi network with SSID `DCX2496`. The default username and password are `DCX2496` and `Ultradrive`.
 
 Connect your computer or mobile device to the network and point the browser to address `http://192.168.4.1`.  The UI will take a few seconds to load.
 
 If you want to make the UI available in your local network open the wifi config panel. Fill in your wifi credential and submit the form. Wifi credentials are persisted to the device memory.
 
-If your client device supports MDNS the controller will be also available at `http://ultradrive.local`.
+If your client device supports MDNS the controller will be also available at `http://ultradrive.local`. You may need to add `http://` to the url when using it the first time.
   - For Linux, install Avahi (http://avahi.org/).
   - For Windows, install Bonjour (http://www.apple.com/support/bonjour/).
   - For Mac OSX and iOS support is built in through Bonjour already.
