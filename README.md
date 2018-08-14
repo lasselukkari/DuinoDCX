@@ -61,7 +61,7 @@ Open the `DuinoDCX/DuinoDCX.ino` Arduino sketch file using Arduino IDE and uploa
 Precompiled binaires can be uploded using the ESP32 OTAWebUpdater example or using the built in functionality after the initial installation.
 
 ## Security Credentials
-All credentials are currently hardcoded. To change them modify the constants in the beginning of the [main sketch file] (https://github.com/lasselukkari/DuinoDCX/blob/master/DuinoDCX/DuinoDCX.ino). 
+All credentials are currently hardcoded. To change them modify the constants in the beginning of the [main sketch file](https://github.com/lasselukkari/DuinoDCX/blob/master/DuinoDCX/DuinoDCX.ino). 
 
 ## Acknowledgements
 Thanks to Ilkka Huhtakallio for contributing the transfer function code. Without that this project would not have all those pretty graphs.
