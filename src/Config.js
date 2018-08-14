@@ -4,6 +4,8 @@ import {Row, Form, FormControl, FormGroup, ControlLabel, Button, Col} from 'reac
 import {toast} from 'react-toastify';
 import Spinner from 'react-spinkit';
 
+import Upload from './Upload';
+
 function handleFetchErrors(response) {
   if (!response.ok) {
     throw new Error(response.statusText);
@@ -55,17 +57,17 @@ class Connection extends Component {
       hostname !== nextState.hostname;
   }
 
-  handleNetworkSelect= e => { // eslint-disable-line no-undef
+  handleNetworkSelect = e => { // eslint-disable-line no-undef
     const selected = e.target.value;
     this.setState({selected});
   };
 
-  handlePasswordChange= e => { // eslint-disable-line no-undef
+  handlePasswordChange = e => { // eslint-disable-line no-undef
     const password = e.target.value;
     this.setState({password});
   };
 
-  handleSubmit= e => { // eslint-disable-line no-undef
+  handleSubmit = e => { // eslint-disable-line no-undef
     e.preventDefault();
     this.setState({ip: null});
 
@@ -125,7 +127,12 @@ class Connection extends Component {
               Password
             </Col>
             <Col md={8}>
-              <FormControl value={password} onChange={this.handlePasswordChange} type="password" placeholder="Password"/>
+              <FormControl
+                value={password}
+                onChange={this.handlePasswordChange}
+                type="password"
+                placeholder="Password"
+              />
             </Col>
           </FormGroup>
           <FormGroup>
@@ -181,20 +188,27 @@ class Connection extends Component {
 
   render() {
     return (
-      <Row>
-        <Col sm={6}>
-          <h4>
-Status
-          </h4>
-          {this.connectionForm()}
-        </Col>
-        <Col sm={6}>
-          <h4>
-Networks
-          </h4>
-          {this.connectForm()}
-        </Col>
-      </Row>
+      <div>
+        <Row>
+          <Col sm={6}>
+            <h4>
+              Wifi Status
+            </h4>
+            {this.connectionForm()}
+          </Col>
+          <Col sm={6}>
+            <h4>
+              Networks
+            </h4>
+            {this.connectForm()}
+          </Col>
+        </Row>
+        <hr/>
+        <h4>
+          Update firmware
+        </h4>
+        <Upload/>
+      </div>
     );
   }
 }

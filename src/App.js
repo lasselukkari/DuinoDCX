@@ -19,7 +19,7 @@ import Inputs from './Inputs';
 import Outputs from './Outputs';
 import Setup from './Setup';
 import ChannelLevels from './ChannelLevels';
-import Connection from './Connection';
+import Config from './Config';
 
 import 'bootswatch/slate/bootstrap.css'; // eslint-disable-line import/no-unassigned-import
 import './App.css'; // eslint-disable-line import/no-unassigned-import
@@ -86,10 +86,10 @@ class App extends Component {
     const {blocking, device, page} = this.state;
 
     if (!device.ready) {
-      if (page === 'connection') {
+      if (page === 'config') {
         return (
           <div className="container">
-            <Connection/>
+            <Config/>
           </div>
         );
       }
@@ -161,12 +161,12 @@ class App extends Component {
     return null;
   }
 
-  connectionMenu() {
+  configMenu() {
     const {showModal} = this.state;
     return (
-      <Nav activeKey={showModal ? 'connection' : ''} onSelect={this.handleModalShow}>
-        <NavItem eventKey="connection">
-          Wifi
+      <Nav pullRight activeKey={showModal ? 'config' : ''} onSelect={this.handleModalShow}>
+        <NavItem eventKey="config">
+          <Glyphicon glyph="cog"/>
         </NavItem>
       </Nav>
     );
@@ -178,7 +178,6 @@ class App extends Component {
       return (
         <Nav
           activeKey={blocking ? 'blocking' : 'unlocked'}
-          pullRight
           onSelect={this.handleBlockingChange}
         >
           <NavItem eventKey="unlocked">
@@ -186,10 +185,7 @@ class App extends Component {
               style={{color: blocking ? '#62c462' : '#ee5f5b'}}
               glyph={blocking ? 'lock' : 'edit'}
             />
-            {' '}
-            <span className="hidden-sm">
-              {blocking ? 'Locked' : 'Editing'}
-            </span>
+
           </NavItem>
         </Nav>
       );
@@ -238,10 +234,11 @@ class App extends Component {
           <Navbar.Toggle/>
         </Navbar.Header>
         <Navbar.Collapse>
-          {this.deviceMenu()}
-          {this.connectionMenu()}
-          {this.deviceSelect(this.manager.devices)}
           {this.lockButton()}
+          {this.deviceMenu()}
+          {this.configMenu()}
+          {this.deviceSelect(this.manager.devices)}
+
         </Navbar.Collapse>
       </Navbar>
     );
@@ -253,11 +250,11 @@ class App extends Component {
       <Modal show={showModal} onHide={this.handleModalClose}>
         <Modal.Header closeButton>
           <Modal.Title>
-          Wifi Connection
+          Config
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Connection/>
+          <Config/>
         </Modal.Body>
         <Modal.Footer>
           <Button onClick={this.handleModalClose}>

@@ -29,6 +29,7 @@
     "react-block-ui": "^1.1.1",
     "react-bootstrap": "0.31.3",
     "react-dom": "^15.6.2",
+    "react-dropzone": "^4.3.0",
     "react-spinkit": "^3.0.0",
     "react-toastify": "^3.2.2",
     "react-window-size": "^1.0.1",
@@ -82,5 +83,5 @@
       "service-worker.js"
     ]
   },
-  "proxy": "http://192.168.1.102"
+  "proxy": "http://192.168.1.72"
 }
