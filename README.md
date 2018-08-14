@@ -36,9 +36,6 @@ Install the [Arduino IDE](https://www.arduino.cc/en/Main/Software) and the suppo
 * RS232 `VCC` to ESP32 `3V3`
 * RS232 `GROUND` to ESP32 `GROUND`
 
-### Uploading
-Open the  `DuinoDCX/DuinoDCX.ino` Arduino sketch file using Arduino IDE and upload the project to the microcontroller. Over the air uploads are supported.
-
 ### Connecting to the device
 By default the device creates a wifi network with SSID `DCX2496`. The default username and password are `DCX2496` and `Ultradrive`.
 
@@ -52,15 +49,16 @@ If your client device supports MDNS the controller will be also available at `ht
   - For Mac OSX and iOS support is built in through Bonjour already.
   - For Android, you are out of luck.
 
-## Development
-This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
-
-### Building the static payloads for the mircocontroller
+## Building and uploading
 Run `npm run build` and then `npm run dist`
 
 The dist command will read the minified files from the `build` dir and then rewrites the gzipped hex payloads for the static files to `DuinoDCX/StaticFiles.h` file.
 
-### Security Credentials
+Open the `DuinoDCX/DuinoDCX.ino` Arduino sketch file using Arduino IDE and upload the project to the microcontroller.
+
+Precompiled binaires can be uploded using the ESP32 OTAWebUpdater example or using the built in functionality after the initial installation.
+
+## Security Credentials
 All credentials are currently hardcoded. To change them modify the constants in the beginning of the [main sketch file] (https://github.com/lasselukkari/DuinoDCX/blob/master/DuinoDCX/DuinoDCX.ino). 
 
 ## Acknowledgements
