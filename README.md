@@ -60,6 +60,9 @@ Run `npm run build` and then `npm run dist`
 
 The dist command will read the minified files from the `build` dir and then rewrites the gzipped hex payloads for the static files to `DuinoDCX/StaticFiles.h` file.
 
+### Security Credentials
+All credentials are currently hardcoded. To change them modify the constants in the beginning of the [main sketch file] (https://github.com/lasselukkari/DuinoDCX/blob/master/DuinoDCX/DuinoDCX.ino). 
+
 ## Acknowledgements
 Thanks to Ilkka Huhtakallio for contributing the transfer function code. Without that this project would not have all those pretty graphs.
 
