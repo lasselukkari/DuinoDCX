@@ -42,7 +42,7 @@ Open the  `DuinoDCX/DuinoDCX.ino` Arduino sketch file using Arduino IDE and uplo
 ### Connecting to the device
 By default the device creates a wifi network with SSID `DCX2496`. The default username and password are `DCX2496` and `Ultradrive`.
 
-Connect your computer or mobile device to the network and point the browser to address `http://192.168.4.1`.  The UI will take a few seconds to load.
+Connect your computer or mobile device to the network and point the browser to address `http://192.168.4.1`. The default username and password are `DCX2496` and `Ultradrive`. The UI will take a few seconds to load.
 
 If you want to make the UI available in your local network open the wifi config panel. Fill in your wifi credential and submit the form. Wifi credentials are persisted to the device memory.
 
