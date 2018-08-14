@@ -6,13 +6,14 @@
 #include "Ultradrive.h"
 #include "StaticFiles.h"
 
-#define AUTH_BUFFER_LENGHT 200
-#define MAX_DEVICES 16
 #define BASIC_AUTH "Basic RENYMjQ5NjpVbHRyYWRyaXZl" // DCX2496:Ultradrive in base64
 #define SOFT_AP_SSID "DCX2496"
 #define SOFT_AP_PASSWORD "Ultradrive"
 #define OTA_PASSWORD "Ultradrive"
 #define MDNS_NAME "ultradrive"
+
+#define AUTH_BUFFER_LENGHT 200
+#define MAX_DEVICES 16
 #define POST_PARAM_SSID_KEY "ssid"
 #define POST_PARAM_PASSWORD_KEY "password"
 #define SSID_MAX_LENGTH 33
