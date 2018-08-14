@@ -34,28 +34,29 @@ class Upload extends PureComponent {
       case 'active':
         return (<Spinner className="text-center" fadeIn="none" name="line-scale" color="#3498DB"/>);
       case 'fail':
-        return 'Uploading failed.';
+        return 'Uploading failed. Check the file and try again.';
       case 'success':
         return 'Uploading succeeded. Hard refresh the page to empty cached files.';
       default:
-        return 'Drag and drop file or click to open file dialog.';
+        return 'Drag and drop a file or click to open the file dialog.';
     }
   }
 
   render() {
     return (
       <Dropzone
-        style={{width: '100%', height: '180px', padding: '10px', borderWidth: 2,
+        style={{
+          width: '100%',
+          height: '180px',
+          padding: '10px',
+          borderWidth: 2,
           borderColor: '#666',
           borderStyle: 'dashed',
           borderRadius: 5}}
-        rejectStyle={{borderStyle: 'solid',
-          borderColor: '#c66',
-          backgroundColor: '#eee'}}
         activeStyle={{
           borderStyle: 'solid',
-          borderColor: '#6c6',
-          backgroundColor: '#eee'
+          borderColor: '#62C462',
+          backgroundColor: '#3e444c'
         }}
         onDrop={this.handleDrop}
         multiple={false}
