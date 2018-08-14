@@ -3,7 +3,9 @@ DuinoDCX
 ========
 Standalone WIFI remote controller for the [Behringer Ultradrive Pro (DCX2496)](http://www.musictri.be/p/P0B6H)
 
-![DuinoDCX Screen Shot](https://i.imgur.com/dEzK3mx.png)
+<img src="https://i.imgur.com/OymCbZR.png" width="480">
+<img src="https://i.imgur.com/oTpUWA9.png" width="480">
+<img src="https://i.imgur.com/oakrMMH.png" width="480">
 
 ## Disclaimer
 This is not a production ready application. I take no responsibility if you destroy your sound system using this.
