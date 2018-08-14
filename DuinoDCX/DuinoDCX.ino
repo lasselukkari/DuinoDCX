@@ -1,7 +1,7 @@
 #include <esp_wifi.h>
 #include <WiFi.h>
 #include <ESPmDNS.h>
-#include <ArduinoOTA.h>
+#include <Update.h>
 #include "aWOT.h"
 #include "Ultradrive.h"
 #include "StaticFiles.h"
@@ -31,6 +31,30 @@ char authBuffer[AUTH_BUFFER_LENGHT];
 char ssidBuffer[SSID_MAX_LENGTH];
 char passwordBuffer[PASSWORD_MAX_LENGHT];
 unsigned long lastReconnect;
+bool shouldRestart = false;
+
+void update(Request &req, Response &res) {
+  int contentLength = req.contentLeft();
+  
+  if (!Update.begin(contentLength)) {
+    return res.fail();
+  }
+
+  if (Update.writeStream(req) != contentLength) {
+    return res.fail();
+  }
+
+  if (!Update.end()) {
+    return res.fail();
+  }
+
+  if (!Update.isFinished()) {
+    return res.fail();
+  }
+
+  shouldRestart = true;
+  res.noContent();
+}
 
 void auth(Request &req, Response &res) {
   char * authHeader = req.header("Authorization");
@@ -153,17 +177,17 @@ void processWebServer() {
   }
 }
 
+void restartIfNeeded() {
+  if (shouldRestart) {
+    delay(5000);
+    ESP.restart();
+  }
+}
+
 void setup() {
-  Serial.begin(115200);
   UltradriveSerial.begin(38400);
 
   WiFi.softAP(SOFT_AP_SSID, SOFT_AP_PASSWORD);
-  IPAddress apIP = WiFi.softAPIP();
-  Serial.print("AP IP address: ");
-  Serial.println(apIP);
-
-  ArduinoOTA.setPassword(OTA_PASSWORD);
-  ArduinoOTA.begin();
 
   httpServer.begin();
 
@@ -176,6 +200,7 @@ void setup() {
   apiRouter.get("/connection", &getConnection);
   apiRouter.patch("/connection", &updateConnection);
   apiRouter.get("/networks", &getNetworks);
+  apiRouter.post("/update", &update);
   app.use(&apiRouter);
 
   ServeStatic(&app);
@@ -189,6 +214,6 @@ void loop() {
   deviceManager.processIncoming(now);
   checkWifi(now);
   processWebServer();
-  ArduinoOTA.handle();
+  restartIfNeeded();
 }
 
