@@ -8,6 +8,8 @@
 
 # production
 /build
+/DuinoDCX/StaticFiles.h
+/DuinoDCX/DuinoDCX.ino.esp32.bin
 
 # misc
 .DS_Store
