@@ -33,7 +33,8 @@
     "react-spinkit": "^3.0.0",
     "react-toastify": "^3.2.2",
     "react-window-size": "^1.0.1",
-    "recharts": "^1.0.0-alpha.6"
+    "recharts": "^1.0.0-alpha.6",
+    "superagent": "^3.8.3"
   },
   "scripts": {
     "start": "react-scripts start",
