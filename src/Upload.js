@@ -1,7 +1,7 @@
 import React, {PureComponent} from 'react';
 import Dropzone from 'react-dropzone';
-
-import Spinner from 'react-spinkit';
+import Request from 'superagent';
+import {ProgressBar} from 'react-bootstrap';
 
 class Upload extends PureComponent {
   constructor() {
@@ -12,27 +12,26 @@ class Upload extends PureComponent {
   handleDrop = acceptedFiles => { // eslint-disable-line no-undef
     this.setState({uploading: 'active'});
 
-    fetch('/api/update', {
-      method: 'POST',
-      body: acceptedFiles[0],
-      credentials: 'same-origin'
-    }).then(response => {
-      if (!response.ok) {
-        throw new Error(response.statusText);
-      }
+    Request.post('/api/update')
+      .send(acceptedFiles[0])
+      .on('progress', ({percent}) => this.setState({percent}))
+      .end(err => {
+        if (err) {
+          this.setState({uploading: 'fail'});
+        } else {
+          this.setState({uploading: 'success'});
+        }
 
-      this.setState({uploading: 'success'});
-    }).catch(() => {
-      this.setState({uploading: 'fail'});
-    });
+        this.setState({percent: 0});
+      });
   };
 
   statusMessage() {
-    const {uploading} = this.state;
+    const {uploading, percent} = this.state;
 
     switch (uploading) {
       case 'active':
-        return (<Spinner className="text-center" fadeIn="none" name="line-scale" color="#3498DB"/>);
+        return (<ProgressBar active bsStyle="info" now={percent} label={`${percent ? percent.toFixed(2) : 0.00}%`}/>);
       case 'fail':
         return 'Uploading failed. Check the file and try again.';
       case 'success':
@@ -47,7 +46,7 @@ class Upload extends PureComponent {
       <Dropzone
         style={{
           width: '100%',
-          height: '180px',
+          height: '45px',
           padding: '10px',
           borderWidth: 2,
           borderColor: '#666',
