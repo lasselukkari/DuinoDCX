@@ -1,10 +1,16 @@
 import React, {Component} from 'react';
 import isEqual from 'lodash.isequal';
-import {Row, Form, FormControl, FormGroup, ControlLabel, Button, Col} from 'react-bootstrap';
+import {
+  Row,
+  Form,
+  FormControl,
+  FormGroup,
+  ControlLabel,
+  Button,
+  Col
+} from 'react-bootstrap';
 import {toast} from 'react-toastify';
 import Spinner from 'react-spinkit';
-
-import Upload from './Upload';
 
 function handleFetchErrors(response) {
   if (!response.ok) {
@@ -50,24 +56,26 @@ class Connection extends Component {
   shouldComponentUpdate(nextProps, nextState) {
     const {networks, selected, password, ip, hostname} = this.state;
 
-    return !isEqual(networks, nextState.networks) ||
+    return (
+      !isEqual(networks, nextState.networks) ||
       selected !== nextState.selected ||
       password !== nextState.password ||
       ip !== nextState.ip ||
-      hostname !== nextState.hostname;
+      hostname !== nextState.hostname
+    );
   }
 
-  handleNetworkSelect = e => { // eslint-disable-line no-undef
+  handleNetworkSelect = e => {
     const selected = e.target.value;
     this.setState({selected});
   };
 
-  handlePasswordChange = e => { // eslint-disable-line no-undef
+  handlePasswordChange = e => {
     const password = e.target.value;
     this.setState({password});
   };
 
-  handleSubmit = e => { // eslint-disable-line no-undef
+  handleSubmit = e => {
     e.preventDefault();
     this.setState({ip: null});
 
@@ -81,12 +89,14 @@ class Connection extends Component {
       method: 'PATCH',
       body: data,
       credentials: 'same-origin'
-    }).then(handleFetchErrors)
+    })
+      .then(handleFetchErrors)
       .then(response => response.json())
       .then(connection => {
         this.setState({...connection, selected: connection.current});
         this.pollWifi();
-      }).catch(() => {
+      })
+      .catch(() => {
         toast.error(`Could not connect to network ${selected}`, {
           position: toast.POSITION.BOTTOM_LEFT
         });
@@ -94,7 +104,14 @@ class Connection extends Component {
   };
 
   loadingSpinner() {
-    return (<Spinner className="text-center" fadeIn="none" name="line-scale" color="#3498DB"/>);
+    return (
+      <Spinner
+        className="text-center"
+        fadeIn="none"
+        name="line-scale"
+        color="#3498DB"
+      />
+    );
   }
 
   connectForm() {
@@ -102,7 +119,7 @@ class Connection extends Component {
 
     if (networks.length > 0) {
       return (
-        <Form onSubmit={this.handleSubmit} method="POST" horizontal>
+        <Form horizontal method="POST" onSubmit={this.handleSubmit}>
           <FormGroup>
             <Col componentClass={ControlLabel} md={4}>
               Network
@@ -110,8 +127,8 @@ class Connection extends Component {
             <Col md={8}>
               <FormControl
                 componentClass="select"
-                onChange={this.handleNetworkSelect}
                 value={selected}
+                onChange={this.handleNetworkSelect}
               >
                 {networks.sort().map(enumeral => (
                   <option key={enumeral}>
@@ -120,7 +137,6 @@ class Connection extends Component {
                 ))}
               </FormControl>
             </Col>
-
           </FormGroup>
           <FormGroup>
             <Col componentClass={ControlLabel} md={4}>
@@ -129,16 +145,16 @@ class Connection extends Component {
             <Col md={8}>
               <FormControl
                 value={password}
-                onChange={this.handlePasswordChange}
                 type="password"
                 placeholder="Password"
+                onChange={this.handlePasswordChange}
               />
             </Col>
           </FormGroup>
           <FormGroup>
             <Col mdOffset={4} md={8}>
               <Button type="submit">
-                Connect
+Connect
               </Button>
             </Col>
           </FormGroup>
@@ -160,7 +176,7 @@ class Connection extends Component {
               Network
             </Col>
             <Col md={8}>
-              <FormControl value={current} disabled/>
+              <FormControl disabled value={current}/>
             </Col>
           </FormGroup>
           <FormGroup>
@@ -168,7 +184,7 @@ class Connection extends Component {
               IP
             </Col>
             <Col md={8}>
-              <FormControl value={ip} disabled/>
+              <FormControl disabled value={ip}/>
             </Col>
           </FormGroup>
           <FormGroup>
@@ -176,7 +192,7 @@ class Connection extends Component {
               Hostname
             </Col>
             <Col md={8}>
-              <FormControl value={hostname} disabled/>
+              <FormControl disabled value={hostname}/>
             </Col>
           </FormGroup>
         </Form>
@@ -188,27 +204,20 @@ class Connection extends Component {
 
   render() {
     return (
-      <div>
-        <Row>
-          <Col sm={6}>
-            <h4>
-              Wifi Status
-            </h4>
-            {this.connectionForm()}
-          </Col>
-          <Col sm={6}>
-            <h4>
-              Networks
-            </h4>
-            {this.connectForm()}
-          </Col>
-        </Row>
-        <hr/>
-        <h4>
-          Update firmware
-        </h4>
-        <Upload/>
-      </div>
+      <Row>
+        <Col sm={6}>
+          <h4>
+Wifi Status
+          </h4>
+          {this.connectionForm()}
+        </Col>
+        <Col sm={6}>
+          <h4>
+Networks
+          </h4>
+          {this.connectForm()}
+        </Col>
+      </Row>
     );
   }
 }
