@@ -8,8 +8,7 @@ import Gains from './Gains';
 import './ChannelLevels.css'; // eslint-disable-line import/no-unassigned-import
 
 class MuteButton extends PureComponent {
-
-  handleClick = () => { // eslint-disable-line no-undef
+  handleClick = () => {
     const {channelId, isMuted, onChange, isOutput} = this.props;
     onChange({
       param: 'mute',
@@ -35,15 +34,14 @@ class MuteButton extends PureComponent {
         style={muteStyle}
         onClick={this.handleClick}
       >
-        <Glyphicon glyph={isMuted ? 'volume-off' : 'volume-up'}/>
+        <Glyphicon glyph={isMuted ? 'volume-off' : 'volume-up'} />
       </Button>
-
     );
   }
 }
 
 class ChannelLevel extends PureComponent {
-  handleClick = () => { // eslint-disable-line no-undef
+  handleClick = () => {
     const {channelId, isMuted, isOutput, onChange} = this.props;
     onChange({
       param: 'mute',
@@ -116,18 +114,18 @@ class ChannelControls extends PureComponent {
         <ChannelLevel
           key={'level-' + channelId}
           channelId={channelId}
-          onChange={onChange}
           isMuted={isMuted}
           isOutput={isOutput}
           limited={limited}
           level={level}
+          onChange={onChange}
         />
         <MuteButton
           key={'mute-' + channelId}
           channelId={channelId}
-          onChange={onChange}
           isMuted={isMuted}
           isOutput={isOutput}
+          onChange={onChange}
         />
       </div>
     );
@@ -138,89 +136,98 @@ class ChannelLevels extends Component {
   shouldComponentUpdate(nextProps) {
     const {blocking, device} = this.props;
     return !(
-      nextProps.blocking === blocking &&
-      isEqual(nextProps.device, device)
+      nextProps.blocking === blocking && isEqual(nextProps.device, device)
     );
   }
 
-  handleMuteAll = () => { // eslint-disable-line no-undef
+  handleMuteAll = () => {
     const {onChange} = this.props;
 
-    const inputs = ['A', 'B', 'C']
-      .map(channelId => ({param: 'mute', group: 'inputs', channelId, value: true}));
-    const outputs = ['1', '2', '3', '4', '5', '6']
-      .map(channelId => ({param: 'mute', group: 'outputs', channelId, value: true}));
+    const inputs = ['A', 'B', 'C'].map(channelId => ({
+      param: 'mute',
+      group: 'inputs',
+      channelId,
+      value: true
+    }));
+    const outputs = ['1', '2', '3', '4', '5', '6'].map(channelId => ({
+      param: 'mute',
+      group: 'outputs',
+      channelId,
+      value: true
+    }));
 
     onChange(inputs.concat(outputs));
   };
 
   render() {
     const {device, onChange, blocking} = this.props;
-    const {inputs, outputs} = device;
+    const {inputs, outputs, state} = device;
+    const {channels} = state;
 
     return (
       <div>
-        <h2>
-Channel Levels
-        </h2>
-        <hr/>
+        <h2>Channel Levels</h2>
+        <hr />
         <BlockUi blocking={blocking}>
           <div className="channels-container">
             <div className="channel-group">
               {['A', 'B', 'C'].map(channelId => {
-                const {limited, level} = device.state.channels[channelId];
+                const {limited, level} = channels[channelId];
+                const {mute} = inputs[channelId];
                 return (
                   <ChannelControls
                     key={channelId}
-                    onChange={onChange}
                     channelId={channelId}
-                    isMuted={inputs[channelId].mute}
+                    isMuted={mute}
                     limited={limited}
                     level={level}
+                    onChange={onChange}
                   />
                 );
               })}
             </div>
             <div className="channel-group">
               {['1', '2', '3', '4', '5', '6'].map(channelId => {
-                const {limited, level} = device.state.channels[channelId];
+                const {limited, level} = channels[channelId];
+                const {mute} = outputs[channelId];
+                const isOutput = true;
                 return (
                   <ChannelControls
                     key={channelId}
-                    onChange={onChange}
                     channelId={channelId}
-                    isMuted={outputs[channelId].mute}
-                    limited={limited}
+                    isMuted={mute}
+                    isOutput={isOutput}
                     level={level}
-                    isOutput
+                    limited={limited}
+                    onChange={onChange}
                   />
                 );
               })}
             </div>
-            <Clearfix/>
-            <br/>
+            <Clearfix />
+            <br />
             <Button className="center-block" onClick={this.handleMuteAll}>
-Mute All
+              Mute All
             </Button>
           </div>
           <Panel header="Input Gains">
             <Gains
-              onChange={onChange}
               group="inputs"
               channels={inputs}
               xs={12}
               sm={12}
               md={12}
+              onChange={onChange}
             />
           </Panel>
           <Panel header="Output Gains">
             <Gains
-              onChange={onChange}
               group="outputs"
               channels={outputs}
               xs={12}
               sm={12}
               md={12}
+              onChange={onChange}
             />
           </Panel>
         </BlockUi>

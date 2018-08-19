@@ -8,9 +8,7 @@ class ChannelName extends PureComponent {
 
     return (
       <div>
-        <h5>
-          {channelName ? channelId + '. ' + channelName : channelId}
-        </h5>
+        <h5>{channelName ? channelId + '. ' + channelName : channelId}</h5>
         <pc.ChannelName
           value={channelName}
           group={group}

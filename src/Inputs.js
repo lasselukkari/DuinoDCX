@@ -11,55 +11,52 @@ import EQs from './EQs';
 class Inputs extends Component {
   shouldComponentUpdate(nextProps) {
     const {blocking, channels} = this.props;
-    return !(nextProps.blocking === blocking && isEqual(nextProps.channels, channels));
+    return !(
+      nextProps.blocking === blocking && isEqual(nextProps.channels, channels)
+    );
   }
 
   render() {
     const {channels, onChange, blocking} = this.props;
     return (
       <div>
-        <h2>
-Input Channels
-        </h2>
-        <hr/>
+        <h2>Input Channels</h2>
+        <hr />
         <Tabs defaultActiveKey="eq" id="inputs" animation={false}>
-          <br/>
+          <br />
           <Tab title="EQ" bsStyle="primary" eventKey="eq">
-            <Panel
-              bsSize="small"
-              header="EQ Frequency Response: All Inputs"
-            >
-              <EQPlot channels={channels}/>
+            <Panel bsSize="small" header="EQ Frequency Response: All Inputs">
+              <EQPlot channels={channels} />
             </Panel>
             <EQs
-              onChange={onChange}
               group="inputs"
               channels={channels}
               blocking={blocking}
               xs={12}
               sm={12}
               md={6}
+              onChange={onChange}
             />
           </Tab>
           <Tab title="Dynamic EQ" bsStyle="primary" eventKey="dynamicEQ">
             <BlockUi blocking={blocking}>
               <DynamicEQs
-                onChange={onChange}
                 group="inputs"
                 channels={channels}
                 xs={12}
                 sm={12}
                 md={6}
+                onChange={onChange}
               />
             </BlockUi>
           </Tab>
           <Tab title="Delay" bsStyle="primary" eventKey="delays">
             <BlockUi blocking={blocking}>
               <Delays
-                onChange={onChange}
                 group="inputs"
                 channels={channels}
                 xs={12}
+                onChange={onChange}
               />
             </BlockUi>
           </Tab>

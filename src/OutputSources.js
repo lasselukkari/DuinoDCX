@@ -22,10 +22,10 @@ class OutputSources extends Component {
               <OutputSource
                 key={channelId}
                 group={group}
-                onChange={onChange}
                 channelId={channelId}
                 channelName={channelName}
                 source={source}
+                onChange={onChange}
               />
             </Col>
           );

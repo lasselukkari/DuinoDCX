@@ -131,9 +131,7 @@ class Connection extends Component {
                 onChange={this.handleNetworkSelect}
               >
                 {networks.sort().map(enumeral => (
-                  <option key={enumeral}>
-                    {enumeral}
-                  </option>
+                  <option key={enumeral}>{enumeral}</option>
                 ))}
               </FormControl>
             </Col>
@@ -153,9 +151,7 @@ class Connection extends Component {
           </FormGroup>
           <FormGroup>
             <Col mdOffset={4} md={8}>
-              <Button type="submit">
-Connect
-              </Button>
+              <Button type="submit">Connect</Button>
             </Col>
           </FormGroup>
         </Form>
@@ -176,7 +172,7 @@ Connect
               Network
             </Col>
             <Col md={8}>
-              <FormControl disabled value={current}/>
+              <FormControl disabled value={current} />
             </Col>
           </FormGroup>
           <FormGroup>
@@ -184,7 +180,7 @@ Connect
               IP
             </Col>
             <Col md={8}>
-              <FormControl disabled value={ip}/>
+              <FormControl disabled value={ip} />
             </Col>
           </FormGroup>
           <FormGroup>
@@ -192,7 +188,7 @@ Connect
               Hostname
             </Col>
             <Col md={8}>
-              <FormControl disabled value={hostname}/>
+              <FormControl disabled value={hostname} />
             </Col>
           </FormGroup>
         </Form>
@@ -206,15 +202,11 @@ Connect
     return (
       <Row>
         <Col sm={6}>
-          <h4>
-Wifi Status
-          </h4>
+          <h4>Wifi Status</h4>
           {this.connectionForm()}
         </Col>
         <Col sm={6}>
-          <h4>
-Networks
-          </h4>
+          <h4>Networks</h4>
           {this.connectForm()}
         </Col>
       </Row>

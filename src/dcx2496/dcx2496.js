@@ -13,19 +13,23 @@ class DCX2496 {
   static _reverseCommandData({type, min, step, values}, value) {
     if (type === 'bool') {
       return value !== 0;
-    } else if (type === 'enum') {
+    }
+    if (type === 'enum') {
       return values[value];
-    } else if (type === 'number') {
-      return min + (step * value);
+    }
+    if (type === 'number') {
+      return min + step * value;
     }
   }
 
   static _getCommandData({type, min, step, values}, parameter) {
     if (type === 'bool') {
       return parameter ? 1 : 0;
-    } else if (type === 'enum') {
+    }
+    if (type === 'enum') {
       return values.indexOf(parameter);
-    } else if (type === 'number') {
+    }
+    if (type === 'number') {
       return Math.round(Math.abs(min - parameter) / step);
     }
   }
@@ -116,7 +120,7 @@ class DCX2496 {
 
   flushCommands() {
     const data = this.commandBuffer.join('');
-    const length = this.commandBuffer.length;
+    const {length} = this.commandBuffer;
     this.commandBuffer = [];
     return `F0002032${this.hexId()}0E20${DCX2496._toPaddedHex(
       length,
@@ -162,9 +166,9 @@ class DCX2496 {
     const commandCount = commandsData[7];
 
     for (let i = 0; i <= commandCount; i++) {
-      const target = commandsData[(i * 4) + 8];
-      const parameter = commandsData[(i * 4) + 9];
-      const value = (commandsData[(i * 4) + 10] * 128) + commandsData[(i * 4) + 11];
+      const target = commandsData[i * 4 + 8];
+      const parameter = commandsData[i * 4 + 9];
+      const value = commandsData[i * 4 + 10] * 128 + commandsData[i * 4 + 11];
 
       if (target === 0) {
         const index = parameter - (parameter > 11 ? 10 : 2);
@@ -247,7 +251,7 @@ class DCX2496 {
           const group = ioIndex < 4 ? 'inputs' : 'outputs';
           const eq = eqIndex + 1;
           const paramName = DCX2496.camelize(command.name);
-          const syncResponse = command.syncResponses[(ioIndex * 9) + eqIndex];
+          const syncResponse = command.syncResponses[ioIndex * 9 + eqIndex];
           const value = DCX2496._getValue(parts, syncResponse);
 
           this[group][channelId].eqs[eq][
@@ -264,7 +268,7 @@ class DCX2496 {
 commands.setupCommands.forEach((command, index) => {
   const camelName = DCX2496.camelize(command.name);
 
-  DCX2496.prototype[camelName] = function ({value}) {
+  DCX2496.prototype[camelName] = function({value}) {
     this.setup[camelName] = value;
 
     const data = DCX2496._getCommandData(command, value);
@@ -278,11 +282,11 @@ commands.setupCommands.forEach((command, index) => {
 commands.inputOutputCommands.forEach((command, index) => {
   const camelName = DCX2496.camelize(command.name);
 
-  DCX2496.prototype[camelName] = function ({group, channelId, value}) {
+  DCX2496.prototype[camelName] = function({group, channelId, value}) {
     const channelNumber =
-      group === 'inputs' ?
-        constants.INPUTS.indexOf(channelId) + 1 :
-        constants.OUTPUTS.indexOf(channelId) + 5;
+      group === 'inputs'
+        ? constants.INPUTS.indexOf(channelId) + 1
+        : constants.OUTPUTS.indexOf(channelId) + 5;
     const commandNumber = index + 2;
     const data = DCX2496._getCommandData(command, value);
     this[group][channelId][camelName] = value;
@@ -294,13 +298,13 @@ commands.inputOutputCommands.forEach((command, index) => {
 commands.eqCommands.forEach((command, index) => {
   const camelName = DCX2496.camelize(command.name);
 
-  DCX2496.prototype[camelName] = function ({group, channelId, eq, value}) {
+  DCX2496.prototype[camelName] = function({group, channelId, eq, value}) {
     const channelNumber =
-      group === 'inputs' ?
-        constants.INPUTS.indexOf(channelId) + 1 :
-        constants.OUTPUTS.indexOf(channelId) + 5;
+      group === 'inputs'
+        ? constants.INPUTS.indexOf(channelId) + 1
+        : constants.OUTPUTS.indexOf(channelId) + 5;
 
-    const commandNumber = index + ((eq - 1) * 5) + 19;
+    const commandNumber = index + (eq - 1) * 5 + 19;
     const data = DCX2496._getCommandData(command, value);
     this[group][channelId].eqs[eq][camelName] = value;
 
@@ -310,7 +314,7 @@ commands.eqCommands.forEach((command, index) => {
 
 commands.outputCommands.forEach((command, index) => {
   const camelName = DCX2496.camelize(command.name);
-  DCX2496.prototype[camelName] = function ({channelId, value}) {
+  DCX2496.prototype[camelName] = function({channelId, value}) {
     const data = DCX2496._getCommandData(command, value);
     const output = constants.OUTPUTS.indexOf(channelId) + 5;
     const commandNumber = index + 64;

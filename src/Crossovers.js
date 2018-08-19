@@ -16,22 +16,24 @@ class Crossovers extends Component {
       <div>
         <Row className="show-grid">
           {Object.keys(channels).map(channelId => {
-            const {highpassFilter,
+            const {
+              highpassFilter,
               highpassFrequency,
               lowpassFilter,
               lowpassFrequency,
-              channelName} = channels[channelId];
+              channelName
+            } = channels[channelId];
             return (
               <Col key={channelId} xs={12} sm={6} md={4} lg={2}>
                 <Crossover
                   group={group}
                   channelId={channelId}
-                  onChange={onChange}
                   highpassFilter={highpassFilter}
                   highpassFrequency={highpassFrequency}
                   lowpassFilter={lowpassFilter}
                   lowpassFrequency={lowpassFrequency}
                   channelName={channelName}
+                  onChange={onChange}
                 />
               </Col>
             );

@@ -14,91 +14,85 @@ import EQPlot from './plots/EQPlot';
 class Outputs extends Component {
   shouldComponentUpdate(nextProps) {
     const {blocking, channels} = this.props;
-    return !(blocking === nextProps.blocking && isEqual(channels, nextProps.channels));
+    return !(
+      blocking === nextProps.blocking && isEqual(channels, nextProps.channels)
+    );
   }
 
   render() {
     const {channels, onChange, blocking} = this.props;
     return (
       <div>
-        <h2>
-Output Channels
-        </h2>
-        <hr/>
+        <h2>Output Channels</h2>
+        <hr />
         <Tabs defaultActiveKey="eqs" id="input-eqs" animation={false}>
-          <br/>
+          <br />
           <Tab title="EQ" bsStyle="primary" eventKey="eqs">
-            <Panel
-              bsSize="small"
-              header="EQ Frequency Response: All Outputs"
-            >
-              <EQPlot channels={channels}/>
+            <Panel bsSize="small" header="EQ Frequency Response: All Outputs">
+              <EQPlot channels={channels} />
             </Panel>
             <EQs
               blocking={blocking}
-              onChange={onChange}
               group="outputs"
               channels={channels}
               xs={12}
               sm={12}
               md={6}
+              onChange={onChange}
             />
           </Tab>
           <Tab title="Dynamic EQ" bsStyle="primary" eventKey="dynamicEQs">
             <BlockUi blocking={blocking}>
               <DynamicEQs
-                onChange={onChange}
                 group="outputs"
                 channels={channels}
                 xs={12}
                 sm={12}
                 md={6}
+                onChange={onChange}
               />
             </BlockUi>
           </Tab>
           <Tab title="Delay" bsStyle="primary" eventKey="delays">
             <BlockUi blocking={blocking}>
               <Delays
-                onChange={onChange}
                 group="outputs"
                 channels={channels}
                 xs={12}
+                onChange={onChange}
               />
             </BlockUi>
           </Tab>
           <Tab title="Crossover" bsStyle="primary" eventKey="crossover">
-            <Panel
-              bsSize="small"
-              header="Crossover Frequency Response"
-            >
-              <CrossoverPlot channels={channels}/>
+            <Panel bsSize="small" header="Crossover Frequency Response">
+              <CrossoverPlot channels={channels} />
             </Panel>
             <BlockUi blocking={blocking}>
               <Crossovers
-                onChange={onChange}
                 group="outputs"
                 channels={channels}
+                onChange={onChange}
               />
             </BlockUi>
           </Tab>
           <Tab title="Limiter" bsStyle="primary" eventKey="limiters">
             <BlockUi blocking={blocking}>
               <Limiters
-                onChange={onChange}
                 group="outputs"
                 channels={channels}
+                onChange={onChange}
               />
             </BlockUi>
           </Tab>
           <Tab title="Phase" bsStyle="primary" eventKey="phases">
             <BlockUi blocking={blocking}>
               <Phases
-                onChange={onChange}
                 group="outputs"
                 channels={channels}
                 xs={12}
                 sm={6}
                 md={4}
+                onChange={onChange}
               />
             </BlockUi>
           </Tab>

@@ -16,50 +16,65 @@ class Setup extends Component {
       isEqual(setup, nextProps.setup)
     );
   }
+
   render() {
     const {setup, onChange, outputs, blocking} = this.props;
-    const {delayCorrection, airTemperature, delayUnits} = setup;
+    const {
+      delayCorrection,
+      airTemperature,
+      delayUnits,
+      inputABSource,
+      inputCGain,
+      stereolink,
+      stereolinkMode,
+      muteOutsWhenPowered,
+      outputConfig,
+      crossoverLink,
+      delayLink,
+      inputSumType,
+      inputASumGain,
+      inputBSumGain,
+      inputCSumGain
+    } = setup;
 
     return (
       <div>
-        <h2>
-Device Setup
-        </h2>
-        <hr/>
+        <h2>Device Setup</h2>
+        <hr />
         <Tabs defaultActiveKey="inputs" id="setup" animation={false}>
-          <br/>
+          <br />
           <Tab title="Inputs" eventKey="inputs">
             <BlockUi blocking={blocking}>
               <Panel>
                 <Row>
                   <Col xs={6}>
                     <pc.InputABSource
-                      onChange={onChange}
-                      value={setup.inputABSource}
                       includeLabel
+                      value={inputABSource}
+                      onChange={onChange}
                     />
                   </Col>
                   <Col xs={6}>
                     <pc.InputCGain
-                      onChange={onChange}
-                      value={setup.inputCGain}
                       includeLabel
+                      value={inputCGain}
+                      onChange={onChange}
                     />
                   </Col>
                 </Row>
                 <Row>
                   <Col xs={6}>
                     <pc.Stereolink
-                      onChange={onChange}
-                      value={setup.stereolink}
                       includeLabel
+                      value={stereolink}
+                      onChange={onChange}
                     />
                   </Col>
                   <Col xs={6}>
                     <pc.StereolinkMode
-                      onChange={onChange}
-                      value={setup.stereolinkMode}
                       includeLabel
+                      value={stereolinkMode}
+                      onChange={onChange}
                     />
                   </Col>
                 </Row>
@@ -72,43 +87,43 @@ Device Setup
                 <Row>
                   <Col xs={12} sm={4}>
                     <pc.MuteOutsWhenPowered
-                      onChange={onChange}
-                      value={setup.muteOutsWhenPowered}
                       includeLabel
+                      value={muteOutsWhenPowered}
+                      onChange={onChange}
                     />
                   </Col>
                   <Col xs={12} sm={4}>
                     <pc.OutputConfig
-                      onChange={onChange}
-                      value={setup.outputConfig}
                       includeLabel
+                      value={outputConfig}
+                      onChange={onChange}
                     />
                   </Col>
 
                   <Col xs={12} sm={4}>
                     <pc.CrossoverLink
-                      onChange={onChange}
-                      value={setup.crossoverLink}
                       includeLabel
+                      value={crossoverLink}
+                      onChange={onChange}
                     />
                   </Col>
                 </Row>
               </Panel>
               <OutputSources
-                onChange={onChange}
                 group="outputs"
                 channels={outputs}
                 xs={12}
                 sm={6}
                 md={4}
+                onChange={onChange}
               />
               <ChannelNames
-                onChange={onChange}
                 group="outputs"
                 channels={outputs}
                 xs={12}
                 sm={6}
                 md={4}
+                onChange={onChange}
               />
             </BlockUi>
           </Tab>
@@ -116,24 +131,24 @@ Device Setup
             <BlockUi blocking={blocking}>
               <Panel>
                 <pc.InputSumType
-                  onChange={onChange}
-                  value={setup.inputSumType}
                   includeLabel
+                  value={inputSumType}
+                  onChange={onChange}
                 />
                 <pc.InputASumGain
-                  onChange={onChange}
-                  value={setup.inputASumGain}
                   includeLabel
+                  value={inputASumGain}
+                  onChange={onChange}
                 />
                 <pc.InputBSumGain
-                  onChange={onChange}
-                  value={setup.inputBSumGain}
                   includeLabel
+                  value={inputBSumGain}
+                  onChange={onChange}
                 />
                 <pc.InputCSumGain
-                  onChange={onChange}
-                  value={setup.inputCSumGain}
                   includeLabel
+                  value={inputCSumGain}
+                  onChange={onChange}
                 />
               </Panel>
             </BlockUi>
@@ -144,28 +159,28 @@ Device Setup
                 <Row>
                   <Col xs={6}>
                     <pc.DelayLink
-                      onChange={onChange}
-                      value={setup.delayLink}
                       includeLabel
+                      value={delayLink}
+                      onChange={onChange}
                     />
                   </Col>
                   <Col xs={6}>
                     <pc.DelayCorrection
-                      onChange={onChange}
-                      value={delayCorrection}
                       includeLabel
+                      value={delayCorrection}
+                      onChange={onChange}
                     />
                   </Col>
                 </Row>
                 <pc.AirTemperature
-                  onChange={onChange}
-                  value={airTemperature}
                   includeLabel
+                  value={airTemperature}
+                  onChange={onChange}
                 />
                 <pc.DelayUnits
-                  onChange={onChange}
-                  value={delayUnits}
                   includeLabel
+                  value={delayUnits}
+                  onChange={onChange}
                 />
               </Panel>
             </BlockUi>

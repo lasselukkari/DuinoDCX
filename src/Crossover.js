@@ -5,44 +5,50 @@ import pc from './parameters';
 
 class Crossover extends PureComponent {
   render() {
-    const {highpassFilter,
+    const {
+      highpassFilter,
       highpassFrequency,
       lowpassFilter,
       lowpassFrequency,
       channelName,
       group,
       channelId,
-      onChange} = this.props;
+      onChange
+    } = this.props;
 
     return (
-      <Panel header={channelName ? `${channelId} . ${channelName}` : `Channel ${channelId}`}>
+      <Panel
+        header={
+          channelName ? `${channelId} . ${channelName}` : `Channel ${channelId}`
+        }
+      >
         <pc.HighpassFilter
+          includeLabel
           value={highpassFilter}
           group={group}
           channelId={channelId}
           onChange={onChange}
-          includeLabel
         />
         <pc.HighpassFrequency
+          includeLabel
           value={highpassFrequency}
           group={group}
           channelId={channelId}
           onChange={onChange}
-          includeLabel
         />
         <pc.LowpassFilter
+          includeLabel
           value={lowpassFilter}
           group={group}
           channelId={channelId}
           onChange={onChange}
-          includeLabel
         />
         <pc.LowpassFrequency
+          includeLabel
           value={lowpassFrequency}
           group={group}
           channelId={channelId}
           onChange={onChange}
-          includeLabel
         />
       </Panel>
     );

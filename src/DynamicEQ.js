@@ -4,7 +4,8 @@ import pc from './parameters';
 
 class DynamicEQ extends PureComponent {
   render() {
-    const {channelName,
+    const {
+      channelName,
       dynamicEQ,
       dynamicEQType,
       dynamicEQFrequency,
@@ -17,10 +18,15 @@ class DynamicEQ extends PureComponent {
       dynamicEQThreshold,
       group,
       channelId,
-      onChange} = this.props;
+      onChange
+    } = this.props;
 
     return (
-      <Panel header={channelName ? `${channelId} . ${channelName}` : `Channel ${channelId}`}>
+      <Panel
+        header={
+          channelName ? `${channelId} . ${channelName}` : `Channel ${channelId}`
+        }
+      >
         <pc.DynamicEQ
           value={dynamicEQ}
           group={group}
@@ -30,20 +36,20 @@ class DynamicEQ extends PureComponent {
         <Row>
           <Col xs={12} sm={6}>
             <pc.DynamicEQType
+              includeLabel
               value={dynamicEQType}
               group={group}
               channelId={channelId}
               onChange={onChange}
-              includeLabel
             />
           </Col>
           <Col xs={12} sm={6}>
             <pc.DynamicEQFrequency
+              includeLabel
               value={dynamicEQFrequency}
               group={group}
               channelId={channelId}
               onChange={onChange}
-              includeLabel
             />
           </Col>
         </Row>
@@ -51,66 +57,66 @@ class DynamicEQ extends PureComponent {
           <Col xs={12} sm={6}>
             {dynamicEQType === 'Bandpass' && (
               <pc.DynamicEQQ
+                includeLabel
                 value={dynamicEQQ}
                 group={group}
                 channelId={channelId}
                 onChange={onChange}
-                includeLabel
               />
             )}
             {dynamicEQType !== 'Bandpass' && (
               <pc.DynamicEQShelving
+                includeLabel
                 value={dynamicEQShelving}
                 group={group}
                 channelId={channelId}
                 onChange={onChange}
-                includeLabel
               />
             )}
           </Col>
           <Col xs={12} sm={6}>
             <pc.DynamicEQAttack
+              includeLabel
               value={dynamicEQAttack}
               group={group}
               channelId={channelId}
               onChange={onChange}
-              includeLabel
             />
           </Col>
         </Row>
         <Row>
           <Col xs={12} sm={6}>
             <pc.DynamicEQRelease
+              includeLabel
               value={dynamicEQRelease}
               group={group}
               channelId={channelId}
               onChange={onChange}
-              includeLabel
             />
           </Col>
           <Col xs={12} sm={6}>
             <pc.DynamicEQRatio
+              includeLabel
               value={dynamicEQRatio}
               group={group}
               channelId={channelId}
               onChange={onChange}
-              includeLabel
             />
           </Col>
         </Row>
         <pc.DynamicEQGain
+          includeLabel
           value={dynamicEQGain}
           group={group}
           channelId={channelId}
           onChange={onChange}
-          includeLabel
         />
         <pc.DynamicEQThreshold
+          includeLabel
           value={dynamicEQThreshold}
           group={group}
           channelId={channelId}
           onChange={onChange}
-          includeLabel
         />
       </Panel>
     );

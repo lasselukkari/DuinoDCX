@@ -12,7 +12,7 @@ const commandTypes = {
   OUTPUT_COMMAND: 3
 };
 
-const enumComponent = function ({name, unit, values}, type) {
+const enumComponent = function({name, unit, values}, type) {
   class EnumComponent extends PureComponent {
     render() {
       const {
@@ -33,9 +33,9 @@ const enumComponent = function ({name, unit, values}, type) {
           group={group}
           channelId={channelId}
           eq={eq}
-          onChange={onChange}
           enums={values}
           includeLabel={includeLabel}
+          onChange={onChange}
         />
       );
     }
@@ -44,7 +44,7 @@ const enumComponent = function ({name, unit, values}, type) {
   return EnumComponent;
 };
 
-const boolComponent = function ({name}, type) {
+const boolComponent = function({name}, type) {
   class BoolComponent extends PureComponent {
     render() {
       const {
@@ -66,8 +66,8 @@ const boolComponent = function ({name}, type) {
           channelId={channelId}
           eq={eq}
           inverted={inverted}
-          onChange={onChange}
           includeLabel={includeLabel}
+          onChange={onChange}
         />
       );
     }
@@ -76,7 +76,7 @@ const boolComponent = function ({name}, type) {
   return BoolComponent;
 };
 
-const numberComponent = function ({name, unit, min, max, step}, type) {
+const numberComponent = function({name, unit, min, max, step}, type) {
   return class extends PureComponent {
     render() {
       const {
@@ -100,8 +100,8 @@ const numberComponent = function ({name, unit, min, max, step}, type) {
           max={max}
           step={step}
           eq={eq}
-          onChange={onChange}
           includeLabel={includeLabel}
+          onChange={onChange}
         />
       );
     }
@@ -111,9 +111,11 @@ const numberComponent = function ({name, unit, min, max, step}, type) {
 const createComponent = commmand => {
   if (commmand.type === 'enum') {
     return enumComponent(commmand);
-  } else if (commmand.type === 'bool') {
+  }
+  if (commmand.type === 'bool') {
     return boolComponent(commmand);
-  } else if (commmand.type === 'number') {
+  }
+  if (commmand.type === 'number') {
     return numberComponent(commmand);
   }
 };

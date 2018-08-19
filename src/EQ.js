@@ -5,61 +5,71 @@ import pc from './parameters';
 
 class EQ extends PureComponent {
   render() {
-    const {eQType, eQFrequency, eqQ, eQShelving, eQGain, id, onChange, group, channelId} = this.props;
+    const {
+      eQType,
+      eQFrequency,
+      eqQ,
+      eQShelving,
+      eQGain,
+      id,
+      onChange,
+      group,
+      channelId
+    } = this.props;
 
     return (
       <Panel header={`Equalizer ${id}`}>
         <Row>
           <Col xs={12} sm={4}>
             <pc.EQType
+              includeLabel
               value={eQType}
               eq={id}
               group={group}
               channelId={channelId}
               onChange={onChange}
-              includeLabel
             />
           </Col>
           <Col xs={12} sm={4}>
             <pc.EQFrequency
+              includeLabel
               value={eQFrequency}
               eq={id}
               group={group}
               channelId={channelId}
               onChange={onChange}
-              includeLabel
             />
           </Col>
           <Col xs={12} sm={4}>
             {eQType === 'Bandpass' && (
-            <pc.EQQ
-              value={eqQ}
-              eq={id}
-              group={group}
-              channelId={channelId}
-              onChange={onChange}
-              includeLabel
-            />
-          )}
+              <pc.EQQ
+                includeLabel
+                value={eqQ}
+                eq={id}
+                group={group}
+                channelId={channelId}
+                onChange={onChange}
+              />
+            )}
             {eQType !== 'Bandpass' && (
-            <pc.EQShelving
-              value={eQShelving}
-              eq={id}
-              group={group}
-              channelId={channelId}
-              onChange={onChange}
-              includeLabel
-            />
-          )}
+              <pc.EQShelving
+                includeLabel
+                value={eQShelving}
+                eq={id}
+                group={group}
+                channelId={channelId}
+                onChange={onChange}
+              />
+            )}
           </Col>
         </Row>
         <pc.EQGain
+          includeLabel
           value={eQGain}
           eq={id}
           group={group}
           channelId={channelId}
           onChange={onChange}
-          includeLabel
         />
       </Panel>
     );

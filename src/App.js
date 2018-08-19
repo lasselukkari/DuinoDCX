@@ -51,37 +51,45 @@ class App extends Component {
     this.manager.pollDevices();
   }
 
-  handleBlockingChange = () => { // eslint-disable-line no-undef
+  handleBlockingChange = () => {
+    // eslint-disable-line no-undef
     this.setState(({blocking}) => ({blocking: !blocking}));
   };
 
-  handleDeviceUpdate = data => { // eslint-disable-line no-undef
+  handleDeviceUpdate = data => {
+    // eslint-disable-line no-undef
     const {device} = this.state;
     this.manager.updateDevice(device.id, data);
   };
 
-  handlePageChange = page => { // eslint-disable-line no-undef
+  handlePageChange = page => {
+    // eslint-disable-line no-undef
     this.setState({page});
     window.scrollTo(0, 0);
   };
 
-  handleDeviceSelect = selectedDevice => { // eslint-disable-line no-undef
+  handleDeviceSelect = selectedDevice => {
+    // eslint-disable-line no-undef
     this.manager.selectedDevice = selectedDevice;
   };
 
-  handleModalClose = () => { // eslint-disable-line no-undef
+  handleModalClose = () => {
+    // eslint-disable-line no-undef
     this.setState({showModal: false});
   };
 
-  handleShowConnection = () => { // eslint-disable-line no-undef
+  handleShowConnection = () => {
+    // eslint-disable-line no-undef
     this.setState({showModal: 'connection'});
   };
 
-  handleShowUpload = () => { // eslint-disable-line no-undef
+  handleShowUpload = () => {
+    // eslint-disable-line no-undef
     this.setState({showModal: 'upload'});
   };
 
-  handleShowCredentials = () => { // eslint-disable-line no-undef
+  handleShowCredentials = () => {
+    // eslint-disable-line no-undef
     this.setState({showModal: 'credentials'});
   };
 
@@ -100,10 +108,8 @@ class App extends Component {
     if (!device.ready) {
       return (
         <div className="text-center content-loader" alt="loading">
-          <Spinner fadeIn="none" name="line-scale" color="#3498DB"/>
-          <h5 className="text-center">
-Searching for devices...
-          </h5>
+          <Spinner fadeIn="none" name="line-scale" color="#3498DB" />
+          <h5 className="text-center">Searching for devices...</h5>
         </div>
       );
     }
@@ -148,18 +154,10 @@ Searching for devices...
     if (device.ready) {
       return (
         <Nav activeKey={page} onSelect={this.handlePageChange}>
-          <NavItem eventKey="levels">
-Levels
-          </NavItem>
-          <NavItem eventKey="inputs">
-Inputs
-          </NavItem>
-          <NavItem eventKey="outputs">
-Outputs
-          </NavItem>
-          <NavItem eventKey="setup">
-Setup
-          </NavItem>
+          <NavItem eventKey="levels">Levels</NavItem>
+          <NavItem eventKey="inputs">Inputs</NavItem>
+          <NavItem eventKey="outputs">Outputs</NavItem>
+          <NavItem eventKey="setup">Setup</NavItem>
         </Nav>
       );
     }
@@ -170,7 +168,7 @@ Setup
     const {showModal} = this.state;
     return (
       <Nav pullRight activeKey={showModal}>
-        <NavDropdown title={<Glyphicon glyph="cog"/>} id="basic-nav-dropdown">
+        <NavDropdown title={<Glyphicon glyph="cog" />} id="basic-nav-dropdown">
           <MenuItem eventKey="connection" onSelect={this.handleShowConnection}>
             Wifi Setup
           </MenuItem>
@@ -214,11 +212,7 @@ Setup
         </Navbar.Brand>
       );
     }
-    return (
-      <Navbar.Brand>
-DuinoDCX
-      </Navbar.Brand>
-    );
+    return <Navbar.Brand>DuinoDCX</Navbar.Brand>;
   }
 
   deviceSelect(devices) {
@@ -243,7 +237,7 @@ DuinoDCX
       <Navbar collapseOnSelect fluid className="navbar-fixed-top">
         <Navbar.Header>
           {this.brand()}
-          <Navbar.Toggle/>
+          <Navbar.Toggle />
         </Navbar.Header>
         <Navbar.Collapse>
           {this.lockButton()}
@@ -261,17 +255,13 @@ DuinoDCX
     return (
       <Modal show={showModal === 'connection'} onHide={this.handleModalClose}>
         <Modal.Header closeButton>
-          <Modal.Title>
-Wifi Setups
-          </Modal.Title>
+          <Modal.Title>Wifi Setups</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Connection/>
+          <Connection />
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={this.handleModalClose}>
-Close
-          </Button>
+          <Button onClick={this.handleModalClose}>Close</Button>
         </Modal.Footer>
       </Modal>
     );
@@ -283,17 +273,13 @@ Close
     return (
       <Modal show={showModal === 'credentials'} onHide={this.handleModalClose}>
         <Modal.Header closeButton>
-          <Modal.Title>
-Credentials
-          </Modal.Title>
+          <Modal.Title>Credentials</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Credentials/>
+          <Credentials />
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={this.handleModalClose}>
-Close
-          </Button>
+          <Button onClick={this.handleModalClose}>Close</Button>
         </Modal.Footer>
       </Modal>
     );
@@ -305,17 +291,13 @@ Close
     return (
       <Modal show={showModal === 'upload'} onHide={this.handleModalClose}>
         <Modal.Header closeButton>
-          <Modal.Title>
-Firmware Update
-          </Modal.Title>
+          <Modal.Title>Firmware Update</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Upload/>
+          <Upload />
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={this.handleModalClose}>
-Close
-          </Button>
+          <Button onClick={this.handleModalClose}>Close</Button>
         </Modal.Footer>
       </Modal>
     );
@@ -329,7 +311,7 @@ Close
         {this.connectionModal()}
         {this.credentialsModal()}
         {this.uploadModal()}
-        <ToastContainer/>
+        <ToastContainer />
       </div>
     );
   }

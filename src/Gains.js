@@ -22,9 +22,9 @@ class Gains extends Component {
                 key={channelId}
                 group={group}
                 channelId={channelId}
-                onChange={onChange}
                 channelName={channelName}
                 gain={gain}
+                onChange={onChange}
               />
             </Col>
           );

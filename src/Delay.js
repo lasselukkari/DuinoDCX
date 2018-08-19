@@ -4,10 +4,22 @@ import pc from './parameters';
 
 class Delay extends PureComponent {
   render() {
-    const {delay, shortDelay, longDelay, channelName, channelId, onChange, group} = this.props;
+    const {
+      delay,
+      shortDelay,
+      longDelay,
+      channelName,
+      channelId,
+      onChange,
+      group
+    } = this.props;
 
     return (
-      <Panel header={channelName ? `${channelId} . ${channelName}` : `Channel ${channelId}`}>
+      <Panel
+        header={
+          channelName ? `${channelId} . ${channelName}` : `Channel ${channelId}`
+        }
+      >
         <pc.Delay
           value={delay}
           group={group}
@@ -16,19 +28,19 @@ class Delay extends PureComponent {
         />
         {group === 'outputs' && (
           <pc.ShortDelay
+            includeLabel
             value={shortDelay}
             group={group}
             channelId={channelId}
             onChange={onChange}
-            includeLabel
           />
         )}
         <pc.LongDelay
+          includeLabel
           value={longDelay}
           group={group}
           channelId={channelId}
           onChange={onChange}
-          includeLabel
         />
       </Panel>
     );

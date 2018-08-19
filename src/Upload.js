@@ -9,7 +9,7 @@ class Upload extends PureComponent {
     this.state = {};
   }
 
-  handleDrop = acceptedFiles => { // eslint-disable-line no-undef
+  handleDrop = acceptedFiles => {
     this.setState({uploading: 'active'});
 
     Request.post('/api/update')
@@ -31,7 +31,14 @@ class Upload extends PureComponent {
 
     switch (uploading) {
       case 'active':
-        return (<ProgressBar active bsStyle="info" now={percent} label={`${percent ? percent.toFixed(2) : 0.00}%`}/>);
+        return (
+          <ProgressBar
+            active
+            bsStyle="info"
+            now={percent}
+            label={`${percent ? percent.toFixed(2) : 0.0}%`}
+          />
+        );
       case 'fail':
         return 'Uploading failed. Check the file and try again.';
       case 'success':
@@ -44,6 +51,7 @@ class Upload extends PureComponent {
   render() {
     return (
       <Dropzone
+        disablePreview
         style={{
           width: '100%',
           height: '45px',
@@ -51,17 +59,16 @@ class Upload extends PureComponent {
           borderWidth: 2,
           borderColor: '#666',
           borderStyle: 'dashed',
-          borderRadius: 5}}
+          borderRadius: 5
+        }}
         activeStyle={{
           borderStyle: 'solid',
           borderColor: '#62C462',
           backgroundColor: '#3e444c'
         }}
-        onDrop={this.handleDrop}
         multiple={false}
-        disablePreview
+        onDrop={this.handleDrop}
       >
-
         {this.statusMessage()}
       </Dropzone>
     );

@@ -8,7 +8,9 @@ class Gain extends PureComponent {
     return (
       <div>
         <h4>
-          {channelName ? `${channelId} . ${channelName}` : `Channel ${channelId}`}
+          {channelName
+            ? `${channelId} . ${channelName}`
+            : `Channel ${channelId}`}
         </h4>
         <pc.Gain
           value={gain}

@@ -2,8 +2,8 @@ import React, {Component} from 'react';
 import {FormGroup, ControlLabel, Button, Glyphicon} from 'react-bootstrap';
 import Slider, {Handle} from 'rc-slider';
 import Tooltip from 'rc-tooltip';
-import './NumberParam.css';  // eslint-disable-line import/no-unassigned-import
-import 'rc-slider/assets/index.css';  // eslint-disable-line import/no-unassigned-import
+import './NumberParam.css'; // eslint-disable-line import/no-unassigned-import
+import 'rc-slider/assets/index.css'; // eslint-disable-line import/no-unassigned-import
 
 const handle = props => {
   const {value, dragging, index, ...restProps} = props;
@@ -15,7 +15,7 @@ const handle = props => {
       visible={dragging}
       placement="top"
     >
-      <Handle value={value} {...restProps}/>
+      <Handle value={value} {...restProps} />
     </Tooltip>
   );
 };
@@ -36,26 +36,48 @@ class NumberParam extends Component {
     this.setState({value});
   }
 
-  handleValueChange = value => { // eslint-disable-line no-undef
+  handleValueChange = value => {
+    // eslint-disable-line no-undef
     const {param, group, channelId, eq, onChange} = this.props;
     onChange({param, group, channelId, eq, value});
   };
 
-  handleReduction = () => { // eslint-disable-line no-undef
-    const {value, min, step, param, group, channelId, eq, onChange} = this.props;
+  handleReduction = () => {
+    // eslint-disable-line no-undef
+    const {
+      value,
+      min,
+      step,
+      param,
+      group,
+      channelId,
+      eq,
+      onChange
+    } = this.props;
     if (value - step >= min) {
       onChange({param, group, channelId, eq, value: value - step});
     }
   };
 
-  handleAddition = () => { // eslint-disable-line no-undef
-    const {value, max, step, param, group, channelId, eq, onChange} = this.props;
+  handleAddition = () => {
+    // eslint-disable-line no-undef
+    const {
+      value,
+      max,
+      step,
+      param,
+      group,
+      channelId,
+      eq,
+      onChange
+    } = this.props;
     if (value + step <= max) {
       onChange({param, group, channelId, eq, value: value + step});
     }
   };
 
-  handleSliderChange = value => { // eslint-disable-line no-undef
+  handleSliderChange = value => {
+    // eslint-disable-line no-undef
     this.setState({value});
   };
 
@@ -94,34 +116,24 @@ class NumberParam extends Component {
         {includeLabel !== false && (
           <ControlLabel>
             {name}
-            <br/>
+            <br />
           </ControlLabel>
         )}
 
         <div className="number-param-container">
           <div className="min-number">
-            <Button
-              bsSize="small"
-              onClick={this.handleReduction}
-            >
-              <Glyphicon glyph="minus"/>
+            <Button bsSize="small" onClick={this.handleReduction}>
+              <Glyphicon glyph="minus" />
             </Button>
           </div>
           <div className="slider">
             <h6>
-              Current:
-              {' '}
-              {Math.round(value * 10) / 10}
-              {' '}
-              {unit}
+              Current: {Math.round(value * 10) / 10} {unit}
             </h6>
           </div>
           <div className="max-number">
-            <Button
-              bsSize="small"
-              onClick={this.handleAddition}
-            >
-              <Glyphicon glyph="plus"/>
+            <Button bsSize="small" onClick={this.handleAddition}>
+              <Glyphicon glyph="plus" />
             </Button>
           </div>
         </div>
@@ -129,13 +141,13 @@ class NumberParam extends Component {
           <Slider
             handleStyle={handlerStyle}
             value={stateValue}
-            onChange={this.handleSliderChange}
-            onAfterChange={this.handleValueChange}
             step={step}
             min={min}
             max={max}
             marks={marks}
             handle={handle}
+            onChange={this.handleSliderChange}
+            onAfterChange={this.handleValueChange}
           />
         </div>
       </FormGroup>
