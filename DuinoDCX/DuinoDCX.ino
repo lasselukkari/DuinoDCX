@@ -2,15 +2,22 @@
 #include <WiFi.h>
 #include <ESPmDNS.h>
 #include <Update.h>
+#include <Preferences.h>
 #include "aWOT.h"
 #include "Ultradrive.h"
 #include "StaticFiles.h"
 
-#define BASIC_AUTH "Basic RENYMjQ5NjpVbHRyYWRyaXZl" // DCX2496:Ultradrive in base64
-#define SOFT_AP_SSID "DCX2496"
-#define SOFT_AP_PASSWORD "Ultradrive"
-#define OTA_PASSWORD "Ultradrive"
-#define MDNS_NAME "ultradrive"
+#define DEFAULT_AUTH "Basic RENYMjQ5NjpVbHRyYWRyaXZl" // DCX2496:Ultradrive in base64
+#define DEFAULT_SOFT_AP_SSID "DCX2496"
+#define DEFAULT_SOFT_AP_PASSWORD "Ultradrive"
+#define DEFAULT_MDNS_NAME "ultradrive"
+
+#define RESET_PIN 13
+
+#define AUTH_KEY "auth"
+#define SOFT_AP_PASSWORD_KEY "apPassword"
+#define SOFT_AP_SSID_KEY "apSsid"
+#define MDNS_HOST_KEY "mdnsHost"
 
 #define AUTH_BUFFER_LENGHT 200
 #define MAX_DEVICES 16
@@ -20,12 +27,22 @@
 #define PASSWORD_MAX_LENGHT 65
 #define CONNECTION_TIMEOUT 10000
 #define RECONNECT_INTERVAL 20000
+#define BASIC_AUTH_LENGTH 200
+#define SOFT_AP_SSID_LENGTH 65
+#define SOFT_AP_PASSWORD_LENGTH 65
+#define MDDNS_NAME_LENGTH 65
 
+Preferences preferences;
 WiFiServer httpServer(80);
 HardwareSerial UltradriveSerial(2);
 Ultradrive deviceManager(&UltradriveSerial);
 WebApp app;
 Router apiRouter("/api");
+
+char basicAuth[BASIC_AUTH_LENGTH];
+char softApSsid[SOFT_AP_SSID_LENGTH];
+char softApPassword[SOFT_AP_PASSWORD_LENGTH];
+char mdnsName[MDDNS_NAME_LENGTH];
 
 char authBuffer[AUTH_BUFFER_LENGHT];
 char ssidBuffer[SSID_MAX_LENGTH];
@@ -33,9 +50,19 @@ char passwordBuffer[PASSWORD_MAX_LENGHT];
 unsigned long lastReconnect;
 bool shouldRestart = false;
 
+void auth(Request &req, Response &res) {
+  char * authHeader = req.header("Authorization");
+
+  if (strcmp(authHeader, basicAuth) != 0) {
+    res.set("WWW-Authenticate", "Basic realm=\"Ultradrive\"");
+    res.unauthorized();
+    res.end();
+  }
+}
+
 void update(Request &req, Response &res) {
   int contentLength = req.contentLeft();
-  
+
   if (!Update.begin(contentLength)) {
     return res.fail();
   }
@@ -56,16 +83,6 @@ void update(Request &req, Response &res) {
   res.noContent();
 }
 
-void auth(Request &req, Response &res) {
-  char * authHeader = req.header("Authorization");
-
-  if (strcmp(authHeader, BASIC_AUTH) != 0) {
-    res.set("WWW-Authenticate", "Basic realm=\"Ultradrive\"");
-    res.unauthorized();
-    res.end();
-  }
-}
-
 void getNetworks(Request &req, Response &res) {
   int n = WiFi.scanNetworks();
   res.success("application/json");
@@ -80,6 +97,59 @@ void getNetworks(Request &req, Response &res) {
     }
   }
   res.print("]");
+}
+
+void getCredentials(Request &req, Response &res) {
+  res.success("application/json");
+  res.print("{");
+
+  res.print("\"" SOFT_AP_SSID_KEY "\":");
+  res.print("\"");
+  res.print(softApSsid);
+  res.print("\", ");
+
+  res.print("\"" SOFT_AP_PASSWORD_KEY "\":");
+  res.print("\"");
+  res.print(softApPassword);
+  res.print("\", ");
+
+  res.print("\"" AUTH_KEY "\":");
+  res.print("\"");
+  res.print(basicAuth);
+  res.print("\", ");
+
+  res.print("\"" MDNS_HOST_KEY "\":");
+  res.print("\"");
+  res.print(mdnsName);
+  res.print("\"");
+
+  res.print("}");
+}
+
+void updateCredentials(Request &req, Response &res) {
+  char name[15];
+  char value[BASIC_AUTH_LENGTH];
+  preferences.begin("duinodcx", false);
+
+  while (req.contentLeft()) {
+    req.postParam(name, 15, value, BASIC_AUTH_LENGTH);
+    if (strcmp(name, AUTH_KEY) == 0) {
+      preferences.putString(AUTH_KEY, value);
+    } else if (strcmp(name, SOFT_AP_SSID_KEY) == 0) {
+      preferences.putString(SOFT_AP_SSID_KEY, value);
+    } else if (strcmp(name, SOFT_AP_PASSWORD_KEY) == 0) {
+      preferences.putString(SOFT_AP_PASSWORD_KEY, value);
+    } else if (strcmp(name, MDNS_HOST_KEY) == 0) {
+      preferences.putString(MDNS_HOST_KEY, value);
+    } else {
+      return res.fail();
+    }
+  }
+
+  preferences.end();
+  res.noContent();
+
+  shouldRestart = true;
 }
 
 void getConnection(Request &req, Response &res) {
@@ -98,7 +168,8 @@ void getConnection(Request &req, Response &res) {
 
   res.print("\"hostname\":");
   res.print("\"");
-  res.print(MDNS_NAME ".local");
+  res.print(mdnsName);
+  res.print(".local");
   res.print("\"");
 
   res.print("}");
@@ -184,13 +255,39 @@ void restartIfNeeded() {
   }
 }
 
-void setup() {
-  UltradriveSerial.begin(38400);
+void loadPreferences() {
+  pinMode(RESET_PIN, INPUT_PULLUP);
 
-  WiFi.softAP(SOFT_AP_SSID, SOFT_AP_PASSWORD);
+  preferences.begin("duinodcx", false);
 
-  httpServer.begin();
+  unsigned long now = millis();
+  while (!digitalRead(RESET_PIN)) {
+    if (millis() - now > 1000) {
+      preferences.clear();
+      break;
+    }
+  }
 
+  if (!preferences.getString(AUTH_KEY, basicAuth, BASIC_AUTH_LENGTH)) {
+    strcpy(basicAuth, DEFAULT_AUTH);
+  }
+
+  if (!preferences.getString(SOFT_AP_SSID_KEY, softApSsid, SOFT_AP_SSID_LENGTH)) {
+    strcpy(softApSsid, DEFAULT_SOFT_AP_SSID);
+  }
+
+  if (!preferences.getString(SOFT_AP_PASSWORD_KEY, softApPassword, SOFT_AP_PASSWORD_LENGTH)) {
+    strcpy(softApPassword, DEFAULT_SOFT_AP_PASSWORD);
+  }
+
+  if (!preferences.getString(MDNS_HOST_KEY, mdnsName, MDDNS_NAME_LENGTH)) {
+    strcpy(mdnsName, DEFAULT_MDNS_NAME);
+  }
+
+  preferences.end();
+}
+
+void setupHttpServer() {
   app.readHeader("Authorization", authBuffer, AUTH_BUFFER_LENGHT);
   app.use(&auth);
 
@@ -199,14 +296,28 @@ void setup() {
   apiRouter.post("/commands", &createDirectCommand);
   apiRouter.get("/connection", &getConnection);
   apiRouter.patch("/connection", &updateConnection);
+  apiRouter.get("/credentials", &getCredentials);
+  apiRouter.patch("/credentials", &updateCredentials);
   apiRouter.get("/networks", &getNetworks);
   apiRouter.post("/update", &update);
   app.use(&apiRouter);
 
   ServeStatic(&app);
-  checkWifi(RECONNECT_INTERVAL);
-  MDNS.begin(MDNS_NAME);
+
+  httpServer.begin();
+}
+
+void setup() {
+  UltradriveSerial.begin(38400);
+
+  loadPreferences();
+
+  WiFi.softAP(softApSsid, softApPassword);
+  MDNS.begin(mdnsName);
   MDNS.addService("http", "tcp", 80);
+
+  setupHttpServer();
+  checkWifi(RECONNECT_INTERVAL);
 }
 
 void loop() {

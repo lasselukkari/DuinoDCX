@@ -11,7 +11,7 @@ import {
   MenuItem,
   Glyphicon
 } from 'react-bootstrap';
-
+import {ToastContainer} from 'react-toastify';
 import Spinner from 'react-spinkit';
 
 import Manager from './dcx2496/manager';
@@ -19,7 +19,9 @@ import Inputs from './Inputs';
 import Outputs from './Outputs';
 import Setup from './Setup';
 import ChannelLevels from './ChannelLevels';
-import Config from './Config';
+import Connection from './Connection';
+import Upload from './Upload';
+import Credentials from './Credentials';
 
 import 'bootswatch/slate/bootstrap.css'; // eslint-disable-line import/no-unassigned-import
 import './App.css'; // eslint-disable-line import/no-unassigned-import
@@ -37,10 +39,12 @@ class App extends Component {
   shouldComponentUpdate(nextProps, nextState) {
     const {device, page, blocking, showModal} = this.state;
 
-    return !isEqual(device, nextState.device) ||
+    return (
+      !isEqual(device, nextState.device) ||
       page !== nextState.page ||
       blocking !== nextState.blocking ||
-      showModal !== nextState.showModal;
+      showModal !== nextState.showModal
+    );
   }
 
   componentDidMount() {
@@ -69,8 +73,16 @@ class App extends Component {
     this.setState({showModal: false});
   };
 
-  handleModalShow = () => { // eslint-disable-line no-undef
-    this.setState({showModal: true});
+  handleShowConnection = () => { // eslint-disable-line no-undef
+    this.setState({showModal: 'connection'});
+  };
+
+  handleShowUpload = () => { // eslint-disable-line no-undef
+    this.setState({showModal: 'upload'});
+  };
+
+  handleShowCredentials = () => { // eslint-disable-line no-undef
+    this.setState({showModal: 'credentials'});
   };
 
   updateDevice(device) {
@@ -83,21 +95,14 @@ class App extends Component {
   }
 
   content() {
-    const {blocking, device, page} = this.state;
+    const {blocking, device} = this.state;
 
     if (!device.ready) {
-      if (page === 'config') {
-        return (
-          <div className="container">
-            <Config/>
-          </div>
-        );
-      }
       return (
         <div className="text-center content-loader" alt="loading">
           <Spinner fadeIn="none" name="line-scale" color="#3498DB"/>
           <h5 className="text-center">
-            Searching for devices...
+Searching for devices...
           </h5>
         </div>
       );
@@ -108,30 +113,30 @@ class App extends Component {
         <div style={this.displayIfPage('levels')}>
           <ChannelLevels
             device={device}
-            onChange={this.handleDeviceUpdate}
             blocking={blocking}
+            onChange={this.handleDeviceUpdate}
           />
         </div>
         <div style={this.displayIfPage('inputs')}>
           <Inputs
-            onChange={this.handleDeviceUpdate}
             channels={device.inputs}
             blocking={blocking}
+            onChange={this.handleDeviceUpdate}
           />
         </div>
         <div style={this.displayIfPage('outputs')}>
           <Outputs
-            onChange={this.handleDeviceUpdate}
             channels={device.outputs}
             blocking={blocking}
+            onChange={this.handleDeviceUpdate}
           />
         </div>
         <div style={this.displayIfPage('setup')}>
           <Setup
-            onChange={this.handleDeviceUpdate}
             setup={device.setup}
             outputs={device.outputs}
             blocking={blocking}
+            onChange={this.handleDeviceUpdate}
           />
         </div>
       </div>
@@ -144,16 +149,16 @@ class App extends Component {
       return (
         <Nav activeKey={page} onSelect={this.handlePageChange}>
           <NavItem eventKey="levels">
-            Levels
+Levels
           </NavItem>
           <NavItem eventKey="inputs">
-            Inputs
+Inputs
           </NavItem>
           <NavItem eventKey="outputs">
-            Outputs
+Outputs
           </NavItem>
           <NavItem eventKey="setup">
-            Setup
+Setup
           </NavItem>
         </Nav>
       );
@@ -164,10 +169,18 @@ class App extends Component {
   configMenu() {
     const {showModal} = this.state;
     return (
-      <Nav pullRight activeKey={showModal ? 'config' : ''} onSelect={this.handleModalShow}>
-        <NavItem eventKey="config">
-          <Glyphicon glyph="cog"/>
-        </NavItem>
+      <Nav pullRight activeKey={showModal}>
+        <NavDropdown title={<Glyphicon glyph="cog"/>} id="basic-nav-dropdown">
+          <MenuItem eventKey="connection" onSelect={this.handleShowConnection}>
+            Wifi Setup
+          </MenuItem>
+          <MenuItem eventKey="connection" onSelect={this.handleShowCredentials}>
+            Credentials
+          </MenuItem>
+          <MenuItem eventKey="connection" onSelect={this.handleShowUpload}>
+            Firmware Update
+          </MenuItem>
+        </NavDropdown>
       </Nav>
     );
   }
@@ -185,7 +198,6 @@ class App extends Component {
               style={{color: blocking ? '#62c462' : '#ee5f5b'}}
               glyph={blocking ? 'lock' : 'edit'}
             />
-
           </NavItem>
         </Nav>
       );
@@ -204,7 +216,7 @@ class App extends Component {
     }
     return (
       <Navbar.Brand>
-        DuinoDCX
+DuinoDCX
       </Navbar.Brand>
     );
   }
@@ -228,7 +240,7 @@ class App extends Component {
 
   navbar() {
     return (
-      <Navbar className="navbar-fixed-top" collapseOnSelect fluid>
+      <Navbar collapseOnSelect fluid className="navbar-fixed-top">
         <Navbar.Header>
           {this.brand()}
           <Navbar.Toggle/>
@@ -238,27 +250,71 @@ class App extends Component {
           {this.deviceMenu()}
           {this.configMenu()}
           {this.deviceSelect(this.manager.devices)}
-
         </Navbar.Collapse>
       </Navbar>
     );
   }
 
-  conenctionModal() {
+  connectionModal() {
     const {showModal} = this.state;
+
     return (
-      <Modal show={showModal} onHide={this.handleModalClose}>
+      <Modal show={showModal === 'connection'} onHide={this.handleModalClose}>
         <Modal.Header closeButton>
           <Modal.Title>
-          Config
+Wifi Setups
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Config/>
+          <Connection/>
         </Modal.Body>
         <Modal.Footer>
           <Button onClick={this.handleModalClose}>
-          Close
+Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    );
+  }
+
+  credentialsModal() {
+    const {showModal} = this.state;
+
+    return (
+      <Modal show={showModal === 'credentials'} onHide={this.handleModalClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>
+Credentials
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Credentials/>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={this.handleModalClose}>
+Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    );
+  }
+
+  uploadModal() {
+    const {showModal} = this.state;
+
+    return (
+      <Modal show={showModal === 'upload'} onHide={this.handleModalClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>
+Firmware Update
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Upload/>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={this.handleModalClose}>
+Close
           </Button>
         </Modal.Footer>
       </Modal>
@@ -270,7 +326,10 @@ class App extends Component {
       <div>
         {this.navbar()}
         {this.content()}
-        {this.conenctionModal()}
+        {this.connectionModal()}
+        {this.credentialsModal()}
+        {this.uploadModal()}
+        <ToastContainer/>
       </div>
     );
   }
