@@ -42,7 +42,9 @@ class CrossoverPlot extends PureComponent {
 
   /* eslint-disable no-undef */
   formatTooltip = magnitude => `${magnitude.toFixed(2)} dB`;
+
   formatTic = tick => Math.round(tick);
+
   formatLabel = frequency => `${Math.round(frequency)} Hz`;
   /* eslint-enable no-undef */
 
@@ -78,11 +80,8 @@ class CrossoverPlot extends PureComponent {
         height={height}
         margin={{top: 20, right: 10, bottom: 5, left: -30}}
       >
-        <XAxis
-          dataKey="hz"
-          tickFormatter={this.formatTic}
-        />
-        <YAxis type="number" domain={[-20, 5]} allowDataOverflow/>
+        <XAxis dataKey="hz" tickFormatter={this.formatTic} />
+        <YAxis allowDataOverflow type="number" domain={[-20, 5]} />
         <Tooltip
           labelFormatter={this.formatLabel}
           formatter={this.formatTooltip}
@@ -97,7 +96,6 @@ class CrossoverPlot extends PureComponent {
             stroke={colors[index]}
           />
         ))}
-
       </LineChart>
     );
   }

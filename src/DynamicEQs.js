@@ -21,7 +21,6 @@ class DynamicEQs extends Component {
                 key={channelId}
                 group={group}
                 channelId={channelId}
-                onChange={onChange}
                 channelName={channel.channelName}
                 dynamicEQ={channel.dynamicEQ}
                 dynamicEQType={channel.dynamicEQType}
@@ -33,6 +32,7 @@ class DynamicEQs extends Component {
                 dynamicEQRelease={channel.dynamicEQRelease}
                 dynamicEQRatio={channel.dynamicEQRatio}
                 dynamicEQThreshold={channel.dynamicEQThreshold}
+                onChange={onChange}
               />
             </Col>
           );

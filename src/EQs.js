@@ -7,32 +7,40 @@ import EQList from './EQList';
 class EQs extends Component {
   shouldComponentUpdate(nextProps) {
     const {channels, blocking} = this.props;
-    return !isEqual(channels, nextProps.channels) || blocking !== nextProps.blocking;
+    return (
+      !isEqual(channels, nextProps.channels) || blocking !== nextProps.blocking
+    );
   }
 
   render() {
     const {channels, group, onChange, blocking} = this.props;
 
     return (
-      <Tabs defaultActiveKey={Object.keys(channels)[0]} id="equalizers" animation={false}>
-
+      <Tabs
+        defaultActiveKey={Object.keys(channels)[0]}
+        id="equalizers"
+        animation={false}
+      >
         {Object.keys(channels).map(channelId => {
           return (
             <Tab
               key={channelId}
-              title={channels[channelId].channelName ?
-                    `${channelId}. ${channels[channelId].channelName}` :
-                    `Input ${channelId}`}
+              title={
+                channels[channelId].channelName
+                  ? `${channelId}. ${channels[channelId].channelName}`
+                  : `Input ${channelId}`
+              }
               eventKey={channelId}
             >
               <EQList
                 channel={channels[channelId]}
                 group={group}
                 channelId={channelId}
-                onChange={onChange}
                 blocking={blocking}
+                onChange={onChange}
               />
-            </Tab>);
+            </Tab>
+          );
         })}
       </Tabs>
     );

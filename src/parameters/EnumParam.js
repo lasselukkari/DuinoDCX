@@ -2,7 +2,8 @@ import React, {Component} from 'react';
 import {FormControl, FormGroup, ControlLabel} from 'react-bootstrap';
 
 class EnumParam extends Component {
-  handleValueChange = e => { // eslint-disable-line no-undef
+  handleValueChange = e => {
+    // eslint-disable-line no-undef
     const {param, group, channelId, eq, onChange} = this.props;
     onChange({param, group, channelId, eq, value: e.target.value});
   };
@@ -18,9 +19,7 @@ class EnumParam extends Component {
       <FormGroup>
         {includeLabel !== false && (
           <ControlLabel>
-            {name}
-            {' '}
-            {unit && `(${unit})`}
+            {name} {unit && `(${unit})`}
           </ControlLabel>
         )}
         <FormControl
@@ -31,10 +30,8 @@ class EnumParam extends Component {
           onChange={this.handleValueChange}
         >
           {enums.map(enumeral => (
-            <option key={enumeral}>
-              {enumeral}
-            </option>
-))}
+            <option key={enumeral}>{enumeral}</option>
+          ))}
         </FormControl>
       </FormGroup>
     );

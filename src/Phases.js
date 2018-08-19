@@ -21,11 +21,11 @@ class Phases extends Component {
               <Phase
                 key={channelId}
                 group={group}
-                onChange={onChange}
                 channelId={channelId}
                 channelName={channelName}
                 polarity={polarity}
                 phase={phase}
+                onChange={onChange}
               />
             </Col>
           );

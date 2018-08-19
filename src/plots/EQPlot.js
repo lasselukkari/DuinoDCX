@@ -14,7 +14,7 @@ class EQPlot extends PureComponent {
     const values = Object.keys(channels).map(key => {
       const tf = new TransferFunction(frequencyPoints);
 
-      const eqs = channels[key].eqs;
+      const {eqs} = channels[key];
       Object.keys(eqs).forEach(eqsKey => {
         const eq = eqs[eqsKey];
         if (channels[key].eQ === true && eq.eQGain !== 0) {
@@ -42,7 +42,9 @@ class EQPlot extends PureComponent {
 
       return {
         data: tf.getMagnitude(),
-        channel: channels[key].channelName ? `${key}. ${channels[key].channelName}` : `Input ${key}`
+        channel: channels[key].channelName
+          ? `${key}. ${channels[key].channelName}`
+          : `Input ${key}`
       };
     });
     return frequencyPoints.map((hz, index) => {
@@ -56,7 +58,9 @@ class EQPlot extends PureComponent {
 
   /* eslint-disable no-undef */
   formatTooltip = magnitude => `${magnitude.toFixed(2)} dB`;
+
   formatTic = tick => Math.round(tick);
+
   formatLabel = frequency => `${Math.round(frequency)} Hz`;
   /* eslint-enable no-undef */
 
@@ -92,8 +96,8 @@ class EQPlot extends PureComponent {
         height={height}
         margin={{top: 20, right: 30, bottom: 5, left: -30}}
       >
-        <XAxis dataKey="hz" tickFormatter={this.formatTic}/>
-        <YAxis type="number" domain={[-20, 20]} allowDataOverflow/>
+        <XAxis dataKey="hz" tickFormatter={this.formatTic} />
+        <YAxis allowDataOverflow type="number" domain={[-20, 20]} />
         <Tooltip
           labelFormatter={this.formatLabel}
           formatter={this.formatTooltip}
@@ -104,9 +108,9 @@ class EQPlot extends PureComponent {
             type="monotone"
             tickFormatterkey={channelId}
             dataKey={
-              channels[channelId].channelName ?
-                `${channelId}. ${channels[channelId].channelName}` :
-                `Input ${channelId}`
+              channels[channelId].channelName
+                ? `${channelId}. ${channels[channelId].channelName}`
+                : `Input ${channelId}`
             }
             dot={false}
             strokeWidth={3}

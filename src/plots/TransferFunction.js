@@ -3,7 +3,9 @@ import mathjs from 'mathjs';
 class TransferFunction {
   constructor(frequencyPoints) {
     this.frequencyPoints = frequencyPoints;
-    this.transferFunction = this.frequencyPoints.map(() => mathjs.complex(1, 0));
+    this.transferFunction = this.frequencyPoints.map(() =>
+      mathjs.complex(1, 0)
+    );
   }
 
   static generateFrequencyPoints(startFrequency, endFrequency, count) {
@@ -11,7 +13,7 @@ class TransferFunction {
     for (let i = 0; i < count; i++) {
       const frequency =
         mathjs.log10(startFrequency) +
-        (i * mathjs.log10(endFrequency / startFrequency) / (count - 1));
+        (i * mathjs.log10(endFrequency / startFrequency)) / (count - 1);
       freqData[i] = mathjs.pow(10, frequency);
     }
 
@@ -28,7 +30,10 @@ class TransferFunction {
         const giveMeName = mathjs.add(mathjs.divide(s, w0), 1);
 
         if (isHighPass) {
-          return mathjs.multiply(mathjs.divide(1, giveMeName), mathjs.divide(s, w0));
+          return mathjs.multiply(
+            mathjs.divide(1, giveMeName),
+            mathjs.divide(s, w0)
+          );
         }
         return mathjs.divide(1, giveMeName);
       })
@@ -45,7 +50,10 @@ class TransferFunction {
         const giveMeName = mathjs.divide(
           mathjs.pow(w0, 2),
           mathjs.add(
-            mathjs.add(mathjs.pow(s, 2), mathjs.divide(mathjs.multiply(s, w0), Q)),
+            mathjs.add(
+              mathjs.pow(s, 2),
+              mathjs.divide(mathjs.multiply(s, w0), Q)
+            ),
             mathjs.pow(w0, 2)
           )
         );
@@ -74,13 +82,15 @@ class TransferFunction {
   }
 
   static multiplyVectors(points1, points2) {
-    return points1.map((point, index) => mathjs.multiply(point, points2[index]));
+    return points1.map((point, index) =>
+      mathjs.multiply(point, points2[index])
+    );
   }
 
   getGroupDelay() {
     const angle = this.getAngle();
     const angUw = TransferFunction.unwrapPhase(angle).map(
-      num => num * 1000 / 360
+      num => (num * 1000) / 360
     );
 
     const diff = [];
@@ -102,7 +112,7 @@ class TransferFunction {
       if (angle[j] - angle[j - 1] > 180) {
         wrapcount++;
       }
-      angleNew[j] = angle[j] - (wrapcount * 360);
+      angleNew[j] = angle[j] - wrapcount * 360;
     }
     return angleNew;
   }
@@ -112,7 +122,7 @@ class TransferFunction {
     const temp3 = mathjs.divide(g, 40);
     const K = mathjs.pow(10, temp3);
     const A = w0 / q / K;
-    const B = K * w0 / q;
+    const B = (K * w0) / q;
 
     this.apply(
       this.frequencyPoints.map(frequenzy => {
@@ -152,7 +162,8 @@ class TransferFunction {
 
         if (gain > 0) {
           return mathjs.divide(nom, denom); // Boost
-        } else if (gain < 0) {
+        }
+        if (gain < 0) {
           return mathjs.divide(denom, nom); // Cut
         }
         return 1;
@@ -191,7 +202,8 @@ class TransferFunction {
         const denom = mathjs.add(temp6, mathjs.pow(w0, 2));
         if (gain > 0) {
           return mathjs.divide(nom, denom); // Boost
-        } else if (gain < 0) {
+        }
+        if (gain < 0) {
           return mathjs.divide(denom, nom); // Cut
         }
         return 1;

@@ -8,13 +8,12 @@ class OutputSource extends Component {
     const {channel} = this.props;
     return !isEqual(channel, nextProps.channel);
   }
+
   render() {
     const {channelName, source, channelId, onChange, group} = this.props;
     return (
       <div>
-        <h5>
-          {channelName ? channelId + '. ' + channelName : channelId}
-        </h5>
+        <h5>{channelName ? channelId + '. ' + channelName : channelId}</h5>
         <pc.Source
           value={source}
           group={group}

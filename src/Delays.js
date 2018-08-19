@@ -24,11 +24,11 @@ class Delays extends Component {
                 channel
                 group={group}
                 channelId={channelId}
-                onChange={onChange}
                 delay={channel.delay}
                 shortDelay={channel.shortDelay}
                 longDelay={channel.longDelay}
                 channelName={channel.channelName}
+                onChange={onChange}
               />
             </Col>
           );

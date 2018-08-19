@@ -142,7 +142,7 @@ class Credentials extends PureComponent {
       apPassword,
       mdnsHost,
       loadingDone
-      } = this.state;
+    } = this.state;
 
     if (!loadingDone) {
       return this.loadingSpinner();
@@ -200,9 +200,9 @@ class Credentials extends PureComponent {
         </FormGroup>
         <FormGroup
           validationState={
-            apPassword.length >= 8 && apPassword.length < 32 ?
-              'success' :
-              'error'
+            apPassword.length >= 8 && apPassword.length < 32
+              ? 'success'
+              : 'error'
           }
         >
           <Col componentClass={ControlLabel} md={4}>

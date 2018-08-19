@@ -2,7 +2,8 @@ import React, {Component} from 'react';
 import {ControlLabel, FormGroup, Button, Form} from 'react-bootstrap';
 
 class BoolParam extends Component {
-  handleClick = () => { // eslint-disable-line no-undef
+  handleClick = () => {
+    // eslint-disable-line no-undef
     const {param, group, channelId, eq, onChange, value} = this.props;
     onChange({param, group, channelId, eq, value: !value});
   };
@@ -13,12 +14,7 @@ class BoolParam extends Component {
   }
 
   render() {
-    const {
-      name,
-      value,
-      inverted,
-      includeLabel
-    } = this.props;
+    const {name, value, inverted, includeLabel} = this.props;
     const onColor = inverted ? 'danger' : 'success';
 
     return (
@@ -27,7 +23,7 @@ class BoolParam extends Component {
           {includeLabel !== false && (
             <ControlLabel>
               {name}
-              <br/>
+              <br />
             </ControlLabel>
           )}
 

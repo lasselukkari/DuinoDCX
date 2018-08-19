@@ -9,7 +9,9 @@ import EQ from './EQ';
 class EQs extends Component {
   shouldComponentUpdate(nextProps) {
     const {channel, blocking} = this.props;
-    return !isEqual(channel, nextProps.channel) || blocking !== nextProps.blocking;
+    return (
+      !isEqual(channel, nextProps.channel) || blocking !== nextProps.blocking
+    );
   }
 
   render() {
@@ -40,12 +42,22 @@ class EQs extends Component {
 
     return (
       <div>
-        <Panel header={`Frequency Response: ${channel.channelName ? `${channel.channelName}` : `Input ${channelId}`}`}>
-          <EQPlot channels={{[channelId]: channel}}/>
+        <Panel
+          header={`Frequency Response: ${
+            channel.channelName
+              ? `${channel.channelName}`
+              : `Input ${channelId}`
+          }`}
+        >
+          <EQPlot channels={{[channelId]: channel}} />
         </Panel>
         <BlockUi blocking={blocking}>
           <Panel
-            header={channel.channelName ? `${channelId}. ${channel.channelName} Equalizer` : `Input ${channelId} Equalizer`}
+            header={
+              channel.channelName
+                ? `${channelId}. ${channel.channelName} Equalizer`
+                : `Input ${channelId} Equalizer`
+            }
           >
             <pc.EQ
               value={eQ}
@@ -59,7 +71,6 @@ class EQs extends Component {
             return (
               <EQ
                 key={group + channelId + eq.id}
-                onChange={onChange}
                 group={group}
                 eq={eq}
                 id={eq.id}
@@ -69,6 +80,7 @@ class EQs extends Component {
                 eqQ={eqQ}
                 eQShelving={eQShelving}
                 eQGain={eQGain}
+                onChange={onChange}
               />
             );
           })}
