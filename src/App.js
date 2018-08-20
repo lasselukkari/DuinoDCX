@@ -247,7 +247,7 @@ class App extends Component {
     return (
       <Modal show={showModal === 'connection'} onHide={this.handleModalClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Wifi Setups</Modal.Title>
+          <Modal.Title>Wifi Setup</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Connection />
