@@ -52,44 +52,36 @@ class App extends Component {
   }
 
   handleBlockingChange = () => {
-    // eslint-disable-line no-undef
     this.setState(({blocking}) => ({blocking: !blocking}));
   };
 
   handleDeviceUpdate = data => {
-    // eslint-disable-line no-undef
     const {device} = this.state;
     this.manager.updateDevice(device.id, data);
   };
 
   handlePageChange = page => {
-    // eslint-disable-line no-undef
     this.setState({page});
     window.scrollTo(0, 0);
   };
 
   handleDeviceSelect = selectedDevice => {
-    // eslint-disable-line no-undef
     this.manager.selectedDevice = selectedDevice;
   };
 
   handleModalClose = () => {
-    // eslint-disable-line no-undef
     this.setState({showModal: false});
   };
 
   handleShowConnection = () => {
-    // eslint-disable-line no-undef
     this.setState({showModal: 'connection'});
   };
 
   handleShowUpload = () => {
-    // eslint-disable-line no-undef
     this.setState({showModal: 'upload'});
   };
 
   handleShowCredentials = () => {
-    // eslint-disable-line no-undef
     this.setState({showModal: 'credentials'});
   };
 

@@ -3,7 +3,6 @@ import {FormControl, FormGroup, ControlLabel} from 'react-bootstrap';
 
 class EnumParam extends Component {
   handleValueChange = e => {
-    // eslint-disable-line no-undef
     const {param, group, channelId, eq, onChange} = this.props;
     onChange({param, group, channelId, eq, value: e.target.value});
   };

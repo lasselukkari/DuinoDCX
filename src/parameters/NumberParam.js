@@ -21,29 +21,17 @@ const handle = props => {
 };
 
 class NumberParam extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {value: props.value};
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    const {value: propsValue} = this.props;
-    const {value: stateValue} = this.state;
-    return propsValue !== nextProps.value || stateValue !== nextState.value;
-  }
-
-  componentWillReceiveProps({value}) {
-    this.setState({value});
+  shouldComponentUpdate(nextProps) {
+    const {value} = this.props;
+    return value !== nextProps.value;
   }
 
   handleValueChange = value => {
-    // eslint-disable-line no-undef
     const {param, group, channelId, eq, onChange} = this.props;
     onChange({param, group, channelId, eq, value});
   };
 
   handleReduction = () => {
-    // eslint-disable-line no-undef
     const {
       value,
       min,
@@ -60,7 +48,6 @@ class NumberParam extends Component {
   };
 
   handleAddition = () => {
-    // eslint-disable-line no-undef
     const {
       value,
       max,
@@ -76,14 +63,9 @@ class NumberParam extends Component {
     }
   };
 
-  handleSliderChange = value => {
-    // eslint-disable-line no-undef
-    this.setState({value});
-  };
-
   render() {
     const {name, unit, value, min, max, step, includeLabel} = this.props;
-    const {value: stateValue} = this.state;
+
     const marks = {
       [min.toString()]: {
         style: {
@@ -139,14 +121,14 @@ class NumberParam extends Component {
         </div>
         <div className="slider-container">
           <Slider
-            handleStyle={handlerStyle}
-            value={stateValue}
-            step={step}
-            min={min}
-            max={max}
-            marks={marks}
+            key={value}
+            defaultValue={value}
             handle={handle}
-            onChange={this.handleSliderChange}
+            handleStyle={handlerStyle}
+            marks={marks}
+            max={max}
+            min={min}
+            step={step}
             onAfterChange={this.handleValueChange}
           />
         </div>

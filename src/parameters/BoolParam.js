@@ -3,7 +3,6 @@ import {ControlLabel, FormGroup, Button, Form} from 'react-bootstrap';
 
 class BoolParam extends Component {
   handleClick = () => {
-    // eslint-disable-line no-undef
     const {param, group, channelId, eq, onChange, value} = this.props;
     onChange({param, group, channelId, eq, value: !value});
   };
