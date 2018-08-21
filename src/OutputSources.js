@@ -14,22 +14,25 @@ class OutputSources extends Component {
     const {channels, group, onChange, xs, sm, md, lg} = this.props;
 
     return (
-      <Panel header="Output source">
-        {Object.keys(channels).map(channelId => {
-          const {channelName, source} = channels[channelId];
-          return (
-            <Col key={channelId} xs={xs} sm={sm} md={md} lg={lg}>
-              <OutputSource
-                key={channelId}
-                group={group}
-                channelId={channelId}
-                channelName={channelName}
-                source={source}
-                onChange={onChange}
-              />
-            </Col>
-          );
-        })}
+      <Panel>
+        <Panel.Heading>Output source</Panel.Heading>
+        <Panel.Body>
+          {Object.keys(channels).map(channelId => {
+            const {channelName, source} = channels[channelId];
+            return (
+              <Col key={channelId} xs={xs} sm={sm} md={md} lg={lg}>
+                <OutputSource
+                  key={channelId}
+                  group={group}
+                  channelId={channelId}
+                  channelName={channelName}
+                  source={source}
+                  onChange={onChange}
+                />
+              </Col>
+            );
+          })}
+        </Panel.Body>
       </Panel>
     );
   }

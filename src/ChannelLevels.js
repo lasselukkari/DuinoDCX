@@ -210,25 +210,31 @@ class ChannelLevels extends Component {
               Mute All
             </Button>
           </div>
-          <Panel header="Input Gains">
-            <Gains
-              group="inputs"
-              channels={inputs}
-              xs={12}
-              sm={12}
-              md={12}
-              onChange={onChange}
-            />
+          <Panel>
+            <Panel.Heading>Input Gains</Panel.Heading>
+            <Panel.Body>
+              <Gains
+                group="inputs"
+                channels={inputs}
+                xs={12}
+                sm={12}
+                md={12}
+                onChange={onChange}
+              />
+            </Panel.Body>
           </Panel>
-          <Panel header="Output Gains">
-            <Gains
-              group="outputs"
-              channels={outputs}
-              xs={12}
-              sm={12}
-              md={12}
-              onChange={onChange}
-            />
+          <Panel>
+            <Panel.Heading>Output Gains</Panel.Heading>
+            <Panel.Body>
+              <Gains
+                group="outputs"
+                channels={outputs}
+                xs={12}
+                sm={12}
+                md={12}
+                onChange={onChange}
+              />
+            </Panel.Body>
           </Panel>
         </BlockUi>
       </div>

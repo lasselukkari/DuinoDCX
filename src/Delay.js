@@ -15,33 +15,36 @@ class Delay extends PureComponent {
     } = this.props;
 
     return (
-      <Panel
-        header={
-          channelName ? `${channelId} . ${channelName}` : `Channel ${channelId}`
-        }
-      >
-        <pc.Delay
-          value={delay}
-          group={group}
-          channelId={channelId}
-          onChange={onChange}
-        />
-        {group === 'outputs' && (
-          <pc.ShortDelay
-            includeLabel
-            value={shortDelay}
+      <Panel>
+        <Panel.Heading>
+          {channelName
+            ? `${channelId} . ${channelName}`
+            : `Channel ${channelId}`}
+        </Panel.Heading>
+        <Panel.Body>
+          <pc.Delay
+            value={delay}
             group={group}
             channelId={channelId}
             onChange={onChange}
           />
-        )}
-        <pc.LongDelay
-          includeLabel
-          value={longDelay}
-          group={group}
-          channelId={channelId}
-          onChange={onChange}
-        />
+          {group === 'outputs' && (
+            <pc.ShortDelay
+              includeLabel
+              value={shortDelay}
+              group={group}
+              channelId={channelId}
+              onChange={onChange}
+            />
+          )}
+          <pc.LongDelay
+            includeLabel
+            value={longDelay}
+            group={group}
+            channelId={channelId}
+            onChange={onChange}
+          />
+        </Panel.Body>
       </Panel>
     );
   }

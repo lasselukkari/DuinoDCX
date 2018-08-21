@@ -28,8 +28,11 @@ class Outputs extends Component {
         <Tabs defaultActiveKey="eqs" id="input-eqs" animation={false}>
           <br />
           <Tab title="EQ" bsStyle="primary" eventKey="eqs">
-            <Panel bsSize="small" header="EQ Frequency Response: All Outputs">
-              <EQPlot channels={channels} />
+            <Panel>
+              <Panel.Heading>EQ Frequency Response: All Outputs</Panel.Heading>
+              <Panel.Body>
+                <EQPlot channels={channels} />
+              </Panel.Body>
             </Panel>
             <EQs
               blocking={blocking}
@@ -64,8 +67,11 @@ class Outputs extends Component {
             </BlockUi>
           </Tab>
           <Tab title="Crossover" bsStyle="primary" eventKey="crossover">
-            <Panel bsSize="small" header="Crossover Frequency Response">
-              <CrossoverPlot channels={channels} />
+            <Panel>
+              <Panel.Heading>Crossover Frequency Response</Panel.Heading>
+              <Panel.Body>
+                <CrossoverPlot channels={channels} />
+              </Panel.Body>
             </Panel>
             <BlockUi blocking={blocking}>
               <Crossovers

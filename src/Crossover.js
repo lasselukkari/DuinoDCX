@@ -17,39 +17,42 @@ class Crossover extends PureComponent {
     } = this.props;
 
     return (
-      <Panel
-        header={
-          channelName ? `${channelId} . ${channelName}` : `Channel ${channelId}`
-        }
-      >
-        <pc.HighpassFilter
-          includeLabel
-          value={highpassFilter}
-          group={group}
-          channelId={channelId}
-          onChange={onChange}
-        />
-        <pc.HighpassFrequency
-          includeLabel
-          value={highpassFrequency}
-          group={group}
-          channelId={channelId}
-          onChange={onChange}
-        />
-        <pc.LowpassFilter
-          includeLabel
-          value={lowpassFilter}
-          group={group}
-          channelId={channelId}
-          onChange={onChange}
-        />
-        <pc.LowpassFrequency
-          includeLabel
-          value={lowpassFrequency}
-          group={group}
-          channelId={channelId}
-          onChange={onChange}
-        />
+      <Panel>
+        <Panel.Heading>
+          {channelName
+            ? `${channelId} . ${channelName}`
+            : `Channel ${channelId}`}
+        </Panel.Heading>
+        <Panel.Body>
+          <pc.HighpassFilter
+            includeLabel
+            value={highpassFilter}
+            group={group}
+            channelId={channelId}
+            onChange={onChange}
+          />
+          <pc.HighpassFrequency
+            includeLabel
+            value={highpassFrequency}
+            group={group}
+            channelId={channelId}
+            onChange={onChange}
+          />
+          <pc.LowpassFilter
+            includeLabel
+            value={lowpassFilter}
+            group={group}
+            channelId={channelId}
+            onChange={onChange}
+          />
+          <pc.LowpassFrequency
+            includeLabel
+            value={lowpassFrequency}
+            group={group}
+            channelId={channelId}
+            onChange={onChange}
+          />
+        </Panel.Body>
       </Panel>
     );
   }
