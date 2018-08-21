@@ -160,7 +160,7 @@ class App extends Component {
     const {showModal} = this.state;
     return (
       <Nav pullRight activeKey={showModal}>
-        <NavDropdown title={<Glyphicon glyph="cog" />} id="basic-nav-dropdown">
+        <NavDropdown noCaret title={<Glyphicon glyph="cog" />} id="basic-nav-dropdown">
           <MenuItem eventKey="connection" onSelect={this.handleShowConnection}>
             Wifi Setup
           </MenuItem>

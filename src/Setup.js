@@ -46,68 +46,74 @@ class Setup extends Component {
           <Tab title="Inputs" eventKey="inputs">
             <BlockUi blocking={blocking}>
               <Panel>
-                <Row>
-                  <Col xs={6}>
-                    <pc.InputABSource
-                      includeLabel
-                      value={inputABSource}
-                      onChange={onChange}
-                    />
-                  </Col>
-                  <Col xs={6}>
-                    <pc.InputCGain
-                      includeLabel
-                      value={inputCGain}
-                      onChange={onChange}
-                    />
-                  </Col>
-                </Row>
-                <Row>
-                  <Col xs={6}>
-                    <pc.Stereolink
-                      includeLabel
-                      value={stereolink}
-                      onChange={onChange}
-                    />
-                  </Col>
-                  <Col xs={6}>
-                    <pc.StereolinkMode
-                      includeLabel
-                      value={stereolinkMode}
-                      onChange={onChange}
-                    />
-                  </Col>
-                </Row>
+                <Panel.Heading>Input Setup</Panel.Heading>
+                <Panel.Body>
+                  <Row>
+                    <Col xs={6}>
+                      <pc.InputABSource
+                        includeLabel
+                        value={inputABSource}
+                        onChange={onChange}
+                      />
+                    </Col>
+                    <Col xs={6}>
+                      <pc.InputCGain
+                        includeLabel
+                        value={inputCGain}
+                        onChange={onChange}
+                      />
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col xs={6}>
+                      <pc.Stereolink
+                        includeLabel
+                        value={stereolink}
+                        onChange={onChange}
+                      />
+                    </Col>
+                    <Col xs={6}>
+                      <pc.StereolinkMode
+                        includeLabel
+                        value={stereolinkMode}
+                        onChange={onChange}
+                      />
+                    </Col>
+                  </Row>
+                </Panel.Body>
               </Panel>
             </BlockUi>
           </Tab>
           <Tab title="Outputs" eventKey="ouputs">
             <BlockUi blocking={blocking}>
               <Panel>
-                <Row>
-                  <Col xs={12} sm={4}>
-                    <pc.MuteOutsWhenPowered
-                      includeLabel
-                      value={muteOutsWhenPowered}
-                      onChange={onChange}
-                    />
-                  </Col>
-                  <Col xs={12} sm={4}>
-                    <pc.OutputConfig
-                      includeLabel
-                      value={outputConfig}
-                      onChange={onChange}
-                    />
-                  </Col>
+                <Panel.Heading>Output Setup</Panel.Heading>
+                <Panel.Body>
+                  <Row>
+                    <Col xs={12} sm={4}>
+                      <pc.MuteOutsWhenPowered
+                        includeLabel
+                        value={muteOutsWhenPowered}
+                        onChange={onChange}
+                      />
+                    </Col>
+                    <Col xs={12} sm={4}>
+                      <pc.OutputConfig
+                        includeLabel
+                        value={outputConfig}
+                        onChange={onChange}
+                      />
+                    </Col>
 
-                  <Col xs={12} sm={4}>
-                    <pc.CrossoverLink
-                      includeLabel
-                      value={crossoverLink}
-                      onChange={onChange}
-                    />
-                  </Col>
-                </Row>
+                    <Col xs={12} sm={4}>
+                      <pc.CrossoverLink
+                        includeLabel
+                        value={crossoverLink}
+                        onChange={onChange}
+                      />
+                    </Col>
+                  </Row>
+                </Panel.Body>
               </Panel>
               <OutputSources
                 group="outputs"
@@ -130,58 +136,64 @@ class Setup extends Component {
           <Tab title="Sum" eventKey="sum">
             <BlockUi blocking={blocking}>
               <Panel>
-                <pc.InputSumType
-                  includeLabel
-                  value={inputSumType}
-                  onChange={onChange}
-                />
-                <pc.InputASumGain
-                  includeLabel
-                  value={inputASumGain}
-                  onChange={onChange}
-                />
-                <pc.InputBSumGain
-                  includeLabel
-                  value={inputBSumGain}
-                  onChange={onChange}
-                />
-                <pc.InputCSumGain
-                  includeLabel
-                  value={inputCSumGain}
-                  onChange={onChange}
-                />
+                <Panel.Heading>Sum Setup</Panel.Heading>
+                <Panel.Body>
+                  <pc.InputSumType
+                    includeLabel
+                    value={inputSumType}
+                    onChange={onChange}
+                  />
+                  <pc.InputASumGain
+                    includeLabel
+                    value={inputASumGain}
+                    onChange={onChange}
+                  />
+                  <pc.InputBSumGain
+                    includeLabel
+                    value={inputBSumGain}
+                    onChange={onChange}
+                  />
+                  <pc.InputCSumGain
+                    includeLabel
+                    value={inputCSumGain}
+                    onChange={onChange}
+                  />
+                </Panel.Body>
               </Panel>
             </BlockUi>
           </Tab>
           <Tab title="Delay Config" eventKey="delaySetup">
             <BlockUi blocking={blocking}>
               <Panel>
-                <Row>
-                  <Col xs={6}>
-                    <pc.DelayLink
-                      includeLabel
-                      value={delayLink}
-                      onChange={onChange}
-                    />
-                  </Col>
-                  <Col xs={6}>
-                    <pc.DelayCorrection
-                      includeLabel
-                      value={delayCorrection}
-                      onChange={onChange}
-                    />
-                  </Col>
-                </Row>
-                <pc.AirTemperature
-                  includeLabel
-                  value={airTemperature}
-                  onChange={onChange}
-                />
-                <pc.DelayUnits
-                  includeLabel
-                  value={delayUnits}
-                  onChange={onChange}
-                />
+                <Panel.Heading>Delay Config</Panel.Heading>
+                <Panel.Body>
+                  <Row>
+                    <Col xs={6}>
+                      <pc.DelayLink
+                        includeLabel
+                        value={delayLink}
+                        onChange={onChange}
+                      />
+                    </Col>
+                    <Col xs={6}>
+                      <pc.DelayCorrection
+                        includeLabel
+                        value={delayCorrection}
+                        onChange={onChange}
+                      />
+                    </Col>
+                  </Row>
+                  <pc.AirTemperature
+                    includeLabel
+                    value={airTemperature}
+                    onChange={onChange}
+                  />
+                  <pc.DelayUnits
+                    includeLabel
+                    value={delayUnits}
+                    onChange={onChange}
+                  />
+                </Panel.Body>
               </Panel>
             </BlockUi>
           </Tab>

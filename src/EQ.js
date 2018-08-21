@@ -18,59 +18,62 @@ class EQ extends PureComponent {
     } = this.props;
 
     return (
-      <Panel header={`Equalizer ${id}`}>
-        <Row>
-          <Col xs={12} sm={4}>
-            <pc.EQType
-              includeLabel
-              value={eQType}
-              eq={id}
-              group={group}
-              channelId={channelId}
-              onChange={onChange}
-            />
-          </Col>
-          <Col xs={12} sm={4}>
-            <pc.EQFrequency
-              includeLabel
-              value={eQFrequency}
-              eq={id}
-              group={group}
-              channelId={channelId}
-              onChange={onChange}
-            />
-          </Col>
-          <Col xs={12} sm={4}>
-            {eQType === 'Bandpass' && (
-              <pc.EQQ
+      <Panel>
+        <Panel.Heading>{`Equalizer ${id}`}</Panel.Heading>
+        <Panel.Body>
+          <Row>
+            <Col xs={12} sm={4}>
+              <pc.EQType
                 includeLabel
-                value={eqQ}
+                value={eQType}
                 eq={id}
                 group={group}
                 channelId={channelId}
                 onChange={onChange}
               />
-            )}
-            {eQType !== 'Bandpass' && (
-              <pc.EQShelving
+            </Col>
+            <Col xs={12} sm={4}>
+              <pc.EQFrequency
                 includeLabel
-                value={eQShelving}
+                value={eQFrequency}
                 eq={id}
                 group={group}
                 channelId={channelId}
                 onChange={onChange}
               />
-            )}
-          </Col>
-        </Row>
-        <pc.EQGain
-          includeLabel
-          value={eQGain}
-          eq={id}
-          group={group}
-          channelId={channelId}
-          onChange={onChange}
-        />
+            </Col>
+            <Col xs={12} sm={4}>
+              {eQType === 'Bandpass' && (
+                <pc.EQQ
+                  includeLabel
+                  value={eqQ}
+                  eq={id}
+                  group={group}
+                  channelId={channelId}
+                  onChange={onChange}
+                />
+              )}
+              {eQType !== 'Bandpass' && (
+                <pc.EQShelving
+                  includeLabel
+                  value={eQShelving}
+                  eq={id}
+                  group={group}
+                  channelId={channelId}
+                  onChange={onChange}
+                />
+              )}
+            </Col>
+          </Row>
+          <pc.EQGain
+            includeLabel
+            value={eQGain}
+            eq={id}
+            group={group}
+            channelId={channelId}
+            onChange={onChange}
+          />
+        </Panel.Body>
       </Panel>
     );
   }

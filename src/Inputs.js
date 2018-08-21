@@ -25,8 +25,11 @@ class Inputs extends Component {
         <Tabs defaultActiveKey="eq" id="inputs" animation={false}>
           <br />
           <Tab title="EQ" bsStyle="primary" eventKey="eq">
-            <Panel bsSize="small" header="EQ Frequency Response: All Inputs">
-              <EQPlot channels={channels} />
+            <Panel>
+              <Panel.Heading>EQ Frequency Response: All Inputs</Panel.Heading>
+              <Panel.Body>
+                <EQPlot channels={channels} />
+              </Panel.Body>
             </Panel>
             <EQs
               group="inputs"

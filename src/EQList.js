@@ -42,29 +42,33 @@ class EQs extends Component {
 
     return (
       <div>
-        <Panel
-          header={`Frequency Response: ${
-            channel.channelName
-              ? `${channel.channelName}`
-              : `Input ${channelId}`
-          }`}
-        >
-          <EQPlot channels={{[channelId]: channel}} />
+        <Panel>
+          <Panel.Heading>
+            {`Frequency Response: ${
+              channel.channelName
+                ? `${channel.channelName}`
+                : `Input ${channelId}`
+            }`}
+          </Panel.Heading>
+          <Panel.Body>
+            <EQPlot channels={{[channelId]: channel}} />
+          </Panel.Body>
         </Panel>
         <BlockUi blocking={blocking}>
-          <Panel
-            header={
-              channel.channelName
+          <Panel>
+            <Panel.Heading>
+              {channel.channelName
                 ? `${channelId}. ${channel.channelName} Equalizer`
-                : `Input ${channelId} Equalizer`
-            }
-          >
-            <pc.EQ
-              value={eQ}
-              group={group}
-              channelId={channelId}
-              onChange={onChange}
-            />
+                : `Input ${channelId} Equalizer`}
+            </Panel.Heading>
+            <Panel.Body>
+              <pc.EQ
+                value={eQ}
+                group={group}
+                channelId={channelId}
+                onChange={onChange}
+              />
+            </Panel.Body>
           </Panel>
           {activeEQs.map(eq => {
             const {eQType, eQFrequency, eqQ, eQShelving, eQGain} = eq;
