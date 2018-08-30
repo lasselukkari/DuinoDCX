@@ -86,5 +86,5 @@
       "service-worker.js"
     ]
   },
-  "proxy": "http://192.168.1.182"
+  "proxy": "http://192.168.1.223"
 }

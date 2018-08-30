@@ -2,11 +2,31 @@ import React, {PureComponent} from 'react';
 import Dropzone from 'react-dropzone';
 import Request from 'superagent';
 import {ProgressBar} from 'react-bootstrap';
+import Spinner from 'react-spinkit';
 
 class Upload extends PureComponent {
   constructor() {
     super();
     this.state = {};
+  }
+
+  fetchVersion() {
+    return fetch('/api/version', {credentials: 'same-origin'})
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(response.statusText);
+        }
+
+        return response;
+      })
+      .then(response => response.json())
+      .then(version => {
+        this.setState({version});
+      });
+  }
+
+  componentDidMount() {
+    this.fetchVersion().catch(console.log);
   }
 
   handleDrop = acceptedFiles => {
@@ -49,28 +69,47 @@ class Upload extends PureComponent {
   }
 
   render() {
+    const {version} = this.state;
+
+    if (!version) {
+      return (
+        <Spinner
+          className="text-center"
+          fadeIn="none"
+          name="line-scale"
+          color="#3498DB"
+        />
+      );
+    }
+
     return (
-      <Dropzone
-        disablePreview
-        style={{
-          width: '100%',
-          height: '45px',
-          padding: '10px',
-          borderWidth: 2,
-          borderColor: '#666',
-          borderStyle: 'dashed',
-          borderRadius: 5
-        }}
-        activeStyle={{
-          borderStyle: 'solid',
-          borderColor: '#62C462',
-          backgroundColor: '#3e444c'
-        }}
-        multiple={false}
-        onDrop={this.handleDrop}
-      >
-        {this.statusMessage()}
-      </Dropzone>
+      <div>
+        <Dropzone
+          disablePreview
+          style={{
+            width: '100%',
+            height: '45px',
+            padding: '10px',
+            borderWidth: 2,
+            borderColor: '#666',
+            borderStyle: 'dashed',
+            borderRadius: 5
+          }}
+          activeStyle={{
+            borderStyle: 'solid',
+            borderColor: '#62C462',
+            backgroundColor: '#3e444c'
+          }}
+          multiple={false}
+          onDrop={this.handleDrop}
+        >
+          {this.statusMessage()}
+        </Dropzone>
+        <br />
+        <div className="text-center">
+          Current version: {version.version}, {version.buildDate}
+        </div>
+      </div>
     );
   }
 }
