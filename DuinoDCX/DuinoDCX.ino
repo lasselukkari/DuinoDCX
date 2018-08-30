@@ -7,6 +7,9 @@
 #include "Ultradrive.h"
 #include "StaticFiles.h"
 
+#define VERSION "v0.0.3"
+#define BUILD_DATE __DATE__ " " __TIME__
+
 #define DEFAULT_AUTH "Basic RENYMjQ5NjpVbHRyYWRyaXZl" // DCX2496:Ultradrive in base64
 #define DEFAULT_SOFT_AP_SSID "DCX2496"
 #define DEFAULT_SOFT_AP_PASSWORD "Ultradrive"
@@ -14,6 +17,7 @@
 
 #define RESET_PIN 13
 
+#define WIFI_HOST_NAME "ultradrive"
 #define AUTH_KEY "auth"
 #define SOFT_AP_PASSWORD_KEY "apPassword"
 #define SOFT_AP_SSID_KEY "apSsid"
@@ -121,6 +125,23 @@ void getCredentials(Request &req, Response &res) {
   res.print("\"" MDNS_HOST_KEY "\":");
   res.print("\"");
   res.print(mdnsName);
+  res.print("\"");
+
+  res.print("}");
+}
+
+void getVersion(Request &req, Response &res) {
+  res.success("application/json");
+  res.print("{");
+
+  res.print("\"version\":");
+  res.print("\"");
+  res.print(VERSION);
+  res.print("\", ");
+
+  res.print("\"buildDate\":");
+  res.print("\"");
+  res.print(BUILD_DATE);
   res.print("\"");
 
   res.print("}");
@@ -236,6 +257,7 @@ void createDirectCommand(Request &req, Response &res) {
 void checkWifi(unsigned long now) {
   if (WiFi.status() != WL_CONNECTED && (now - lastReconnect >= RECONNECT_INTERVAL)) {
     WiFi.begin();
+    WiFi.setHostname(WIFI_HOST_NAME);
     lastReconnect = now;
   }
 }
@@ -300,6 +322,7 @@ void setupHttpServer() {
   apiRouter.patch("/credentials", &updateCredentials);
   apiRouter.get("/networks", &getNetworks);
   apiRouter.post("/update", &update);
+  apiRouter.get("/version", &getVersion);
   app.use(&apiRouter);
 
   ServeStatic(&app);
