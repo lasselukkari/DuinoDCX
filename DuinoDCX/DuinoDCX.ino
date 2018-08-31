@@ -163,6 +163,7 @@ void updateCredentials(Request &req, Response &res) {
     } else if (strcmp(name, MDNS_HOST_KEY) == 0) {
       preferences.putString(MDNS_HOST_KEY, value);
     } else {
+      preferences.end();
       return res.fail();
     }
   }
