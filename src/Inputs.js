@@ -10,14 +10,16 @@ import EQs from './EQs';
 
 class Inputs extends Component {
   shouldComponentUpdate(nextProps) {
-    const {blocking, channels} = this.props;
+    const {blocking, channels, setup} = this.props;
     return !(
-      nextProps.blocking === blocking && isEqual(nextProps.channels, channels)
+      nextProps.blocking === blocking &&
+      isEqual(nextProps.channels, channels) &&
+      isEqual(nextProps.setup, setup)
     );
   }
 
   render() {
-    const {channels, onChange, blocking} = this.props;
+    const {channels, setup, onChange, blocking} = this.props;
     return (
       <div>
         <h2>Input Channels</h2>
@@ -58,6 +60,7 @@ class Inputs extends Component {
               <Delays
                 group="inputs"
                 channels={channels}
+                setup={setup}
                 xs={12}
                 onChange={onChange}
               />

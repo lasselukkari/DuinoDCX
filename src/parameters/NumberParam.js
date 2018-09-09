@@ -64,7 +64,16 @@ class NumberParam extends Component {
   };
 
   render() {
-    const {name, unit, value, min, max, step, includeLabel} = this.props;
+    const {
+      name,
+      unit,
+      value,
+      min,
+      max,
+      step,
+      includeLabel,
+      formatter
+    } = this.props;
 
     const marks = {
       [min.toString()]: {
@@ -110,7 +119,10 @@ class NumberParam extends Component {
           </div>
           <div className="slider">
             <h6>
-              Current: {Math.round(value * 10) / 10} {unit}
+              Current:
+              {formatter
+                ? ` ${formatter(value, unit)}`
+                : ` ${Math.round(value * 10) / 10} ${unit ? unit : ''}`}
             </h6>
           </div>
           <div className="max-number">
