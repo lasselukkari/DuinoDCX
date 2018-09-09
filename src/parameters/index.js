@@ -85,6 +85,7 @@ const numberComponent = function({name, unit, min, max, step}, type) {
         channelId,
         eq,
         onChange,
+        formatter,
         includeLabel = false
       } = this.props;
       return (
@@ -101,6 +102,7 @@ const numberComponent = function({name, unit, min, max, step}, type) {
           step={step}
           eq={eq}
           includeLabel={includeLabel}
+          formatter={formatter}
           onChange={onChange}
         />
       );

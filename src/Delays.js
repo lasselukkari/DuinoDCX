@@ -6,12 +6,18 @@ import Delay from './Delay';
 
 class Delays extends Component {
   shouldComponentUpdate(nextProps) {
-    const {channels} = this.props;
-    return !isEqual(channels, nextProps.channels);
+    const {channels, setup} = this.props;
+
+    return !(
+      isEqual(channels, nextProps.channels) &&
+      setup.airTemperature === nextProps.setup.airTemperature &&
+      setup.delayCorrection === nextProps.setup.delayCorrection
+    );
   }
 
   render() {
-    const {channels, group, onChange, xs, sm, md, lg} = this.props;
+    const {channels, setup, group, onChange, xs, sm, md, lg} = this.props;
+    const {airTemperature, delayCorrection} = setup;
 
     return (
       <Row className="show-grid">
@@ -27,6 +33,8 @@ class Delays extends Component {
                 delay={channel.delay}
                 shortDelay={channel.shortDelay}
                 longDelay={channel.longDelay}
+                airTemperature={airTemperature}
+                delayCorrection={delayCorrection}
                 channelName={channel.channelName}
                 onChange={onChange}
               />

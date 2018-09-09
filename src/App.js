@@ -118,6 +118,7 @@ class App extends Component {
         <div style={this.displayIfPage('inputs')}>
           <Inputs
             channels={device.inputs}
+            setup={device.setup}
             blocking={blocking}
             onChange={this.handleDeviceUpdate}
           />
@@ -125,6 +126,7 @@ class App extends Component {
         <div style={this.displayIfPage('outputs')}>
           <Outputs
             channels={device.outputs}
+            setup={device.setup}
             blocking={blocking}
             onChange={this.handleDeviceUpdate}
           />

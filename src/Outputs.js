@@ -13,14 +13,16 @@ import EQPlot from './plots/EQPlot';
 
 class Outputs extends Component {
   shouldComponentUpdate(nextProps) {
-    const {blocking, channels} = this.props;
+    const {blocking, channels, setup} = this.props;
     return !(
-      blocking === nextProps.blocking && isEqual(channels, nextProps.channels)
+      blocking === nextProps.blocking &&
+      isEqual(channels, nextProps.channels) &&
+      isEqual(setup, nextProps.setup)
     );
   }
 
   render() {
-    const {channels, onChange, blocking} = this.props;
+    const {channels, setup, onChange, blocking} = this.props;
     return (
       <div>
         <h2>Output Channels</h2>
@@ -61,6 +63,7 @@ class Outputs extends Component {
               <Delays
                 group="outputs"
                 channels={channels}
+                setup={setup}
                 xs={12}
                 onChange={onChange}
               />
