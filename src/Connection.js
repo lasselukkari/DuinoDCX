@@ -94,7 +94,6 @@ class Connection extends Component {
       .then(response => response.json())
       .then(connection => {
         this.setState({...connection, selected: connection.current});
-        this.pollWifi();
       })
       .catch(() => {
         toast.error(`Could not connect to network ${selected}`, {
