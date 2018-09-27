@@ -23,8 +23,8 @@
     "lodash.clonedeep": "^4.5.0",
     "lodash.isequal": "^4.5.0",
     "mathjs": "^3.16.4",
-    "rc-slider": "^8.5.0",
-    "rc-tooltip": "^3.7.0",
+    "rc-slider": "^8.6.3",
+    "rc-tooltip": "^3.7.3",
     "react": "^16.4.2",
     "react-block-ui": "^1.1.1",
     "react-bootstrap": "^0.32.3",
@@ -86,5 +86,5 @@
       "service-worker.js"
     ]
   },
-  "proxy": "http://192.168.1.223"
+  "proxy": "http://192.168.1.72"
 }

@@ -1,24 +1,10 @@
 import React, {Component} from 'react';
 import {FormGroup, ControlLabel, Button, Glyphicon} from 'react-bootstrap';
-import Slider, {Handle} from 'rc-slider';
-import Tooltip from 'rc-tooltip';
+import Slider, { createSliderWithTooltip } from 'rc-slider';
 import './NumberParam.css'; // eslint-disable-line import/no-unassigned-import
 import 'rc-slider/assets/index.css'; // eslint-disable-line import/no-unassigned-import
 
-const handle = props => {
-  const {value, dragging, index, ...restProps} = props;
-  return (
-    <Tooltip
-      key={index}
-      prefixCls="rc-slider-tooltip"
-      overlay={value}
-      visible={dragging}
-      placement="top"
-    >
-      <Handle value={value} {...restProps} />
-    </Tooltip>
-  );
-};
+const SliderWithTooltip = createSliderWithTooltip(Slider);
 
 class NumberParam extends Component {
   shouldComponentUpdate(nextProps) {
@@ -72,7 +58,7 @@ class NumberParam extends Component {
       max,
       step,
       includeLabel,
-      formatter
+      formatter = (value, unit) => `${Math.round(value * 10) / 10} ${unit ? unit : ''}`
     } = this.props;
 
     const marks = {
@@ -119,10 +105,7 @@ class NumberParam extends Component {
           </div>
           <div className="slider">
             <h6>
-              Current:
-              {formatter
-                ? ` ${formatter(value, unit)}`
-                : ` ${Math.round(value * 10) / 10} ${unit ? unit : ''}`}
+              Current: {formatter(value, unit)}
             </h6>
           </div>
           <div className="max-number">
@@ -132,16 +115,16 @@ class NumberParam extends Component {
           </div>
         </div>
         <div className="slider-container">
-          <Slider
+          <SliderWithTooltip
             key={value}
             defaultValue={value}
-            handle={handle}
             handleStyle={handlerStyle}
             marks={marks}
             max={max}
             min={min}
             step={step}
             onAfterChange={this.handleValueChange}
+            tipFormatter={value => formatter(value, unit)}
           />
         </div>
       </FormGroup>
