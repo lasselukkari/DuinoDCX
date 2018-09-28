@@ -56,7 +56,7 @@ Run `npm run build` and then `npm run dist`
 
 The dist command will read the minified files from the `build` dir and then rewrites the gzipped hex payloads for the static files to `DuinoDCX/StaticFiles.h` file.
 
-Open the `DuinoDCX/DuinoDCX.ino` Arduino sketch file using Arduino IDE and upload the project to the microcontroller.
+Open the `DuinoDCX/DuinoDCX.ino` Arduino sketch file using Arduino IDE. Set the Partition Scheme to Minimal SPIFFS (Large apps with OTA) and upload the project to the microcontroller.
 
 Precompiled binaires can be uploded using the ESP32 OTAWebUpdater example or using the built in functionality after the initial installation.
 
