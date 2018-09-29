@@ -7,6 +7,9 @@ import Gains from './Gains';
 
 import './ChannelLevels.css'; // eslint-disable-line import/no-unassigned-import
 
+const inputChannels = ['A', 'B', 'C'];
+const outputChannels = ['1', '2', '3', '4', '5', '6'];
+
 class MuteButton extends PureComponent {
   handleClick = () => {
     const {channelId, isMuted, onChange, isOutput} = this.props;
@@ -140,20 +143,20 @@ class ChannelLevels extends Component {
     );
   }
 
-  handleMuteAll = () => {
+  handleMuteAll = value => {
     const {onChange} = this.props;
 
-    const inputs = ['A', 'B', 'C'].map(channelId => ({
+    const inputs = inputChannels.map(channelId => ({
       param: 'mute',
       group: 'inputs',
       channelId,
-      value: true
+      value
     }));
-    const outputs = ['1', '2', '3', '4', '5', '6'].map(channelId => ({
+    const outputs = outputChannels.map(channelId => ({
       param: 'mute',
       group: 'outputs',
       channelId,
-      value: true
+      value
     }));
 
     onChange(inputs.concat(outputs));
@@ -163,6 +166,9 @@ class ChannelLevels extends Component {
     const {device, onChange, blocking} = this.props;
     const {inputs, outputs, state} = device;
     const {channels} = state;
+    const isAnyUnmuted =
+      inputChannels.some(channel => !inputs[channel].mute) ||
+      outputChannels.some(channel => !outputs[channel].mute);
 
     return (
       <div>
@@ -171,7 +177,7 @@ class ChannelLevels extends Component {
         <BlockUi blocking={blocking}>
           <div className="channels-container">
             <div className="channel-group">
-              {['A', 'B', 'C'].map(channelId => {
+              {inputChannels.map(channelId => {
                 const {limited, level} = channels[channelId];
                 const {mute} = inputs[channelId];
                 return (
@@ -187,7 +193,7 @@ class ChannelLevels extends Component {
               })}
             </div>
             <div className="channel-group">
-              {['1', '2', '3', '4', '5', '6'].map(channelId => {
+              {outputChannels.map(channelId => {
                 const {limited, level} = channels[channelId];
                 const {mute} = outputs[channelId];
                 const isOutput = true;
@@ -206,8 +212,13 @@ class ChannelLevels extends Component {
             </div>
             <Clearfix />
             <br />
-            <Button className="center-block" onClick={this.handleMuteAll}>
-              Mute All
+            <Button
+              className="center-block"
+              bsStyle={isAnyUnmuted ? 'default' : 'danger'}
+              style={{width: '100px'}}
+              onClick={() => this.handleMuteAll(isAnyUnmuted)}
+            >
+              {isAnyUnmuted ? 'Mute All' : 'Unmute All'}
             </Button>
           </div>
           <Panel>

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {FormGroup, ControlLabel, Button, Glyphicon} from 'react-bootstrap';
-import Slider, { createSliderWithTooltip } from 'rc-slider';
+import Slider, {createSliderWithTooltip} from 'rc-slider';
 import './NumberParam.css'; // eslint-disable-line import/no-unassigned-import
 import 'rc-slider/assets/index.css'; // eslint-disable-line import/no-unassigned-import
 
@@ -58,7 +58,8 @@ class NumberParam extends Component {
       max,
       step,
       includeLabel,
-      formatter = (value, unit) => `${Math.round(value * 10) / 10} ${unit ? unit : ''}`
+      formatter = (value, unit) =>
+        `${Math.round(value * 10) / 10} ${unit ? unit : ''}`
     } = this.props;
 
     const marks = {
@@ -104,9 +105,7 @@ class NumberParam extends Component {
             </Button>
           </div>
           <div className="slider">
-            <h6>
-              Current: {formatter(value, unit)}
-            </h6>
+            <h6>Current: {formatter(value, unit)}</h6>
           </div>
           <div className="max-number">
             <Button bsSize="small" onClick={this.handleAddition}>
@@ -123,8 +122,8 @@ class NumberParam extends Component {
             max={max}
             min={min}
             step={step}
-            onAfterChange={this.handleValueChange}
             tipFormatter={value => formatter(value, unit)}
+            onAfterChange={this.handleValueChange}
           />
         </div>
       </FormGroup>
