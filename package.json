@@ -9,7 +9,7 @@
   "repository": "github:lasselukkari/DuinoDCX",
   "license": "MIT",
   "devDependencies": {
-    "awot-scripts": "0.0.12",
+    "awot-scripts": "0.0.13",
     "eslint-config-xo-react": "^0.17.0",
     "eslint-plugin-babel": "^4.1.2",
     "eslint-plugin-react": "^7.5.1",
