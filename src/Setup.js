@@ -49,30 +49,21 @@ class Setup extends Component {
                 <Panel.Heading>Input Setup</Panel.Heading>
                 <Panel.Body>
                   <Row>
-                    <Col xs={6}>
+                    <Col xs={12} sm={4}>
                       <pc.InputABSource
                         includeLabel
                         value={inputABSource}
                         onChange={onChange}
                       />
                     </Col>
-                    <Col xs={6}>
+                    <Col xs={12} sm={4}>
                       <pc.InputCGain
                         includeLabel
                         value={inputCGain}
                         onChange={onChange}
                       />
                     </Col>
-                  </Row>
-                  <Row>
-                    <Col xs={6}>
-                      <pc.Stereolink
-                        includeLabel
-                        value={stereolink}
-                        onChange={onChange}
-                      />
-                    </Col>
-                    <Col xs={6}>
+                    <Col xs={12} sm={4}>
                       <pc.StereolinkMode
                         includeLabel
                         value={stereolinkMode}
@@ -97,6 +88,13 @@ class Setup extends Component {
                         onChange={onChange}
                       />
                     </Col>
+                    <Col xs={12} sm={4}>
+                      <pc.Stereolink
+                        includeLabel
+                        value={stereolink}
+                        onChange={onChange}
+                      />
+                    </Col>      
                     <Col xs={12} sm={4}>
                       <pc.OutputConfig
                         includeLabel
