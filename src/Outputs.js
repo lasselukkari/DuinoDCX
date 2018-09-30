@@ -27,8 +27,23 @@ class Outputs extends Component {
       <div>
         <h2>Output Channels</h2>
         <hr />
-        <Tabs defaultActiveKey="eqs" id="input-eqs" animation={false}>
+        <Tabs defaultActiveKey="crossover" id="input-eqs" animation={false}>
           <br />
+          <Tab title="Crossover" bsStyle="primary" eventKey="crossover">
+            <Panel>
+              <Panel.Heading>Crossover Frequency Response</Panel.Heading>
+              <Panel.Body>
+                <CrossoverPlot channels={channels} />
+              </Panel.Body>
+            </Panel>
+            <BlockUi blocking={blocking}>
+              <Crossovers
+                group="outputs"
+                channels={channels}
+                onChange={onChange}
+              />
+            </BlockUi>
+          </Tab>      
           <Tab title="EQ" bsStyle="primary" eventKey="eqs">
             <Panel>
               <Panel.Heading>EQ Frequency Response: All Outputs</Panel.Heading>
@@ -58,32 +73,6 @@ class Outputs extends Component {
               />
             </BlockUi>
           </Tab>
-          <Tab title="Delay" bsStyle="primary" eventKey="delays">
-            <BlockUi blocking={blocking}>
-              <Delays
-                group="outputs"
-                channels={channels}
-                setup={setup}
-                xs={12}
-                onChange={onChange}
-              />
-            </BlockUi>
-          </Tab>
-          <Tab title="Crossover" bsStyle="primary" eventKey="crossover">
-            <Panel>
-              <Panel.Heading>Crossover Frequency Response</Panel.Heading>
-              <Panel.Body>
-                <CrossoverPlot channels={channels} />
-              </Panel.Body>
-            </Panel>
-            <BlockUi blocking={blocking}>
-              <Crossovers
-                group="outputs"
-                channels={channels}
-                onChange={onChange}
-              />
-            </BlockUi>
-          </Tab>
           <Tab title="Limiter" bsStyle="primary" eventKey="limiters">
             <BlockUi blocking={blocking}>
               <Limiters
@@ -105,6 +94,17 @@ class Outputs extends Component {
               />
             </BlockUi>
           </Tab>
+          <Tab title="Delay" bsStyle="primary" eventKey="delays">
+            <BlockUi blocking={blocking}>
+              <Delays
+                group="outputs"
+                channels={channels}
+                setup={setup}
+                xs={12}
+                onChange={onChange}
+              />
+            </BlockUi>
+          </Tab>      
         </Tabs>
       </div>
     );
