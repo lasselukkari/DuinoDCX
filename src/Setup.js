@@ -81,14 +81,14 @@ class Setup extends Component {
                 <Panel.Heading>Output Setup</Panel.Heading>
                 <Panel.Body>
                   <Row>
-                    <Col xs={6}>
+                    <Col xs={12} sm={4}>
                       <pc.MuteOutsWhenPowered
                         includeLabel
                         value={muteOutsWhenPowered}
                         onChange={onChange}
                       />
                     </Col>
-                    <Col xs={6}>
+                    <Col xs={12} sm={4}>
                       <pc.OutputConfig
                         includeLabel
                         value={outputConfig}
@@ -97,14 +97,14 @@ class Setup extends Component {
                     </Col>
                   </Row>
                   <Row>
-                    <Col xs={6}>
+                    <Col xs={12} sm={4}>
                       <pc.Stereolink
                         includeLabel
                         value={stereolink}
                         onChange={onChange}
                       />
                     </Col> 
-                    <Col xs={6}>
+                    <Col xs={12} sm={4}>
                       <pc.CrossoverLink
                         includeLabel
                         value={crossoverLink}
