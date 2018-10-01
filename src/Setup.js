@@ -103,7 +103,7 @@ class Setup extends Component {
                         value={stereolink}
                         onChange={onChange}
                       />
-                    </Col> 
+                    </Col>
                     <Col xs={6}>
                       <pc.CrossoverLink
                         includeLabel

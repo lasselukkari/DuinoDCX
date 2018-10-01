@@ -43,7 +43,7 @@ class Outputs extends Component {
                 onChange={onChange}
               />
             </BlockUi>
-          </Tab>      
+          </Tab>
           <Tab title="EQ" bsStyle="primary" eventKey="eqs">
             <Panel>
               <Panel.Heading>EQ Frequency Response: All Outputs</Panel.Heading>
@@ -104,7 +104,7 @@ class Outputs extends Component {
                 onChange={onChange}
               />
             </BlockUi>
-          </Tab>      
+          </Tab>
         </Tabs>
       </div>
     );
