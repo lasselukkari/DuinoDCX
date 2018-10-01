@@ -337,6 +337,8 @@ void setup() {
   loadPreferences();
 
   WiFi.softAP(softApSsid, softApPassword);
+  WiFi.setAutoReconnect(false);
+
   MDNS.begin(mdnsName);
   MDNS.addService("http", "tcp", 80);
 
