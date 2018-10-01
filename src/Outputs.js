@@ -27,7 +27,7 @@ class Outputs extends Component {
       <div>
         <h2>Output Channels</h2>
         <hr />
-        <Tabs defaultActiveKey="crossover" id="input-eqs" animation={false}>
+        <Tabs defaultActiveKey="crossover" id="outputs" animation={false}>
           <br />
           <Tab title="Crossover" bsStyle="primary" eventKey="crossover">
             <Panel>
