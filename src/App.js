@@ -185,17 +185,25 @@ class App extends Component {
     const {device, blocking} = this.state;
     if (device.ready) {
       return (
-        <Nav
-          activeKey={blocking ? 'blocking' : 'unlocked'}
-          onSelect={this.handleBlockingChange}
+        <Button
+          style={{
+            position: 'fixed',
+            bottom: '15px',
+            right: '15px',
+            width: '60px',
+            height: '60px',
+            zIndex: 1011,
+            textAlign: 'center',
+            fontSize: '24px',
+            boxShadow: '0 0 10px rgba(0, 0, 0, 0.6)'
+          }}
+          onClick={this.handleBlockingChange}
         >
-          <NavItem eventKey="unlocked">
-            <Glyphicon
-              style={{color: blocking ? '#62c462' : '#ee5f5b'}}
-              glyph={blocking ? 'lock' : 'edit'}
-            />
-          </NavItem>
-        </Nav>
+          <Glyphicon
+            style={{color: blocking ? '#62c462' : '#ee5f5b'}}
+            glyph={blocking ? 'lock' : 'edit'}
+          />
+        </Button>
       );
     }
     return null;
@@ -238,7 +246,6 @@ class App extends Component {
           <Navbar.Toggle />
         </Navbar.Header>
         <Navbar.Collapse>
-          {this.lockButton()}
           {this.deviceMenu()}
           {this.configMenu()}
           {this.deviceSelect(this.manager.devices)}
@@ -309,6 +316,8 @@ class App extends Component {
         {this.connectionModal()}
         {this.credentialsModal()}
         {this.uploadModal()}
+        {this.lockButton()}
+
         <ToastContainer />
       </div>
     );

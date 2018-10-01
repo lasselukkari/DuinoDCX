@@ -1,6 +1,6 @@
 body {
-  min-height: 2000px;
   padding-top: 60px;
+  padding-bottom: 70px;
 }
 
 .block-ui {
@@ -48,3 +48,5 @@ body {
   border-radius: 10px;
   margin: 5px;
 }
+
+*:focus {outline:none !important}
