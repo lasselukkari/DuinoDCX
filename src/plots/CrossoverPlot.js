@@ -1,6 +1,7 @@
 import React, {PureComponent} from 'react';
 import {LineChart, Line, XAxis, YAxis, Tooltip} from 'recharts';
 import windowSize from 'react-window-size';
+import mathjs from 'mathjs';
 import TransferFunction from './TransferFunction';
 
 const frequencyPoints = TransferFunction.generateFrequencyPoints(
@@ -18,14 +19,16 @@ class CrossoverPlot extends PureComponent {
         highpassFilter,
         highpassFrequency,
         lowpassFilter,
-        lowpassFrequency
+        lowpassFrequency,
+        gain
       } = channels[key];
       tf.applyCrosover(highpassFilter, highpassFrequency, true);
       tf.applyCrosover(lowpassFilter, lowpassFrequency, false);
 
       return {
         data: tf.getMagnitude(),
-        channel: channels[key].channelName
+        channel: channels[key].channelName,
+        gain
       };
     });
 
@@ -33,7 +36,7 @@ class CrossoverPlot extends PureComponent {
       const result = {hz};
 
       values.forEach(value => {
-        result[value.channel] = value.data[index];
+        result[value.channel] = mathjs.add(value.data[index], value.gain);
       });
 
       return result;
