@@ -21,7 +21,8 @@ class Crossovers extends Component {
               highpassFrequency,
               lowpassFilter,
               lowpassFrequency,
-              channelName
+              channelName,
+              gain
             } = channels[channelId];
             return (
               <Col key={channelId} xs={12} sm={6} md={4} lg={2}>
@@ -33,6 +34,7 @@ class Crossovers extends Component {
                   lowpassFilter={lowpassFilter}
                   lowpassFrequency={lowpassFrequency}
                   channelName={channelName}
+                  gain={gain}
                   onChange={onChange}
                 />
               </Col>
