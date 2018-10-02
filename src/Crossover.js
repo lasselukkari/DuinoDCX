@@ -13,7 +13,8 @@ class Crossover extends PureComponent {
       channelName,
       group,
       channelId,
-      onChange
+      onChange,
+      gain
     } = this.props;
 
     return (
@@ -24,6 +25,13 @@ class Crossover extends PureComponent {
             : `Channel ${channelId}`}
         </Panel.Heading>
         <Panel.Body>
+          <pc.Gain
+            includeLabel
+            value={gain}
+            group={group}
+            channelId={channelId}
+            onChange={onChange}
+          />
           <pc.HighpassFilter
             includeLabel
             value={highpassFilter}
