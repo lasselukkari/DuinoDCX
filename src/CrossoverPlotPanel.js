@@ -30,7 +30,7 @@ class CrossoverPlotPanel extends Component {
     return (
       <Panel>
         <Panel.Heading>
-          Crossover Frequency Response{' '}
+          Crossover Frequency Response
           <Button
             bsSize="xs"
             className="pull-right"

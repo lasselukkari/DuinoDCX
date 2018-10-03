@@ -30,7 +30,7 @@ class CrossoverPlotPanel extends Component {
     return (
       <Panel>
         <Panel.Heading>
-          EQ Frequency Response: All Outputs{' '}
+          EQ Frequency Response: All Outputs
           <Button
             bsSize="xs"
             className="pull-right"
