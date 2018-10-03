@@ -10,7 +10,7 @@ const frequencyPoints = TransferFunction.generateFrequencyPoints(
 );
 
 class CrossoverPlot extends PureComponent {
-  createPlotData(channels) {
+  createPlotData(channels, applyGain) {
     const values = Object.keys(channels).map(key => {
       const tf = new TransferFunction(frequencyPoints);
 
@@ -18,14 +18,16 @@ class CrossoverPlot extends PureComponent {
         highpassFilter,
         highpassFrequency,
         lowpassFilter,
-        lowpassFrequency
+        lowpassFrequency,
+        gain
       } = channels[key];
       tf.applyCrosover(highpassFilter, highpassFrequency, true);
       tf.applyCrosover(lowpassFilter, lowpassFrequency, false);
 
       return {
         data: tf.getMagnitude(),
-        channel: channels[key].channelName
+        channel: channels[key].channelName,
+        gain
       };
     });
 
@@ -33,7 +35,8 @@ class CrossoverPlot extends PureComponent {
       const result = {hz};
 
       values.forEach(value => {
-        result[value.channel] = value.data[index];
+        const rounded = Math.round(value.data[index] * 100) / 100;
+        result[value.channel] = applyGain ? rounded + value.gain : rounded;
       });
 
       return result;
@@ -49,7 +52,7 @@ class CrossoverPlot extends PureComponent {
   /* eslint-enable no-undef */
 
   render() {
-    const {channels, windowWidth} = this.props;
+    const {channels, applyGain, windowWidth} = this.props;
     const colors = [
       '#307473',
       '#7A82AB',
@@ -75,13 +78,17 @@ class CrossoverPlot extends PureComponent {
 
     return (
       <LineChart
-        data={this.createPlotData(channels)}
+        data={this.createPlotData(channels, applyGain)}
         width={width}
         height={height}
         margin={{top: 20, right: 10, bottom: 5, left: -30}}
       >
         <XAxis dataKey="hz" tickFormatter={this.formatTic} />
-        <YAxis allowDataOverflow type="number" domain={[-20, 5]} />
+        <YAxis
+          allowDataOverflow
+          type="number"
+          domain={[-20, applyGain ? 'auto' : 5]}
+        />
         <Tooltip
           labelFormatter={this.formatLabel}
           formatter={this.formatTooltip}

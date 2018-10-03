@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Panel, Tabs, Tab} from 'react-bootstrap';
+import {Tabs, Tab} from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import isEqual from 'lodash.isequal';
 import DynamicEQs from './DynamicEQs';
@@ -8,8 +8,8 @@ import EQs from './EQs';
 import Crossovers from './Crossovers';
 import Limiters from './Limiters';
 import Phases from './Phases';
-import CrossoverPlot from './plots/CrossoverPlot';
-import EQPlot from './plots/EQPlot';
+import CrossoverPlotPanel from './CrossoverPlotPanel';
+import EQPlotPanel from './EQPlotPanel';
 
 class Outputs extends Component {
   shouldComponentUpdate(nextProps) {
@@ -30,12 +30,7 @@ class Outputs extends Component {
         <Tabs defaultActiveKey="crossover" id="outputs" animation={false}>
           <br />
           <Tab title="Crossover" bsStyle="primary" eventKey="crossover">
-            <Panel>
-              <Panel.Heading>Crossover Frequency Response</Panel.Heading>
-              <Panel.Body>
-                <CrossoverPlot channels={channels} />
-              </Panel.Body>
-            </Panel>
+            <CrossoverPlotPanel channels={channels} />
             <BlockUi blocking={blocking}>
               <Crossovers
                 group="outputs"
@@ -45,12 +40,7 @@ class Outputs extends Component {
             </BlockUi>
           </Tab>
           <Tab title="EQ" bsStyle="primary" eventKey="eqs">
-            <Panel>
-              <Panel.Heading>EQ Frequency Response: All Outputs</Panel.Heading>
-              <Panel.Body>
-                <EQPlot channels={channels} />
-              </Panel.Body>
-            </Panel>
+            <EQPlotPanel channels={channels} />
             <EQs
               blocking={blocking}
               group="outputs"
