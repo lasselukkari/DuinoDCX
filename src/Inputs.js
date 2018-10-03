@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
-import {Panel, Tabs, Tab} from 'react-bootstrap';
+import {Tabs, Tab} from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import isEqual from 'lodash.isequal';
 
-import EQPlot from './plots/EQPlot';
+import EQPlotPanel from './EQPlotPanel';
 import DynamicEQs from './DynamicEQs';
 import Delays from './Delays';
 import EQs from './EQs';
@@ -27,12 +27,7 @@ class Inputs extends Component {
         <Tabs defaultActiveKey="eq" id="inputs" animation={false}>
           <br />
           <Tab title="EQ" bsStyle="primary" eventKey="eq">
-            <Panel>
-              <Panel.Heading>EQ Frequency Response: All Inputs</Panel.Heading>
-              <Panel.Body>
-                <EQPlot channels={channels} />
-              </Panel.Body>
-            </Panel>
+            <EQPlotPanel channels={channels} />
             <EQs
               group="inputs"
               channels={channels}
