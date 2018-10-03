@@ -10,7 +10,7 @@ const frequencyPoints = TransferFunction.generateFrequencyPoints(
 );
 
 class EQPlot extends PureComponent {
-  plotData(channels) {
+  plotData(channels, applyGain) {
     const values = Object.keys(channels).map(key => {
       const tf = new TransferFunction(frequencyPoints);
 
@@ -41,6 +41,7 @@ class EQPlot extends PureComponent {
       });
 
       return {
+        gain: channels[key].gain,
         data: tf.getMagnitude(),
         channel: channels[key].channelName
           ? `${key}. ${channels[key].channelName}`
@@ -50,7 +51,8 @@ class EQPlot extends PureComponent {
     return frequencyPoints.map((hz, index) => {
       const result = {hz};
       values.forEach(value => {
-        result[value.channel] = value.data[index];
+        const rounded = Math.round(value.data[index] * 100) / 100;
+        result[value.channel] = applyGain ? rounded + value.gain : rounded;
       });
       return result;
     });
@@ -65,7 +67,7 @@ class EQPlot extends PureComponent {
   /* eslint-enable no-undef */
 
   render() {
-    const {channels, windowWidth} = this.props;
+    const {channels, applyGain, windowWidth} = this.props;
     const colors = [
       '#3498DB',
       '#307473',
@@ -91,13 +93,17 @@ class EQPlot extends PureComponent {
 
     return (
       <LineChart
-        data={this.plotData(channels)}
+        data={this.plotData(channels, applyGain)}
         width={width}
         height={height}
         margin={{top: 20, right: 30, bottom: 5, left: -30}}
       >
         <XAxis dataKey="hz" tickFormatter={this.formatTic} />
-        <YAxis allowDataOverflow type="number" domain={[-20, 20]} />
+        <YAxis
+          allowDataOverflow
+          type="number"
+          domain={[applyGain ? 'auto' : -20, applyGain ? 'auto' : 20]}
+        />
         <Tooltip
           labelFormatter={this.formatLabel}
           formatter={this.formatTooltip}
