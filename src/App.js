@@ -200,7 +200,7 @@ class App extends Component {
           onClick={this.handleBlockingChange}
         >
           <Glyphicon
-            style={{color: blocking ? '#62c462' : '#ee5f5b'}}
+            style={{color: blocking ? '#ee5f5b' : '#62c462'}}
             glyph={blocking ? 'lock' : 'edit'}
           />
         </Button>
