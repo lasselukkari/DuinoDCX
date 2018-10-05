@@ -22,7 +22,7 @@ class MuteButton extends PureComponent {
   };
 
   render() {
-    const {isMuted} = this.props;
+    const {isMuted, channelName, channelId, isOutput} = this.props;
 
     const muteStyle = {
       display: 'block',
@@ -30,15 +30,47 @@ class MuteButton extends PureComponent {
       width: '38px',
       height: '36px'
     };
+    const labelInStyle = {
+      display: 'block',
+      margin: '1px',
+      width: '38px',
+      height: '36px',
+      padding: '2px',
+      background: '#111'
+    };
+    const labelOutStyle = {
+      display: 'block',
+      margin: '1px',
+      width: '38px',
+      height: '36px',
+      padding: '2px',
+      background: '#444'
+    };
+
+    let channelAbbrName = String(channelName);
+    channelAbbrName = channelAbbrName.match(/\b\w/g).join('');
 
     return (
-      <Button
-        bsStyle={isMuted ? 'danger' : 'default'}
-        style={muteStyle}
-        onClick={this.handleClick}
-      >
-        <Glyphicon glyph={isMuted ? 'volume-off' : 'volume-up'} />
-      </Button>
+      <div>
+        <Button
+          bsStyle={isMuted ? 'danger' : 'default'}
+          title={
+            isMuted
+              ? 'Channel is muted. Push to unmute.'
+              : 'Channel is unmuted. Push to mute.'
+          }
+          style={muteStyle}
+          onClick={this.handleClick}
+        >
+          <Glyphicon glyph={isMuted ? 'volume-off' : 'volume-up'} />
+        </Button>
+        <Button
+          style={isOutput ? labelOutStyle : labelInStyle}
+          title={isOutput ? channelName : 'Input ' + channelId}
+        >
+          {isOutput ? channelAbbrName : channelId}
+        </Button>
+      </div>
     );
   }
 }
@@ -110,7 +142,15 @@ class ChannelLevel extends PureComponent {
 
 class ChannelControls extends PureComponent {
   render() {
-    const {limited, level, onChange, channelId, isOutput, isMuted} = this.props;
+    const {
+      limited,
+      level,
+      onChange,
+      channelId,
+      isOutput,
+      isMuted,
+      channelName
+    } = this.props;
 
     return (
       <div>
@@ -128,6 +168,7 @@ class ChannelControls extends PureComponent {
           channelId={channelId}
           isMuted={isMuted}
           isOutput={isOutput}
+          channelName={channelName}
           onChange={onChange}
         />
       </div>
@@ -162,6 +203,19 @@ class ChannelLevels extends Component {
     onChange(inputs.concat(outputs));
   };
 
+  handleMuteOutputs = value => {
+    const {onChange} = this.props;
+
+    const outputs = outputChannels.map(channelId => ({
+      param: 'mute',
+      group: 'outputs',
+      channelId,
+      value
+    }));
+
+    onChange(outputs);
+  };
+
   render() {
     const {device, onChange, blocking} = this.props;
     const {inputs, outputs, state} = device;
@@ -169,6 +223,9 @@ class ChannelLevels extends Component {
     const isAnyUnmuted =
       inputChannels.some(channel => !inputs[channel].mute) ||
       outputChannels.some(channel => !outputs[channel].mute);
+    const isAnyOutputUnmuted = outputChannels.some(
+      channel => !outputs[channel].mute
+    );
 
     return (
       <div>
@@ -179,7 +236,7 @@ class ChannelLevels extends Component {
             <div className="channel-group">
               {inputChannels.map(channelId => {
                 const {limited, level} = channels[channelId];
-                const {mute} = inputs[channelId];
+                const {mute, channelName} = inputs[channelId];
                 return (
                   <ChannelControls
                     key={channelId}
@@ -187,6 +244,7 @@ class ChannelLevels extends Component {
                     isMuted={mute}
                     limited={limited}
                     level={level}
+                    channelName={channelName}
                     onChange={onChange}
                   />
                 );
@@ -195,7 +253,7 @@ class ChannelLevels extends Component {
             <div className="channel-group">
               {outputChannels.map(channelId => {
                 const {limited, level} = channels[channelId];
-                const {mute} = outputs[channelId];
+                const {mute, channelName} = outputs[channelId];
                 const isOutput = true;
                 return (
                   <ChannelControls
@@ -205,6 +263,7 @@ class ChannelLevels extends Component {
                     isOutput={isOutput}
                     level={level}
                     limited={limited}
+                    channelName={channelName}
                     onChange={onChange}
                   />
                 );
@@ -215,10 +274,18 @@ class ChannelLevels extends Component {
             <Button
               className="center-block"
               bsStyle={isAnyUnmuted ? 'default' : 'danger'}
-              style={{width: '100px'}}
+              style={{width: '110px'}}
               onClick={() => this.handleMuteAll(isAnyUnmuted)}
             >
               {isAnyUnmuted ? 'Mute All' : 'Unmute All'}
+            </Button>
+            <Button
+              className="center-block"
+              bsStyle={isAnyOutputUnmuted ? 'default' : 'danger'}
+              style={{width: '110px'}}
+              onClick={() => this.handleMuteOutputs(isAnyOutputUnmuted)}
+            >
+              {isAnyOutputUnmuted ? 'Mute Outs' : 'Unmute Outs'}
             </Button>
           </div>
           <Panel>
