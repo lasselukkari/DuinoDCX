@@ -66,7 +66,7 @@ class NumberParam extends Component {
       [min.toString()]: {
         style: {
           left: '-10px',
-          margin: '3px 6px',
+          margin: '1px 6px',
           width: 'auto'
         },
         label: min.toString()
@@ -74,7 +74,7 @@ class NumberParam extends Component {
       [max.toString()]: {
         style: {
           right: '-10px',
-          margin: '3px 6px',
+          margin: '1px 6px',
           width: 'auto',
           left: 'auto'
         },
@@ -83,10 +83,10 @@ class NumberParam extends Component {
     };
 
     const handlerStyle = {
-      height: 30,
-      width: 30,
-      marginLeft: -15,
-      marginTop: -15
+      height: 24,
+      width: 24,
+      marginLeft: -12,
+      marginTop: -12
     };
 
     return (

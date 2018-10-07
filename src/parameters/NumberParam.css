@@ -1,7 +1,7 @@
 .number-param-container {
     display: table;
     width: 100%;
-    margin-bottom: -16px;
+    margin-bottom: -20px;
 }
 
 .min-number, .slider, .max-number {
@@ -15,12 +15,12 @@
 }
 
 .slider-container {
-    margin: 8px 24px 0;
+    margin: 12px 24px 0;
 }
 
 .slider > h6  {
     font-size: 12px;
     color: #999;
-    margin-top: 8px;
+    margin-top: 6px;
 }
 
