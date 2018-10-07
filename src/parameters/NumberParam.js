@@ -66,7 +66,7 @@ class NumberParam extends Component {
       [min.toString()]: {
         style: {
           left: '-10px',
-          margin: '12px 0',
+          margin: '3px 6px',
           width: 'auto'
         },
         label: min.toString()
@@ -74,7 +74,7 @@ class NumberParam extends Component {
       [max.toString()]: {
         style: {
           right: '-10px',
-          margin: '12px 0',
+          margin: '3px 6px',
           width: 'auto',
           left: 'auto'
         },
@@ -105,6 +105,19 @@ class NumberParam extends Component {
             </Button>
           </div>
           <div className="slider">
+            <div className="slider-container">
+              <SliderWithTooltip
+                key={value}
+                defaultValue={value}
+                handleStyle={handlerStyle}
+                marks={marks}
+                max={max}
+                min={min}
+                step={step}
+                tipFormatter={value => formatter(value, unit)}
+                onAfterChange={this.handleValueChange}
+              />
+            </div>
             <h6>Current: {formatter(value, unit)}</h6>
           </div>
           <div className="max-number">
@@ -112,19 +125,6 @@ class NumberParam extends Component {
               <Glyphicon glyph="plus" />
             </Button>
           </div>
-        </div>
-        <div className="slider-container">
-          <SliderWithTooltip
-            key={value}
-            defaultValue={value}
-            handleStyle={handlerStyle}
-            marks={marks}
-            max={max}
-            min={min}
-            step={step}
-            tipFormatter={value => formatter(value, unit)}
-            onAfterChange={this.handleValueChange}
-          />
         </div>
       </FormGroup>
     );
