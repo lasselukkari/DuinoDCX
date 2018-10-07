@@ -28,7 +28,6 @@ class BoolParam extends Component {
 
           <Button
             block
-            bsSize="small"
             bsStyle={value ? onColor : 'primary'}
             active={value}
             onClick={this.handleClick}

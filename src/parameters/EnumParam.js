@@ -22,7 +22,6 @@ class EnumParam extends Component {
           </ControlLabel>
         )}
         <FormControl
-          bsSize="small"
           componentClass="select"
           placeholder="select"
           value={value}

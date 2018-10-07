@@ -100,7 +100,7 @@ class NumberParam extends Component {
 
         <div className="number-param-container">
           <div className="min-number">
-            <Button bsSize="small" onClick={this.handleReduction}>
+            <Button onClick={this.handleReduction}>
               <Glyphicon glyph="minus" />
             </Button>
           </div>
@@ -121,7 +121,7 @@ class NumberParam extends Component {
             <h6>Current: {formatter(value, unit)}</h6>
           </div>
           <div className="max-number">
-            <Button bsSize="small" onClick={this.handleAddition}>
+            <Button onClick={this.handleAddition}>
               <Glyphicon glyph="plus" />
             </Button>
           </div>
