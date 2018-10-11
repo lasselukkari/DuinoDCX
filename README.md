@@ -1,7 +1,7 @@
 
 DuinoDCX
 ========
-ESP32 WIFI remote controller for the [Behringer Ultradrive Pro / DCX2496](http://www.musictri.be/p/P0B6H)
+ESP32 microcontroller based WIFI controller for the [Behringer Ultradrive Pro / DCX2496](http://www.musictri.be/p/P0B6H). No wifi router or internet connection needed, no applications to install.
 
 ## Disclaimer
 This is not a production ready application. I take no responsibility if you destroy your sound system using this.
