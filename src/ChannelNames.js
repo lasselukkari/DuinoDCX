@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Panel, Col} from 'react-bootstrap';
+import {Col, Panel, Row} from 'react-bootstrap';
 import isEqual from 'lodash.isequal';
 import ChannelName from './ChannelName';
 
@@ -10,25 +10,27 @@ class ChannelNames extends Component {
   }
 
   render() {
-    const {channels, group, onChange, xs, sm, md, lg} = this.props;
+    const {channels, group, onChange} = this.props;
 
     return (
       <Panel>
-        <Panel.Heading>Output names</Panel.Heading>
+        <Panel.Heading>Output Names</Panel.Heading>
         <Panel.Body>
-          {Object.keys(channels).map(channelId => {
-            return (
-              <Col key={channelId} xs={xs} sm={sm} md={md} lg={lg}>
-                <ChannelName
-                  key={channelId}
-                  group={group}
-                  channelId={channelId}
-                  channelName={channels[channelId].channelName}
-                  onChange={onChange}
-                />
-              </Col>
-            );
-          })}
+          <Row>
+            {Object.keys(channels).map(channelId => {
+              return (
+                <Col key={channelId} xs={12} sm={6} md={4}>
+                  <ChannelName
+                    key={channelId}
+                    group={group}
+                    channelId={channelId}
+                    channelName={channels[channelId].channelName}
+                    onChange={onChange}
+                  />
+                </Col>
+              );
+            })}
+          </Row>
         </Panel.Body>
       </Panel>
     );

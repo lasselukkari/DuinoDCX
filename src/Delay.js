@@ -12,19 +12,59 @@ class Delay extends PureComponent {
       channelId,
       airTemperature,
       delayCorrection,
+      delayUnits,
       onChange,
       group
     } = this.props;
     const temperature = delayCorrection ? airTemperature : 20;
-
     // https://en.wikipedia.org/wiki/Speed_of_sound#Practical_formula_for_dry_air
-    const multiplier = 1 / (331.3 + 0.606 * temperature);
-
+    const temperatureFactor = 1 / (331.3 + 0.606 * temperature);
     const round = value => Math.round(value * 100) / 100;
+    const localizeLength =
+      delayUnits === 'mm' ? value => value : value => (value * 0.393701) / 10;
+
+    const localizeUnit = (delayUnits, unit) => {
+      if (delayUnits === 'mm') {
+        if (unit === 'mm') {
+          return 'mm';
+        }
+        return 'm';
+      }
+      if (unit === 'mm') {
+        return 'in';
+      }
+      return 'ft';
+    };
+
+    const localizeDividor = (delayUnits, unit) => {
+      if (delayUnits === 'mm') {
+        if (unit === 'mm') {
+          return 1;
+        }
+        if (unit === 'cm') {
+          return 100;
+        }
+      } else if (delayUnits === 'inch') {
+        if (unit === 'mm') {
+          return 1;
+        }
+        if (unit === 'cm') {
+          return 1.2;
+        }
+      }
+    };
+
     const formatter = (value, unit) =>
-      `${round(value)} ${unit} / ${round(
-        multiplier * value * (unit === 'cm' ? 10 : 1)
+      `${round(
+        localizeLength(value) / localizeDividor(delayUnits, unit)
+      )} ${localizeUnit(delayUnits, unit)} / ${round(
+        temperatureFactor * value * (unit === 'cm' ? 10 : 1)
       )} ms`;
+
+    const labelFormatter = (value, unit) =>
+      round(
+        localizeLength(value) / localizeDividor(delayUnits, unit)
+      ).toString();
 
     return (
       <Panel>
@@ -38,6 +78,7 @@ class Delay extends PureComponent {
             value={delay}
             group={group}
             channelId={channelId}
+            labelFormatter={labelFormatter}
             onChange={onChange}
           />
           {group === 'outputs' && (
@@ -47,6 +88,7 @@ class Delay extends PureComponent {
               group={group}
               channelId={channelId}
               formatter={formatter}
+              labelFormatter={labelFormatter}
               onChange={onChange}
             />
           )}
@@ -56,6 +98,7 @@ class Delay extends PureComponent {
             group={group}
             channelId={channelId}
             formatter={formatter}
+            labelFormatter={labelFormatter}
             onChange={onChange}
           />
         </Panel.Body>

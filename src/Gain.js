@@ -7,7 +7,7 @@ class Gain extends PureComponent {
 
     return (
       <div>
-        <h5>
+        <h5 className="form-header">
           {channelName
             ? `${channelId} . ${channelName}`
             : `Channel ${channelId}`}

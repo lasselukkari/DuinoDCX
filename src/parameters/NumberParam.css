@@ -1,26 +1,26 @@
 .number-param-container {
-    display: table;
-    width: 100%;
-    margin-bottom: -20px;
+  display: table;
+  width: 100%;
+  margin-bottom: -20px;
 }
 
 .min-number, .slider, .max-number {
-    display: table-cell;
-    text-align: center;
+  display: table-cell;
+  text-align: center;
 }
 
 .min-number, .max-number {
-    width: 34px;
-    vertical-align: top;
+  width: 34px;
+  vertical-align: top;
 }
 
 .slider-container {
-    margin: 12px 24px 0;
+  margin: 12px 24px 0;
 }
 
-.slider > h6  {
-    font-size: 12px;
-    color: #999;
-    margin-top: 6px;
+.slider > h6 {
+  font-size: 12px;
+  color: #999;
+  margin-top: 6px;
 }
 

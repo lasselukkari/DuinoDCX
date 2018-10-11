@@ -15,14 +15,7 @@ const commandTypes = {
 const enumComponent = function({name, unit, values}, type) {
   class EnumComponent extends PureComponent {
     render() {
-      const {
-        value,
-        group,
-        channelId,
-        eq,
-        onChange,
-        includeLabel = false
-      } = this.props;
+      const {value, group, channelId, eq, onChange, includeLabel} = this.props;
       return (
         <EnumParam
           name={name}
@@ -54,7 +47,7 @@ const boolComponent = function({name}, type) {
         eq,
         inverted,
         onChange,
-        includeLabel = false
+        includeLabel
       } = this.props;
       return (
         <BoolParam
@@ -86,7 +79,8 @@ const numberComponent = function({name, unit, min, max, step}, type) {
         eq,
         onChange,
         formatter,
-        includeLabel = false
+        includeLabel,
+        labelFormatter
       } = this.props;
       return (
         <NumberParam
@@ -103,6 +97,7 @@ const numberComponent = function({name, unit, min, max, step}, type) {
           eq={eq}
           includeLabel={includeLabel}
           formatter={formatter}
+          labelFormatter={labelFormatter}
           onChange={onChange}
         />
       );

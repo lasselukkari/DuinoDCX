@@ -1,10 +1,6 @@
 import React, {Component, PureComponent} from 'react';
-import {Panel, Button, Clearfix, Glyphicon} from 'react-bootstrap';
-import BlockUi from 'react-block-ui';
+import {Button, Clearfix, Glyphicon} from 'react-bootstrap';
 import isEqual from 'lodash.isequal';
-
-import Gains from './Gains';
-
 import './ChannelLevels.css'; // eslint-disable-line import/no-unassigned-import
 
 const inputChannels = ['A', 'B', 'C'];
@@ -25,7 +21,7 @@ class MuteButton extends PureComponent {
     const {isMuted} = this.props;
 
     const muteStyle = {
-      display: 'block',
+      float: 'left',
       margin: '1px',
       width: '38px',
       height: '36px'
@@ -57,15 +53,51 @@ class ChannelLevel extends PureComponent {
   render() {
     const {limited, level, isOutput} = this.props;
     const style = {
-      display: 'block',
-      margin: '2px',
+      margin: '1px',
       cursor: 'default',
-      width: '38px',
-      height: '16px'
+      width: '2px',
+      height: '36px',
+      float: 'left'
     };
 
     return (
-      <div>
+      <div style={{float: 'left'}}>
+        <Button
+          bsStyle={level >= 1 ? 'success' : 'default'}
+          disabled={level < 1}
+          style={style}
+        />
+
+        <Button
+          bsStyle={level >= 2 ? 'success' : 'default'}
+          disabled={level < 2}
+          style={style}
+        />
+
+        <Button
+          bsStyle={level >= 3 ? 'success' : 'default'}
+          disabled={level < 3}
+          style={style}
+        />
+
+        <Button
+          bsStyle={level >= 4 ? 'success' : 'default'}
+          disabled={level < 4}
+          style={style}
+        />
+
+        <Button
+          bsStyle={level >= 5 ? 'warning' : 'default'}
+          disabled={level < 5}
+          style={style}
+        />
+
+        <Button
+          bsStyle={level >= 6 ? 'danger' : 'default'}
+          disabled={level < 6}
+          style={style}
+        />
+
         {isOutput && (
           <Button
             bsStyle={limited ? 'danger' : 'default'}
@@ -73,36 +105,6 @@ class ChannelLevel extends PureComponent {
             style={style}
           />
         )}
-        <Button
-          bsStyle={level >= 6 ? 'danger' : 'default'}
-          disabled={level < 6}
-          style={style}
-        />
-        <Button
-          bsStyle={level >= 5 ? 'warning' : 'default'}
-          disabled={level < 5}
-          style={style}
-        />
-        <Button
-          bsStyle={level >= 4 ? 'success' : 'default'}
-          disabled={level < 4}
-          style={style}
-        />
-        <Button
-          bsStyle={level >= 3 ? 'success' : 'default'}
-          disabled={level < 3}
-          style={style}
-        />
-        <Button
-          bsStyle={level >= 2 ? 'success' : 'default'}
-          disabled={level < 2}
-          style={style}
-        />
-        <Button
-          bsStyle={level >= 1 ? 'success' : 'default'}
-          disabled={level < 1}
-          style={style}
-        />
       </div>
     );
   }
@@ -114,6 +116,13 @@ class ChannelControls extends PureComponent {
 
     return (
       <div>
+        <MuteButton
+          key={'mute-' + channelId}
+          channelId={channelId}
+          isMuted={isMuted}
+          isOutput={isOutput}
+          onChange={onChange}
+        />
         <ChannelLevel
           key={'level-' + channelId}
           channelId={channelId}
@@ -123,13 +132,6 @@ class ChannelControls extends PureComponent {
           level={level}
           onChange={onChange}
         />
-        <MuteButton
-          key={'mute-' + channelId}
-          channelId={channelId}
-          isMuted={isMuted}
-          isOutput={isOutput}
-          onChange={onChange}
-        />
       </div>
     );
   }
@@ -137,10 +139,8 @@ class ChannelControls extends PureComponent {
 
 class ChannelLevels extends Component {
   shouldComponentUpdate(nextProps) {
-    const {blocking, device} = this.props;
-    return !(
-      nextProps.blocking === blocking && isEqual(nextProps.device, device)
-    );
+    const {device} = this.props;
+    return !isEqual(nextProps.device, device);
   }
 
   handleMuteAll = value => {
@@ -163,7 +163,7 @@ class ChannelLevels extends Component {
   };
 
   render() {
-    const {device, onChange, blocking} = this.props;
+    const {device, onChange} = this.props;
     const {inputs, outputs, state} = device;
     const {channels} = state;
     const isAnyUnmuted =
@@ -171,83 +171,50 @@ class ChannelLevels extends Component {
       outputChannels.some(channel => !outputs[channel].mute);
 
     return (
-      <div>
-        <h2>Channel Levels</h2>
-        <hr />
-        <BlockUi blocking={blocking}>
-          <div className="channels-container">
-            <div className="channel-group">
-              {inputChannels.map(channelId => {
-                const {limited, level} = channels[channelId];
-                const {mute} = inputs[channelId];
-                return (
-                  <ChannelControls
-                    key={channelId}
-                    channelId={channelId}
-                    isMuted={mute}
-                    limited={limited}
-                    level={level}
-                    onChange={onChange}
-                  />
-                );
-              })}
-            </div>
-            <div className="channel-group">
-              {outputChannels.map(channelId => {
-                const {limited, level} = channels[channelId];
-                const {mute} = outputs[channelId];
-                const isOutput = true;
-                return (
-                  <ChannelControls
-                    key={channelId}
-                    channelId={channelId}
-                    isMuted={mute}
-                    isOutput={isOutput}
-                    level={level}
-                    limited={limited}
-                    onChange={onChange}
-                  />
-                );
-              })}
-            </div>
-            <Clearfix />
-            <br />
-            <Button
-              className="center-block"
-              bsStyle={isAnyUnmuted ? 'default' : 'danger'}
-              style={{width: '100px'}}
-              onClick={() => this.handleMuteAll(isAnyUnmuted)}
-            >
-              {isAnyUnmuted ? 'Mute All' : 'Unmute All'}
-            </Button>
-          </div>
-          <Panel>
-            <Panel.Heading>Input Gains</Panel.Heading>
-            <Panel.Body>
-              <Gains
-                group="inputs"
-                channels={inputs}
-                xs={12}
-                sm={12}
-                md={12}
+      <div className="channels-container">
+        <div className="channel-group">
+          {inputChannels.map(channelId => {
+            const {limited, level} = channels[channelId];
+            const {mute} = inputs[channelId];
+            return (
+              <ChannelControls
+                key={channelId}
+                channelId={channelId}
+                isMuted={mute}
+                limited={limited}
+                level={level}
                 onChange={onChange}
               />
-            </Panel.Body>
-          </Panel>
-          <Panel>
-            <Panel.Heading>Output Gains</Panel.Heading>
-            <Panel.Body>
-              <Gains
-                group="outputs"
-                channels={outputs}
-                xs={12}
-                sm={12}
-                md={12}
+            );
+          })}
+        </div>
+        <div className="channel-group">
+          {outputChannels.map(channelId => {
+            const {limited, level} = channels[channelId];
+            const {mute} = outputs[channelId];
+            const isOutput = true;
+            return (
+              <ChannelControls
+                key={channelId}
+                channelId={channelId}
+                isMuted={mute}
+                isOutput={isOutput}
+                level={level}
+                limited={limited}
                 onChange={onChange}
               />
-            </Panel.Body>
-          </Panel>
-        </BlockUi>
+            );
+          })}
+        </div>
+        <Clearfix />
+        <Button
+          className="center-block"
+          bsStyle={isAnyUnmuted ? 'default' : 'danger'}
+          style={{width: '100%', marginTop: '10px'}}
+          onClick={() => this.handleMuteAll(isAnyUnmuted)}
+        >
+          {isAnyUnmuted ? 'Mute All' : 'Unmute All'}
+        </Button>
       </div>
     );
   }

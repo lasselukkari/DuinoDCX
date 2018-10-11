@@ -10,14 +10,14 @@ class Gains extends Component {
   }
 
   render() {
-    const {channels, group, onChange, xs, sm, md, lg} = this.props;
+    const {channels, group, onChange} = this.props;
 
     return (
       <Row className="show-grid">
         {Object.keys(channels).map(channelId => {
           const {channelName, gain} = channels[channelId];
           return (
-            <Col key={channelId} xs={xs} sm={sm} md={md} lg={lg}>
+            <Col key={channelId} xs={12}>
               <Gain
                 key={channelId}
                 group={group}

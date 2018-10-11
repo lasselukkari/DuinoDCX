@@ -1,6 +1,6 @@
 body {
-  padding-top: 60px;
-  padding-bottom: 70px;
+  padding-top: 70px;
+  padding-bottom: 50px;
 }
 
 .block-ui {
@@ -30,16 +30,12 @@ body {
   height: 100%;
 }
 
-.content-loader{
+.content-loader {
   margin-top: 30px;
 }
 
-.content-loader h5{
+.content-loader h5 {
   margin-top: 20px;
-}
-
-.recharts-default-tooltip {
-  background-color: #272b30 !important;
 }
 
 .line-scale > div {
@@ -49,4 +45,91 @@ body {
   margin: 5px;
 }
 
-*:focus {outline:none !important}
+*:focus {
+  outline: none !important
+}
+
+.panel-body {
+  padding: 15px 15px 5px !important;
+}
+
+.navbar-nav > li > .dropdown-menu {
+  border: 1px solid rgba(0, 0, 0, 0.6);
+}
+
+.end-button {
+  width: 25%;
+}
+
+.end-button > li {
+  width: 100%;
+  text-align: center;
+}
+
+.middle-buttons {
+  width: 50%;
+}
+
+.middle-buttons > li {
+  width: 50%;
+  text-align: center;
+}
+
+.middle-buttons > li > a {
+  font-weight: bold;
+}
+
+.device-name {
+  float: left;
+  margin-right: 15px;
+}
+
+.form-header {
+  margin-top: 0;
+  font-weight: bold;
+}
+
+.navbar-nav {
+  margin: 0 !important;
+  float: left;
+}
+
+.navbar > .container-fluid {
+  margin-right: -15px !important;
+  margin-left: -15px !important;
+}
+
+.nav > li {
+  float: left !important;
+}
+
+.navbar-nav > li > a {
+  padding-top: 15px !important;
+  padding-bottom: 15px !important;
+}
+
+.navbar-nav > li > .dropdown-menu {
+  position: absolute !important;
+  background-color: #3a3f44 !important;
+}
+
+.navbar-right {
+  float: right !important;
+}
+
+.navbar-right .dropdown-menu {
+  left: auto !important;
+  right: 0 !important;
+}
+
+.middle-buttons > li.active > a {
+  color: #62c462 !important;
+}
+
+.end-button > li.open > a {
+  color: #62c462 !important;
+}
+
+.recharts-default-tooltip {
+  background-color: #272b30 !important;
+}
