@@ -36,4 +36,8 @@ class EnumParam extends Component {
   }
 }
 
+EnumParam.defaultProps = {
+  includeLabel: false
+};
+
 export default EnumParam;

@@ -86,7 +86,6 @@ class Credentials extends PureComponent {
     formData.append('mdnsHost', mdnsHost);
     formData.append('auth', auth);
     const data = new URLSearchParams(formData);
-    console.log(apSsid, apPassword, auth, mdnsHost);
 
     fetch('/api/credentials', {
       method: 'PATCH',

@@ -26,11 +26,12 @@ class CrossoverPlotPanel extends Component {
   };
 
   render() {
-    const {channels} = this.props;
+    const {channels, group} = this.props;
     return (
       <Panel>
         <Panel.Heading>
-          EQ Frequency Response: All Outputs
+          EQ Frequency Response: All{' '}
+          {group.charAt(0).toUpperCase() + group.slice(1)}
           <Button
             bsSize="xs"
             className="pull-right"

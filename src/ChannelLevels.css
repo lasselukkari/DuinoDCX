@@ -1,11 +1,21 @@
-.channels-container{
-    max-width: 380px;
-    margin: 20px auto;
+.channels-container {
+  margin: 5px 10px;
 }
 
-.channel-group{
-    display: flex;
-    align-items: flex-end;
-    height: 180px;
-    float: left;
+.channel-group {
+  float: left;
+}
+
+.channel-levels > ul {
+  width: 258px;
+}
+
+@media (max-width: 767px) {
+  .channel-levels > ul {
+    width: 258px !important;
+  }
+
+  .channels-container {
+    display: block;
+  }
 }

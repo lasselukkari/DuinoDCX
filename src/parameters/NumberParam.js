@@ -8,8 +8,12 @@ const SliderWithTooltip = createSliderWithTooltip(Slider);
 
 class NumberParam extends Component {
   shouldComponentUpdate(nextProps) {
-    const {value} = this.props;
-    return value !== nextProps.value;
+    const {value, unit, formatter} = this.props;
+
+    return (
+      formatter(value, unit) !==
+      nextProps.formatter(nextProps.value, nextProps.unit)
+    );
   }
 
   handleValueChange = value => {
@@ -58,8 +62,8 @@ class NumberParam extends Component {
       max,
       step,
       includeLabel,
-      formatter = (value, unit) =>
-        `${Math.round(value * 10) / 10} ${unit ? unit : ''}`
+      formatter,
+      labelFormatter
     } = this.props;
 
     const marks = {
@@ -69,7 +73,7 @@ class NumberParam extends Component {
           margin: '1px 6px',
           width: 'auto'
         },
-        label: min.toString()
+        label: labelFormatter(min, unit)
       },
       [max.toString()]: {
         style: {
@@ -78,7 +82,7 @@ class NumberParam extends Component {
           width: 'auto',
           left: 'auto'
         },
-        label: max.toString()
+        label: labelFormatter(max, unit)
       }
     };
 
@@ -130,5 +134,12 @@ class NumberParam extends Component {
     );
   }
 }
+
+NumberParam.defaultProps = {
+  formatter: (value, unit) =>
+    `${Math.round(value * 10) / 10} ${unit ? unit : ''}`,
+  labelFormatter: value => value.toString(),
+  includeLabel: false
+};
 
 export default NumberParam;

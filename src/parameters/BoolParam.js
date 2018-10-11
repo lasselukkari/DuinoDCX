@@ -40,4 +40,8 @@ class BoolParam extends Component {
   }
 }
 
+BoolParam.defaultProps = {
+  includeLabel: false
+};
+
 export default BoolParam;

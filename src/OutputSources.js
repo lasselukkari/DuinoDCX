@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Panel, Col} from 'react-bootstrap';
+import {Col, Panel, Row} from 'react-bootstrap';
 import isEqual from 'lodash.isequal';
 
 import OutputSource from './OutputSource';
@@ -11,27 +11,29 @@ class OutputSources extends Component {
   }
 
   render() {
-    const {channels, group, onChange, xs, sm, md, lg} = this.props;
+    const {channels, group, onChange} = this.props;
 
     return (
       <Panel>
-        <Panel.Heading>Output source</Panel.Heading>
+        <Panel.Heading>Output Source</Panel.Heading>
         <Panel.Body>
-          {Object.keys(channels).map(channelId => {
-            const {channelName, source} = channels[channelId];
-            return (
-              <Col key={channelId} xs={xs} sm={sm} md={md} lg={lg}>
-                <OutputSource
-                  key={channelId}
-                  group={group}
-                  channelId={channelId}
-                  channelName={channelName}
-                  source={source}
-                  onChange={onChange}
-                />
-              </Col>
-            );
-          })}
+          <Row>
+            {Object.keys(channels).map(channelId => {
+              const {channelName, source} = channels[channelId];
+              return (
+                <Col key={channelId} sm={4} xs={12}>
+                  <OutputSource
+                    key={channelId}
+                    group={group}
+                    channelId={channelId}
+                    channelName={channelName}
+                    source={source}
+                    onChange={onChange}
+                  />
+                </Col>
+              );
+            })}
+          </Row>
         </Panel.Body>
       </Panel>
     );

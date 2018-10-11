@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
-import {Row, Col} from 'react-bootstrap';
+import {Panel} from 'react-bootstrap';
 import isEqual from 'lodash.isequal';
+import pc from './parameters';
 
 import Delay from './Delay';
 
@@ -11,37 +12,47 @@ class Delays extends Component {
     return !(
       isEqual(channels, nextProps.channels) &&
       setup.airTemperature === nextProps.setup.airTemperature &&
-      setup.delayCorrection === nextProps.setup.delayCorrection
+      setup.delayLink === nextProps.setup.delayLink &&
+      setup.delayCorrection === nextProps.setup.delayCorrection &&
+      setup.delayUnits === nextProps.setup.delayUnits
     );
   }
 
   render() {
-    const {channels, setup, group, onChange, xs, sm, md, lg} = this.props;
-    const {airTemperature, delayCorrection} = setup;
+    const {channels, setup, group, onChange} = this.props;
+    const {airTemperature, delayCorrection, delayLink, delayUnits} = setup;
 
     return (
-      <Row className="show-grid">
+      <div>
+        {group === 'outputs' && (
+          <Panel>
+            <Panel.Heading>Long Delay Link</Panel.Heading>
+            <Panel.Body>
+              <pc.DelayLink value={delayLink} onChange={onChange} />
+            </Panel.Body>
+          </Panel>
+        )}
+
         {Object.keys(channels).map(channelId => {
           const channel = channels[channelId];
           return (
-            <Col key={channelId} xs={xs} sm={sm} md={md} lg={lg}>
-              <Delay
-                key={channelId}
-                channel
-                group={group}
-                channelId={channelId}
-                delay={channel.delay}
-                shortDelay={channel.shortDelay}
-                longDelay={channel.longDelay}
-                airTemperature={airTemperature}
-                delayCorrection={delayCorrection}
-                channelName={channel.channelName}
-                onChange={onChange}
-              />
-            </Col>
+            <Delay
+              key={channelId}
+              channel
+              group={group}
+              channelId={channelId}
+              delay={channel.delay}
+              delayUnits={delayUnits}
+              shortDelay={channel.shortDelay}
+              longDelay={channel.longDelay}
+              airTemperature={airTemperature}
+              delayCorrection={delayCorrection}
+              channelName={channel.channelName}
+              onChange={onChange}
+            />
           );
         })}
-      </Row>
+      </div>
     );
   }
 }
