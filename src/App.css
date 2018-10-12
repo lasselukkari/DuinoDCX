@@ -123,7 +123,25 @@ body {
 }
 
 .middle-buttons > li.active > a {
-  color: #62c462 !important;
+  background-image: -webkit-linear-gradient(#78cc78, #62c462 60%, #53be53);
+  background-image: -o-linear-gradient(#78cc78, #62c462 60%, #53be53);
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#78cc78), color-stop(60%, #62c462), to(#53be53));
+  background-image: linear-gradient(#78cc78, #62c462 60%, #53be53);
+  background-repeat: no-repeat;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff78cc78', endColorstr='#ff53be53', GradientType=0);
+  -webkit-filter: none;
+  filter: none;
+}
+
+.middle-buttons > li.active > a:hover {
+  background-image: -webkit-linear-gradient(#2f7d2f, #379337 40%, #3a9a3a);
+  background-image: -o-linear-gradient(#2f7d2f, #379337 40%, #3a9a3a);
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#2f7d2f), color-stop(40%, #379337), to(#3a9a3a));
+  background-image: linear-gradient(#2f7d2f, #379337 40%, #3a9a3a);
+  background-repeat: no-repeat;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff2f7d2f', endColorstr='#ff3a9a3a', GradientType=0);
+  -webkit-filter: none;
+  filter: none;
 }
 
 .end-button > li.open > a {

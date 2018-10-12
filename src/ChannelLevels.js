@@ -23,8 +23,9 @@ class MuteButton extends PureComponent {
     const muteStyle = {
       float: 'left',
       margin: '1px',
-      width: '38px',
-      height: '36px'
+      width: '36px',
+      height: '36px',
+      padding: '5px'
     };
 
     return (
@@ -55,9 +56,10 @@ class ChannelLevel extends PureComponent {
     const style = {
       margin: '1px',
       cursor: 'default',
-      width: '2px',
+      width: '14px',
       height: '36px',
-      float: 'left'
+      float: 'left',
+      padding: '0'
     };
 
     return (
@@ -209,11 +211,12 @@ class ChannelLevels extends Component {
         <Clearfix />
         <Button
           className="center-block"
+          id="mute-all"
           bsStyle={isAnyUnmuted ? 'default' : 'danger'}
           style={{width: '100%', marginTop: '10px'}}
           onClick={() => this.handleMuteAll(isAnyUnmuted)}
         >
-          {isAnyUnmuted ? 'Mute All' : 'Unmute All'}
+          <Glyphicon glyph={isAnyUnmuted ? 'volume-up' : 'volume-off'} />
         </Button>
       </div>
     );
