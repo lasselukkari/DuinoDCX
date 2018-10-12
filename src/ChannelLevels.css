@@ -7,15 +7,43 @@
 }
 
 .channel-levels > ul {
-  width: 258px;
+  width: 172px !important;
 }
 
 @media (max-width: 767px) {
   .channel-levels > ul {
-    width: 258px !important;
+
   }
 
   .channels-container {
     display: block;
+  }
+}
+
+@media (min-width: 420px) {
+  .channel-levels > .dropdown-menu {
+    -webkit-transform: rotate(270deg);
+    -moz-transform: rotate(270deg);
+    -o-transform: rotate(270deg);
+    -ms-transform: rotate(270deg);
+    transform: rotate(270deg);
+    left: 120px;
+    top: -70px;
+  }
+
+  .channel-group .glyphicon {
+    -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    transform: rotate(90deg);
+  }
+
+  #mute-all .glyphicon {
+    -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    transform: rotate(90deg);
   }
 }
