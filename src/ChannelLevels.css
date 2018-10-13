@@ -7,7 +7,7 @@
 }
 
 .channel-levels > ul {
-  width: 172px !important;
+  width: 174px !important;
 }
 
 @media (max-width: 767px) {
@@ -27,7 +27,7 @@
     -o-transform: rotate(270deg);
     -ms-transform: rotate(270deg);
     transform: rotate(270deg);
-    left: 120px;
+    left: 119px;
     top: -70px;
   }
 
