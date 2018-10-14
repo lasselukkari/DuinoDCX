@@ -9,21 +9,31 @@
       }
 
       #progress {
-        width: 100%;
-        background-color: #3a3f44;
-        display: none;
         position: absolute;
+        width: 100%;
         bottom: 0;
         left: 0;
-        background-image: linear-gradient(#484e55, #3a3f44 60%, #313539);
-        background-repeat: no-repeat;
+        background-color: #1c1e22;
         border: 1px solid rgba(0, 0, 0, 0.6);
       }
 
       #bar {
-        width: 0;
+        width: 100%;
         height: 50px;
-        background-color: #3498DB;
+        background-image: linear-gradient(#484e55, #3a3f44 60%, #313539);
+        background-repeat: no-repeat;
+        border-right: 1px solid rgba(0, 0, 0, 0.6);
+        animation-name: reducetime;
+        animation-duration: 12s;
+      }
+
+      @keyframes reducetime {
+        0% {
+          width: 0;
+        }
+        100% {
+          width: 100%;
+        }
       }
     </style>
     <!-- Latest compiled and minified CSS -->
@@ -54,36 +64,6 @@
         <div id="bar"></div>
       </div>
     </div>
-    <script>
-      var time = 10000;
-      var delay = 500;
-      var interval = time / 1000;
-
-      function startProgress() {
-        var progress = document.getElementById("progress");
-
-        if (!progress) {
-          return;
-        }
-
-        var width = 0;
-        var id = setInterval(makeProgress, interval);
-        progress.style.display = 'block';
-
-        function makeProgress() {
-          var bar = document.getElementById("bar");
-
-          if (!bar || width >= 100) {
-            return clearInterval(id);
-          }
-
-          width = width + 0.1;
-          bar.style.width = width + '%';
-        }
-      }
-
-      setTimeout(startProgress, delay);
-    </script>
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
