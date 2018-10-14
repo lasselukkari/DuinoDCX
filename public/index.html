@@ -3,6 +3,29 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <style>
+      body {
+        background-color: #272b30;
+      }
+
+      #progress {
+        width: 100%;
+        background-color: #3a3f44;
+        display: none;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        background-image: linear-gradient(#484e55, #3a3f44 60%, #313539);
+        background-repeat: no-repeat;
+        border: 1px solid rgba(0, 0, 0, 0.6);
+      }
+
+      #bar {
+        width: 0;
+        height: 50px;
+        background-color: #3498DB;
+      }
+    </style>
     <!-- Latest compiled and minified CSS -->
     <!-- Optional theme -->
     <!--
@@ -27,7 +50,40 @@
       You need to enable JavaScript to run this app.
     </noscript>
     <div id="root">
+      <div id="progress">
+        <div id="bar"></div>
+      </div>
     </div>
+    <script>
+      var time = 10000;
+      var delay = 500;
+      var interval = time / 1000;
+
+      function startProgress() {
+        var progress = document.getElementById("progress");
+
+        if (!progress) {
+          return;
+        }
+
+        var width = 0;
+        var id = setInterval(makeProgress, interval);
+        progress.style.display = 'block';
+
+        function makeProgress() {
+          var bar = document.getElementById("bar");
+
+          if (!bar || width >= 100) {
+            return clearInterval(id);
+          }
+
+          width = width + 0.1;
+          bar.style.width = width + '%';
+        }
+      }
+
+      setTimeout(startProgress, delay);
+    </script>
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
