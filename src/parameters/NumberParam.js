@@ -87,10 +87,10 @@ class NumberParam extends Component {
     };
 
     const handlerStyle = {
-      height: 24,
-      width: 24,
-      marginLeft: -12,
-      marginTop: -12
+      height: 30,
+      width: 30,
+      marginLeft: -15,
+      marginTop: -15
     };
 
     return (
