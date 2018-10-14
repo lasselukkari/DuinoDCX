@@ -10,7 +10,7 @@
 #endif
 
 #ifndef TIMEOUT_TIME
-#define TIMEOUT_TIME 15000
+#define TIMEOUT_TIME 20000
 #endif
 
 #ifndef SEARCH_INTEVAL
