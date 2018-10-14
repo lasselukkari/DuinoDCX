@@ -122,7 +122,7 @@ class NumberParam extends Component {
                 onAfterChange={this.handleValueChange}
               />
             </div>
-            <h6>Current: {formatter(value, unit)}</h6>
+            <h6>{formatter(value, unit)}</h6>
           </div>
           <div className="max-number">
             <Button onClick={this.handleAddition}>
