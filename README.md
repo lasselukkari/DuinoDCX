@@ -15,7 +15,7 @@ http://duinodcx.herokuapp.com/
 [![DuinoDCX Demo Video](https://img.youtube.com/vi/Z5CDjev1ydA/0.jpg)](https://www.youtube.com/watch?v=Z5CDjev1ydA)
   
 ## Development
-Install the [Arduino IDE](https://www.arduino.cc/en/Main/Software) and the support for the [ESP32](https://github.com/espressif/arduino-esp32#installation-instructions) boards.
+Install [Node.js](https://nodejs.org), [Arduino IDE](https://www.arduino.cc/en/Main/Software) and the support for the [ESP32](https://github.com/espressif/arduino-esp32#installation-instructions) boards.
 
 ### Required parts
 ![DuinoDCX Hardware](https://i.imgur.com/zYhEit9.jpg)
@@ -32,7 +32,9 @@ Install the [Arduino IDE](https://www.arduino.cc/en/Main/Software) and the suppo
 * RS232 `GROUND` to ESP32 `GROUND`
 
 ### Building and uploading
-Run `npm run build` and then `npm run dist`
+Run `npm install` to fetch dependencies.
+
+To build the project run `npm run build` and then `npm run dist`.
 
 The dist command will read the minified files from the `build` dir and then rewrites the gzipped hex payloads for the static files to `DuinoDCX/StaticFiles.h` file.
 
