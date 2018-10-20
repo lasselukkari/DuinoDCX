@@ -20,10 +20,8 @@ Install [Node.js](https://nodejs.org), [Arduino IDE](https://www.arduino.cc/en/M
 ### Required parts
 ![DuinoDCX Hardware](https://i.imgur.com/zYhEit9.jpg)
 
-* ESP32 development board (5€)
-* RS232 To TTL converter (1€)
-* Wires for connecting the ESP32 to the RS232 To TTL converter
-* Male to male null modem cable (use gender changers if required)
+* ESP32 development board
+* RS232 To TTL converter
 
 ### Wiring
 * RS232 `RXD` to ESP32 `D16`
