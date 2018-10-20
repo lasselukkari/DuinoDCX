@@ -1,7 +1,7 @@
 #include "Ultradrive.h"
 
-Ultradrive::Ultradrive(HardwareSerial *serial) :
-  serial(serial), isFirstRun(true) {
+Ultradrive::Ultradrive(HardwareSerial *serial,  int rtsPin, int ctsPin) :
+  serial(serial), rtsPin(rtsPin), ctsPin(ctsPin), isFirstRun(true) {
 }
 
 void Ultradrive::processIncoming(unsigned long now) {
@@ -87,30 +87,59 @@ void Ultradrive::processOutgoing(Request* req) {
           }
         }
 
-        serial->write(serverBuffer, bytesRead);
+        write(serverBuffer, bytesRead);
       }
     }
   }
 }
 
+size_t Ultradrive::write(const uint8_t *buffer, size_t size){
+  if(requestToSend(1000)){
+    size_t read = serial->write(buffer, size);
+    endSend();
+    return read;
+  }
+
+  endSend();
+  return 0;
+}
+
+bool Ultradrive::requestToSend(int timeout) {
+  unsigned long start = millis();
+  digitalWrite(rtsPin, HIGH);
+
+  while (millis() - start <= timeout) {
+    if (digitalRead(ctsPin) == HIGH) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+
+void Ultradrive::endSend() {
+  digitalWrite(rtsPin, LOW);
+}
+
 void Ultradrive::search() {
   byte searchCommand[] = {0xF0, 0x00, 0x20, 0x32, 0x20, 0x0E, 0x40, TERMINATOR};
-  serial->write(searchCommand, sizeof(searchCommand));
+  write(searchCommand, sizeof(searchCommand));
 }
 
 void Ultradrive::setTransmitMode(int deviceId) {
   byte transmitModeCommand[] = {0xF0, 0x00, 0x20, 0x32, (byte)deviceId, 0x0E, 0x3F, 0x0C, 0x00, TERMINATOR};
-  serial->write(transmitModeCommand, sizeof(transmitModeCommand));
+  write(transmitModeCommand, sizeof(transmitModeCommand));
 }
 
 void Ultradrive::ping( int deviceId) {
   byte pingCommand[] = {0xF0, 0x00, 0x20, 0x32, (byte)deviceId, 0x0E, 0x44, 0x00, 0x00, TERMINATOR};
-  serial->write(pingCommand, sizeof(pingCommand));
+  write(pingCommand, sizeof(pingCommand));
 }
 
 void Ultradrive::dump(int deviceId, int part) {
   byte dumpCommand[] = {0xF0, 0x00, 0x20, 0x32, (byte)deviceId, 0x0E, 0x50, 0x01, 0x00, (byte)part, TERMINATOR};
-  serial->write(dumpCommand, sizeof(dumpCommand));
+  write(dumpCommand, sizeof(dumpCommand));
 }
 
 void Ultradrive::readCommands(unsigned long now) {

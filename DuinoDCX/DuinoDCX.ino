@@ -36,10 +36,14 @@
 #define SOFT_AP_PASSWORD_LENGTH 65
 #define MDDNS_NAME_LENGTH 65
 
+
+#define RTS_PIN 21
+#define CTS_PIN 22
+
 Preferences preferences;
 WiFiServer httpServer(80);
 HardwareSerial UltradriveSerial(2);
-Ultradrive deviceManager(&UltradriveSerial);
+Ultradrive deviceManager(&UltradriveSerial, RTS_PIN, CTS_PIN);
 WebApp app;
 Router apiRouter("/api");
 
@@ -332,6 +336,9 @@ void setupHttpServer() {
 }
 
 void setup() {
+  pinMode(RTS_PIN, OUTPUT);
+  pinMode(CTS_PIN, INPUT);
+
   UltradriveSerial.begin(38400);
 
   loadPreferences();

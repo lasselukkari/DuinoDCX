@@ -75,13 +75,16 @@ struct DataLocation {
 class Ultradrive {
 
   public:
-    Ultradrive(HardwareSerial *serial);
+    Ultradrive(HardwareSerial *serial, int rtsPin, int ctsPin);
     void processIncoming(unsigned long now);
     void processOutgoing(Request* req);
     void writeDevice(Response* res, int deviceId);
     void writeDevices(Response* res);
 
   private:
+    size_t write(const uint8_t *buffer, size_t size);
+    bool requestToSend(int timeout);
+    void endSend();
     void search();
     void setTransmitMode(int deviceId);
     void ping(int deviceId);
@@ -103,6 +106,8 @@ class Ultradrive {
     } devices[MAX_DEVICES];
 
     HardwareSerial *serial;
+    int rtsPin;
+    int ctsPin;
 
     bool isFirstRun;
     bool readingCommand;
@@ -122,3 +127,4 @@ class Ultradrive {
 };
 
 #endif
+
