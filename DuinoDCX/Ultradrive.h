@@ -75,7 +75,7 @@ struct DataLocation {
 class Ultradrive {
 
   public:
-    Ultradrive(HardwareSerial *serial, int rtsPin, int ctsPin);
+    Ultradrive(HardwareSerial *serial, int rtsPin = 0, int ctsPin = 0);
     void processIncoming(unsigned long now);
     void processOutgoing(Request* req);
     void writeDevice(Response* res, int deviceId);

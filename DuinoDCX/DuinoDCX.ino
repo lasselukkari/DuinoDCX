@@ -15,6 +15,10 @@
 #define DEFAULT_SOFT_AP_PASSWORD "Ultradrive"
 #define DEFAULT_MDNS_NAME "ultradrive"
 
+// Set to 0 to disable hardware flow control. Harware flow control is required when Ultradrives are linked.
+#define RTS_PIN 21
+#define CTS_PIN 22
+
 #define RESET_PIN 13
 
 #define WIFI_HOST_NAME "ultradrive"
@@ -35,10 +39,6 @@
 #define SOFT_AP_SSID_LENGTH 65
 #define SOFT_AP_PASSWORD_LENGTH 65
 #define MDDNS_NAME_LENGTH 65
-
-
-#define RTS_PIN 21
-#define CTS_PIN 22
 
 Preferences preferences;
 WiFiServer httpServer(80);
@@ -336,8 +336,10 @@ void setupHttpServer() {
 }
 
 void setup() {
-  pinMode(RTS_PIN, OUTPUT);
-  pinMode(CTS_PIN, INPUT);
+  if (RTS_PIN && CTS_PIN) {
+    pinMode(RTS_PIN, OUTPUT);
+    pinMode(CTS_PIN, INPUT);
+  }
 
   UltradriveSerial.begin(38400);
 

@@ -93,18 +93,23 @@ void Ultradrive::processOutgoing(Request* req) {
   }
 }
 
-size_t Ultradrive::write(const uint8_t *buffer, size_t size){
-  if(requestToSend(1000)){
-    size_t read = serial->write(buffer, size);
-    endSend();
-    return read;
+size_t Ultradrive::write(const uint8_t *buffer, size_t size) {
+  size_t written = 0;
+  
+  if (requestToSend(1000)) {
+    written = serial->write(buffer, size);
   }
 
   endSend();
-  return 0;
+  
+  return written;
 }
 
 bool Ultradrive::requestToSend(int timeout) {
+  if (!rtsPin) {
+    return true;
+  }
+
   unsigned long start = millis();
   digitalWrite(rtsPin, HIGH);
 
@@ -119,7 +124,9 @@ bool Ultradrive::requestToSend(int timeout) {
 
 
 void Ultradrive::endSend() {
-  digitalWrite(rtsPin, LOW);
+  if (rtsPin) {
+    digitalWrite(rtsPin, LOW);
+  }
 }
 
 void Ultradrive::search() {
