@@ -18,16 +18,13 @@ http://duinodcx.herokuapp.com/
 Install [Node.js](https://nodejs.org), [Arduino IDE](https://www.arduino.cc/en/Main/Software) and the support for the [ESP32](https://github.com/espressif/arduino-esp32#installation-instructions) boards.
 
 ### Required parts
-![DuinoDCX Hardware](https://i.imgur.com/zYhEit9.jpg)
 
 * ESP32 development board
 * RS232 To TTL converter
 
-### Wiring
-* RS232 `RXD` to ESP32 `D16`
-* RS232 `TXD` to ESP32 `D17`
-* RS232 `VCC` to ESP32 `3V3`
-* RS232 `GROUND` to ESP32 `GROUND`
+or
+
+* The [Serial Chiller](https://github.com/lasselukkari/SerialChiller) board
 
 ### Building and uploading
 Run `npm install` to fetch dependencies.
