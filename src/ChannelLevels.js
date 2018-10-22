@@ -154,7 +154,7 @@ class ChannelLevels extends PureComponent {
           }}
           onClick={this.handleToggle}
         >
-          <Glyphicon glyph="refresh" />
+          <Glyphicon glyph="transfer" />
         </Button>
         <Button
           className="pull-left"
