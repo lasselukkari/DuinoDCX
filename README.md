@@ -24,7 +24,7 @@ Install [Node.js](https://nodejs.org), [Arduino IDE](https://www.arduino.cc/en/M
 
 or
 
-* The [Serial Chiller](https://github.com/lasselukkari/SerialChiller) board
+* The [SerialChiller](https://github.com/lasselukkari/SerialChiller) board
 
 ### Building and uploading
 Run `npm install` to fetch dependencies.
