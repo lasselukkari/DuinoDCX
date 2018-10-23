@@ -15,7 +15,7 @@
 #define DEFAULT_SOFT_AP_PASSWORD "Ultradrive"
 #define DEFAULT_MDNS_NAME "ultradrive"
 
-// Set to 0 to disable hardware flow control. Harware flow control is required when Ultradrives are linked.
+// Set to 0 to disable hardware flow control. Hardware flow control is required when Ultradrives are linked.
 #define RTS_PIN 21
 #define CTS_PIN 22
 
