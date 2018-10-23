@@ -6,8 +6,9 @@ class DeviceSelect extends Component {
   shouldComponentUpdate(nextProps) {
     const {devices, device} = this.props;
     return (
-      devices.length !== nextProps.devices.length &&
-      isEqual(device, nextProps.device)
+      devices.length !== nextProps.devices.length ||
+      device.name !== nextProps.device.name ||
+      !isEqual(device.state, nextProps.device.state)
     );
   }
 
