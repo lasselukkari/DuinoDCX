@@ -8,7 +8,7 @@ class EQ extends PureComponent {
     const {
       eQType,
       eQFrequency,
-      eqQ,
+      eQQ,
       eQShelving,
       eQGain,
       id,
@@ -46,7 +46,7 @@ class EQ extends PureComponent {
               {eQType === 'Bandpass' && (
                 <pc.EQQ
                   includeLabel
-                  value={eqQ}
+                  value={eQQ}
                   eq={id}
                   group={group}
                   channelId={channelId}

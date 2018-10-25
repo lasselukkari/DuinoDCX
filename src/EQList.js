@@ -71,7 +71,7 @@ class EQs extends Component {
             </Panel.Body>
           </Panel>
           {activeEQs.map(eq => {
-            const {eQType, eQFrequency, eqQ, eQShelving, eQGain} = eq;
+            const {eQType, eQFrequency, eQQ, eQShelving, eQGain} = eq;
             return (
               <EQ
                 key={group + channelId + eq.id}
@@ -81,7 +81,7 @@ class EQs extends Component {
                 channelId={channelId}
                 eQType={eQType}
                 eQFrequency={eQFrequency}
-                eqQ={eqQ}
+                eQQ={eQQ}
                 eQShelving={eQShelving}
                 eQGain={eQGain}
                 onChange={onChange}
