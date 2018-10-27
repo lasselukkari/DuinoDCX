@@ -10,11 +10,21 @@
   width: 212px !important;
 }
 
+.led-bar {
+  float: left;
+}
+
+.led-bar button {
+  pointer-events:none;
+  margin: 1px;
+  cursor: default;
+  width: 14px;
+  height: 36px;
+  float: left;
+  padding: 0;
+}
+
 @media (max-width: 767px) {
-  .channel-levels > ul {
-
-  }
-
   .channels-container {
     display: block;
   }
