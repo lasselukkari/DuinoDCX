@@ -9,7 +9,8 @@
   "repository": "github:lasselukkari/DuinoDCX",
   "license": "MIT",
   "devDependencies": {
-    "awot-scripts": "0.0.13",
+    "awot-scripts": "0.0.15",
+    "eslint": "^5.8.0",
     "eslint-config-xo-react": "^0.17.0",
     "eslint-plugin-babel": "^4.1.2",
     "eslint-plugin-react": "^7.5.1",
@@ -42,6 +43,7 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "dist": "awot-static",
+    "flash": "awot-command-line",
     "lint": "xo --fix"
   },
   "xo": {
@@ -85,6 +87,17 @@
       "*.map",
       "service-worker.js"
     ]
+  },
+  "awot-command-line": {
+    "sketch": "DuinoDCX/DuinoDCX.ino",
+    "idePath": "/Applications/Arduino.app/Contents/MacOS/arduino",
+    "port": "/dev/cu.Repleo-PL2303-00002014",
+    "board": {
+      "package": "esp32",
+      "arch": "esp32",
+      "board": "esp32"
+    },
+    "action": "upload"
   },
   "proxy": "http://192.168.1.72"
 }
