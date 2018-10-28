@@ -11,7 +11,7 @@ const frequencyPoints = TransferFunction.generateFrequencyPoints(
 
 class CrossoverPlot extends PureComponent {
   createPlotData(channels, applyGain) {
-    const values = Object.keys(channels).map(key => {
+    const values = Object.keys(channels).map((key, index) => {
       const tf = new TransferFunction(frequencyPoints);
 
       const {
@@ -26,7 +26,7 @@ class CrossoverPlot extends PureComponent {
 
       return {
         data: tf.getMagnitude(),
-        channel: channels[key].channelName,
+        channel: `${index + 1}. ${channels[key].channelName}`,
         gain
       };
     });
@@ -97,7 +97,7 @@ class CrossoverPlot extends PureComponent {
           <Line
             key={channelId}
             type="monotone"
-            dataKey={channels[channelId].channelName}
+            dataKey={`${index + 1}. ${channels[channelId].channelName}`}
             dot={false}
             strokeWidth={3}
             stroke={colors[index]}
