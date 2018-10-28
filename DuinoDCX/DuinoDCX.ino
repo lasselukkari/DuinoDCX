@@ -14,10 +14,10 @@
 #define DEFAULT_SOFT_AP_SSID "DCX2496"
 #define DEFAULT_SOFT_AP_PASSWORD "Ultradrive"
 #define DEFAULT_MDNS_NAME "ultradrive"
+#define DEFAULT_FLOW_CONTROL false
 
-// Set to 0 to disable hardware flow control. Hardware flow control is required when Ultradrives are linked.
-#define RTS_PIN 0
-#define CTS_PIN 0
+#define RTS_PIN 21
+#define CTS_PIN 22
 
 #define RESET_PIN 13
 
@@ -26,6 +26,7 @@
 #define SOFT_AP_PASSWORD_KEY "apPassword"
 #define SOFT_AP_SSID_KEY "apSsid"
 #define MDNS_HOST_KEY "mdnsHost"
+#define FLOW_CONTROL_KEY "flowControl"
 
 #define AUTH_BUFFER_LENGHT 200
 #define MAX_DEVICES 16
@@ -51,6 +52,7 @@ char basicAuth[BASIC_AUTH_LENGTH];
 char softApSsid[SOFT_AP_SSID_LENGTH];
 char softApPassword[SOFT_AP_PASSWORD_LENGTH];
 char mdnsName[MDDNS_NAME_LENGTH];
+bool flowControl;
 
 char authBuffer[AUTH_BUFFER_LENGHT];
 char ssidBuffer[SSID_MAX_LENGTH];
@@ -107,7 +109,7 @@ void getNetworks(Request &req, Response &res) {
   res.print("]");
 }
 
-void getCredentials(Request &req, Response &res) {
+void getSettings(Request &req, Response &res) {
   res.success("application/json");
   res.print("{");
 
@@ -129,6 +131,11 @@ void getCredentials(Request &req, Response &res) {
   res.print("\"" MDNS_HOST_KEY "\":");
   res.print("\"");
   res.print(mdnsName);
+  res.print("\", ");
+
+  res.print("\"" FLOW_CONTROL_KEY "\":");
+  res.print("\"");
+  res.print(flowControl);
   res.print("\"");
 
   res.print("}");
@@ -151,7 +158,7 @@ void getVersion(Request &req, Response &res) {
   res.print("}");
 }
 
-void updateCredentials(Request &req, Response &res) {
+void updateSettings(Request &req, Response &res) {
   char name[15];
   char value[BASIC_AUTH_LENGTH];
   preferences.begin("duinodcx", false);
@@ -166,6 +173,9 @@ void updateCredentials(Request &req, Response &res) {
       preferences.putString(SOFT_AP_PASSWORD_KEY, value);
     } else if (strcmp(name, MDNS_HOST_KEY) == 0) {
       preferences.putString(MDNS_HOST_KEY, value);
+    } else if (strcmp(name, FLOW_CONTROL_KEY) == 0) {
+      bool isEnabled = (value[0] != '0');
+      preferences.putBool(FLOW_CONTROL_KEY, isEnabled);
     } else {
       preferences.end();
       return res.fail();
@@ -311,6 +321,8 @@ void loadPreferences() {
     strcpy(mdnsName, DEFAULT_MDNS_NAME);
   }
 
+  flowControl = preferences.getBool(FLOW_CONTROL_KEY, DEFAULT_FLOW_CONTROL);
+
   preferences.end();
 }
 
@@ -323,8 +335,8 @@ void setupHttpServer() {
   apiRouter.post("/commands", &createDirectCommand);
   apiRouter.get("/connection", &getConnection);
   apiRouter.patch("/connection", &updateConnection);
-  apiRouter.get("/credentials", &getCredentials);
-  apiRouter.patch("/credentials", &updateCredentials);
+  apiRouter.get("/settings", &getSettings);
+  apiRouter.patch("/settings", &updateSettings);
   apiRouter.get("/networks", &getNetworks);
   apiRouter.post("/update", &update);
   apiRouter.get("/version", &getVersion);
@@ -336,14 +348,15 @@ void setupHttpServer() {
 }
 
 void setup() {
-  if (RTS_PIN && CTS_PIN) {
-    pinMode(RTS_PIN, OUTPUT);
-    pinMode(CTS_PIN, INPUT);
-  }
-
   UltradriveSerial.begin(38400);
 
   loadPreferences();
+
+  if (flowControl) {
+    deviceManager.enableFlowControl(true);
+    pinMode(RTS_PIN, OUTPUT);
+    pinMode(CTS_PIN, INPUT);
+  }
 
   WiFi.softAP(softApSsid, softApPassword);
   WiFi.setAutoReconnect(false);

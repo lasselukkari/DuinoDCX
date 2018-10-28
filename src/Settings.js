@@ -17,18 +17,18 @@ function handleFetchErrors(response) {
   return response;
 }
 
-class Credentials extends PureComponent {
+class Settings extends PureComponent {
   constructor() {
     super();
     this.state = {};
   }
 
-  fetchCredentials() {
-    return fetch('/api/credentials', {credentials: 'same-origin'})
+  fetchSettings() {
+    return fetch('/api/settings', {credentials: 'same-origin'})
       .then(handleFetchErrors)
       .then(response => response.json())
-      .then(crentials => {
-        const {apSsid, apPassword, auth, mdnsHost} = crentials;
+      .then(settings => {
+        const {apSsid, apPassword, auth, mdnsHost, flowControl} = settings;
 
         const basicAuth = atob(auth.replace('Basic ', '')).split(':');
         const username = basicAuth[0];
@@ -40,13 +40,14 @@ class Credentials extends PureComponent {
           apSsid,
           apPassword,
           mdnsHost,
+          flowControl,
           loadingDone: true
         });
       });
   }
 
   componentDidMount() {
-    this.fetchCredentials().catch(console.log);
+    this.fetchSettings().catch(console.log);
   }
 
   handleUsernameChange = e => {
@@ -74,32 +75,45 @@ class Credentials extends PureComponent {
     this.setState({mdnsHost});
   };
 
+  handleFlowControlChange = e => {
+    const flowControl = e.target.value;
+    this.setState({flowControl});
+  };
+
   handleSubmit = e => {
     e.preventDefault();
 
-    const {username, password, apSsid, apPassword, mdnsHost} = this.state;
+    const {
+      username,
+      password,
+      apSsid,
+      apPassword,
+      mdnsHost,
+      flowControl
+    } = this.state;
     const auth = `Basic ${btoa(`${username}:${password}`)}`;
 
     const formData = new FormData();
     formData.append('apSsid', apSsid);
     formData.append('apPassword', apPassword);
     formData.append('mdnsHost', mdnsHost);
+    formData.append('flowControl', flowControl);
     formData.append('auth', auth);
     const data = new URLSearchParams(formData);
 
-    fetch('/api/credentials', {
+    fetch('/api/settings', {
       method: 'PATCH',
       body: data,
       credentials: 'same-origin'
     })
       .then(handleFetchErrors)
       .then(() => {
-        toast.info(`Credentials updated`, {
+        toast.info(`Settings updated`, {
           position: toast.POSITION.BOTTOM_LEFT
         });
       })
       .catch(() => {
-        toast.error(`Failed to update credentials`, {
+        toast.error(`Failed to update settings`, {
           position: toast.POSITION.BOTTOM_LEFT
         });
       });
@@ -140,6 +154,7 @@ class Credentials extends PureComponent {
       apSsid,
       apPassword,
       mdnsHost,
+      flowControl,
       loadingDone
     } = this.state;
 
@@ -232,6 +247,21 @@ class Credentials extends PureComponent {
           </Col>
         </FormGroup>
         <FormGroup>
+          <Col componentClass={ControlLabel} md={4}>
+            Hardware Flow Control
+          </Col>
+          <Col md={8}>
+            <FormControl
+              componentClass="select"
+              value={flowControl}
+              onChange={this.handleFlowControlChange}
+            >
+              <option value="0">Disabled</option>
+              <option value="1">Enabled</option>
+            </FormControl>
+          </Col>
+        </FormGroup>
+        <FormGroup>
           <Col mdOffset={4} md={8}>
             <Button type="submit" disabled={!this.isFormValid()}>
               Save
@@ -243,4 +273,4 @@ class Credentials extends PureComponent {
   }
 }
 
-export default Credentials;
+export default Settings;
