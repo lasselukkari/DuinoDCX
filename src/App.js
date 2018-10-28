@@ -17,7 +17,7 @@ import Manager from './dcx2496/manager';
 import ChannelLevels from './ChannelLevels';
 import Connection from './Connection';
 import Upload from './Upload';
-import Credentials from './Credentials';
+import Settings from './Settings';
 import DeviceSelect from './DeviceSelect';
 import Device from './Device';
 import Localization from './Localization';
@@ -154,10 +154,10 @@ class App extends Component {
               Wifi Setup
             </MenuItem>
             <MenuItem
-              eventKey="credentials"
-              onSelect={() => this.handleShowModal('credentials')}
+              eventKey="settings"
+              onSelect={() => this.handleShowModal('settings')}
             >
-              Credentials
+              Settings
             </MenuItem>
             <MenuItem
               eventKey="upload"
@@ -206,19 +206,19 @@ class App extends Component {
     );
   }
 
-  credentialsModal() {
+  settingsModal() {
     const {showModal} = this.state;
 
     return (
       <Modal
-        show={showModal === 'credentials'}
+        show={showModal === 'settings'}
         onHide={() => this.handleShowModal(false)}
       >
         <Modal.Header closeButton>
-          <Modal.Title>Credentials</Modal.Title>
+          <Modal.Title>Settings</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Credentials />
+          <Settings />
         </Modal.Body>
         <Modal.Footer>
           <Button onClick={() => this.handleShowModal(false)}>Close</Button>
@@ -261,7 +261,7 @@ class App extends Component {
           onChange={this.handleDeviceUpdate}
         />
         {this.connectionModal()}
-        {this.credentialsModal()}
+        {this.settingsModal()}
         {this.uploadModal()}
         {this.bottomNavigation()}
         <ToastContainer />

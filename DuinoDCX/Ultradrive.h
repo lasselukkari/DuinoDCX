@@ -76,6 +76,7 @@ class Ultradrive {
 
   public:
     Ultradrive(HardwareSerial *serial, int rtsPin = 0, int ctsPin = 0);
+    void enableFlowControl(bool enabled);
     void processIncoming(unsigned long now);
     void processOutgoing(Request* req);
     void writeDevice(Response* res, int deviceId);
@@ -110,6 +111,7 @@ class Ultradrive {
     int ctsPin;
 
     bool isFirstRun;
+    bool flowControl;
     bool readingCommand;
     int serialRead;
 

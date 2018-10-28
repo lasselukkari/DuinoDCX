@@ -1,7 +1,11 @@
 #include "Ultradrive.h"
 
 Ultradrive::Ultradrive(HardwareSerial *serial,  int rtsPin, int ctsPin) :
-  serial(serial), rtsPin(rtsPin), ctsPin(ctsPin), isFirstRun(true) {
+  serial(serial), rtsPin(rtsPin), ctsPin(ctsPin), isFirstRun(true), flowControl(false) {
+}
+
+void Ultradrive::enableFlowControl(bool enabled) {
+  flowControl = enabled;
 }
 
 void Ultradrive::processIncoming(unsigned long now) {
@@ -95,18 +99,18 @@ void Ultradrive::processOutgoing(Request* req) {
 
 size_t Ultradrive::write(const uint8_t *buffer, size_t size) {
   size_t written = 0;
-  
+
   if (requestToSend(1000)) {
     written = serial->write(buffer, size);
   }
 
   endSend();
-  
+
   return written;
 }
 
 bool Ultradrive::requestToSend(int timeout) {
-  if (!rtsPin) {
+  if (!flowControl) {
     return true;
   }
 
@@ -124,7 +128,7 @@ bool Ultradrive::requestToSend(int timeout) {
 
 
 void Ultradrive::endSend() {
-  if (rtsPin) {
+  if (flowControl) {
     digitalWrite(rtsPin, LOW);
   }
 }
