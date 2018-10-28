@@ -7,7 +7,7 @@
 #include "Ultradrive.h"
 #include "StaticFiles.h"
 
-#define VERSION "v0.0.9"
+#define VERSION "v0.0.10"
 #define BUILD_DATE __DATE__ " " __TIME__
 
 #define DEFAULT_AUTH "Basic RENYMjQ5NjpVbHRyYWRyaXZl" // DCX2496:Ultradrive in base64
@@ -16,8 +16,8 @@
 #define DEFAULT_MDNS_NAME "ultradrive"
 
 // Set to 0 to disable hardware flow control. Hardware flow control is required when Ultradrives are linked.
-#define RTS_PIN 21
-#define CTS_PIN 22
+#define RTS_PIN 0
+#define CTS_PIN 0
 
 #define RESET_PIN 13
 
