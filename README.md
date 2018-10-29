@@ -37,12 +37,18 @@ Open the `DuinoDCX/DuinoDCX.ino` Arduino sketch file using Arduino IDE. Set the 
 
 Precompiled binaires can be uploded using the ESP32 OTAWebUpdater example or using the built in functionality after the initial installation.
 
-## Connecting to the device
-The device creates a wifi network with SSID `DCX2496`. The default password is `Ultradrive`.
+## Hotspot Access
+The controller creates a wifi network with SSID `DCX2496`. The default password is `Ultradrive`.
 
-Connect your computer or mobile device to the network and point the browser to address `http://192.168.4.1`. The default username and password are `DCX2496` and `Ultradrive`. The UI will take a few seconds to load.
+Connect your computer or mobile device to the network and point the browser to address `http://192.168.4.1`. The default username and password are DCX2496 and Ultradrive. The control panel will take a few seconds to load.
 
-If you want to make the UI available in your local network open the `Wifi Setup` config panel. Fill in your wifi credential and submit the form. Wifi credentials are persisted to the device memory.
+## Local Network Connection
+If you want to make the control panel available in your local network open the Wifi Setup config panel. This will also allow your client device to be connected to the internet while using the control panel.
+
+<img src="https://i.imgur.com/SmuW0e4.png" width="600">
+<img src="https://i.imgur.com/CgHdpt6.png" width="600">
+
+Select your network name and fill in the password. After submitting the form the controller will attempt to connect to the select network. If the connection is successful the device IP will show up in the Wifi Status panel. This IP address can now be used to access the device inside the local wifi network.
 
 If your client device supports MDNS the controller will be also available at `http://ultradrive.local`. You may need to add `http://` to the url when using it the first time in a browser.
   - For Linux, install Avahi (http://avahi.org/).
