@@ -1,14 +1,9 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import isEqual from 'lodash.isequal';
 
 import pc from './parameters';
 
-class OutputSource extends Component {
-  shouldComponentUpdate(nextProps) {
-    const {channel} = this.props;
-    return !isEqual(channel, nextProps.channel);
-  }
-
+class OutputSource extends PureComponent {
   render() {
     const {channelName, source, channelId, onChange, group} = this.props;
     return (
