@@ -50,6 +50,7 @@ If you want to make the control panel available in your local network open the W
 
 Select your network name and fill in the password. After submitting the form the controller will attempt to connect to the select network. If the connection is successful the device IP will show up in the Wifi Status panel. This IP address can now be used to access the device inside the local wifi network.
 
+### MDNS
 If your client device supports MDNS the controller will be also available at `http://ultradrive.local`. You may need to add `http://` to the url when using it the first time in a browser.
   - For Linux, install Avahi (http://avahi.org/).
   - For Windows, install Bonjour (http://www.apple.com/support/bonjour/).
