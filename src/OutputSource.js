@@ -1,5 +1,4 @@
 import React, {PureComponent} from 'react';
-import isEqual from 'lodash.isequal';
 
 import pc from './parameters';
 
