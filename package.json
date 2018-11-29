@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "bootswatch": "^3.3.7",
+    "compare-versions": "^3.4.0",
     "express": "^4.16.2",
     "lodash.clonedeep": "^4.5.0",
     "lodash.isequal": "^4.5.0",
@@ -100,5 +101,5 @@
     },
     "action": "upload"
   },
-  "proxy": "http://192.168.1.72"
+  "proxy": "http://192.168.1.204"
 }

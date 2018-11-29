@@ -1,8 +1,9 @@
 import React, {PureComponent} from 'react';
 import Dropzone from 'react-dropzone';
 import Request from 'superagent';
-import {ProgressBar} from 'react-bootstrap';
+import {ProgressBar, Button} from 'react-bootstrap';
 import Spinner from 'react-spinkit';
+import * as compareVersions from 'compare-versions';
 
 class Upload extends PureComponent {
   constructor() {
@@ -25,8 +26,24 @@ class Upload extends PureComponent {
       });
   }
 
+  fetchReleases() {
+    return fetch('https://api.github.com/repos/lasselukkari/DuinoDCX/releases')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(response.statusText);
+        }
+
+        return response;
+      })
+      .then(response => response.json())
+      .then(releases => {
+        this.setState({releases});
+      });
+  }
+
   componentDidMount() {
     this.fetchVersion().catch(console.log);
+    this.fetchReleases().catch(console.log);
   }
 
   handleDrop = acceptedFiles => {
@@ -68,8 +85,49 @@ class Upload extends PureComponent {
     }
   }
 
+  getNewRelease({version}, releases) {
+    const release = releases[0];
+
+    if (!release) {
+      return;
+    }
+
+    const {browser_download_url: link, name} = release.assets.filter(
+      asset => asset.name === `duinodcx-${release.tag_name}.bin`
+    )[0];
+
+    if (!link || !name) {
+      return;
+    }
+
+    return {
+      link,
+      name,
+      isLatest: compareVersions(release.tag_name, version) === 0
+    };
+  }
+
+  static renderRelease(release) {
+    if (release.isLatest) {
+      return <p>Latest firmware installed</p>;
+    }
+    return (
+      <div>
+        <p>New release found: {release.name}.</p>
+        <Button href={release.link} bsStyle="success">
+          Download
+        </Button>
+      </div>
+    );
+  }
+
   render() {
-    const {version} = this.state;
+    const {version, releases} = this.state;
+    let latestRelease;
+
+    if (version && releases) {
+      latestRelease = this.getNewRelease(version, releases);
+    }
 
     if (!version) {
       return (
@@ -107,7 +165,10 @@ class Upload extends PureComponent {
         </Dropzone>
         <br />
         <div className="text-center">
-          Current version: {version.version}, {version.buildDate}
+          <p>
+            Current version: {version.version}, {version.buildDate}
+          </p>
+          {latestRelease && Upload.renderRelease(latestRelease)}
         </div>
       </div>
     );
