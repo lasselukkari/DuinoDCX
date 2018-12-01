@@ -143,7 +143,6 @@ class Upload extends PureComponent {
     return (
       <div>
         <Dropzone
-          disablePreview
           style={{
             width: '100%',
             height: '45px',

@@ -1,5 +1,5 @@
-const EventEmitter = require('events');
-const DCX2496 = require('./dcx2496');
+import {EventEmitter} from 'events'
+import DCX2496 from './dcx2496';
 
 class Manager extends EventEmitter {
   constructor() {
@@ -36,8 +36,8 @@ class Manager extends EventEmitter {
 
         setTimeout(() => this.pollSelectedDevice(), 1000);
       })
-      .catch(err => {
-        console.log(err);
+      .catch(error => {
+        console.log(error);
         setTimeout(() => this.pollSelectedDevice(), 1000);
       });
   }
@@ -61,8 +61,8 @@ class Manager extends EventEmitter {
           this.pollDevices();
         }, 1000);
       })
-      .catch(err => {
-        console.log(err);
+      .catch(error => {
+        console.log(error);
         setTimeout(() => {
           this.pollDevices();
         }, 1000);
@@ -147,4 +147,4 @@ class Manager extends EventEmitter {
   }
 }
 
-module.exports = Manager;
+export default Manager;

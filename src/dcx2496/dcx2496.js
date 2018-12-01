@@ -327,4 +327,4 @@ commands.outputCommands.forEach((command, index) => {
 DCX2496.commands = commands;
 DCX2496.constants = constants;
 
-module.exports = DCX2496;
+export default DCX2496;
