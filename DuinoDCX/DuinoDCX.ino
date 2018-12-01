@@ -5,7 +5,6 @@
 #include <Preferences.h>
 #include "aWOT.h"
 #include "Ultradrive.h"
-#include "StaticFiles.h"
 
 #define VERSION "v0.0.12"
 #define BUILD_DATE __DATE__ " " __TIME__
@@ -328,7 +327,6 @@ void loadPreferences() {
 
 void setupHttpServer() {
   app.readHeader("Authorization", authBuffer, AUTH_BUFFER_LENGHT);
-  app.use(&auth);
 
   apiRouter.get("/devices", &getDevices);
   apiRouter.get("/devices/:id", &getDevice);
@@ -340,9 +338,10 @@ void setupHttpServer() {
   apiRouter.get("/networks", &getNetworks);
   apiRouter.post("/update", &update);
   apiRouter.get("/version", &getVersion);
-  app.use(&apiRouter);
 
-  ServeStatic(&app);
+  app.use(&auth);
+  app.use(&apiRouter);
+  app.use(staticFiles());
 
   httpServer.begin();
 }
