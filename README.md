@@ -52,13 +52,14 @@ If there is no local wifi network available you can still create a wifi hotspot 
 
 Select your network name and fill in the password. After submitting the form the controller will attempt to connect to the select network. If the connection is successful the device IP will show up in the Wifi Status panel. This IP address can now be used to access the device inside the local wifi network.
 
-### MDNS
+### mDNS
 If your client device supports MDNS the controller will be also available at `http://ultradrive.local`. You may need to add `http://` to the url when using it the first time in a browser.
   - For Linux, install Avahi (http://avahi.org/).
   - For Windows, install Bonjour (http://www.apple.com/support/bonjour/).
   - For Mac OSX and iOS support is built in through Bonjour already.
-  - For Android, you are out of luck.
-
+  - For Android there is now way to get mDNS working directly in the browser. The [issue](https://bugs.chromium.org/p/chromium/issues/detail?id=405925&desc=2) has been open since 2014. You can install [Service Browser](https://play.google.com/store/apps/details?id=com.druk.servicebrowser) to discover mDNS services.
+  
+  
 ## Security Credentials
 All credentials can be changed using the UI. The defaults are defined beginning of the [main sketch file](https://github.com/lasselukkari/DuinoDCX/blob/master/DuinoDCX/DuinoDCX.ino). In case you forget your password short digital pin 13 to the ground for one seconds while the device is booting up. This will restore the default credentials.
 
