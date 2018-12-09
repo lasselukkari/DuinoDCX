@@ -1,4 +1,4 @@
-import {EventEmitter} from 'events'
+import {EventEmitter} from 'events';
 import DCX2496 from './dcx2496';
 
 class Manager extends EventEmitter {
@@ -105,7 +105,7 @@ class Manager extends EventEmitter {
       !this.devices[deviceId]
     ) {
       this.devices[deviceId] = new DCX2496(message);
-      if (!this.selectedDevice) {
+      if (this.selectedDevice === null) {
         this.selectedDevice = deviceId;
         this.pollSelectedDevice();
       }
