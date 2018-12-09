@@ -8,6 +8,7 @@ class DeviceSelect extends Component {
     return (
       devices.length !== nextProps.devices.length ||
       device.name !== nextProps.device.name ||
+      device.id !== nextProps.device.id ||
       !isEqual(device.state, nextProps.device.state)
     );
   }
@@ -22,7 +23,9 @@ class DeviceSelect extends Component {
     const deviceName = (
       <div>
         <div className="device-name">
-          {`${device.name} ${device.version} (${device.state.free}%)`}
+          {`${device.id}. ${device.name} ${device.version} (${
+            device.state.free
+          }%)`}
         </div>
         <Glyphicon glyph="list" />
       </div>
@@ -33,7 +36,7 @@ class DeviceSelect extends Component {
         <NavDropdown noCaret title={deviceName} id="basic-nav-dropdown">
           {devices.map(({name, id}, deviceId) => (
             <MenuItem key={id} eventKey={deviceId}>
-              {name}
+              {id}. {name}
             </MenuItem>
           ))}
         </NavDropdown>
