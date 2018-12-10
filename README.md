@@ -42,6 +42,8 @@ The controller creates a wifi network with SSID `DCX2496`. The default password 
 
 Connect your computer or mobile device to the network and point the browser to address `http://192.168.4.1`. The default username and password are DCX2496 and Ultradrive. The control panel will take a few seconds to load.
 
+You may need to disable your mobile internet when connected in the hotspot mode.
+
 ## Local Network Connection
 The downside of the hotspot mode is that the rest of the internet is inaccessible while connected. If you want to make the control panel available in your local network it can be configured in the Wifi Setup config panel.
 
