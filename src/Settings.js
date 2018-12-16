@@ -47,7 +47,11 @@ class Settings extends PureComponent {
   }
 
   componentDidMount() {
-    this.fetchSettings().catch(console.log);
+    this.fetchSettings().catch(() => {
+      toast.error(`Fetching settings failed.`, {
+        position: toast.POSITION.BOTTOM_LEFT
+      });
+    });
   }
 
   handleUsernameChange = e => {

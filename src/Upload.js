@@ -3,6 +3,7 @@ import Dropzone from 'react-dropzone';
 import Request from 'superagent';
 import {ProgressBar, Button} from 'react-bootstrap';
 import Spinner from 'react-spinkit';
+import {toast} from 'react-toastify';
 import * as compareVersions from 'compare-versions';
 
 class Upload extends PureComponent {
@@ -42,8 +43,12 @@ class Upload extends PureComponent {
   }
 
   componentDidMount() {
-    this.fetchVersion().catch(console.log);
-    this.fetchReleases().catch(console.log);
+    this.fetchVersion().catch(() => {
+      toast.error(`Fetching firmware version failed.`, {
+        position: toast.POSITION.BOTTOM_LEFT
+      });
+    });
+    this.fetchReleases().catch(() => {});
   }
 
   handleDrop = acceptedFiles => {

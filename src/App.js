@@ -23,6 +23,7 @@ import Device from './Device';
 import Localization from './Localization';
 
 import 'bootswatch/slate/bootstrap.css'; // eslint-disable-line import/no-unassigned-import
+import 'react-toastify/dist/ReactToastify.css'; // eslint-disable-line import/no-unassigned-import
 import './App.css'; // eslint-disable-line import/no-unassigned-import
 
 class App extends Component {

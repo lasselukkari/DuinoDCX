@@ -151,3 +151,7 @@ body {
 .recharts-default-tooltip {
   background-color: #272b30 !important;
 }
+
+.Toastify__toast-body {
+  margin: auto 15px;
+}
