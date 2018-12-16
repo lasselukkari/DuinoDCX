@@ -1,5 +1,13 @@
 import {EventEmitter} from 'events';
+import {toast} from 'react-toastify';
 import DCX2496 from './dcx2496';
+
+function handleFetchErrors(response) {
+  if (!response.ok) {
+    throw new Error(response.statusText);
+  }
+  return response;
+}
 
 class Manager extends EventEmitter {
   constructor() {
@@ -17,6 +25,7 @@ class Manager extends EventEmitter {
 
   pollSelectedDevice() {
     fetch(`/api/devices/${this.selectedDevice}`, {credentials: 'same-origin'})
+      .then(handleFetchErrors)
       .then(res => res.arrayBuffer())
       .then(messages => {
         let message = [];
@@ -35,15 +44,25 @@ class Manager extends EventEmitter {
         }
 
         setTimeout(() => this.pollSelectedDevice(), 1000);
+        if (toast.isActive('no-connection')) {
+          toast.dismiss('no-connection');
+        }
       })
-      .catch(error => {
-        console.log(error);
+      .catch(() => {
+        if (!toast.isActive('no-connection')) {
+          toast.error(`Check network connection.`, {
+            position: toast.POSITION.BOTTOM_LEFT,
+            toastId: 'no-connection',
+            autoClose: false
+          });
+        }
         setTimeout(() => this.pollSelectedDevice(), 1000);
       });
   }
 
   pollDevices() {
     fetch(`/api/devices`, {credentials: 'same-origin'})
+      .then(handleFetchErrors)
       .then(res => res.arrayBuffer())
       .then(messages => {
         let message = [];
@@ -60,9 +79,19 @@ class Manager extends EventEmitter {
         setTimeout(() => {
           this.pollDevices();
         }, 1000);
+        if (toast.isActive('no-connection')) {
+          toast.dismiss('no-connection');
+        }
       })
-      .catch(error => {
-        console.log(error);
+      .catch(() => {
+        if (!toast.isActive('no-connection')) {
+          toast.error(`Check network connection.`, {
+            position: toast.POSITION.BOTTOM_LEFT,
+            toastId: 'no-connection',
+            autoClose: false
+          });
+        }
+
         setTimeout(() => {
           this.pollDevices();
         }, 1000);
@@ -93,7 +122,13 @@ class Manager extends EventEmitter {
       credentials: 'same-origin',
       headers: {'Content-Type': 'application/binary'},
       body: hexStringToByte(data)
-    }).catch(console.log);
+    })
+      .then(handleFetchErrors)
+      .catch(() => {
+        toast.error(`Failed to update settings.`, {
+          position: toast.POSITION.BOTTOM_LEFT
+        });
+      });
   }
 
   handleMessage(message) {

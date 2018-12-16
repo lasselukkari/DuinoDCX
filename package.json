@@ -31,7 +31,7 @@
     "react-dom": "^16.6.3",
     "react-dropzone": "^7.0.1",
     "react-spinkit": "^3.0.0",
-    "react-toastify": "^3.2.2",
+    "react-toastify": "^4.5.0",
     "react-window-size": "^1.0.1",
     "recharts": "^1.4.1",
     "superagent": "^4.0.0"

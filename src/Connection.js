@@ -50,7 +50,11 @@ class Connection extends Component {
   componentDidMount() {
     this.updateConnection()
       .then(() => this.updateNetworks())
-      .catch(console.log);
+      .catch(() => {
+        toast.error(`Fetching WiFi status failed.`, {
+          position: toast.POSITION.BOTTOM_LEFT
+        });
+      });
   }
 
   shouldComponentUpdate(nextProps, nextState) {
