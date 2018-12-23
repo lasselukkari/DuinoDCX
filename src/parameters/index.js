@@ -80,6 +80,7 @@ const numberComponent = function({name, unit, min, max, step}, type) {
         onChange,
         formatter,
         includeLabel,
+        confirm,
         labelFormatter
       } = this.props;
       return (
@@ -97,6 +98,7 @@ const numberComponent = function({name, unit, min, max, step}, type) {
           eq={eq}
           includeLabel={includeLabel}
           formatter={formatter}
+          confirm={confirm}
           labelFormatter={labelFormatter}
           onChange={onChange}
         />
