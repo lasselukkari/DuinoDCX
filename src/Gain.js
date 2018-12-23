@@ -23,7 +23,10 @@ class Gain extends PureComponent {
                 `You are about to change ${name.toLowerCase()} from ${formatter(
                   oldValue,
                   unit
-                )} to ${formatter(newValue, unit)} (+${formatter(newValue -oldValue, unit)}). Are you sure?`
+                )} to ${formatter(newValue, unit)} (+${formatter(
+                  newValue - oldValue,
+                  unit
+                )}). Are you sure?`
               );
             }
 
