@@ -7,18 +7,55 @@ import 'rc-slider/assets/index.css'; // eslint-disable-line import/no-unassigned
 const SliderWithTooltip = createSliderWithTooltip(Slider);
 
 class NumberParam extends Component {
-  shouldComponentUpdate(nextProps) {
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (prevState.moving !== true) {
+      return {value: nextProps.value};
+    }
+
+    return null;
+  }
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      value: props.value
+    };
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
     const {value, unit, formatter} = this.props;
 
     return (
       formatter(value, unit) !==
-      nextProps.formatter(nextProps.value, nextProps.unit)
+        nextProps.formatter(nextProps.value, nextProps.unit) ||
+      nextState.value !== this.state.value
     );
   }
 
-  handleValueChange = value => {
-    const {param, group, channelId, eq, onChange} = this.props;
-    onChange({param, group, channelId, eq, value});
+  handleOnBeforeChange = () => this.setState({moving: true});
+
+  handleOnChange = value => this.setState({value});
+
+  handleOnAfterChange = newValue => {
+    const {
+      name,
+      unit,
+      param,
+      group,
+      channelId,
+      eq,
+      onChange,
+      confirm,
+      value: oldValue,
+      formatter
+    } = this.props;
+
+    if (confirm && !confirm({oldValue, newValue, unit, name, formatter})) {
+      return this.setState({moving: false, value: oldValue});
+    }
+
+    this.setState({moving: false});
+    onChange({param, group, channelId, eq, value: newValue});
   };
 
   handleReduction = () => {
@@ -111,15 +148,16 @@ class NumberParam extends Component {
           <div className="slider">
             <div className="slider-container">
               <SliderWithTooltip
-                key={value}
-                defaultValue={value}
+                value={this.state.value}
                 handleStyle={handlerStyle}
                 marks={marks}
                 max={max}
                 min={min}
                 step={step}
                 tipFormatter={value => formatter(value, unit)}
-                onAfterChange={this.handleValueChange}
+                onChange={this.handleOnChange}
+                onBeforeChange={this.handleOnBeforeChange}
+                onAfterChange={this.handleOnAfterChange}
               />
             </div>
             <h6>{formatter(value, unit)}</h6>

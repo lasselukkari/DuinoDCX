@@ -16,6 +16,19 @@ class Gain extends PureComponent {
           value={gain}
           group={group}
           channelId={channelId}
+          confirm={({oldValue, newValue, name, unit, formatter}) => {
+            if (newValue - oldValue > 6) {
+              // eslint-disable-next-line no-alert
+              return window.confirm(
+                `You are about to change ${name.toLowerCase()} from ${formatter(
+                  oldValue,
+                  unit
+                )} to ${formatter(newValue, unit)} (+${formatter(newValue -oldValue, unit)}). Are you sure?`
+              );
+            }
+
+            return true;
+          }}
           onChange={onChange}
         />
       </div>
