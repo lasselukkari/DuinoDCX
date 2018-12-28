@@ -22,6 +22,23 @@ class InputRouting extends Component {
       inputCSumGain
     } = setup;
 
+    const confirm = ({oldValue, newValue, name, unit, formatter}) => {
+      if (newValue - oldValue > 6) {
+        // eslint-disable-next-line no-alert
+        return window.confirm(
+          `You are about to change ${name.toLowerCase()} from ${formatter(
+            oldValue,
+            unit
+          )} to ${formatter(newValue, unit)} (+${formatter(
+            newValue - oldValue,
+            unit
+          )}). Are you sure?`
+        );
+      }
+
+      return true;
+    };
+
     return (
       <div>
         <Panel>
@@ -63,16 +80,19 @@ class InputRouting extends Component {
             <pc.InputASumGain
               includeLabel
               value={inputASumGain}
+              confirm={confirm}
               onChange={onChange}
             />
             <pc.InputBSumGain
               includeLabel
               value={inputBSumGain}
+              confirm={confirm}
               onChange={onChange}
             />
             <pc.InputCSumGain
               includeLabel
               value={inputCSumGain}
+              confirm={confirm}
               onChange={onChange}
             />
           </Panel.Body>
