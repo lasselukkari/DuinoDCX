@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import {LineChart, Line, XAxis, YAxis, Tooltip} from 'recharts';
+import {AreaChart, Area, XAxis, YAxis, Tooltip} from 'recharts';
 import windowSize from 'react-window-size';
 import TransferFunction from './TransferFunction';
 
@@ -77,10 +77,11 @@ class CrossoverPlot extends PureComponent {
     const height = width * 0.33;
 
     return (
-      <LineChart
+      <AreaChart
         data={this.createPlotData(channels, applyGain)}
         width={width}
         height={height}
+        baseValue="dataMin"
         margin={{top: 20, right: 10, bottom: 5, left: -30}}
       >
         <XAxis dataKey="hz" tickFormatter={this.formatTic} />
@@ -94,16 +95,17 @@ class CrossoverPlot extends PureComponent {
           formatter={this.formatTooltip}
         />
         {Object.keys(channels).map((channelId, index) => (
-          <Line
+          <Area
             key={channelId}
             type="monotone"
             dataKey={`${index + 1}. ${channels[channelId].channelName}`}
-            dot={false}
             strokeWidth={3}
             stroke={colors[index]}
+            fill={colors[index]}
+            fillOpacity={0.2}
           />
         ))}
-      </LineChart>
+      </AreaChart>
     );
   }
 }
