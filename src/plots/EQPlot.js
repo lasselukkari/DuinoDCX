@@ -1,6 +1,7 @@
 import React, {PureComponent} from 'react';
 import windowSize from 'react-window-size';
 import {LineChart, Line, XAxis, YAxis, Tooltip} from 'recharts';
+import PlotTooltip from './PlotTooltip';
 import TransferFunction from './TransferFunction';
 
 const frequencyPoints = TransferFunction.generateFrequencyPoints(
@@ -58,14 +59,6 @@ class EQPlot extends PureComponent {
     });
   }
 
-  /* eslint-disable no-undef */
-  formatTooltip = magnitude => `${magnitude.toFixed(2)} dB`;
-
-  formatTic = tick => Math.round(tick);
-
-  formatLabel = frequency => `${Math.round(frequency)} Hz`;
-  /* eslint-enable no-undef */
-
   render() {
     const {channels, applyGain, windowWidth} = this.props;
     const colors = [
@@ -98,16 +91,13 @@ class EQPlot extends PureComponent {
         height={height}
         margin={{top: 20, right: 30, bottom: 5, left: -30}}
       >
-        <XAxis dataKey="hz" tickFormatter={this.formatTic} />
+        <XAxis dataKey="hz" tickFormatter={tick => Math.round(tick)} />
         <YAxis
           allowDataOverflow
           type="number"
           domain={[applyGain ? 'auto' : -20, applyGain ? 'auto' : 20]}
         />
-        <Tooltip
-          labelFormatter={this.formatLabel}
-          formatter={this.formatTooltip}
-        />
+        <Tooltip content={<PlotTooltip />} />
         {Object.keys(channels).map((channelId, index) => (
           <Line
             key={channelId}
@@ -121,6 +111,7 @@ class EQPlot extends PureComponent {
             dot={false}
             strokeWidth={3}
             stroke={colors[index]}
+            unit="dB"
           />
         ))}
       </LineChart>

@@ -1,6 +1,7 @@
 import React, {PureComponent} from 'react';
 import {AreaChart, Area, XAxis, YAxis, Tooltip} from 'recharts';
 import windowSize from 'react-window-size';
+import PlotTooltip from './PlotTooltip';
 import TransferFunction from './TransferFunction';
 
 const frequencyPoints = TransferFunction.generateFrequencyPoints(
@@ -43,14 +44,6 @@ class CrossoverPlot extends PureComponent {
     });
   }
 
-  /* eslint-disable no-undef */
-  formatTooltip = magnitude => `${magnitude.toFixed(2)} dB`;
-
-  formatTic = tick => Math.round(tick);
-
-  formatLabel = frequency => `${Math.round(frequency)} Hz`;
-  /* eslint-enable no-undef */
-
   render() {
     const {channels, applyGain, windowWidth} = this.props;
     const colors = [
@@ -84,16 +77,13 @@ class CrossoverPlot extends PureComponent {
         baseValue="dataMin"
         margin={{top: 20, right: 10, bottom: 5, left: -30}}
       >
-        <XAxis dataKey="hz" tickFormatter={this.formatTic} />
+        <XAxis dataKey="hz" tickFormatter={tick => Math.round(tick)} />
         <YAxis
           allowDataOverflow
           type="number"
           domain={[-20, applyGain ? 'auto' : 5]}
         />
-        <Tooltip
-          labelFormatter={this.formatLabel}
-          formatter={this.formatTooltip}
-        />
+        <Tooltip content={<PlotTooltip filter={({value}) => value > -20} />} />
         {Object.keys(channels).map((channelId, index) => (
           <Area
             key={channelId}
@@ -103,6 +93,7 @@ class CrossoverPlot extends PureComponent {
             stroke={colors[index]}
             fill={colors[index]}
             fillOpacity={0.2}
+            unit="dB"
           />
         ))}
       </AreaChart>
