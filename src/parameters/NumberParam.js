@@ -50,8 +50,8 @@ class NumberParam extends Component {
       formatter
     } = this.props;
 
-    if(newValue === oldValue){
-      return this.setState({ moving: false });
+    if (newValue === oldValue) {
+      return this.setState({moving: false});
     }
 
     if (confirm && !confirm({oldValue, newValue, unit, name, formatter})) {

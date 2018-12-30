@@ -19,7 +19,9 @@ class DefaultTooltipContent extends PureComponent {
           >
             <span className="recharts-tooltip-item-name">{entry.name}</span>
             <span className="recharts-tooltip-item-separator">: </span>
-            <span className="recharts-tooltip-item-value">{entry.value}</span>
+            <span className="recharts-tooltip-item-value">
+              {entry.value.toFixed(2)}
+            </span>
             <span className="recharts-tooltip-item-unit"> {entry.unit}</span>
           </li>
         );
