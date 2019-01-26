@@ -1,6 +1,15 @@
 import React, {Component} from 'react';
-import {FormGroup, ControlLabel, Button, Glyphicon} from 'react-bootstrap';
+import {
+  FormGroup,
+  ControlLabel,
+  Button,
+  Glyphicon,
+  Popover,
+  OverlayTrigger,
+  InputGroup
+} from 'react-bootstrap';
 import Slider, {createSliderWithTooltip} from 'rc-slider';
+import NumericInput from 'react-numeric-input';
 import './NumberParam.css'; // eslint-disable-line import/no-unassigned-import
 import 'rc-slider/assets/index.css'; // eslint-disable-line import/no-unassigned-import
 
@@ -18,7 +27,8 @@ class NumberParam extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: props.value
+      value: props.value,
+      manualValue: props.value
     };
   }
 
@@ -35,6 +45,16 @@ class NumberParam extends Component {
   handleOnBeforeChange = () => this.setState({moving: true});
 
   handleOnChange = value => this.setState({value});
+
+  handleManualChange = manualValue => this.setState({manualValue});
+
+  handleManualSet = () => {
+    const {param, group, channelId, eq, onChange} = this.props;
+    const {manualValue: value} = this.state;
+
+    onChange({param, group, channelId, eq, value});
+    this.overlay.hide();
+  };
 
   handleOnAfterChange = newValue => {
     const {
@@ -94,6 +114,10 @@ class NumberParam extends Component {
     }
   };
 
+  createRef = overlay => {
+    this.overlay = overlay;
+  };
+
   render() {
     const {
       name,
@@ -134,6 +158,27 @@ class NumberParam extends Component {
       marginTop: -15
     };
 
+    const popover = (
+      <Popover id="popover-positioned-right">
+        <FormGroup style={{margin: '10px 5px'}}>
+          <InputGroup>
+            <NumericInput
+              snap
+              min={min}
+              max={max}
+              step={step}
+              value={this.state.value}
+              precision={2}
+              onChange={this.handleManualChange}
+            />
+            <InputGroup.Button>
+              <Button onClick={this.handleManualSet}>Set</Button>
+            </InputGroup.Button>
+          </InputGroup>
+        </FormGroup>
+      </Popover>
+    );
+
     return (
       <FormGroup>
         {includeLabel !== false && (
@@ -164,7 +209,17 @@ class NumberParam extends Component {
                 onAfterChange={this.handleOnAfterChange}
               />
             </div>
-            <h6>{formatter(value, unit)}</h6>
+            <OverlayTrigger
+              ref={this.createRef}
+              overlay={popover}
+              placement="top" // eslint-disable-line react/jsx-sort-props
+              rootClose
+              trigger="click"
+            >
+              <button type="button" className="value-button">
+                {formatter(value, unit)}
+              </button>
+            </OverlayTrigger>
           </div>
           <div className="max-number">
             <Button onClick={this.handleAddition}>
