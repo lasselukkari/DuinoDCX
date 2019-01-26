@@ -242,6 +242,14 @@ void updateConnection(Request &req, Response &res) {
   return getConnection(req, res);
 }
 
+void removeConnection(Request &req, Response &res) {
+  if(!WiFi.disconnect(false, true)){
+    return res.fail();
+  }
+
+  res.noContent();
+}
+
 void getDevice(Request &req, Response &res) {
   char idBuffer[64];
   req.route("id", idBuffer, 64);
@@ -333,6 +341,7 @@ void setupHttpServer() {
   apiRouter.post("/commands", &createDirectCommand);
   apiRouter.get("/connection", &getConnection);
   apiRouter.patch("/connection", &updateConnection);
+  apiRouter.del("/connection", &removeConnection);
   apiRouter.get("/settings", &getSettings);
   apiRouter.patch("/settings", &updateSettings);
   apiRouter.get("/networks", &getNetworks);
