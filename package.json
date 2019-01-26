@@ -30,6 +30,7 @@
     "react-bootstrap": "^0.32.4",
     "react-dom": "^16.6.3",
     "react-dropzone": "^7.0.1",
+    "react-numeric-input": "^2.2.3",
     "react-spinkit": "^3.0.0",
     "react-toastify": "^4.5.0",
     "react-window-size": "^1.0.1",
