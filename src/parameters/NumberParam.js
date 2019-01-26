@@ -50,7 +50,7 @@ class NumberParam extends Component {
       formatter
     } = this.props;
 
-    if (newValue === oldValue) {
+    if (newValue.toFixed(3) === oldValue.toFixed(3)) {
       return this.setState({moving: false});
     }
 
