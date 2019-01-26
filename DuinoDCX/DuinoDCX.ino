@@ -6,7 +6,7 @@
 #include "aWOT.h"
 #include "Ultradrive.h"
 
-#define VERSION "v0.0.16"
+#define VERSION "v0.0.17"
 #define BUILD_DATE __DATE__ " " __TIME__
 
 #define DEFAULT_AUTH "Basic RENYMjQ5NjpVbHRyYWRyaXZl" // DCX2496:Ultradrive in base64
@@ -374,4 +374,3 @@ void loop() {
   processWebServer();
   restartIfNeeded();
 }
-
