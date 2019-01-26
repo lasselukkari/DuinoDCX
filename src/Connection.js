@@ -23,6 +23,7 @@ class Connection extends Component {
   constructor() {
     super();
     this.state = {networks: [], password: ''};
+    this.toastOptions = {position: toast.POSITION.BOTTOM_LEFT};
   }
 
   updateConnection() {
@@ -50,11 +51,9 @@ class Connection extends Component {
   componentDidMount() {
     this.updateConnection()
       .then(() => this.updateNetworks())
-      .catch(() => {
-        toast.error(`Fetching WiFi status failed.`, {
-          position: toast.POSITION.BOTTOM_LEFT
-        });
-      });
+      .catch(() =>
+        toast.error(`Fetching WiFi status failed.`, this.toastOptions)
+      );
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -97,13 +96,29 @@ class Connection extends Component {
       .then(handleFetchErrors)
       .then(response => response.json())
       .then(connection => {
-        this.setState({...connection, selected: connection.current});
-      })
-      .catch(() => {
-        toast.error(`Could not connect to network ${selected}`, {
-          position: toast.POSITION.BOTTOM_LEFT
+        this.setState({
+          ...connection,
+          selected: connection.current,
+          password: ''
         });
-      });
+      })
+      .catch(() =>
+        toast.error(
+          `Could not connect to network ${selected}`,
+          this.toastOptions
+        )
+      );
+  };
+
+  handleDisconnection = e => {
+    e.preventDefault();
+    return fetch('/api/connection', {
+      credentials: 'same-origin',
+      method: 'DELETE'
+    })
+      .then(handleFetchErrors)
+      .then(() => this.updateConnection())
+      .catch(() => toast.error('WiFi disconnected', this.toastOptions));
   };
 
   loadingSpinner() {
@@ -122,7 +137,7 @@ class Connection extends Component {
 
     if (networks.length > 0) {
       return (
-        <Form horizontal method="POST" onSubmit={this.handleSubmit}>
+        <Form horizontal onSubmit={this.handleSubmit}>
           <FormGroup>
             <Col componentClass={ControlLabel} md={4}>
               Network
@@ -165,17 +180,17 @@ class Connection extends Component {
   }
 
   connectionForm() {
-    const {ip, current, hostname} = this.state;
+    const {ip, current} = this.state;
 
     if (ip) {
       return (
-        <Form horizontal>
+        <Form horizontal onSubmit={this.handleDisconnection}>
           <FormGroup>
             <Col componentClass={ControlLabel} md={4}>
               Network
             </Col>
             <Col md={8}>
-              <FormControl disabled value={current} />
+              <FormControl disabled value={current || 'Not connected'} />
             </Col>
           </FormGroup>
           <FormGroup>
@@ -186,14 +201,13 @@ class Connection extends Component {
               <FormControl disabled value={ip} />
             </Col>
           </FormGroup>
-          <FormGroup>
-            <Col componentClass={ControlLabel} md={4}>
-              Hostname
-            </Col>
-            <Col md={8}>
-              <FormControl disabled value={hostname} />
-            </Col>
-          </FormGroup>
+          {current && (
+            <FormGroup>
+              <Col mdOffset={4} md={8}>
+                <Button type="submit">Disconnect</Button>
+              </Col>
+            </FormGroup>
+          )}
         </Form>
       );
     }
