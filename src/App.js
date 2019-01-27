@@ -11,7 +11,7 @@ import {
   MenuItem,
   Glyphicon
 } from 'react-bootstrap';
-import {ToastContainer} from 'react-toastify';
+import {ToastContainer, toast} from 'react-toastify';
 
 import Manager from './dcx2496/manager';
 import ChannelLevels from './ChannelLevels';
@@ -30,9 +30,22 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {device: {}, page: 'inputs', blocking: true, showModal: false};
+    this.toastPosition = toast.POSITION.BOTTOM_LEFT;
     this.manager = new Manager();
-    this.manager.on('update', newDevice => {
-      this.updateDevice(newDevice);
+    this.manager.on('update', newDevice => this.updateDevice(newDevice));
+    this.manager.on('error', () =>
+      toast.error(`Failed to update settings.`, {position: this.toastPosition})
+    );
+    this.manager.on('connected', connected => {
+      if (connected && toast.isActive('no-connection')) {
+        toast.dismiss('no-connection');
+      } else if (!toast.isActive('no-connection')) {
+        toast.error(`Check network connection.`, {
+          position: this.toastPosition,
+          toastId: 'no-connection',
+          autoClose: false
+        });
+      }
     });
   }
 
