@@ -78,7 +78,7 @@ class NumberParam extends Component {
       return this.setState({moving: false, value: oldValue});
     }
 
-    this.setState({moving: false});
+    this.setState({moving: false, manualValue: newValue});
     onChange({param, group, channelId, eq, value: newValue});
   };
 
@@ -115,6 +115,12 @@ class NumberParam extends Component {
   };
 
   createRef = overlay => {
+    const {handleHide} = overlay;
+    overlay.handleHide = () => {
+      this.setState(({value: manualValue}) => ({manualValue}));
+      handleHide();
+    };
+
     this.overlay = overlay;
   };
 
