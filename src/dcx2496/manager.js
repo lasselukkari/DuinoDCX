@@ -1,5 +1,4 @@
 import {EventEmitter} from 'events';
-import {toast} from 'react-toastify';
 import DCX2496 from './dcx2496';
 
 function handleFetchErrors(response) {
@@ -17,10 +16,26 @@ class Manager extends EventEmitter {
     this.bouncing = 0;
     this.selectedDevice = null;
     this.tempDumps = [];
+    this.connected = true;
   }
 
   getDeviceById(deviceId) {
     return this.devices[deviceId];
+  }
+
+  resetConnectionDMS() {
+    clearTimeout(this.timeout);
+    this.timeout = setTimeout(() => {
+      if (this.connected) {
+        this.connected = false;
+        this.emit('connected', false);
+      }
+    }, 5000);
+
+    if (!this.connected) {
+      this.connected = true;
+      this.emit('connected', true);
+    }
   }
 
   pollSelectedDevice() {
@@ -42,22 +57,10 @@ class Manager extends EventEmitter {
         if (this.devices[this.selectedDevice].ready) {
           this.emit('update', this.devices[this.selectedDevice]);
         }
-
+        this.resetConnectionDMS();
         setTimeout(() => this.pollSelectedDevice(), 1000);
-        if (toast.isActive('no-connection')) {
-          toast.dismiss('no-connection');
-        }
       })
-      .catch(() => {
-        if (!toast.isActive('no-connection')) {
-          toast.error(`Check network connection.`, {
-            position: toast.POSITION.BOTTOM_LEFT,
-            toastId: 'no-connection',
-            autoClose: false
-          });
-        }
-        setTimeout(() => this.pollSelectedDevice(), 1000);
-      });
+      .catch(() => setTimeout(() => this.pollSelectedDevice(), 1000));
   }
 
   pollDevices() {
@@ -76,26 +79,11 @@ class Manager extends EventEmitter {
           }
         });
 
-        setTimeout(() => {
-          this.pollDevices();
-        }, 1000);
-        if (toast.isActive('no-connection')) {
-          toast.dismiss('no-connection');
-        }
-      })
-      .catch(() => {
-        if (!toast.isActive('no-connection')) {
-          toast.error(`Check network connection.`, {
-            position: toast.POSITION.BOTTOM_LEFT,
-            toastId: 'no-connection',
-            autoClose: false
-          });
-        }
+        setTimeout(() => this.pollDevices(), 1000);
 
-        setTimeout(() => {
-          this.pollDevices();
-        }, 1000);
-      });
+        this.resetConnectionDMS();
+      })
+      .catch(() => setTimeout(() => this.pollDevices(), 1000));
   }
 
   sendCommand(data) {
@@ -124,11 +112,7 @@ class Manager extends EventEmitter {
       body: hexStringToByte(data)
     })
       .then(handleFetchErrors)
-      .catch(() => {
-        toast.error(`Failed to update settings.`, {
-          position: toast.POSITION.BOTTOM_LEFT
-        });
-      });
+      .catch(error => this.emit('error', error));
   }
 
   handleMessage(message) {
