@@ -111,11 +111,11 @@ If your client device supports MDNS the controller will be also available at `ht
 
 ## Firmware Updates
 Open the firmware update panel
-<img src="images/firmware-update-menu.jpg"></p>
+<img src="images/firmware-update-menu.jpg">
 
 If you have connected the controller to a wifi network it will automatically display a download link there is an update available. The latest binary releases are available for download on github: [https://github.com/lasselukkari/DuinoDCX/releases](https://github.com/lasselukkari/DuinoDCX/releases). 
 
-<p align="center"><img src="images/firmware-update-form.jpg">
+<p align="center"><img src="images/firmware-update-form.jpg"></p>
 
 ## Credentials Reset
 All credentials can be changed using the UI. The defaults are defined beginning of the main sketch file. In case you forget your password short digital pin 13 to the ground for and power up the device. This will restore the default credentials.
