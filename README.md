@@ -9,19 +9,19 @@ Cheap TTL to RS232 adapters are widely available for a few dollars. Many of them
 As we want to control a another device with  the microcontroller the ESP32 need to act as the data terminal equipment (DTE). Ready made DTE adapters do exist but the prices are a lot higher and the availability is bad. These instructions are for the more popular DCE adapter but the tradeoff is that we need use a RS232 gender changer with it.
 
 ### Required parts
-ESP32 Development board
+#### ESP32 Development board
 <img src="images/esp32-board.jpg">
 
-Four standard dupont jumper cables
-<img src="images/jumper-wires.jpg">
-
-TTL to RS232 adapter
+#### TTL to RS232 adapter
 <img src="images/ttl-rs232.jpg">
 
-Male to male RS232 gender changer
+#### Four jumper cables
+<img src="images/jumper-wires.jpg">
+
+#### Male to male RS232 gender changer
 <img src="images/gender-changer.jpg">
 
-Male to female RS232 null modem cable
+#### Male to female RS232 Null modem cable
 <img src="images/rs232-cable.jpg">
 
 ### Wiring 
