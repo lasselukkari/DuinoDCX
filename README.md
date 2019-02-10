@@ -71,12 +71,12 @@ Now upload the sketch.
 
 <img src="images/upload-menu.jpg">
 
-When the uploading is done the ESP32 will reboot. When the device gets a wifi connection to the local network it will output the information to the serial monitor. Copy the devices IP address to the clipboard.
+Once the uploading is done the ESP32 will reboot. When the device gets a wifi connection to the local network it will output the information to the serial monitor. Copy the IP address to the clipboard.
 <img src="images/connection-console-ouput.jpg">
 Next open the IP address in a browser and login. Username and password are both admin.
 <img src="images/ota-login.jpg">
 
-Download the latest binary release from https://github.com/lasselukkari/DuinoDCX/releases. Select the file by clicking the Choose file -button and the click Update.
+Download the latest binary release from [https://github.com/lasselukkari/DuinoDCX/releases](https://github.com/lasselukkari/DuinoDCX/releases). Select the file by clicking the __Choose file__ -button and then click __Update__.
 
 <img src="images/uploading-firmware.jpg">
 
@@ -113,7 +113,7 @@ If your client device supports MDNS the controller will be also available at `ht
 Open the firmware update panel
 <img src="images/firmware-update-menu.jpg">
 
-If you have connected the controller to a wifi network it will automatically display a download link there is an update available. The latest binary releases are available for download on github: https://github.com/lasselukkari/DuinoDCX/releases 
+If you have connected the controller to a wifi network it will automatically display a download link there is an update available. The latest binary releases are available for download on github: [https://github.com/lasselukkari/DuinoDCX/releases](https://github.com/lasselukkari/DuinoDCX/releases). 
 
 <img src="images/firmware-update-form.jpg">
 
