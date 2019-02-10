@@ -42,7 +42,7 @@ Most of the RS232 adapter boards have the TX and RX ports labeled this way. If t
 
 Connect the gender changer and the RS232 null modem cable to the RS232 adapter. You should end up with something like this. The pinout of the development boards vary a lot. Many boards have the same footprint but completely different order for the pins. Follow the pin labels, not the physical location of the pins in the picture.
 
-<img src="images/hardware-connections.jpg" width="600">
+<p align="center"><img src="images/hardware-connections.jpg" width="600"></p>
 
 ## Flashing the Board
 Unless you already have the Arduino and Arduino ESP32 core development environments ready you will need to install:
@@ -74,11 +74,11 @@ Now upload the sketch.
 Once the uploading is done the ESP32 will reboot. When the device gets a wifi connection to the local network it will output the information to the serial monitor. Copy the IP address to the clipboard.
 <img src="images/connection-console-ouput.jpg">
 Next open the IP address in a browser and login. Username and password are both admin.
-<img src="images/ota-login.jpg">
+<p align="center"><img src="images/ota-login.jpg"></p>
 
 Download the latest binary release from [https://github.com/lasselukkari/DuinoDCX/releases](https://github.com/lasselukkari/DuinoDCX/releases). Select the file by clicking the __Choose file__ -button and then click __Update__.
 
-<img src="images/uploading-firmware.jpg">
+<p align="center"><img src="images/uploading-firmware.jpg"></p>
 
 You can also follow the update progress in the serial monitor. 
 <img src="images/upload-console-output.jpg">
@@ -98,7 +98,7 @@ If there is no local wifi network available you can still create a wifi hotspot 
 
 <img src="images/wifi-setup-menu.jpg">
 
-<img src="images/wifi-form.jpg">
+<p align="center"><img src="images/wifi-form.jpg"></p>
 
 Select your network name and fill in the password. After submitting the form the controller will attempt to connect to the select network. If the connection is successful the device IP will show up in the Wifi Status panel. This IP address can now be used to access the device inside the local wifi network.
 
@@ -111,11 +111,11 @@ If your client device supports MDNS the controller will be also available at `ht
 
 ## Firmware Updates
 Open the firmware update panel
-<img src="images/firmware-update-menu.jpg">
+<img src="images/firmware-update-menu.jpg"></p>
 
 If you have connected the controller to a wifi network it will automatically display a download link there is an update available. The latest binary releases are available for download on github: [https://github.com/lasselukkari/DuinoDCX/releases](https://github.com/lasselukkari/DuinoDCX/releases). 
 
-<img src="images/firmware-update-form.jpg">
+<p align="center"><img src="images/firmware-update-form.jpg">
 
 ## Credentials Reset
 All credentials can be changed using the UI. The defaults are defined beginning of the main sketch file. In case you forget your password short digital pin 13 to the ground for and power up the device. This will restore the default credentials.
