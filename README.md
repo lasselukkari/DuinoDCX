@@ -106,6 +106,7 @@ Open the firmware update panel
 <img src="images/firmware-update-menu.jpg">
 
 If you have connected the controller to a wifi network it will automatically display a download link there is an update available. The latest binary releases are available for download on github: https://github.com/lasselukkari/DuinoDCX/releases 
+
 <img src="images/firmware-update-form.jpg">
 
 ## Credentials reset
