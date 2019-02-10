@@ -67,6 +67,7 @@ When the uploading is done the ESP32 will reboot. When the device gets a wifi co
 <img src="images/connection-console-ouput.jpg">
 Next open the IP address in a browser and login. Username and password are both admin.
 <img src="images/ota-login.jpg">
+
 Download the latest binary release from https://github.com/lasselukkari/DuinoDCX/releases. Select the file by clicking the Choose file -button and the click Update.
 
 <img src="images/uploading-firmware.jpg">
