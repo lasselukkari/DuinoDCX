@@ -6,11 +6,10 @@ The intention of this document is to describe the basic steps on how to operate 
 ## Table of Contents
 1. [Hardware Setup](#hardware-setup)
 2. [Flashing the Board](#flashing-the-board)
-3. [Example](#example)
-4. [Hotspot Access](#hotspot-access)
+3. [Hotspot Access](#hotspot-access)
 4. [Local Network Connection](#local-network-connection)
 5. [Firmware Updates](#firmware-updates)
-5. [Credentials Reset](#credentials-reset)
+6. [Credentials Reset](#credentials-reset)
 
 ## Hardware Setup
 Cheap TTL to RS232 adapters are widely available for a few dollars. Many of them are built using a chinese clone of the MAX3232 chip. The quality varies a lot. Most of these adapters are also designed for DCE use meaning they are normally used together with device that is being controlled. Because of this they have a female DB9 connector. 
