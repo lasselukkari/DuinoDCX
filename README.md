@@ -3,7 +3,16 @@
 
 The intention of this document is to describe the basic steps on how to operate the DuinoDCX controller. The documentation also shows how to set up your hardware using commonly available cheap components. The total cost for building the controller is around 10 dollars if you buy the parts from ebay, aliexpress or similar online store and are not in a hurry.
 
-## Hardware setup
+## Table of Contents
+1. [Hardware Setup](#hardware-setup)
+2. [Flashing the Board](#flashing-the-board)
+3. [Example](#example)
+4. [Hotspot Access](#hotspot-access)
+4. [Local Network Connection](#local-network-connection)
+5. [Firmware Updates](#firmware-updates)
+5. [Credentials Reset](#credentials-reset)
+
+## Hardware Setup
 Cheap TTL to RS232 adapters are widely available for a few dollars. Many of them are built using a chinese clone of the MAX3232 chip. The quality varies a lot. Most of these adapters are also designed for DCE use meaning they are normally used together with device that is being controlled. Because of this they have a female DB9 connector. 
 
 As we want to control a another device with  the microcontroller the ESP32 need to act as the data terminal equipment (DTE). Ready made DTE adapters do exist but the prices are a lot higher and the availability is bad. These instructions are for the more popular DCE adapter but the tradeoff is that we need use a RS232 gender changer with it.
@@ -36,7 +45,7 @@ Connect the gender changer and the RS232 null modem cable to the RS232 adapter. 
 
 <img src="images/hardware-connections.jpg" width="600">
 
-## Flashing the board
+## Flashing the Board
 Unless you already have the Arduino and Arduino ESP32 core development environments ready you will need to install:
 * [Arduino IDE](http://avahi.org/)
 * [Arduino ESP32 core]()
@@ -101,7 +110,7 @@ If your client device supports MDNS the controller will be also available at `ht
   - For Mac OSX and iOS support is built in through Bonjour already.
   - For Android there is now way to get mDNS working directly in the browser. The [issue](https://bugs.chromium.org/p/chromium/issues/detail?id=405925&desc=2) has been open since 2014. You can install [Service Browser](https://play.google.com/store/apps/details?id=com.druk.servicebrowser) to discover mDNS services.
 
-## Firmware updates
+## Firmware Updates
 Open the firmware update panel
 <img src="images/firmware-update-menu.jpg">
 
@@ -109,5 +118,5 @@ If you have connected the controller to a wifi network it will automatically dis
 
 <img src="images/firmware-update-form.jpg">
 
-## Credentials reset
+## Credentials Reset
 All credentials can be changed using the UI. The defaults are defined beginning of the main sketch file. In case you forget your password short digital pin 13 to the ground for and power up the device. This will restore the default credentials.
