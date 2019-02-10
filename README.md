@@ -42,35 +42,36 @@ Unless you already have the Arduino and Arduino ESP32 core development environme
 * [Arduino ESP32 core]()
 
 Open the Arduino IDE and make sure you have the correct board type selected.
+
 <img src="images/board-select.jpg">
 
 Next select the correct serial port. The port name varies between development boards and operating systems.
+
 <img src="images/port-select.jpg">
 
 Open the OTAWebUpdater sketch from the Examples menu. The OTAWebUpdater will help us to upload the initial version of the firmware to the microcontroller.
+
 <img src="images/ota-menu.jpg">
 
 Update the ssid and password variables to match your own wifi network credentials.
 <img src="images/ota-sketch.jpg">
-
 Open the Serial Monitor under the tools menu.
+
 <img src="images/serial-monitor-menu.jpg">
 
 Now upload the sketch.
+
 <img src="images/upload-menu.jpg">
 
 When the uploading is done the ESP32 will reboot. When the device gets a wifi connection to the local network it will output the information to the serial monitor. Copy the devices IP address to the clipboard.
 <img src="images/connection-console-ouput.jpg">
-
 Next open the IP address in a browser and login. Username and password are both admin.
 <img src="images/ota-login.jpg">
+Download the latest binary release from https://github.com/lasselukkari/DuinoDCX/releases. Select the file by clicking the Choose file -button and the click Update.
 
-Download the latest binary release from https://github.com/lasselukkari/DuinoDCX/releases. Select the file by clicking the Choose file -button and the click Update. 
 <img src="images/uploading-firmware.jpg">
-
 You can also follow the update progress in the serial monitor. 
 <img src="images/upload-console-output.jpg">
-
 Once the update is done the device will reboot. The firmware install is now complete.
 
 ## Hotspot Access
