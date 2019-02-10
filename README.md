@@ -33,7 +33,8 @@ As we want to control a another device with  the microcontroller the ESP32 need 
 Most of the RS232 adapter boards have the TX and RX ports labeled this way. If the connection does not work it’s safe to try the TX and RX cables the other way around. 
 
 Connect the gender changer and the RS232 null modem cable to the RS232 adapter. You should end up with something like this. The pinout of the development boards vary a lot. Many boards have the same footprint but completely different order for the pins. Follow the pin labels, not the physical location of the pins in the picture.
-<img src="images/hardware-connections.jpg">
+
+<img src="images/hardware-connections.jpg" width="600">
 
 ## Flashing the board
 Unless you already have the Arduino and Arduino ESP32 core development environments ready you will need to install:
@@ -85,6 +86,7 @@ The downside of the hotspot mode is that the rest of the internet is inaccessibl
 If there is no local wifi network available you can still create a wifi hotspot using your phone or computer. This way the the controller is accessible while your mobile internet connection still works at the same time. A hotspot device can also be used just to extend the wifi range. 
 
 <img src="images/wifi-setup-menu.jpg">
+
 <img src="images/wifi-form.jpg">
 
 Select your network name and fill in the password. After submitting the form the controller will attempt to connect to the select network. If the connection is successful the device IP will show up in the Wifi Status panel. This IP address can now be used to access the device inside the local wifi network.
