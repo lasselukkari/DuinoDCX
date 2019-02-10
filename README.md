@@ -59,7 +59,7 @@ Now upload the sketch.
 <img src="images/upload-menu.jpg">
 
 When the uploading is done the ESP32 will reboot. When the device gets a wifi connection to the local network it will output the information to the serial monitor. Copy the devices IP address to the clipboard.
-<img src="images/connection-console-output.jpg">
+<img src="images/connection-console-ouput.jpg">
 
 Next open the IP address in a browser and login. Username and password are both admin.
 <img src="images/ota-login.jpg">
