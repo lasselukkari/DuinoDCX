@@ -1,4 +1,4 @@
-# DuinoDCX User Manual
+# DuinoDCX User Guide
 
 
 The intention of this document is to describe the basic steps on how to operate the DuinoDCX controller. The documentation also shows how to set up your hardware using commonly available cheap components. The total cost for building the controller is around 10 dollars if you buy the parts from ebay, aliexpress or similar online store and are not in a hurry.
