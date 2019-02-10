@@ -71,6 +71,7 @@ Next open the IP address in a browser and login. Username and password are both 
 Download the latest binary release from https://github.com/lasselukkari/DuinoDCX/releases. Select the file by clicking the Choose file -button and the click Update.
 
 <img src="images/uploading-firmware.jpg">
+
 You can also follow the update progress in the serial monitor. 
 <img src="images/upload-console-output.jpg">
 Once the update is done the device will reboot. The firmware install is now complete.
