@@ -46,8 +46,8 @@ Connect the gender changer and the RS232 null modem cable to the RS232 adapter. 
 
 ## Flashing the Board
 Unless you already have the Arduino and Arduino ESP32 core development environments ready you will need to install:
-* [Arduino IDE](http://avahi.org/)
-* [Arduino ESP32 core]()
+* [Arduino IDE](https://www.arduino.cc/en/main/software)
+* [Arduino ESP32 core](https://github.com/espressif/arduino-esp32#installation-instructions)
 
 Open the Arduino IDE and make sure you have the correct board type selected.
 
