@@ -11,7 +11,7 @@ The intention of this document is to describe the basic steps on how to operate 
 5. [Firmware Updates](#firmware-updates)
 6. [Credentials Reset](#credentials-reset)
 
-## Hardware Setup
+## 1. Hardware Setup
 Cheap TTL to RS232 adapters are widely available for a few dollars. Many of them are built using a chinese clone of the MAX3232 chip. The quality varies a lot. Most of these adapters are also designed for DCE use meaning they are normally used together with device that is being controlled. Because of this they have a female DB9 connector. 
 
 As we want to control a another device with  the microcontroller the ESP32 need to act as the data terminal equipment (DTE). Ready made DTE adapters do exist but the prices are a lot higher and the availability is bad. These instructions are for the more popular DCE adapter but the tradeoff is that we need use a RS232 gender changer with it.
@@ -44,7 +44,7 @@ Connect the gender changer and the RS232 null modem cable to the RS232 adapter. 
 
 <p align="center"><img src="images/hardware-connections.jpg" width="600"></p>
 
-## Flashing the Board
+## 2. Flashing the Board
 Unless you already have the Arduino and Arduino ESP32 core development environments ready you will need to install:
 * [Arduino IDE](https://www.arduino.cc/en/main/software)
 * [Arduino ESP32 core](https://github.com/espressif/arduino-esp32#installation-instructions)
@@ -84,14 +84,14 @@ You can also follow the update progress in the serial monitor.
 <img src="images/upload-console-output.jpg">
 Once the update is done the device will reboot. The firmware install is now complete.
 
-## Hotspot Access
+## 3. Hotspot Access
 The controller creates a wifi network with SSID `DCX2496`. The default password is `Ultradrive`.
 
 Connect your computer or mobile device to the network and point the browser to address `http://192.168.4.1`. The default username and password are DCX2496 and Ultradrive. The control panel will take a few seconds to load.
 
 You may need to disable your mobile internet when connected in the hotspot mode.
 
-## Local Network Connection
+## 4. Local Network Connection
 The downside of the hotspot mode is that the rest of the internet is inaccessible while connected. If you want to make the control panel available in your local network it can be configured in the Wifi Setup config panel.
 
 If there is no local wifi network available you can still create a wifi hotspot using your phone or computer. This way the the controller is accessible while your mobile internet connection still works at the same time. A hotspot device can also be used just to extend the wifi range. 
@@ -109,7 +109,7 @@ If your client device supports MDNS the controller will be also available at `ht
   - For Mac OSX and iOS support is built in through Bonjour already.
   - For Android there is now way to get mDNS working directly in the browser. The [issue](https://bugs.chromium.org/p/chromium/issues/detail?id=405925&desc=2) has been open since 2014. You can install [Service Browser](https://play.google.com/store/apps/details?id=com.druk.servicebrowser) to discover mDNS services.
 
-## Firmware Updates
+## 5. Firmware Updates
 Open the firmware update panel
 <img src="images/firmware-update-menu.jpg">
 
@@ -117,5 +117,5 @@ If you have connected the controller to a wifi network it will automatically dis
 
 <p align="center"><img src="images/firmware-update-form.jpg"></p>
 
-## Credentials Reset
+## 6. Credentials Reset
 All credentials can be changed using the UI. The defaults are defined beginning of the main sketch file. In case you forget your password short digital pin 13 to the ground for and power up the device. This will restore the default credentials.
