@@ -1,6 +1,5 @@
 /*
-  aWOT, Express.js inspired  microcontreller web framework for the Web of Things
-  Copyright 2014 Lasse Lukkari
+  aWOT, Express.js inspired microcontreller web framework for the Web of Things
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
@@ -21,8 +20,8 @@
   THE SOFTWARE.
 */
 
-#ifndef HTTPSERVER_H_
-#define HTTPSERVER_H_
+#ifndef AWOT_H_
+#define AWOT_H_
 
 #include <string.h>
 #include <stdlib.h>
@@ -32,202 +31,169 @@
 
 #define CRLF "\r\n"
 
-#ifndef SERVER_DEFAULT_REQUEST_LENGTH
-#define SERVER_DEFAULT_REQUEST_LENGTH 64
+#if defined(__AVR_ATmega328P__) || defined (__AVR_Atmega32U4__) || defined (__AVR_ATmega16U4__) || defined (_AVR_ATmega328__)
+#define LOW_SRAM_MCU
+#endif
+
+#ifndef SERVER_URL_BUFFER_SIZE
+#if defined(LOW_SRAM_MCU)
+#define SERVER_URL_BUFFER_SIZE 64
+#else
+#define SERVER_URL_BUFFER_SIZE 256
+#endif
+#endif
+
+#ifndef SERVER_PUSHBACK_BUFFER_SIZE
+#if defined(LOW_SRAM_MCU)
+#define SERVER_PUSHBACK_BUFFER_SIZE 32
+#else
+#define SERVER_PUSHBACK_BUFFER_SIZE 128
+#endif
 #endif
 
 #ifndef SERVER_OUTPUT_BUFFER_SIZE
-#if defined(ESP8266) || defined (ESP32)
-#define SERVER_OUTPUT_BUFFER_SIZE 1024
-#else
+#if defined(LOW_SRAM_MCU)
 #define SERVER_OUTPUT_BUFFER_SIZE 32
+#else
+#define SERVER_OUTPUT_BUFFER_SIZE 1024
 #endif
 #endif
 
-#ifndef SERVER_HEADERS_COUNT
-#define SERVER_HEADERS_COUNT 5
+#ifndef SERVER_MAX_HEADERS
+#define SERVER_MAX_HEADERS 10
 #endif
 
-#ifndef SERVER_READ_TIMEOUT_IN_MS
-#define SERVER_READ_TIMEOUT_IN_MS 10000
+#ifndef SERVER_READ_TIMEOUT_MS
+#define SERVER_READ_TIMEOUT_MS 1000
 #endif
-
-#ifndef SERVER_FAIL_MESSAGE
-#define SERVER_FAIL_MESSAGE "<h1>400 Bad Request</h1>"
-#endif
-
-#ifndef SERVER_NOT_FOUND_MESSAGE
-#define SERVER_NOT_FOUND_MESSAGE "<h1>404 Not Found</h1>"
-#endif
-
-#ifndef SERVER_AUTH_MESSAGE
-#define SERVER_AUTH_MESSAGE "<h1>401 Unauthorized</h1>"
-#endif
-
-#ifndef SERVER_FORBIDDEN_MESSAGE
-#define SERVER_FORBIDDEN_MESSAGE "<h1>403 Forbidden</h1>"
-#endif
-
-#ifndef SERVER_SERVER_ERROR_MESSAGE
-#define SERVER_SERVER_ERROR_MESSAGE "<h1>500 Internal Server Error</h1>"
-#endif
-
-#define P(name) static const unsigned char name[] PROGMEM
-
-#define SIZE(array) (sizeof(array) / sizeof(*array))
 
 #ifdef _VARIANT_ARDUINO_DUE_X_
 #define pgm_read_byte(ptr) (unsigned char)(* ptr)
 #endif
 
+#define P(name) static const unsigned char name[] PROGMEM
+#define SIZE(array) (sizeof(array) / sizeof(*array))
+
 class Request: public Stream {
+    friend class Application;
+    friend class Router;
 
   public:
     enum MethodType {
-      INVALID, GET, HEAD, POST, PUT, DELETE, PATCH, OPTIONS, ALL, USE
+      GET, HEAD, POST, PUT, DELETE, PATCH, OPTIONS, ALL, USE
     };
 
+    int available();
+    bool body(uint8_t *buffer, int bufferLength);
+    int bytesRead();
+    Client * client();
+    bool form(char *name, int nameLength, char *value, int valueLength);
+    char * get(const char *name);
+    int left();
+    MethodType method();
+    char * path();
+    int peek();
+    void push(uint8_t ch);
+    char * query();
+    bool query(const char *name, char *buffer, int bufferLength);
+    int read();
+    bool route(const char *name, char *buffer, int bufferLength);
+    bool route(int number, char *buffer, int bufferLength);
+    bool timeout();
+
+    // dummy implementation for the stream intreface
+    void flush();
+    size_t write(uint8_t data);
+
+  private:
     struct HeaderNode {
       const char* name;
       char* buffer;
-      int size;
+      int bufferLength;
       HeaderNode* next;
     };
 
     Request();
-
-    void init(Client *client, char* buff, int bufflen);
-
-    void processRequest();
-    void processHeaders(HeaderNode* headerTail);
-
-    MethodType method();
-    int contentLeft();
-
-    char * urlPath();
-    int urlPathLength();
-
-    void routeString(const char * routeString);
-
-    bool route(const char *key, char *paramBuffer, int paramBufferLen);
-    bool route(int number, char *paramBuffer, int paramBufferLen);
-
-    char * query();
-    bool query(const char *key, char *paramBuffer, int paramBufferLen);
-    bool queryComplete();
-
-    bool postParam(char *name, int nameLen, char *value, int valueLen);
-
-    char * header(const char *name);
-    void setPrefixLength(int prefixLength);
-
-    int available();
-    int read();
-    int bytesRead();
-    int peek();
-    void push(int ch);
-
-    // dummy implementation to fulfill the Stream interface
-    size_t write(uint8_t ch) {
-      return 0;
-    }
-    void flush() {
-      return;
-    }
-
-    void reset();
-
-  private:
-    void m_readHeader(char *value, int valueLen);
+    void m_init(Client *client, char* buffer, int bufferLength);
+    bool m_processMethod();
+    bool m_readURL();
+    void m_processURL();
+    bool m_processHeaders(HeaderNode* headerTail);
+    bool m_headerValue(char *buffer, int bufferLength);
     bool m_readInt(int &number);
-    bool m_expect(const char *expectedStr);
+    void m_setRoute(int prefixLength, const char * route);
+    void m_setMethod(MethodType method);
+    int m_getUrlPathLength();
+    bool m_expect(const char *expected);
+    void m_reset();
 
     Client * m_clientObject;
-    MethodType m_methodType;
-    unsigned char m_pushback[32];
+    MethodType m_method;
+    unsigned char m_pushback[SERVER_PUSHBACK_BUFFER_SIZE];
     int m_pushbackDepth;
     bool m_readingContent;
-
-    int m_contentLeft;
+    int m_left;
     int m_bytesRead;
-
     HeaderNode* m_headerTail;
-
     char * m_query;
-    bool m_queryComplete;
-
-    char * m_urlPath;
-    int m_urlPathLength;
+    int m_queryLength;
+    bool m_timeout;
+    char * m_path;
+    int m_pathLength;
     int m_prefixLength;
-
-    int m_hexToInt(char *hex);
-
     const char * m_route;
-
     bool m_next;
-
 };
 
 class Response: public Stream {
+    friend class Application;
+    friend class Router;
 
   public:
-    Response();
-
-    void init(Client *client);
-
-    void printP(const unsigned char *str);
-    void printP(const char *str) {
-      printP((unsigned char*) str);
-    }
-    void writeP(const unsigned char *data, size_t length);
-    size_t write(uint8_t ch);
-    size_t write(uint8_t *ch, size_t size);
-    void flush();
     int bytesSent();
-
     void end();
     bool ended();
-
+    void flush();
+    const char * get(const char *name);
+    bool headersSent();
+    void printP(const unsigned char *string);
+    void printP(const char *string);
+    void sendStatus(int code);
     void set(const char* name, const char* value);
+    void status(int code);
+    bool statusSent();
+    size_t write(uint8_t data);
+    size_t write(uint8_t *buffer, size_t bufferLength);
+    void writeP(const unsigned char *data, size_t length);
 
-    void success(const char *contentType);
-    void created(const char *contentType);
-    void noContent();
-
-    void seeOther(const char *otherURL);
-    void notModified();
-
-    void fail();
-    void unauthorized();
-    void forbidden();
-    void notFound();
-    void serverError();
-
-    void reset();
-    //dummy implementations to fulfill Stream interface
-    int available() {
-      return 0;
-    }
-    int read() {
-      return -1;
-    }
-    int peek() {
-      return -1;
-    }
+    // dummy implementation for the stream intreface
+    int available();
+    int peek();
+    int read();
 
   private:
-    void m_printCRLF();
+    Response();
+
+    void m_init(Client *client);
+    void m_printStatus(int code);
+    bool m_shouldPrintHeaders();
     void m_printHeaders();
+    void m_printCRLF();
     void m_flushBuf();
+    void m_reset();
 
     Client * m_clientObject;
-
     struct Headers {
       const char* name;
       const char* value;
-    } m_headers[SERVER_HEADERS_COUNT];
-
+    } m_headers[SERVER_MAX_HEADERS];
+    bool m_contentTypeSet;
+    bool m_statusSent;
+    bool m_headersSent;
+    bool m_sendingStatus;
+    bool m_sendingHeaders;
     unsigned int m_headersCount;
+    char* m_mime;
     int m_bytesSent;
     bool m_ended;
     uint8_t m_buffer[SERVER_OUTPUT_BUFFER_SIZE];
@@ -235,82 +201,69 @@ class Response: public Stream {
 };
 
 class Router {
+    friend class Application;
 
   public:
     typedef void Middleware(Request& request, Response& response);
 
     Router(const char * urlPrefix = "");
 
-    bool dispatchCommands(Request& request, Response& response);
-
-    void get(const char* urlPattern, Middleware* command);
-    void post(const char* urlPattern, Middleware* command);
-    void put(const char* urlPattern, Middleware* command);
-    void del(const char* urlPattern, Middleware* command);
-    void patch(const char* urlPattern, Middleware* command);
-    void options(const char* urlPattern, Middleware* command);
-    void all(const char* urlPattern, Middleware* command);
-    void use(Middleware* command);
-    void addCommand(Request::MethodType type, const char* urlPattern, Middleware* command);
-    Router * getNext();
-    void setNext(Router * next);
+    void all(const char* path, Middleware* middleware);
+    void del(const char* path, Middleware* middleware);
+    void get(const char* path, Middleware* middleware);
+    void options(const char* path, Middleware* middleware);
+    void patch(const char* path, Middleware* middleware);
+    void post(const char* path, Middleware* middleware);
+    void put(const char* path, Middleware* middleware);
+    void use(Middleware* middleware);
 
   private:
-    struct CommandNode {
-      const char* urlPattern;
-      Middleware* command;
+    struct MiddlewareNode {
+      const char* path;
+      Middleware* middleware;
       Request::MethodType type;
-      CommandNode* next;
+      MiddlewareNode* next;
     };
 
-    CommandNode* m_tailCommand;
+    void m_addMiddleware(Request::MethodType type, const char* path, Middleware* middleware);
+    void m_setNext(Router * next);
+    Router * m_getNext();
+    bool m_dispatchMiddleware(Request& request, Response& response);
+    bool m_routeMatch(const char *route, const char *pattern);
+
+    MiddlewareNode* m_head;
     Router* m_next;
-
-    bool m_routeMatch(const char *str, const char *pattern);
     const char * m_urlPrefix;
-
 };
 
-class WebApp {
-
+class Application {
   public:
-    WebApp();
+    Application();
 
+    static int strcmpi(const char *s1, const char *s2);
+
+    void all(const char* path, Router::Middleware* middleware);
+    void del(const char* path, Router::Middleware* middleware);
+    void get(const char* path, Router::Middleware* middleware);
+    void header(const char* name, char* buffer, int bufferLength);
+    void options(const char* path, Router::Middleware* middleware);
+    void patch(const char* path, Router::Middleware* middleware);
+    void post(const char* path, Router::Middleware* middleware);
+    void put(const char* path, Router::Middleware* middleware);
     void process(Client *client);
-    void process(Client *client, char* buff, int bufflen);
-
-    void failCommand(Router::Middleware* command);
-    void notFoundCommand(Router::Middleware* command);
-
-    void get(const char* urlPattern, Router::Middleware* command);
-    void post(const char* urlPattern, Router::Middleware* command);
-    void put(const char* urlPattern, Router::Middleware* command);
-    void del(const char* urlPattern, Router::Middleware* command);
-    void patch(const char* urlPattern, Router::Middleware* command);
-    void options(const char* urlPattern, Router::Middleware* command);
-    void all(const char* urlPattern, Router::Middleware* command);
-    void use(Router::Middleware* command);
-    void use(Router * router);
-    void readHeader(const char* name, char* buffer, int bufflen);
+    void process(Client *client, char* buffer, int bufferLength);
+    void route(Router * router);
+    void use(Router::Middleware* middleware);
 
   private:
-
-    static void m_defaultFailCommand(Request &request, Response &response);
-    static void m_defaultNotFoundCommand(Request &request, Response &response);
+    void m_process();
 
     Client * m_clientObject;
-
     Request m_request;
     Response m_response;
-
     Router * m_routerTail;
     Router m_defaultRouter;
-
-    Router::Middleware* m_failureCommand;
-    Router::Middleware* m_notFoundCommand;
-
     Request::HeaderNode* m_headerTail;
-
 };
 
 #endif
