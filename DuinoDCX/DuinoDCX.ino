@@ -44,7 +44,7 @@ Preferences preferences;
 WiFiServer httpServer(80);
 HardwareSerial UltradriveSerial(2);
 Ultradrive deviceManager(&UltradriveSerial, RTS_PIN, CTS_PIN);
-WebApp app;
+Application app;
 Router apiRouter("/api");
 
 char basicAuth[BASIC_AUTH_LENGTH];
@@ -60,41 +60,41 @@ unsigned long lastReconnect;
 bool shouldRestart = false;
 
 void auth(Request &req, Response &res) {
-  char * authHeader = req.header("Authorization");
+  char * authHeader = req.get("Authorization");
 
   if (strcmp(authHeader, basicAuth) != 0) {
     res.set("WWW-Authenticate", "Basic realm=\"Ultradrive\"");
-    res.unauthorized();
+    res.sendStatus(401);
     res.end();
   }
 }
 
 void update(Request &req, Response &res) {
-  int contentLength = req.contentLeft();
+  int contentLength = req.left();
 
   if (!Update.begin(contentLength)) {
-    return res.fail();
+    return res.sendStatus(500);
   }
 
   if (Update.writeStream(req) != contentLength) {
-    return res.fail();
+    return res.sendStatus(500);
   }
 
   if (!Update.end()) {
-    return res.fail();
+    return res.sendStatus(500);
   }
 
   if (!Update.isFinished()) {
-    return res.fail();
+    return res.sendStatus(500);
   }
 
   shouldRestart = true;
-  res.noContent();
+  res.sendStatus(204);
 }
 
 void getNetworks(Request &req, Response &res) {
   int n = WiFi.scanNetworks();
-  res.success("application/json");
+  res.set("Content-Type", "application/json");
 
   res.print("[");
   for (int i = 0; i < n; ++i) {
@@ -109,7 +109,7 @@ void getNetworks(Request &req, Response &res) {
 }
 
 void getSettings(Request &req, Response &res) {
-  res.success("application/json");
+  res.set("Content-Type", "application/json");
   res.print("{");
 
   res.print("\"" SOFT_AP_SSID_KEY "\":");
@@ -141,7 +141,7 @@ void getSettings(Request &req, Response &res) {
 }
 
 void getVersion(Request &req, Response &res) {
-  res.success("application/json");
+  res.set("Content-Type", "application/json");
   res.print("{");
 
   res.print("\"version\":");
@@ -162,8 +162,8 @@ void updateSettings(Request &req, Response &res) {
   char value[BASIC_AUTH_LENGTH];
   preferences.begin("duinodcx", false);
 
-  while (req.contentLeft()) {
-    req.postParam(name, 15, value, BASIC_AUTH_LENGTH);
+  while (req.left()) {
+    req.form(name, 15, value, BASIC_AUTH_LENGTH);
     if (strcmp(name, AUTH_KEY) == 0) {
       preferences.putString(AUTH_KEY, value);
     } else if (strcmp(name, SOFT_AP_SSID_KEY) == 0) {
@@ -177,18 +177,18 @@ void updateSettings(Request &req, Response &res) {
       preferences.putBool(FLOW_CONTROL_KEY, isEnabled);
     } else {
       preferences.end();
-      return res.fail();
+      return res.sendStatus(400);
     }
   }
 
   preferences.end();
-  res.noContent();
+  res.sendStatus(204);
 
   shouldRestart = true;
 }
 
 void getConnection(Request &req, Response &res) {
-  res.success("application/json");
+  res.set("Content-Type", "application/json");
   res.print("{");
 
   res.print("\"current\":");
@@ -215,14 +215,14 @@ void updateConnection(Request &req, Response &res) {
   char value[PASSWORD_MAX_LENGHT];
   unsigned long timeout;
 
-  while (req.contentLeft()) {
-    req.postParam(name, 10, value, PASSWORD_MAX_LENGHT);
+  while (req.left()) {
+    req.form(name, 10, value, PASSWORD_MAX_LENGHT);
     if (strcmp(name, POST_PARAM_SSID_KEY) == 0) {
       strcpy (ssidBuffer, value);
     } else if (strcmp(name, POST_PARAM_PASSWORD_KEY) == 0) {
       strcpy (passwordBuffer, value);
     } else {
-      return res.fail();
+      return res.sendStatus(400);
     }
   }
 
@@ -236,18 +236,18 @@ void updateConnection(Request &req, Response &res) {
   }
 
   if (WiFi.status() != WL_CONNECTED) {
-    return res.fail();
+    return res.sendStatus(400);
   }
 
   return getConnection(req, res);
 }
 
 void removeConnection(Request &req, Response &res) {
-  if(!WiFi.disconnect(false, true)){
-    return res.fail();
+  if (!WiFi.disconnect(false, true)) {
+    return res.sendStatus(500);
   }
 
-  res.noContent();
+  res.sendStatus(204);
 }
 
 void getDevice(Request &req, Response &res) {
@@ -256,24 +256,24 @@ void getDevice(Request &req, Response &res) {
   int id = atoi(idBuffer);
 
   if (id < 0 || id > MAX_DEVICES - 1) {
-    return res.fail();
+    return res.sendStatus(404);
   }
 
-  res.success("application/binary");
+  res.set("Content-Type", "application/binary");
   deviceManager.writeDevice(&res, id);
 }
 
 void getDevices(Request &req, Response &res) {
-  res.success("application/binary");
+  res.set("Content-Type", "application/binary");
   deviceManager.writeDevices(&res);
 }
 
 void createDirectCommand(Request &req, Response &res) {
-  while (req.contentLeft()) {
+  while (req.left()) {
     deviceManager.processOutgoing(&req);
   }
 
-  res.noContent();
+  res.sendStatus(204);
 }
 
 void checkWifi(unsigned long now) {
@@ -334,7 +334,7 @@ void loadPreferences() {
 }
 
 void setupHttpServer() {
-  app.readHeader("Authorization", authBuffer, AUTH_BUFFER_LENGHT);
+  app.header("Authorization", authBuffer, AUTH_BUFFER_LENGHT);
 
   apiRouter.get("/devices", &getDevices);
   apiRouter.get("/devices/:id", &getDevice);
@@ -349,8 +349,8 @@ void setupHttpServer() {
   apiRouter.get("/version", &getVersion);
 
   app.use(&auth);
-  app.use(&apiRouter);
-  app.use(staticFiles());
+  app.route(&apiRouter);
+  app.route(staticFiles());
 
   httpServer.begin();
 }
