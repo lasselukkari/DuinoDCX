@@ -4,12 +4,12 @@
 The intention of this document is to describe the basic steps on how to operate the DuinoDCX controller. The documentation also shows how to set up your hardware using commonly available cheap components. The total cost for building the controller is around 10 dollars if you buy the parts from ebay, aliexpress or similar online store and are not in a hurry.
 
 ## Table of Contents
-1. [Hardware Setup](#hardware-setup)
-2. [Flashing the Board](#flashing-the-board)
-3. [Hotspot Access](#hotspot-access)
-4. [Local Network Connection](#local-network-connection)
-5. [Firmware Updates](#firmware-updates)
-6. [Credentials Reset](#credentials-reset)
+1. [Hardware Setup](#1-hardware-setup)
+2. [Flashing the Board](#2-flashing-the-board)
+3. [Hotspot Access](#3-hotspot-access)
+4. [Local Network Connection](#4-local-network-connection)
+5. [Firmware Updates](#5-firmware-updates)
+6. [Credentials Reset](#6-credentials-reset)
 
 ## 1. Hardware Setup
 Cheap TTL to RS232 adapters are widely available for a few dollars. Many of them are built using a chinese clone of the MAX3232 chip. The quality varies a lot. Most of these adapters are also designed for DCE use meaning they are normally used together with device that is being controlled. Because of this they have a female DB9 connector. 
