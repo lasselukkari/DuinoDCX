@@ -44,6 +44,11 @@ Connect the gender changer and the RS232 null modem cable to the RS232 adapter. 
 
 <p align="center"><img src="images/hardware-connections.jpg" width="600"></p>
 
+### Ultradrive settings
+Go to the  `SETUP -> MICELLANIOUS` config page. The `PORT` setting should be either `PC (RS232)` or `PC -> LINK` if you have multiple devices linked.
+
+<p align="center"><img src="images/dcx-port.jpg"></p>
+
 ## 2. Flashing the Board
 Unless you already have the Arduino and Arduino ESP32 core development environments ready you will need to install:
 * [Arduino IDE](https://www.arduino.cc/en/main/software)
