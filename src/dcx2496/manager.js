@@ -30,7 +30,7 @@ class Manager extends EventEmitter {
         this.connected = false;
         this.emit('connected', false);
       }
-    }, 5000);
+    }, 10000);
 
     if (!this.connected) {
       this.connected = true;
@@ -43,24 +43,15 @@ class Manager extends EventEmitter {
       .then(handleFetchErrors)
       .then(res => res.arrayBuffer())
       .then(messages => {
-        let message = [];
-
-        new Uint8Array(messages).forEach(hex => {
-          if (hex === 247) {
-            this.handleMessage(message);
-            message = [];
-          } else {
-            message.push(hex);
-          }
-        });
+        this.handleMessages(messages);
 
         if (this.devices[this.selectedDevice].ready) {
           this.emit('update', this.devices[this.selectedDevice]);
         }
-        this.resetConnectionDMS();
-        setTimeout(() => this.pollSelectedDevice(), 1000);
+
+        setTimeout(() => this.pollSelectedDevice(), 5000);
       })
-      .catch(() => setTimeout(() => this.pollSelectedDevice(), 1000));
+      .catch(() => setTimeout(() => this.pollSelectedDevice(), 5000));
   }
 
   pollDevices() {
@@ -68,22 +59,28 @@ class Manager extends EventEmitter {
       .then(handleFetchErrors)
       .then(res => res.arrayBuffer())
       .then(messages => {
-        let message = [];
-
-        new Uint8Array(messages).forEach(hex => {
-          if (hex === 247) {
-            this.handleMessage(message);
-            message = [];
-          } else {
-            message.push(hex);
-          }
-        });
-
-        setTimeout(() => this.pollDevices(), 1000);
-
-        this.resetConnectionDMS();
+        this.handleMessages(messages);
+        setTimeout(() => this.pollDevices(), 5000);
       })
-      .catch(() => setTimeout(() => this.pollDevices(), 1000));
+      .catch(() => setTimeout(() => this.pollDevices(), 5000));
+  }
+
+  pollSelectedDeviceStatus() {
+    fetch(`/api/devices/${this.selectedDevice}/status`, {
+      credentials: 'same-origin'
+    })
+      .then(handleFetchErrors)
+      .then(res => res.arrayBuffer())
+      .then(messages => {
+        this.handleMessages(messages);
+
+        if (this.devices[this.selectedDevice].ready) {
+          this.emit('update', this.devices[this.selectedDevice]);
+        }
+
+        setTimeout(() => this.pollSelectedDeviceStatus(), 1000);
+      })
+      .catch(() => setTimeout(() => this.pollSelectedDeviceStatus(), 1000));
   }
 
   sendCommand(data) {
@@ -127,6 +124,7 @@ class Manager extends EventEmitter {
       if (this.selectedDevice === null) {
         this.selectedDevice = deviceId;
         this.pollSelectedDevice();
+        this.pollSelectedDeviceStatus();
       }
     } else if (dataType === DCX2496.constants.DUMP_RESPONSE) {
       if (this.bounce) {
@@ -152,6 +150,21 @@ class Manager extends EventEmitter {
     } else if (dataType === DCX2496.constants.DIRECT_COMMAND) {
       this.devices[deviceId].setCommands(message);
     }
+  }
+
+  handleMessages(messages) {
+    let message = [];
+
+    new Uint8Array(messages).forEach(hex => {
+      if (hex === 247) {
+        this.handleMessage(message);
+        message = [];
+      } else {
+        message.push(hex);
+      }
+    });
+
+    this.resetConnectionDMS();
   }
 
   updateDevice(deviceId, data) {
