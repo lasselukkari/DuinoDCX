@@ -263,6 +263,19 @@ void getDevice(Request &req, Response &res) {
   deviceManager.writeDevice(&res, id);
 }
 
+
+void getDeviceStatus(Request &req, Response &res) {
+  char idBuffer[64];
+  req.route("id", idBuffer, 64);
+  int id = atoi(idBuffer);
+
+  if (id < 0 || id > MAX_DEVICES - 1) {
+    return res.sendStatus(404);
+  }
+
+  res.set("Content-Type", "application/binary");
+  deviceManager.writeDeviceStatus(&res, id);
+}
 void getDevices(Request &req, Response &res) {
   res.set("Content-Type", "application/binary");
   deviceManager.writeDevices(&res);
@@ -338,6 +351,7 @@ void setupHttpServer() {
 
   apiRouter.get("/devices", &getDevices);
   apiRouter.get("/devices/:id", &getDevice);
+  apiRouter.get("/devices/:id/status", &getDeviceStatus);
   apiRouter.post("/commands", &createDirectCommand);
   apiRouter.get("/connection", &getConnection);
   apiRouter.patch("/connection", &updateConnection);

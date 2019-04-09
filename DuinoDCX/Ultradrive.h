@@ -80,6 +80,7 @@ class Ultradrive {
     void processIncoming(unsigned long now);
     void processOutgoing(Request* req);
     void writeDevice(Response* res, int deviceId);
+    void writeDeviceStatus(Response* res, int deviceId);
     void writeDevices(Response* res);
 
   private:
@@ -129,4 +130,3 @@ class Ultradrive {
 };
 
 #endif
-

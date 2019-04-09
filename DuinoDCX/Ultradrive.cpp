@@ -52,6 +52,9 @@ void Ultradrive::processIncoming(unsigned long now) {
 void Ultradrive::writeDevice(Response* res, int deviceId) {
   res->write(devices[deviceId].dump0, PART_0_LENGTH);
   res->write(devices[deviceId].dump1, PART_1_LENGTH);
+}
+
+void Ultradrive::writeDeviceStatus(Response* res, int deviceId) {
   res->write(devices[deviceId].pingResponse, PING_RESPONSE_LENGTH);
 }
 
