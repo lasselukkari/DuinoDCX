@@ -496,7 +496,7 @@ bool Request::m_expect(const char *expected) {
   while (*candidate != 0) {
     int ch = read();
 
-    if (ch != *candidate++) {
+    if (tolower(ch) != tolower(*candidate++)) {
       push(ch);
 
       while (--candidate != expected) {
@@ -585,8 +585,16 @@ void Response::printP(const char *string) {
 
 void Response::sendStatus(int code) {
   status(code);
+
+  if (code == 204 || code == 304) {
+    m_contentTypeSet = true;
+  }
+
   m_printHeaders();
-  m_printStatus(code);
+
+  if (code != 204 && code != 304) {
+    m_printStatus(code);
+  }
 }
 
 void Response::set(const char *name, const char *value) {
