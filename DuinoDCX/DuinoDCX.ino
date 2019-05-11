@@ -1,6 +1,7 @@
 #include <esp_wifi.h>
 #include <WiFi.h>
 #include <ESPmDNS.h>
+#include <DNSServer.h>
 #include <Update.h>
 #include <Preferences.h>
 #include "aWOT.h"
@@ -42,6 +43,7 @@
 
 Preferences preferences;
 WiFiServer httpServer(80);
+DNSServer dnsServer;
 HardwareSerial UltradriveSerial(2);
 Ultradrive deviceManager(&UltradriveSerial, RTS_PIN, CTS_PIN);
 Application app;
@@ -419,6 +421,7 @@ void setup() {
   }
 
   WiFi.softAP(softApSsid, softApPassword);
+  dnsServer.start(53, "ultradrive.local", WiFi.softAPIP());
 
   MDNS.begin(mdnsName);
   MDNS.addService("http", "tcp", 80);
@@ -433,12 +436,12 @@ void setup() {
   if (WiFi.status() != WL_CONNECTED) {
     WiFi.disconnect(false, false);
   }
-
 }
 
 void loop() {
   unsigned long now = millis();
   deviceManager.processIncoming(now);
   processWebServer();
+  dnsServer.processNextRequest();
   restartIfNeeded();
 }
