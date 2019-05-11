@@ -1,26 +1,12 @@
 import React, {Component} from 'react';
 import cloneDeep from 'lodash.clonedeep';
 import isEqual from 'lodash.isequal';
-import {
-  Button,
-  Modal,
-  Navbar,
-  Nav,
-  NavItem,
-  NavDropdown,
-  MenuItem,
-  Glyphicon
-} from 'react-bootstrap';
 import {ToastContainer, toast} from 'react-toastify';
 
-import Manager from './dcx2496/manager';
-import ChannelLevels from './ChannelLevels';
-import Connection from './Connection';
-import Upload from './Upload';
-import Settings from './Settings';
-import DeviceSelect from './DeviceSelect';
+import Parser from './dcx2496/parser';
+import TopNavigation from './TopNavigation';
 import Device from './Device';
-import Localization from './Localization';
+import BottomNavigation from './BottomNavigation';
 
 import 'bootswatch/slate/bootstrap.css'; // eslint-disable-line import/no-unassigned-import
 import 'react-toastify/dist/ReactToastify.css'; // eslint-disable-line import/no-unassigned-import
@@ -29,31 +15,28 @@ import './App.css'; // eslint-disable-line import/no-unassigned-import
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {device: {}, page: 'inputs', blocking: true, showModal: false};
-    this.toastPosition = toast.POSITION.BOTTOM_LEFT;
-    this.manager = new Manager();
-    this.manager.on('update', newDevice => this.updateDevice(newDevice));
-    this.manager.on('error', () =>
-      toast.error(`Failed to update settings.`, {position: this.toastPosition})
-    );
-    this.manager.on('connected', connected => {
-      if (connected && toast.isActive('no-connection')) {
-        toast.dismiss('no-connection');
-      } else if (!toast.isActive('no-connection')) {
-        toast.error(`Check network connection.`, {
-          position: this.toastPosition,
-          toastId: 'no-connection',
-          autoClose: false
-        });
-      }
-    });
+    this.state = {page: 'inputs', blocking: true, showModal: false};
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    const {device, page, blocking, showModal, showLevels} = this.state;
+    const {
+      device,
+      selected,
+      inputs,
+      outputs,
+      free,
+      page,
+      blocking,
+      showModal,
+      showLevels
+    } = this.state;
 
     return (
       !isEqual(device, nextState.device) ||
+      !isEqual(inputs, nextState.inputs) ||
+      !isEqual(outputs, nextState.outputs) ||
+      !isEqual(free, nextState.free) ||
+      selected !== nextState.selected ||
       page !== nextState.page ||
       blocking !== nextState.blocking ||
       showModal !== nextState.showModal ||
@@ -62,24 +45,132 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.manager.pollDevices();
+    this.pollState();
+    this.stateTimer = setInterval(() => this.pollState(), 1000);
+    this.pollStatus();
+    this.statusTimer = setInterval(() => this.pollStatus(), 500);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.stateTimer);
+    clearInterval(this.statusTimer);
+  }
+
+  async pollState() {
+    if (this.pollingState) {
+      return;
+    }
+
+    this.pollingState = true;
+
+    try {
+      const response = await fetch(`api/state`, {credentials: 'same-origin'});
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+
+      if (this.invalidate) {
+        this.invalidate = false;
+        return;
+      }
+
+      const buffer = await response.arrayBuffer();
+      this.setState(Parser.parseState(buffer));
+    } catch {
+      if (toast.isActive('no-connection')) {
+        return;
+      }
+
+      toast.error(`Check network connection.`, {
+        position: toast.POSITION.BOTTOM_LEFT,
+        toastId: 'no-connection',
+        autoClose: false
+      });
+    } finally {
+      this.pollingState = false;
+    }
+  }
+
+  async pollStatus() {
+    if (this.pollingStatus) {
+      return;
+    }
+
+    this.pollingStatus = true;
+    try {
+      const response = await fetch(`api/status`, {credentials: 'same-origin'});
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+
+      const buffer = await response.arrayBuffer();
+      this.setState(Parser.parseStatus(buffer));
+    } catch {
+      if (toast.isActive('no-connection')) {
+        return;
+      }
+
+      toast.error(`Check network connection.`, {
+        position: toast.POSITION.BOTTOM_LEFT,
+        toastId: 'no-connection',
+        autoClose: false
+      });
+    } finally {
+      this.pollingStatus = false;
+    }
   }
 
   handleBlockingChange = () => {
     this.setState(({blocking}) => ({blocking: !blocking}));
   };
 
-  handleLevelsShowChange = (isOpen, event, {source}) => {
-    if (source === 'rootClose') {
-      this.setState(() => ({showLevels: true}));
-    } else {
-      this.setState(({showLevels}) => ({showLevels: !showLevels}));
+  handleDeviceUpdate = async commands => {
+    const {device: oldDevice, selected} = this.state;
+    const device = cloneDeep(oldDevice);
+    const data = Parser.serializeCommands(selected, device, commands);
+
+    this.setState({device});
+
+    if (this.pollingState === true) {
+      this.invalidate = true;
+    }
+
+    try {
+      await fetch(`/api/commands`, {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: {'Content-Type': 'application/binary'},
+        body: data
+      });
+    } catch {
+      this.setState({device: oldDevice});
+      toast.error(`Failed to update settings.`, {
+        position: toast.POSITION.BOTTOM_LEFT,
+        toastId: 'failed-command',
+        autoClose: true
+      });
     }
   };
 
-  handleDeviceUpdate = data => {
-    const {device} = this.state;
-    this.manager.updateDevice(device.id, data);
+  handleDeviceSelect = async selected => {
+    const oldSelected = this.state.selected;
+    this.setState({selected});
+
+    try {
+      await fetch(`/api/selected`, {
+        method: 'PUT',
+        credentials: 'same-origin',
+        headers: {'Content-Type': 'text/plain'},
+        body: selected.toString()
+      });
+    } catch {
+      this.setState({selected: oldSelected});
+      toast.error(`Failed set selected device.`, {
+        position: toast.POSITION.BOTTOM_LEFT,
+        toastId: 'failed-select',
+        autoClose: true
+      });
+    }
   };
 
   handlePageChange = page => {
@@ -87,197 +178,44 @@ class App extends Component {
     window.scrollTo(0, 0);
   };
 
-  handleDeviceSelect = selectedDevice => {
-    this.manager.selectedDevice = selectedDevice;
-  };
-
-  handleShowModal = showModal => {
-    this.setState({showModal});
-  };
-
-  updateDevice(device) {
-    this.setState({device: cloneDeep(device)});
-  }
-
-  topNavigation() {
-    const {showLevels} = this.state;
-    const {device, blocking, page} = this.state;
-
-    if (!device.ready) {
-      return null;
-    }
-
-    return (
-      <Navbar fluid fixedTop className="top-nav" style={{}}>
-        <Nav className="end-button">
-          <NavDropdown
-            noCaret
-            open={showLevels}
-            activeKey={showLevels}
-            className="channel-levels"
-            title={<Glyphicon glyph="equalizer" />}
-            id="channel-levels-dropdown"
-            onToggle={this.handleLevelsShowChange}
-          >
-            <ChannelLevels
-              device={device}
-              blocking={blocking}
-              onChange={this.handleDeviceUpdate}
-            />
-          </NavDropdown>
-        </Nav>
-        <Nav
-          activeKey={page}
-          className="middle-buttons"
-          onSelect={this.handlePageChange}
-        >
-          <NavItem eventKey="inputs">Inputs</NavItem>
-          <NavItem eventKey="outputs">Outputs</NavItem>
-        </Nav>
-        <Nav pullRight activeKey="blocking" className="end-button">
-          <NavItem
-            eventKey={blocking ? 'not-blocking' : 'blocking'}
-            onClick={this.handleBlockingChange}
-          >
-            <Glyphicon
-              style={{color: blocking ? '#ee5f5b' : '#62c462'}}
-              glyph={blocking ? 'lock' : 'edit'}
-            />
-          </NavItem>
-        </Nav>
-      </Navbar>
-    );
-  }
-
-  bottomNavigation() {
-    const {device, showModal} = this.state;
-    const {devices} = this.manager;
-
-    return (
-      <Navbar fluid fixedBottom>
-        <Nav pullRight activeKey={showModal}>
-          <NavDropdown
-            noCaret
-            title={<Glyphicon glyph="cog" />}
-            id="config-dropdown"
-          >
-            <MenuItem
-              eventKey="connection"
-              onSelect={() => this.handleShowModal('connection')}
-            >
-              Wifi Setup
-            </MenuItem>
-            <MenuItem
-              eventKey="settings"
-              onSelect={() => this.handleShowModal('settings')}
-            >
-              Settings
-            </MenuItem>
-            <MenuItem
-              eventKey="upload"
-              onSelect={() => this.handleShowModal('upload')}
-            >
-              Firmware Update
-            </MenuItem>
-          </NavDropdown>
-        </Nav>
-
-        {device.ready && (
-          <div>
-            <Localization
-              setup={device.setup}
-              onChange={this.handleDeviceUpdate}
-            />
-            <DeviceSelect
-              devices={devices}
-              device={device}
-              onSelect={this.handleDeviceSelect}
-            />
-          </div>
-        )}
-      </Navbar>
-    );
-  }
-
-  connectionModal() {
-    const {showModal} = this.state;
-
-    return (
-      <Modal
-        show={showModal === 'connection'}
-        onHide={() => this.handleShowModal(false)}
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>Wifi Setup</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Connection />
-        </Modal.Body>
-        <Modal.Footer>
-          <Button onClick={() => this.handleShowModal(false)}>Close</Button>
-        </Modal.Footer>
-      </Modal>
-    );
-  }
-
-  settingsModal() {
-    const {showModal} = this.state;
-
-    return (
-      <Modal
-        show={showModal === 'settings'}
-        onHide={() => this.handleShowModal(false)}
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>Settings</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Settings />
-        </Modal.Body>
-        <Modal.Footer>
-          <Button onClick={() => this.handleShowModal(false)}>Close</Button>
-        </Modal.Footer>
-      </Modal>
-    );
-  }
-
-  uploadModal() {
-    const {showModal} = this.state;
-
-    return (
-      <Modal
-        show={showModal === 'upload'}
-        onHide={() => this.handleShowModal(false)}
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>Firmware Update</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Upload />
-        </Modal.Body>
-        <Modal.Footer>
-          <Button onClick={() => this.handleShowModal(false)}>Close</Button>
-        </Modal.Footer>
-      </Modal>
-    );
-  }
-
   render() {
-    const {blocking, device, page} = this.state;
+    const {
+      page,
+      device,
+      devices,
+      free,
+      selected,
+      blocking,
+      inputs,
+      outputs
+    } = this.state;
 
     return (
       <div>
-        {this.topNavigation()}
+        <TopNavigation
+          device={device}
+          blocking={blocking}
+          page={page}
+          inputs={inputs}
+          outputs={outputs}
+          onChange={this.handleDeviceUpdate}
+          onPageChange={this.handlePageChange}
+          onBlockingChange={this.handleBlockingChange}
+        />
         <Device
           blocking={blocking}
           device={device}
           page={page}
           onChange={this.handleDeviceUpdate}
         />
-        {this.connectionModal()}
-        {this.settingsModal()}
-        {this.uploadModal()}
-        {this.bottomNavigation()}
+        <BottomNavigation
+          device={device}
+          devices={devices}
+          selected={selected}
+          free={free}
+          onChange={this.handleDeviceUpdate}
+          onSelectDevice={this.handleDeviceSelect}
+        />
         <ToastContainer />
       </div>
     );

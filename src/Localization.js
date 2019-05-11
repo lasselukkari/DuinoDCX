@@ -8,7 +8,7 @@ import DelayUnits from './DelayUnits';
 class Localization extends Component {
   shouldComponentUpdate(nextProps) {
     const {setup} = this.props;
-    return isEqual(setup, nextProps.setup);
+    return !isEqual(setup, nextProps.setup);
   }
 
   render() {
