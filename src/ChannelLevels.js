@@ -82,12 +82,15 @@ class ChannelLevels extends PureComponent {
   };
 
   render() {
-    const {device, onChange} = this.props;
-    const {inputs, outputs, state} = device;
-    const {channels} = state;
+    const {device, inputs, outputs, onChange} = this.props;
+
+    if (!device || !device.ready || !inputs || !outputs) {
+      return null;
+    }
+
     const isAnyUnmuted =
-      inputChannels.some(channel => !inputs[channel].mute) ||
-      outputChannels.some(channel => !outputs[channel].mute);
+      inputChannels.some(channel => !device.inputs[channel].mute) ||
+      outputChannels.some(channel => !device.outputs[channel].mute);
 
     const isAnySelected =
       this.state.selected.inputs.some(channel => channel.selected) ||
@@ -97,9 +100,10 @@ class ChannelLevels extends PureComponent {
       <div className="channels-container">
         <div className="channel-group">
           {inputChannels.map((channelId, index) => {
-            const {limited, level} = channels[channelId];
-            const {mute} = inputs[channelId];
+            const {limited, level} = inputs[index];
+            const {mute} = device.inputs[channelId];
             const {group, name, selected} = this.state.selected.inputs[index];
+
             return (
               <ChannelControls
                 key={channelId}
@@ -119,8 +123,8 @@ class ChannelLevels extends PureComponent {
         </div>
         <div className="channel-group">
           {outputChannels.map((channelId, index) => {
-            const {limited, level} = channels[channelId];
-            const {mute} = outputs[channelId];
+            const {limited, level} = outputs[index];
+            const {mute} = device.outputs[channelId];
             const isOutput = true;
             const {group, name, selected} = this.state.selected.outputs[index];
 

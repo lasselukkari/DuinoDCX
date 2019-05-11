@@ -1,31 +1,21 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import {Nav, NavDropdown, MenuItem, Glyphicon} from 'react-bootstrap';
-import isEqual from 'lodash.isequal';
 
-class DeviceSelect extends Component {
-  shouldComponentUpdate(nextProps) {
-    const {devices, device} = this.props;
-    return (
-      devices.length !== nextProps.devices.length ||
-      device.name !== nextProps.device.name ||
-      device.id !== nextProps.device.id ||
-      !isEqual(device.state, nextProps.device.state)
-    );
-  }
-
+class DeviceSelect extends PureComponent {
   render() {
-    const {onSelect, devices, device} = this.props;
+    const {onSelect, devices, free, selected} = this.props;
+    const selectedDevice = devices.find(({id}) => id === selected);
 
-    if (devices.length === 0) {
+    if (devices.length === 0 || !selectedDevice) {
       return null;
     }
 
     const deviceName = (
       <div>
         <div className="device-name">
-          {`${device.id}. ${device.name} ${device.version} (${
-            device.state.free
-          }%)`}
+          {`${selectedDevice.id}. ${selectedDevice.name} ${
+            selectedDevice.version
+          } (${free}%)`}
         </div>
         <Glyphicon glyph="list" />
       </div>

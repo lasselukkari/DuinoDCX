@@ -26,6 +26,18 @@ class Connection extends Component {
     this.toastOptions = {position: toast.POSITION.BOTTOM_LEFT};
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    const {networks, selected, password, ip, hostname} = this.state;
+
+    return (
+      !isEqual(networks, nextState.networks) ||
+      selected !== nextState.selected ||
+      password !== nextState.password ||
+      ip !== nextState.ip ||
+      hostname !== nextState.hostname
+    );
+  }
+
   updateConnection() {
     return fetch('/api/connection', {credentials: 'same-origin'})
       .then(handleFetchErrors)
@@ -33,6 +45,14 @@ class Connection extends Component {
       .then(connection => {
         this.setState({selected: connection.current, ...connection});
       });
+  }
+
+  componentDidMount() {
+    this.updateConnection()
+      .then(() => this.updateNetworks())
+      .catch(() =>
+        toast.error(`Fetching WiFi status failed.`, this.toastOptions)
+      );
   }
 
   updateNetworks() {
@@ -46,26 +66,6 @@ class Connection extends Component {
 
         this.setState({networks});
       });
-  }
-
-  componentDidMount() {
-    this.updateConnection()
-      .then(() => this.updateNetworks())
-      .catch(() =>
-        toast.error(`Fetching WiFi status failed.`, this.toastOptions)
-      );
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    const {networks, selected, password, ip, hostname} = this.state;
-
-    return (
-      !isEqual(networks, nextState.networks) ||
-      selected !== nextState.selected ||
-      password !== nextState.password ||
-      ip !== nextState.ip ||
-      hostname !== nextState.hostname
-    );
   }
 
   handleNetworkSelect = e => {
@@ -102,12 +102,13 @@ class Connection extends Component {
           password: ''
         });
       })
-      .catch(() =>
+      .catch(() => {
+        this.setState({ip: '0.0.0.0'});
         toast.error(
           `Could not connect to network ${selected}`,
           this.toastOptions
-        )
-      );
+        );
+      });
   };
 
   handleDisconnection = e => {
@@ -135,84 +136,83 @@ class Connection extends Component {
   connectForm() {
     const {networks, selected, password} = this.state;
 
-    if (networks.length > 0) {
-      return (
-        <Form horizontal onSubmit={this.handleSubmit}>
-          <FormGroup>
-            <Col componentClass={ControlLabel} md={4}>
-              Network
-            </Col>
-            <Col md={8}>
-              <FormControl
-                componentClass="select"
-                value={selected}
-                onChange={this.handleNetworkSelect}
-              >
-                {networks.sort().map(enumeral => (
-                  <option key={enumeral}>{enumeral}</option>
-                ))}
-              </FormControl>
-            </Col>
-          </FormGroup>
-          <FormGroup>
-            <Col componentClass={ControlLabel} md={4}>
-              Password
-            </Col>
-            <Col md={8}>
-              <FormControl
-                value={password}
-                type="password"
-                placeholder="Password"
-                onChange={this.handlePasswordChange}
-              />
-            </Col>
-          </FormGroup>
-          <FormGroup>
-            <Col mdOffset={4} md={8}>
-              <Button type="submit">Connect</Button>
-            </Col>
-          </FormGroup>
-        </Form>
-      );
+    if (networks.length === 0) {
+      return this.loadingSpinner();
     }
 
-    return this.loadingSpinner();
+    return (
+      <Form horizontal onSubmit={this.handleSubmit}>
+        <FormGroup>
+          <Col componentClass={ControlLabel} md={4}>
+            Network
+          </Col>
+          <Col md={8}>
+            <FormControl
+              componentClass="select"
+              value={selected}
+              onChange={this.handleNetworkSelect}
+            >
+              {networks.sort().map(enumeral => (
+                <option key={enumeral}>{enumeral}</option>
+              ))}
+            </FormControl>
+          </Col>
+        </FormGroup>
+        <FormGroup>
+          <Col componentClass={ControlLabel} md={4}>
+            Password
+          </Col>
+          <Col md={8}>
+            <FormControl
+              value={password}
+              type="password"
+              placeholder="Password"
+              onChange={this.handlePasswordChange}
+            />
+          </Col>
+        </FormGroup>
+        <FormGroup>
+          <Col mdOffset={4} md={8}>
+            <Button type="submit">Connect</Button>
+          </Col>
+        </FormGroup>
+      </Form>
+    );
   }
 
   connectionForm() {
     const {ip, current} = this.state;
 
-    if (ip) {
-      return (
-        <Form horizontal onSubmit={this.handleDisconnection}>
-          <FormGroup>
-            <Col componentClass={ControlLabel} md={4}>
-              Network
-            </Col>
-            <Col md={8}>
-              <FormControl disabled value={current || 'Not connected'} />
-            </Col>
-          </FormGroup>
-          <FormGroup>
-            <Col componentClass={ControlLabel} md={4}>
-              IP
-            </Col>
-            <Col md={8}>
-              <FormControl disabled value={ip} />
-            </Col>
-          </FormGroup>
-          {current && (
-            <FormGroup>
-              <Col mdOffset={4} md={8}>
-                <Button type="submit">Disconnect</Button>
-              </Col>
-            </FormGroup>
-          )}
-        </Form>
-      );
+    if (!ip) {
+      return this.loadingSpinner();
     }
-
-    return this.loadingSpinner();
+    return (
+      <Form horizontal onSubmit={this.handleDisconnection}>
+        <FormGroup>
+          <Col componentClass={ControlLabel} md={4}>
+            Network
+          </Col>
+          <Col md={8}>
+            <FormControl disabled value={current || 'Not connected'} />
+          </Col>
+        </FormGroup>
+        <FormGroup>
+          <Col componentClass={ControlLabel} md={4}>
+            IP
+          </Col>
+          <Col md={8}>
+            <FormControl disabled value={ip} />
+          </Col>
+        </FormGroup>
+        {current && (
+          <FormGroup>
+            <Col mdOffset={4} md={8}>
+              <Button type="submit">Disconnect</Button>
+            </Col>
+          </FormGroup>
+        )}
+      </Form>
+    );
   }
 
   render() {

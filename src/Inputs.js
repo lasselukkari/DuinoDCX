@@ -13,10 +13,11 @@ import InputRouting from './InputRouting';
 class Inputs extends Component {
   shouldComponentUpdate(nextProps) {
     const {blocking, channels, setup} = this.props;
+
     return !(
-      nextProps.blocking === blocking &&
-      isEqual(nextProps.channels, channels) &&
-      isEqual(nextProps.setup, setup)
+      blocking === nextProps.blocking &&
+      isEqual(channels, nextProps.channels) &&
+      isEqual(setup, nextProps.setup)
     );
   }
 

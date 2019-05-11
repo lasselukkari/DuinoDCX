@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import DCX2496 from '../dcx2496/dcx2496';
+import Parser from '../dcx2496/parser';
 import BoolParam from './BoolParam';
 import EnumParam from './EnumParam';
 import NumberParam from './NumberParam';
@@ -22,7 +22,7 @@ const enumComponent = function({name, unit, values}, type) {
           type={type}
           unit={unit}
           value={value}
-          param={DCX2496.camelize(name)}
+          param={Parser.camelize(name)}
           group={group}
           channelId={channelId}
           eq={eq}
@@ -54,7 +54,7 @@ const boolComponent = function({name}, type) {
           name={name}
           type={type}
           value={value}
-          param={DCX2496.camelize(name)}
+          param={Parser.camelize(name)}
           group={group}
           channelId={channelId}
           eq={eq}
@@ -89,7 +89,7 @@ const numberComponent = function({name, unit, min, max, step}, type) {
           type={type}
           unit={unit}
           value={value}
-          param={DCX2496.camelize(name)}
+          param={Parser.camelize(name)}
           group={group}
           channelId={channelId}
           min={min}
@@ -121,19 +121,19 @@ const createComponent = commmand => {
 
 const squeeze = word => word.replace(/\s/g, '');
 
-DCX2496.commands.setupCommands.forEach(command => {
+Parser.commands.setupCommands.forEach(command => {
   components[squeeze(command.name)] = createComponent(command);
 });
 
-DCX2496.commands.inputOutputCommands.forEach(command => {
+Parser.commands.inputOutputCommands.forEach(command => {
   components[squeeze(command.name)] = createComponent(command);
 });
 
-DCX2496.commands.eqCommands.forEach(command => {
+Parser.commands.eqCommands.forEach(command => {
   components[squeeze(command.name)] = createComponent(command);
 });
 
-DCX2496.commands.outputCommands.forEach(command => {
+Parser.commands.outputCommands.forEach(command => {
   components[squeeze(command.name)] = createComponent(command);
 });
 

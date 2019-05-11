@@ -46,6 +46,7 @@ HardwareSerial UltradriveSerial(2);
 Ultradrive deviceManager(&UltradriveSerial, RTS_PIN, CTS_PIN);
 Application app;
 Router apiRouter("/api");
+Router logEndRouter("");
 
 char basicAuth[BASIC_AUTH_LENGTH];
 char softApSsid[SOFT_AP_SSID_LENGTH];
@@ -58,6 +59,49 @@ char ssidBuffer[SSID_MAX_LENGTH];
 char passwordBuffer[PASSWORD_MAX_LENGHT];
 unsigned long lastReconnect;
 bool shouldRestart = false;
+unsigned long requestStart;
+
+void logRequestStart(Request &req, Response &res) {
+  unsigned long now = millis();
+  Serial.print(now);
+  Serial.print(": HTTP ");
+
+  switch (req.method()) {
+    case  Request::GET: {
+        Serial.print("GET ");
+        break;
+      }
+    case  Request::POST: {
+        Serial.print("POST ");
+        break;
+      }
+    case  Request::PUT: {
+        Serial.print("PUT ");
+        break;
+      }
+    case  Request::PATCH: {
+        Serial.print("GET ");
+        break;
+      }
+    case  Request::DELETE: {
+        Serial.print("DELETE ");
+        break;
+      }
+    default: {}
+  }
+
+  Serial.print(req.path());
+  Serial.print(" ");
+  requestStart = micros();
+}
+
+void logRequestEnd(Request &req, Response &res) {
+  float delta = (micros() - requestStart) / 1000.0;
+  Serial.print(res.bytesSent());
+  Serial.print(" b ");
+  Serial.print(delta);
+  Serial.println(" ms");
+}
 
 void auth(Request &req, Response &res) {
   char * authHeader = req.get("Authorization");
@@ -226,7 +270,7 @@ void updateConnection(Request &req, Response &res) {
     }
   }
 
-  esp_wifi_disconnect();
+  WiFi.disconnect(false, true);
 
   WiFi.begin(ssidBuffer, passwordBuffer);
 
@@ -236,6 +280,7 @@ void updateConnection(Request &req, Response &res) {
   }
 
   if (WiFi.status() != WL_CONNECTED) {
+    WiFi.disconnect(false, true);
     return res.sendStatus(400);
   }
 
@@ -251,33 +296,30 @@ void removeConnection(Request &req, Response &res) {
 }
 
 void getDevice(Request &req, Response &res) {
-  char idBuffer[64];
-  req.route("id", idBuffer, 64);
-  int id = atoi(idBuffer);
-
-  if (id < 0 || id > MAX_DEVICES - 1) {
-    return res.sendStatus(404);
-  }
-
   res.set("Content-Type", "application/binary");
-  deviceManager.writeDevice(&res, id);
+  deviceManager.writeDevice(&res);
 }
 
+void getStatus(Request &req, Response &res) {
+  res.set("Content-Type", "application/binary");
+  deviceManager.writeDeviceStatus(&res);
+}
 
-void getDeviceStatus(Request &req, Response &res) {
-  char idBuffer[64];
-  req.route("id", idBuffer, 64);
-  int id = atoi(idBuffer);
+void selectDevice(Request &req, Response &res) {
+  byte buffer[100];
 
-  if (id < 0 || id > MAX_DEVICES - 1) {
-    return res.sendStatus(404);
+  if (!req.body(buffer, 100)) {
+    return res.sendStatus(400);
   }
 
-  res.set("Content-Type", "application/binary");
-  deviceManager.writeDeviceStatus(&res, id);
+  int id = atoi((const char *)buffer);
+  deviceManager.setSelected(id);
 }
-void getDevices(Request &req, Response &res) {
+
+void getState(Request &req, Response &res) {
   res.set("Content-Type", "application/binary");
+  res.write(deviceManager.getSelected());
+  deviceManager.writeDevice(&res);
   deviceManager.writeDevices(&res);
 }
 
@@ -287,14 +329,6 @@ void createDirectCommand(Request &req, Response &res) {
   }
 
   res.sendStatus(204);
-}
-
-void checkWifi(unsigned long now) {
-  if (WiFi.status() != WL_CONNECTED && (now - lastReconnect >= RECONNECT_INTERVAL)) {
-    WiFi.begin();
-    WiFi.setHostname(WIFI_HOST_NAME);
-    lastReconnect = now;
-  }
 }
 
 void processWebServer() {
@@ -349,9 +383,9 @@ void loadPreferences() {
 void setupHttpServer() {
   app.header("Authorization", authBuffer, AUTH_BUFFER_LENGHT);
 
-  apiRouter.get("/devices", &getDevices);
-  apiRouter.get("/devices/:id", &getDevice);
-  apiRouter.get("/devices/:id/status", &getDeviceStatus);
+  apiRouter.get("/state", &getState);
+  apiRouter.get("/status", &getStatus);
+  apiRouter.put("/selected", &selectDevice);
   apiRouter.post("/commands", &createDirectCommand);
   apiRouter.get("/connection", &getConnection);
   apiRouter.patch("/connection", &updateConnection);
@@ -361,15 +395,19 @@ void setupHttpServer() {
   apiRouter.get("/networks", &getNetworks);
   apiRouter.post("/update", &update);
   apiRouter.get("/version", &getVersion);
+  logEndRouter.use(&logRequestEnd);
 
+  app.use(&logRequestStart);
   app.use(&auth);
   app.route(&apiRouter);
   app.route(staticFiles());
+  app.route(&logEndRouter);
 
   httpServer.begin();
 }
 
 void setup() {
+  Serial.begin(38400);
   UltradriveSerial.begin(38400);
 
   loadPreferences();
@@ -381,19 +419,26 @@ void setup() {
   }
 
   WiFi.softAP(softApSsid, softApPassword);
-  WiFi.setAutoReconnect(false);
 
   MDNS.begin(mdnsName);
   MDNS.addService("http", "tcp", 80);
 
   setupHttpServer();
-  checkWifi(RECONNECT_INTERVAL);
+  WiFi.begin();
+  unsigned long timeout = millis() + CONNECTION_TIMEOUT;
+  while (WiFi.status() != WL_CONNECTED && millis() < timeout) {
+    delay(1000);
+  }
+
+  if (WiFi.status() != WL_CONNECTED) {
+    WiFi.disconnect(false, false);
+  }
+
 }
 
 void loop() {
   unsigned long now = millis();
   deviceManager.processIncoming(now);
-  checkWifi(now);
   processWebServer();
   restartIfNeeded();
 }

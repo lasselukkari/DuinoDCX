@@ -125,6 +125,10 @@ class NumberParam extends Component {
   handlePressRelease = () => clearTimeout(this.pressTimer);
 
   createRef = overlay => {
+    if (!overlay) {
+      return;
+    }
+
     const {handleHide} = overlay;
     overlay.handleHide = () => {
       this.setState(({value: manualValue}) => ({manualValue}));

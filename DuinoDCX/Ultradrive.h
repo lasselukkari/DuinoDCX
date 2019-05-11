@@ -48,7 +48,6 @@
 #include <Stream.h>
 #include "aWOT.h"
 
-
 struct HighByte {
   int part;
   int byte;
@@ -71,17 +70,22 @@ struct DataLocation {
   HighByte high;
 };
 
-
 class Ultradrive {
+    struct Device {
+      unsigned long lastResponse;
+      byte response[SEARCH_RESPONSE_LENGTH];
+    } devices[MAX_DEVICES];
 
   public:
     Ultradrive(HardwareSerial *serial, int rtsPin = 0, int ctsPin = 0);
     void enableFlowControl(bool enabled);
     void processIncoming(unsigned long now);
     void processOutgoing(Request* req);
-    void writeDevice(Response* res, int deviceId);
-    void writeDeviceStatus(Response* res, int deviceId);
+    void writeDevice(Response* res);
+    void writeDeviceStatus(Response* res);
     void writeDevices(Response* res);
+    void setSelected(int deviceId);
+    int getSelected();
 
   private:
     size_t write(const uint8_t *buffer, size_t size);
@@ -92,20 +96,15 @@ class Ultradrive {
     void ping(int deviceId);
     void dump(int deviceId, int part);
     void readCommands(unsigned long now);
-    void patchBuffer(int deviceId, int low, int high, DataLocation l);
-
-    struct Device {
-      bool isNew;
-      bool invalidateSync;
-      bool dumpStarted;
-      byte dump0[PART_0_LENGTH];
-      byte dump1[PART_1_LENGTH];
-      byte searchResponse[SEARCH_RESPONSE_LENGTH];
-      byte pingResponse[PING_RESPONSE_LENGTH];
-      unsigned long lastPong;
-      unsigned long lastPing;
-      unsigned long lastResync;
-    } devices[MAX_DEVICES];
+    void patchBuffer(int low, int high, DataLocation l);
+    
+    bool invalidateSync;
+    byte dump0[PART_0_LENGTH];
+    byte dump1[PART_1_LENGTH];
+    byte pingResponse[PING_RESPONSE_LENGTH];
+    unsigned long lastResync;
+    unsigned long lastPing;
+    int selectedDevice;
 
     HardwareSerial *serial;
     int rtsPin;
