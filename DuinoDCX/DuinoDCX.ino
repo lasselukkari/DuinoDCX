@@ -1,13 +1,12 @@
 #include <esp_wifi.h>
 #include <WiFi.h>
 #include <ESPmDNS.h>
-#include <DNSServer.h>
 #include <Update.h>
 #include <Preferences.h>
 #include "aWOT.h"
 #include "Ultradrive.h"
 
-#define VERSION "v0.0.22"
+#define VERSION "v0.0.23"
 #define BUILD_DATE __DATE__ " " __TIME__
 
 #define DEFAULT_AUTH "Basic RENYMjQ5NjpVbHRyYWRyaXZl" // DCX2496:Ultradrive in base64
@@ -43,7 +42,6 @@
 
 Preferences preferences;
 WiFiServer httpServer(80);
-DNSServer dnsServer;
 HardwareSerial UltradriveSerial(2);
 Ultradrive deviceManager(&UltradriveSerial, RTS_PIN, CTS_PIN);
 Application app;
@@ -410,6 +408,7 @@ void setupHttpServer() {
 
 void setup() {
   Serial.begin(38400);
+  UltradriveSerial.setRxBufferSize(4000);
   UltradriveSerial.begin(38400);
 
   loadPreferences();
@@ -421,7 +420,6 @@ void setup() {
   }
 
   WiFi.softAP(softApSsid, softApPassword);
-  dnsServer.start(53, "ultradrive.local", WiFi.softAPIP());
 
   MDNS.begin(mdnsName);
   MDNS.addService("http", "tcp", 80);
@@ -442,6 +440,5 @@ void loop() {
   unsigned long now = millis();
   deviceManager.processIncoming(now);
   processWebServer();
-  dnsServer.processNextRequest();
   restartIfNeeded();
 }
