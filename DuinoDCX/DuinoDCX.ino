@@ -6,7 +6,7 @@
 #include "aWOT.h"
 #include "Ultradrive.h"
 
-#define VERSION "v0.0.23"
+#define VERSION "v0.0.24"
 #define BUILD_DATE __DATE__ " " __TIME__
 
 #define DEFAULT_AUTH "Basic RENYMjQ5NjpVbHRyYWRyaXZl" // DCX2496:Ultradrive in base64
@@ -408,7 +408,6 @@ void setupHttpServer() {
 
 void setup() {
   Serial.begin(38400);
-  UltradriveSerial.setRxBufferSize(4000);
   UltradriveSerial.begin(38400);
 
   loadPreferences();
