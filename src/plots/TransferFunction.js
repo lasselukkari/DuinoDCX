@@ -251,13 +251,16 @@ class TransferFunction {
       }
 
       case 'bes12': {
-        this.secondOrderFilter(1.2754 * f0, 0.577, isHighpass);
+        const fk1 = isHighpass ? 1 / 1.254 : 1.254;
+        this.secondOrderFilter(fk1 * f0, 0.577, isHighpass);
         break;
       }
 
       case 'bes24': {
-        this.secondOrderFilter(1.4192 * f0, 0.5219, isHighpass);
-        this.secondOrderFilter(1.5912 * f0, 0.8055, isHighpass);
+        const fk1 = isHighpass ? 1 / 1.4192 : 1.4192;
+        const fk2 = isHighpass ? 1 / 1.5912 : 1.5912;
+        this.secondOrderFilter(fk1 * f0, 0.5219, isHighpass);
+        this.secondOrderFilter(fk2 * f0, 0.8055, isHighpass);
         break;
       }
 
