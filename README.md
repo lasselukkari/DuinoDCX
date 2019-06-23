@@ -52,7 +52,9 @@ Go to the  `SETUP -> MICELLANIOUS` config page. The `PORT` setting should be eit
 ## 2. Flashing the Board
 Unless you already have the Arduino and Arduino ESP32 core development environments ready you will need to install:
 * [Arduino IDE](https://www.arduino.cc/en/main/software)
-* [Arduino ESP32 core](https://github.com/espressif/arduino-esp32#installation-instructions)
+* [Arduino ESP32 core 1.0.0](https://github.com/espressif/arduino-esp32#installation-instructions)
+
+It is important that you install the right version of the Arduino ESP32 core. The project will update to the latest core version once it is stable again.
 
 Open the Arduino IDE and make sure you have the correct board type selected.
 
