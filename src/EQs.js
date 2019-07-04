@@ -16,10 +16,7 @@ class EQs extends Component {
     const {channels, group, onChange, blocking} = this.props;
 
     return (
-      <Tabs
-        defaultActiveKey={Object.keys(channels)[0]}
-        id="equalizers"
-      >
+      <Tabs defaultActiveKey={Object.keys(channels)[0]} id="equalizers">
         {Object.keys(channels).map(channelId => {
           return (
             <Tab

@@ -157,3 +157,12 @@ body {
   margin-right: -15px !important;
   margin-left: -15px !important;
 }
+
+.control-menu {
+  margin-bottom: 12px;
+  justify-content: center;
+}
+
+.control-menu  > .nav-item{
+  margin: 2px;
+}
