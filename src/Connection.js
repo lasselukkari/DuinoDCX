@@ -189,8 +189,8 @@ class Connection extends Component {
   }
 
   render() {
-    const {ip} = this.state;
-    if (!ip) {
+    const {current} = this.state;
+    if (!current) {
       return this.connectForm();
     }
 

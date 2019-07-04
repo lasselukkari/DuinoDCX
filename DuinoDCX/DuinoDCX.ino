@@ -243,12 +243,6 @@ void getConnection(Request &req, Response &res) {
   res.print("\"ip\":");
   res.print("\"");
   res.print(WiFi.localIP());
-  res.print("\", ");
-
-  res.print("\"hostname\":");
-  res.print("\"");
-  res.print(mdnsName);
-  res.print(".local");
   res.print("\"");
 
   res.print("}");
