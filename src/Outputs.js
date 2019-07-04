@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Panel, Tabs, Tab} from 'react-bootstrap';
+import {Card, Tabs, Tab} from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import isEqual from 'lodash.isequal';
 import DynamicEQs from './DynamicEQs';
@@ -27,11 +27,11 @@ class Outputs extends Component {
     const {channels, setup, onChange, blocking} = this.props;
     return (
       <div>
-        <Tabs defaultActiveKey="gain" id="outputs" animation={false}>
-          <Tab title="Gain" bsStyle="primary" eventKey="gain">
-            <Panel>
-              <Panel.Heading>Gain</Panel.Heading>
-              <Panel.Body>
+        <Tabs defaultActiveKey="gain" id="outputs">
+          <Tab title="Gain" variant="primary" eventKey="gain">
+            <Card>
+              <Card.Header>Gain</Card.Header>
+              <Card.Body>
                 <BlockUi blocking={blocking}>
                   <Gains
                     group="outputs"
@@ -39,10 +39,10 @@ class Outputs extends Component {
                     onChange={onChange}
                   />
                 </BlockUi>
-              </Panel.Body>
-            </Panel>
+              </Card.Body>
+            </Card>
           </Tab>
-          <Tab title="Crossover" bsStyle="primary" eventKey="crossover">
+          <Tab title="Crossover" variant="primary" eventKey="crossover">
             <CrossoverPlotPanel channels={channels} />
             <BlockUi blocking={blocking}>
               <Crossovers
@@ -52,7 +52,7 @@ class Outputs extends Component {
               />
             </BlockUi>
           </Tab>
-          <Tab title="EQ" bsStyle="primary" eventKey="eqs">
+          <Tab title="EQ" variant="primary" eventKey="eqs">
             <EQPlotPanel channels={channels} group="outputs" />
             <EQs
               blocking={blocking}
@@ -61,7 +61,7 @@ class Outputs extends Component {
               onChange={onChange}
             />
           </Tab>
-          <Tab title="Dynamic EQ" bsStyle="primary" eventKey="dynamicEQs">
+          <Tab title="Dynamic EQ" variant="primary" eventKey="dynamicEQs">
             <BlockUi blocking={blocking}>
               <DynamicEQs
                 group="outputs"
@@ -70,7 +70,7 @@ class Outputs extends Component {
               />
             </BlockUi>
           </Tab>
-          <Tab title="Limiter" bsStyle="primary" eventKey="limiters">
+          <Tab title="Limiter" variant="primary" eventKey="limiters">
             <BlockUi blocking={blocking}>
               <Limiters
                 group="outputs"
@@ -79,12 +79,12 @@ class Outputs extends Component {
               />
             </BlockUi>
           </Tab>
-          <Tab title="Phase" bsStyle="primary" eventKey="phases">
+          <Tab title="Phase" variant="primary" eventKey="phases">
             <BlockUi blocking={blocking}>
               <Phases group="outputs" channels={channels} onChange={onChange} />
             </BlockUi>
           </Tab>
-          <Tab title="Delay" bsStyle="primary" eventKey="delays">
+          <Tab title="Delay" variant="primary" eventKey="delays">
             <BlockUi blocking={blocking}>
               <Delays
                 group="outputs"
@@ -94,7 +94,7 @@ class Outputs extends Component {
               />
             </BlockUi>
           </Tab>
-          <Tab title="Routing" bsStyle="primary" eventKey="routing">
+          <Tab title="Routing" variant="primary" eventKey="routing">
             <BlockUi blocking={blocking}>
               <OutputRouting
                 setup={setup}

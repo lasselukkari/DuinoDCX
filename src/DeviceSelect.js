@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import {Nav, NavDropdown, MenuItem, Glyphicon} from 'react-bootstrap';
+import {Nav, NavDropdown} from 'react-bootstrap';
 
 class DeviceSelect extends PureComponent {
   render() {
@@ -10,24 +10,17 @@ class DeviceSelect extends PureComponent {
       return null;
     }
 
-    const deviceName = (
-      <div>
-        <div className="device-name">
-          {`${selectedDevice.id}. ${selectedDevice.name} ${
-            selectedDevice.version
-          } (${free}%)`}
-        </div>
-        <Glyphicon glyph="list" />
-      </div>
-    );
+    const deviceName = `${selectedDevice.id}. ${selectedDevice.name} ${
+      selectedDevice.version
+    } (${free}%)`;
 
     return (
-      <Nav pullRight onSelect={onSelect}>
-        <NavDropdown noCaret title={deviceName} id="basic-nav-dropdown">
+      <Nav onSelect={onSelect}>
+        <NavDropdown title={deviceName} drop="up" className="right-0">
           {devices.map(({name, id}, deviceId) => (
-            <MenuItem key={id} eventKey={deviceId}>
+            <NavDropdown.Item key={id} eventKey={deviceId}>
               {id}. {name}
-            </MenuItem>
+            </NavDropdown.Item>
           ))}
         </NavDropdown>
       </Nav>

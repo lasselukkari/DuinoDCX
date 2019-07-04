@@ -1,4 +1,5 @@
 import React, {PureComponent} from 'react';
+import {FormLabel} from 'react-bootstrap';
 
 import pc from './parameters';
 
@@ -8,7 +9,9 @@ class ChannelName extends PureComponent {
 
     return (
       <div>
-        <h5>{channelName ? channelId + '. ' + channelName : channelId}</h5>
+        <FormLabel>
+          {channelName ? channelId + '. ' + channelName : channelId}
+        </FormLabel>
         <pc.ChannelName
           value={channelName}
           group={group}

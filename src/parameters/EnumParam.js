@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {FormControl, FormGroup, ControlLabel} from 'react-bootstrap';
+import {Form} from 'react-bootstrap';
 
 class EnumParam extends Component {
   handleValueChange = e => {
@@ -15,14 +15,14 @@ class EnumParam extends Component {
   render() {
     const {name, value, enums, unit, includeLabel} = this.props;
     return (
-      <FormGroup>
+      <Form.Group>
         {includeLabel !== false && (
-          <ControlLabel>
+          <Form.Label>
             {name} {unit && `(${unit})`}
-          </ControlLabel>
+          </Form.Label>
         )}
-        <FormControl
-          componentClass="select"
+        <Form.Control
+          as="select"
           placeholder="select"
           value={value}
           onChange={this.handleValueChange}
@@ -30,8 +30,8 @@ class EnumParam extends Component {
           {enums.map(enumeral => (
             <option key={enumeral}>{enumeral}</option>
           ))}
-        </FormControl>
-      </FormGroup>
+        </Form.Control>
+      </Form.Group>
     );
   }
 }

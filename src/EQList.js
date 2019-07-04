@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Panel} from 'react-bootstrap';
+import {Card} from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import isEqual from 'lodash.isequal';
 import EQPlot from './plots/EQPlot';
@@ -42,34 +42,34 @@ class EQs extends Component {
 
     return (
       <div>
-        <Panel>
-          <Panel.Heading>
+        <Card>
+          <Card.Header>
             {`Frequency Response: ${
               channel.channelName
                 ? `${channel.channelName}`
                 : `Input ${channelId}`
             }`}
-          </Panel.Heading>
-          <Panel.Body>
+          </Card.Header>
+          <Card.Body>
             <EQPlot channels={{[channelId]: channel}} />
-          </Panel.Body>
-        </Panel>
+          </Card.Body>
+        </Card>
         <BlockUi blocking={blocking}>
-          <Panel>
-            <Panel.Heading>
+          <Card>
+            <Card.Header>
               {channel.channelName
                 ? `${channelId}. ${channel.channelName} Equalizer`
                 : `Input ${channelId} Equalizer`}
-            </Panel.Heading>
-            <Panel.Body>
+            </Card.Header>
+            <Card.Body>
               <pc.EQ
                 value={eQ}
                 group={group}
                 channelId={channelId}
                 onChange={onChange}
               />
-            </Panel.Body>
-          </Panel>
+            </Card.Body>
+          </Card>
           {activeEQs.map(eq => {
             const {eQType, eQFrequency, eQQ, eQShelving, eQGain} = eq;
             return (

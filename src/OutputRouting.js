@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Panel, Row, Col} from 'react-bootstrap';
+import {Card, Row, Col} from 'react-bootstrap';
 import isEqual from 'lodash.isequal';
 
 import pc from './parameters';
@@ -25,9 +25,9 @@ class OutputRouting extends Component {
 
     return (
       <div>
-        <Panel>
-          <Panel.Heading>Link Setup</Panel.Heading>
-          <Panel.Body>
+        <Card>
+          <Card.Header>Link Setup</Card.Header>
+          <Card.Body>
             <Row>
               <Col xs={12} sm={4}>
                 <pc.OutputConfig
@@ -51,20 +51,20 @@ class OutputRouting extends Component {
                 />
               </Col>
             </Row>
-          </Panel.Body>
-        </Panel>
+          </Card.Body>
+        </Card>
 
         <OutputSources group="outputs" channels={outputs} onChange={onChange} />
         <ChannelNames group="outputs" channels={outputs} onChange={onChange} />
-        <Panel>
-          <Panel.Heading>Mute Outs When Powered</Panel.Heading>
-          <Panel.Body>
+        <Card>
+          <Card.Header>Mute Outs When Powered</Card.Header>
+          <Card.Body>
             <pc.MuteOutsWhenPowered
               value={muteOutsWhenPowered}
               onChange={onChange}
             />
-          </Panel.Body>
-        </Panel>
+          </Card.Body>
+        </Card>
       </div>
     );
   }

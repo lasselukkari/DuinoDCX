@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import {Panel} from 'react-bootstrap';
+import {Card} from 'react-bootstrap';
 import pc from './parameters';
 
 class Delay extends PureComponent {
@@ -67,13 +67,13 @@ class Delay extends PureComponent {
       ).toString();
 
     return (
-      <Panel>
-        <Panel.Heading>
+      <Card>
+        <Card.Header>
           {channelName
             ? `${channelId} . ${channelName}`
             : `Channel ${channelId}`}
-        </Panel.Heading>
-        <Panel.Body>
+        </Card.Header>
+        <Card.Body>
           <pc.Delay
             value={delay}
             group={group}
@@ -101,8 +101,8 @@ class Delay extends PureComponent {
             labelFormatter={labelFormatter}
             onChange={onChange}
           />
-        </Panel.Body>
-      </Panel>
+        </Card.Body>
+      </Card>
     );
   }
 }

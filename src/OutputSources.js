@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Col, Panel, Row} from 'react-bootstrap';
+import {Col, Card, Row} from 'react-bootstrap';
 import isEqual from 'lodash.isequal';
 
 import OutputSource from './OutputSource';
@@ -14,9 +14,9 @@ class OutputSources extends Component {
     const {channels, group, onChange} = this.props;
 
     return (
-      <Panel>
-        <Panel.Heading>Output Source</Panel.Heading>
-        <Panel.Body>
+      <Card>
+        <Card.Header>Output Source</Card.Header>
+        <Card.Body>
           <Row>
             {Object.keys(channels).map(channelId => {
               const {channelName, source} = channels[channelId];
@@ -34,8 +34,8 @@ class OutputSources extends Component {
               );
             })}
           </Row>
-        </Panel.Body>
-      </Panel>
+        </Card.Body>
+      </Card>
     );
   }
 }

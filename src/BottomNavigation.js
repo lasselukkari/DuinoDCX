@@ -1,13 +1,6 @@
 import React, {Component} from 'react';
-import {
-  Button,
-  Modal,
-  MenuItem,
-  Navbar,
-  Nav,
-  NavDropdown,
-  Glyphicon
-} from 'react-bootstrap';
+import {Button, Modal, Navbar, Nav, NavDropdown} from 'react-bootstrap';
+import {FaCog} from 'react-icons/fa';
 import isEqual from 'lodash.isequal';
 
 import DeviceSelect from './DeviceSelect';
@@ -52,45 +45,52 @@ class TopNavigation extends Component {
     const {showModal} = this.state;
 
     return (
-      <Navbar fluid fixedBottom>
-        <Nav pullRight activeKey={showModal}>
+      <Navbar
+        fixed="bottom"
+        bg="primary"
+        variant="dark"
+        className="wide-nav justify-content-end"
+      >
+        {devices && (
+          <DeviceSelect
+            devices={devices}
+            selected={selected}
+            free={free}
+            onSelect={onSelectDevice}
+          />
+        )}
+        {device && device.ready && (
+          <Localization setup={device.setup} onChange={onChange} />
+        )}
+        <Nav>
           <NavDropdown
-            noCaret
-            title={<Glyphicon glyph="cog" />}
-            id="config-dropdown"
+            title={<FaCog />}
+            id="nav-dropdown"
+            drop="up"
+            className="no-caret right-0 icon-menu"
           >
-            <MenuItem
+            <NavDropdown.Item
               eventKey="connection"
               onSelect={() => this.handleShowModal('connection')}
             >
+              {' '}
               Wifi Setup
-            </MenuItem>
-            <MenuItem
+            </NavDropdown.Item>
+            <NavDropdown.Item
               eventKey="settings"
               onSelect={() => this.handleShowModal('settings')}
             >
+              {' '}
               Settings
-            </MenuItem>
-            <MenuItem
+            </NavDropdown.Item>
+            <NavDropdown.Item
               eventKey="upload"
               onSelect={() => this.handleShowModal('upload')}
             >
               Firmware Update
-            </MenuItem>
+            </NavDropdown.Item>
           </NavDropdown>
         </Nav>
-
-        {device && device.ready && devices && (
-          <div>
-            <Localization setup={device.setup} onChange={onChange} />
-            <DeviceSelect
-              devices={devices}
-              selected={selected}
-              free={free}
-              onSelect={onSelectDevice}
-            />
-          </div>
-        )}
         <Modal
           show={showModal === 'connection'}
           onHide={() => this.handleShowModal(false)}

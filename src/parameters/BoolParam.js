@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {ControlLabel, FormGroup, Button, Form} from 'react-bootstrap';
+import {FormGroup, Button, Form} from 'react-bootstrap';
 
 class BoolParam extends Component {
   handleClick = () => {
@@ -20,15 +20,15 @@ class BoolParam extends Component {
       <Form>
         <FormGroup>
           {includeLabel !== false && (
-            <ControlLabel>
+            <Form.Label>
               {name}
               <br />
-            </ControlLabel>
+            </Form.Label>
           )}
 
           <Button
             block
-            bsStyle={value ? onColor : 'primary'}
+            variant={value ? onColor : 'primary'}
             active={value}
             onClick={this.handleClick}
           >

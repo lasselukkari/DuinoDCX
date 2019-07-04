@@ -10,13 +10,13 @@ class SelectButton extends PureComponent {
       margin: '1px',
       width: '36px',
       height: '36px',
-      padding: '8px'
+      padding: '0px'
     };
 
     return (
       <Button
         className="responsive-rotate-90"
-        bsStyle={selected ? 'info' : 'default'}
+        variant={selected ? 'info' : 'dark'}
         style={muteStyle}
         onClick={() => onChange({group, channelId, selected, index})}
       >

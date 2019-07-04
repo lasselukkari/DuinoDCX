@@ -1,5 +1,6 @@
 import React, {PureComponent} from 'react';
-import {Button, Glyphicon} from 'react-bootstrap';
+import {Button} from 'react-bootstrap';
+import {FaVolumeMute, FaVolumeUp} from 'react-icons/fa';
 
 class MuteButton extends PureComponent {
   handleClick = () => {
@@ -20,17 +21,17 @@ class MuteButton extends PureComponent {
       margin: '1px',
       width: '36px',
       height: '36px',
-      padding: '8px'
+      padding: '0px'
     };
 
     return (
       <Button
         className="responsive-rotate-90"
-        bsStyle={isMuted ? 'danger' : 'default'}
+        variant={isMuted ? 'danger' : 'dark'}
         style={muteStyle}
         onClick={this.handleClick}
       >
-        <Glyphicon glyph={isMuted ? 'volume-off' : 'volume-up'} />
+        {isMuted ? <FaVolumeMute /> : <FaVolumeUp />}
       </Button>
     );
   }

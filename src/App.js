@@ -8,7 +8,7 @@ import TopNavigation from './TopNavigation';
 import Device from './Device';
 import BottomNavigation from './BottomNavigation';
 
-import 'bootswatch/slate/bootstrap.css'; // eslint-disable-line import/no-unassigned-import
+import 'bootswatch/dist/slate/bootstrap.css'; // eslint-disable-line import/no-unassigned-import
 import 'react-toastify/dist/ReactToastify.css'; // eslint-disable-line import/no-unassigned-import
 import './App.css'; // eslint-disable-line import/no-unassigned-import
 

@@ -24,7 +24,7 @@ class Crossovers extends Component {
               channelName
             } = channels[channelId];
             return (
-              <Col key={channelId} xs={12} sm={6} md={4} lg={2}>
+              <Col key={channelId} xs={12} sm={6} md={4}>
                 <Crossover
                   group={group}
                   channelId={channelId}

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Panel, Tabs, Tab} from 'react-bootstrap';
+import {Card, Tabs, Tab} from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import isEqual from 'lodash.isequal';
 
@@ -25,11 +25,11 @@ class Inputs extends Component {
     const {channels, setup, onChange, blocking} = this.props;
     return (
       <div>
-        <Tabs defaultActiveKey="gain" id="inputs" animation={false}>
-          <Tab title="Gain" bsStyle="primary" eventKey="gain">
-            <Panel>
-              <Panel.Heading>Gain</Panel.Heading>
-              <Panel.Body>
+        <Tabs defaultActiveKey="gain" id="inputs">
+          <Tab title="Gain" variant="primary" eventKey="gain">
+            <Card>
+              <Card.Header>Gain</Card.Header>
+              <Card.Body>
                 <BlockUi blocking={blocking}>
                   <Gains
                     group="inputs"
@@ -37,10 +37,10 @@ class Inputs extends Component {
                     onChange={onChange}
                   />
                 </BlockUi>
-              </Panel.Body>
-            </Panel>
+              </Card.Body>
+            </Card>
           </Tab>
-          <Tab title="EQ" bsStyle="primary" eventKey="eq">
+          <Tab title="EQ" variant="primary" eventKey="eq">
             <EQPlotPanel channels={channels} group="inputs" />
             <EQs
               group="inputs"
@@ -49,7 +49,7 @@ class Inputs extends Component {
               onChange={onChange}
             />
           </Tab>
-          <Tab title="Dynamic EQ" bsStyle="primary" eventKey="dynamicEQ">
+          <Tab title="Dynamic EQ" variant="primary" eventKey="dynamicEQ">
             <BlockUi blocking={blocking}>
               <DynamicEQs
                 group="inputs"
@@ -58,7 +58,7 @@ class Inputs extends Component {
               />
             </BlockUi>
           </Tab>
-          <Tab title="Delay" bsStyle="primary" eventKey="delays">
+          <Tab title="Delay" variant="primary" eventKey="delays">
             <BlockUi blocking={blocking}>
               <Delays
                 group="inputs"
@@ -69,7 +69,7 @@ class Inputs extends Component {
             </BlockUi>
           </Tab>
 
-          <Tab title="Routing" bsStyle="primary" eventKey="routing">
+          <Tab title="Routing" variant="primary" eventKey="routing">
             <BlockUi blocking={blocking}>
               <InputRouting setup={setup} onChange={onChange} />
             </BlockUi>

@@ -58,14 +58,16 @@ class CrossoverPlot extends PureComponent {
       '#95A5A6'
     ];
     let width;
-    if (windowWidth < 768) {
-      width = windowWidth - 70;
+    if (windowWidth < 576) {
+      width = windowWidth - 60;
+    } else if (windowWidth < 768) {
+      width = 480;
     } else if (windowWidth < 992) {
-      width = 688;
+      width = 660;
     } else if (windowWidth < 1200) {
-      width = 892;
+      width = 900;
     } else {
-      width = 1100;
+      width = 1080;
     }
     const height = width * 0.33;
 

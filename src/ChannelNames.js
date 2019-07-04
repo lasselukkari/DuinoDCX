@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Col, Panel, Row} from 'react-bootstrap';
+import {Col, Card, Row} from 'react-bootstrap';
 import isEqual from 'lodash.isequal';
 import ChannelName from './ChannelName';
 
@@ -13,9 +13,9 @@ class ChannelNames extends Component {
     const {channels, group, onChange} = this.props;
 
     return (
-      <Panel>
-        <Panel.Heading>Output Names</Panel.Heading>
-        <Panel.Body>
+      <Card>
+        <Card.Header>Output Names</Card.Header>
+        <Card.Body>
           <Row>
             {Object.keys(channels).map(channelId => {
               return (
@@ -31,8 +31,8 @@ class ChannelNames extends Component {
               );
             })}
           </Row>
-        </Panel.Body>
-      </Panel>
+        </Card.Body>
+      </Card>
     );
   }
 }

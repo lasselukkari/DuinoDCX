@@ -1,4 +1,5 @@
 import React, {PureComponent} from 'react';
+import {FormLabel} from 'react-bootstrap';
 import pc from './parameters';
 
 class Gain extends PureComponent {
@@ -7,11 +8,11 @@ class Gain extends PureComponent {
 
     return (
       <div>
-        <h5 className="form-header">
+        <FormLabel className="form-header">
           {channelName
             ? `${channelId} . ${channelName}`
             : `Channel ${channelId}`}
-        </h5>
+        </FormLabel>
         <pc.Gain
           value={gain}
           group={group}

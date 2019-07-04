@@ -1,14 +1,6 @@
 import React, {Component} from 'react';
 import isEqual from 'lodash.isequal';
-import {
-  Row,
-  Form,
-  FormControl,
-  FormGroup,
-  ControlLabel,
-  Button,
-  Col
-} from 'react-bootstrap';
+import {Form, Button} from 'react-bootstrap';
 import {toast} from 'react-toastify';
 import Spinner from 'react-spinkit';
 
@@ -142,40 +134,31 @@ class Connection extends Component {
 
     return (
       <Form horizontal onSubmit={this.handleSubmit}>
-        <FormGroup>
-          <Col componentClass={ControlLabel} md={4}>
-            Network
-          </Col>
-          <Col md={8}>
-            <FormControl
-              componentClass="select"
-              value={selected}
-              onChange={this.handleNetworkSelect}
-            >
-              {networks.sort().map(enumeral => (
-                <option key={enumeral}>{enumeral}</option>
-              ))}
-            </FormControl>
-          </Col>
-        </FormGroup>
-        <FormGroup>
-          <Col componentClass={ControlLabel} md={4}>
-            Password
-          </Col>
-          <Col md={8}>
-            <FormControl
-              value={password}
-              type="password"
-              placeholder="Password"
-              onChange={this.handlePasswordChange}
-            />
-          </Col>
-        </FormGroup>
-        <FormGroup>
-          <Col mdOffset={4} md={8}>
-            <Button type="submit">Connect</Button>
-          </Col>
-        </FormGroup>
+        <Form.Group>
+          <Form.Label>Network</Form.Label>
+          <Form.Control
+            as="select"
+            value={selected}
+            onChange={this.handleNetworkSelect}
+          >
+            {networks.sort().map(enumeral => (
+              <option key={enumeral}>{enumeral}</option>
+            ))}
+          </Form.Control>
+        </Form.Group>
+        <Form.Group>
+          <Form.Label>Password</Form.Label>
+          <Form.Control
+            value={password}
+            type="password"
+            placeholder="Password"
+            onChange={this.handlePasswordChange}
+          />
+        </Form.Group>
+
+        <Button block type="submit">
+          Connect
+        </Button>
       </Form>
     );
   }
@@ -188,46 +171,28 @@ class Connection extends Component {
     }
     return (
       <Form horizontal onSubmit={this.handleDisconnection}>
-        <FormGroup>
-          <Col componentClass={ControlLabel} md={4}>
-            Network
-          </Col>
-          <Col md={8}>
-            <FormControl disabled value={current || 'Not connected'} />
-          </Col>
-        </FormGroup>
-        <FormGroup>
-          <Col componentClass={ControlLabel} md={4}>
-            IP
-          </Col>
-          <Col md={8}>
-            <FormControl disabled value={ip} />
-          </Col>
-        </FormGroup>
-        {current && (
-          <FormGroup>
-            <Col mdOffset={4} md={8}>
-              <Button type="submit">Disconnect</Button>
-            </Col>
-          </FormGroup>
-        )}
+        <Form.Group>
+          <Form.Label>Network</Form.Label>
+          <Form.Control disabled type="text" value={current} />
+        </Form.Group>
+        <Form.Group>
+          <Form.Label>IP</Form.Label>
+          <Form.Control disabled type="text" value={ip} />
+        </Form.Group>
+        <Button block type="submit">
+          Disconnect
+        </Button>
       </Form>
     );
   }
 
   render() {
-    return (
-      <Row>
-        <Col sm={6}>
-          <h4>Wifi Status</h4>
-          {this.connectionForm()}
-        </Col>
-        <Col sm={6}>
-          <h4>Networks</h4>
-          {this.connectForm()}
-        </Col>
-      </Row>
-    );
+    const {ip} = this.state;
+    if (!ip) {
+      return this.connectForm();
+    }
+
+    return this.connectionForm();
   }
 }
 

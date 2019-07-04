@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Panel} from 'react-bootstrap';
+import {Card} from 'react-bootstrap';
 import isEqual from 'lodash.isequal';
 import pc from './parameters';
 
@@ -25,12 +25,12 @@ class Delays extends Component {
     return (
       <div>
         {group === 'outputs' && (
-          <Panel>
-            <Panel.Heading>Long Delay Link</Panel.Heading>
-            <Panel.Body>
+          <Card>
+            <Card.Header>Long Delay Link</Card.Header>
+            <Card.Body>
               <pc.DelayLink value={delayLink} onChange={onChange} />
-            </Panel.Body>
-          </Panel>
+            </Card.Body>
+          </Card>
         )}
 
         {Object.keys(channels).map(channelId => {

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Panel, Button} from 'react-bootstrap';
+import {Card, Button} from 'react-bootstrap';
 import isEqual from 'lodash.isequal';
 import EQPlot from './plots/EQPlot';
 
@@ -28,23 +28,23 @@ class CrossoverPlotPanel extends Component {
   render() {
     const {channels, group} = this.props;
     return (
-      <Panel>
-        <Panel.Heading>
+      <Card>
+        <Card.Header>
           EQ Frequency Response: All{' '}
           {group.charAt(0).toUpperCase() + group.slice(1)}
           <Button
-            bsSize="xs"
-            className="pull-right"
-            bsStyle={this.state.applyGain ? 'success' : 'default'}
+            size="sm"
+            className="header-button"
+            variant={this.state.applyGain ? 'success' : 'dark'}
             onClick={this.handleToggleGain}
           >
             Apply Gain
           </Button>
-        </Panel.Heading>
-        <Panel.Body>
+        </Card.Header>
+        <Card.Body>
           <EQPlot channels={channels} applyGain={this.state.applyGain} />
-        </Panel.Body>
-      </Panel>
+        </Card.Body>
+      </Card>
     );
   }
 }

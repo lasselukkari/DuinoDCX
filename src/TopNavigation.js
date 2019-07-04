@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import {Navbar, Nav, NavDropdown, Glyphicon, NavItem} from 'react-bootstrap';
+import {Navbar, Nav, NavDropdown} from 'react-bootstrap';
+import {FaSignal, FaLock, FaEdit} from 'react-icons/fa';
 import isEqual from 'lodash.isequal';
 
 import ChannelLevels from './ChannelLevels';
@@ -50,14 +51,12 @@ class TopNavigation extends Component {
     }
 
     return (
-      <Navbar fluid fixedTop className="top-nav" style={{}}>
+      <Navbar fixed="top" bg="primary" variant="dark" className="wide-nav">
         <Nav className="end-button">
           <NavDropdown
-            noCaret
             open={showLevels}
-            activeKey={showLevels}
-            className="channel-levels"
-            title={<Glyphicon glyph="equalizer" />}
+            className="channel-levels no-caret"
+            title={<FaSignal />}
             id="channel-levels-dropdown"
             onToggle={this.handleLevelsShowChange}
           >
@@ -70,24 +69,29 @@ class TopNavigation extends Component {
             />
           </NavDropdown>
         </Nav>
-        <Nav
-          activeKey={page}
-          className="middle-buttons"
-          onSelect={onPageChange}
-        >
-          <NavItem eventKey="inputs">Inputs</NavItem>
-          <NavItem eventKey="outputs">Outputs</NavItem>
+        <Nav className="middle-buttons" onSelect={onPageChange}>
+          <Nav.Item>
+            <Nav.Link active={page === 'inputs'} eventKey="inputs">
+              Inputs
+            </Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Link active={page === 'outputs'} eventKey="outputs">
+              Outputs
+            </Nav.Link>
+          </Nav.Item>
         </Nav>
-        <Nav pullRight activeKey="blocking" className="end-button">
-          <NavItem
-            eventKey={blocking ? 'not-blocking' : 'blocking'}
-            onClick={onBlockingChange}
-          >
-            <Glyphicon
-              style={{color: blocking ? '#ee5f5b' : '#62c462'}}
-              glyph={blocking ? 'lock' : 'edit'}
-            />
-          </NavItem>
+        <Nav activeKey="blocking" className="end-button">
+          <Nav.Item onClick={onBlockingChange}>
+            <Nav.Link>
+              {' '}
+              {blocking ? (
+                <FaLock style={{color: '#ee5f5b'}} />
+              ) : (
+                <FaEdit style={{color: '#62c462'}} />
+              )}
+            </Nav.Link>
+          </Nav.Item>
         </Nav>
       </Navbar>
     );

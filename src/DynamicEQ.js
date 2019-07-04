@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import {Panel, Row, Col} from 'react-bootstrap';
+import {Card, Row, Col} from 'react-bootstrap';
 import pc from './parameters';
 
 class DynamicEQ extends PureComponent {
@@ -22,13 +22,13 @@ class DynamicEQ extends PureComponent {
     } = this.props;
 
     return (
-      <Panel>
-        <Panel.Heading>
+      <Card>
+        <Card.Header>
           {channelName
             ? `${channelId} . ${channelName}`
             : `Channel ${channelId}`}
-        </Panel.Heading>
-        <Panel.Body>
+        </Card.Header>
+        <Card.Body>
           <pc.DynamicEQ
             value={dynamicEQ}
             group={group}
@@ -36,7 +36,7 @@ class DynamicEQ extends PureComponent {
             onChange={onChange}
           />
           <Row>
-            <Col xs={12} sm={6}>
+            <Col md={12} lg={6}>
               <pc.DynamicEQType
                 includeLabel
                 value={dynamicEQType}
@@ -45,7 +45,7 @@ class DynamicEQ extends PureComponent {
                 onChange={onChange}
               />
             </Col>
-            <Col xs={12} sm={6}>
+            <Col md={12} lg={6}>
               <pc.DynamicEQFrequency
                 includeLabel
                 value={dynamicEQFrequency}
@@ -56,7 +56,7 @@ class DynamicEQ extends PureComponent {
             </Col>
           </Row>
           <Row>
-            <Col xs={12} sm={6}>
+            <Col md={12} lg={6}>
               {dynamicEQType === 'Bandpass' && (
                 <pc.DynamicEQQ
                   includeLabel
@@ -76,7 +76,7 @@ class DynamicEQ extends PureComponent {
                 />
               )}
             </Col>
-            <Col xs={12} sm={6}>
+            <Col md={12} lg={6}>
               <pc.DynamicEQAttack
                 includeLabel
                 value={dynamicEQAttack}
@@ -87,7 +87,7 @@ class DynamicEQ extends PureComponent {
             </Col>
           </Row>
           <Row>
-            <Col xs={12} sm={6}>
+            <Col md={12} lg={6}>
               <pc.DynamicEQRelease
                 includeLabel
                 value={dynamicEQRelease}
@@ -96,7 +96,7 @@ class DynamicEQ extends PureComponent {
                 onChange={onChange}
               />
             </Col>
-            <Col xs={12} sm={6}>
+            <Col md={12} lg={6}>
               <pc.DynamicEQRatio
                 includeLabel
                 value={dynamicEQRatio}
@@ -136,8 +136,8 @@ class DynamicEQ extends PureComponent {
             channelId={channelId}
             onChange={onChange}
           />
-        </Panel.Body>
-      </Panel>
+        </Card.Body>
+      </Card>
     );
   }
 }

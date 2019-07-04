@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import {Nav, NavDropdown, Glyphicon} from 'react-bootstrap';
+import {Nav, NavDropdown} from 'react-bootstrap';
+import {FaGlobe} from 'react-icons/fa';
 import isEqual from 'lodash.isequal';
 
 import Temperature from './Temperature';
@@ -16,20 +17,22 @@ class Localization extends Component {
     const {airTemperature, delayCorrection, delayUnits} = setup;
 
     return (
-      <Nav pullRight>
+      <Nav>
         <NavDropdown
-          noCaret
-          title={<Glyphicon glyph="globe" />}
-          id="localization-dropdown"
+          title={<FaGlobe />}
+          drop="up"
+          className="no-caret right-0 icon-menu"
         >
-          <Temperature
-            airTemperature={airTemperature}
-            delayCorrection={delayCorrection}
-            delayUnits={delayUnits}
-            onChange={onChange}
-          />
+          <div id="localization-dropup">
+            <Temperature
+              airTemperature={airTemperature}
+              delayCorrection={delayCorrection}
+              delayUnits={delayUnits}
+              onChange={onChange}
+            />
 
-          <DelayUnits delayUnits={delayUnits} onChange={onChange} />
+            <DelayUnits delayUnits={delayUnits} onChange={onChange} />
+          </div>
         </NavDropdown>
       </Nav>
     );
