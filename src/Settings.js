@@ -7,6 +7,7 @@ function handleFetchErrors(response) {
   if (!response.ok) {
     throw new Error(response.statusText);
   }
+
   return response;
 }
 
@@ -158,7 +159,7 @@ class Settings extends PureComponent {
     }
 
     return (
-      <Form horizontal method="POST" onSubmit={this.handleSubmit}>
+      <Form method="POST" onSubmit={this.handleSubmit}>
         <Form.Group as={Row}>
           <Form.Label column sm="5">
             Username

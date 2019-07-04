@@ -28,11 +28,14 @@ class Delay extends PureComponent {
         if (unit === 'mm') {
           return 'mm';
         }
+
         return 'm';
       }
+
       if (unit === 'mm') {
         return 'in';
       }
+
       return 'ft';
     };
 
@@ -41,6 +44,7 @@ class Delay extends PureComponent {
         if (unit === 'mm') {
           return 1;
         }
+
         if (unit === 'cm') {
           return 100;
         }
@@ -48,6 +52,7 @@ class Delay extends PureComponent {
         if (unit === 'mm') {
           return 1;
         }
+
         if (unit === 'cm') {
           return 1.2;
         }

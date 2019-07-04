@@ -1,90 +1,84 @@
-import mathjs from 'mathjs';
+import {
+  abs,
+  sqrt,
+  complex,
+  log10,
+  pow,
+  pi,
+  add,
+  divide,
+  multiply
+} from 'mathjs';
 
 class TransferFunction {
   constructor(frequencyPoints) {
     this.frequencyPoints = frequencyPoints;
-    this.transferFunction = this.frequencyPoints.map(() =>
-      mathjs.complex(1, 0)
-    );
+    this.transferFunction = this.frequencyPoints.map(() => complex(1, 0));
   }
 
   static generateFrequencyPoints(startFrequency, endFrequency, count) {
     const freqData = [];
     for (let i = 0; i < count; i++) {
       const frequency =
-        mathjs.log10(startFrequency) +
-        (i * mathjs.log10(endFrequency / startFrequency)) / (count - 1);
-      freqData[i] = mathjs.pow(10, frequency);
+        log10(startFrequency) +
+        (i * log10(endFrequency / startFrequency)) / (count - 1);
+      freqData[i] = pow(10, frequency);
     }
 
     return freqData;
   }
 
   firstOrderFilter(f0, isHighPass) {
-    const w0 = 2 * mathjs.pi * f0; // Angular frequency w0 for cut of frequency
+    const w0 = 2 * pi * f0; // Angular frequency w0 for cut of frequency
 
     this.apply(
       this.frequencyPoints.map(frequencyPoint => {
-        const w = 2 * mathjs.pi * frequencyPoint; // Angular frequency w for frequency of interest
-        const s = mathjs.complex(0, w); // S = iw
-        const giveMeName = mathjs.add(mathjs.divide(s, w0), 1);
+        const w = 2 * pi * frequencyPoint; // Angular frequency w for frequency of interest
+        const s = complex(0, w); // S = iw
+        const giveMeName = add(divide(s, w0), 1);
 
         if (isHighPass) {
-          return mathjs.multiply(
-            mathjs.divide(1, giveMeName),
-            mathjs.divide(s, w0)
-          );
+          return multiply(divide(1, giveMeName), divide(s, w0));
         }
-        return mathjs.divide(1, giveMeName);
+
+        return divide(1, giveMeName);
       })
     );
   }
 
   secondOrderFilter(f0, Q, isHighpass) {
-    const w0 = 2 * mathjs.pi * f0; // Angular frequency w0 for cut of frequency
+    const w0 = 2 * pi * f0; // Angular frequency w0 for cut of frequency
 
     this.apply(
       this.frequencyPoints.map(frequencyPoint => {
-        const w = 2 * mathjs.pi * frequencyPoint; // Angular frequency w for frequency of interest
-        const s = mathjs.complex(0, w); // S = iw
-        const giveMeName = mathjs.divide(
-          mathjs.pow(w0, 2),
-          mathjs.add(
-            mathjs.add(
-              mathjs.pow(s, 2),
-              mathjs.divide(mathjs.multiply(s, w0), Q)
-            ),
-            mathjs.pow(w0, 2)
-          )
+        const w = 2 * pi * frequencyPoint; // Angular frequency w for frequency of interest
+        const s = complex(0, w); // S = iw
+        const giveMeName = divide(
+          pow(w0, 2),
+          add(add(pow(s, 2), divide(multiply(s, w0), Q)), pow(w0, 2))
         );
 
         if (isHighpass) {
-          return mathjs.multiply(
-            mathjs.divide(mathjs.pow(s, 2), mathjs.pow(w0, 2)),
-            giveMeName
-          );
+          return multiply(divide(pow(s, 2), pow(w0, 2)), giveMeName);
         }
+
         return giveMeName;
       })
     );
   }
 
   getMagnitude() {
-    return this.transferFunction.map(
-      point => 20 * mathjs.log10(point.toPolar().r)
-    );
+    return this.transferFunction.map(point => 20 * log10(point.toPolar().r));
   }
 
   getAngle() {
     return this.transferFunction.map(point =>
-      mathjs.divide(180 * point.toPolar().phi, mathjs.pi)
+      divide(180 * point.toPolar().phi, pi)
     );
   }
 
   static multiplyVectors(points1, points2) {
-    return points1.map((point, index) =>
-      mathjs.multiply(point, points2[index])
-    );
+    return points1.map((point, index) => multiply(point, points2[index]));
   }
 
   getGroupDelay() {
@@ -99,6 +93,7 @@ class TransferFunction {
         (angUw[j + 1] - angUw[j]) /
         (this.frequencyPoints[j + 1] - this.frequencyPoints[j]);
     }
+
     diff.push(diff[diff.length - 1]); // Add last element
 
     return diff.map(num => -1 * num);
@@ -112,100 +107,100 @@ class TransferFunction {
       if (angle[j] - angle[j - 1] > 180) {
         wrapcount++;
       }
+
       angleNew[j] = angle[j] - wrapcount * 360;
     }
+
     return angleNew;
   }
 
   parametricEQ(f0, g, q) {
-    const w0 = 2 * mathjs.pi * f0;
-    const temp3 = mathjs.divide(g, 40);
-    const K = mathjs.pow(10, temp3);
+    const w0 = 2 * pi * f0;
+    const temp3 = divide(g, 40);
+    const K = pow(10, temp3);
     const A = w0 / q / K;
     const B = (K * w0) / q;
 
     this.apply(
       this.frequencyPoints.map(frequenzy => {
-        const w = 2 * mathjs.pi * frequenzy; // Angular frequency w for frequency of interest
-        const s = mathjs.complex(0, w); // S = iw
+        const w = 2 * pi * frequenzy; // Angular frequency w for frequency of interest
+        const s = complex(0, w); // S = iw
         // H=(s.^2 + B*s + w0^2) ./ (s.^2 + A*s + w0^2);
-        const temp1 = mathjs.add(mathjs.pow(s, 2), mathjs.multiply(B, s));
-        const nom = mathjs.add(temp1, mathjs.pow(w0, 2));
+        const temp1 = add(pow(s, 2), multiply(B, s));
+        const nom = add(temp1, pow(w0, 2));
 
-        const temp2 = mathjs.add(mathjs.pow(s, 2), mathjs.multiply(A, s));
-        const denom = mathjs.add(temp2, mathjs.pow(w0, 2));
-        return mathjs.divide(nom, denom);
+        const temp2 = add(pow(s, 2), multiply(A, s));
+        const denom = add(temp2, pow(w0, 2));
+        return divide(nom, denom);
       })
     );
   }
 
   firstOrderShelving(f0, gain, isHighShelving) {
-    const w0 = 2 * mathjs.pi * f0;
+    const w0 = 2 * pi * f0;
     this.apply(
       this.frequencyPoints.map(frequenzy => {
-        const w = 2 * mathjs.pi * frequenzy; // Angular frequency w for frequency of interest
-        const s = mathjs.complex(0, w); // S = iw
+        const w = 2 * pi * frequenzy; // Angular frequency w for frequency of interest
+        const s = complex(0, w); // S = iw
         let nom;
         if (isHighShelving) {
-          nom = mathjs.add(
-            mathjs.multiply(s, mathjs.pow(10, mathjs.abs(gain) / 20)),
-            w0
-          );
+          nom = add(multiply(s, pow(10, abs(gain) / 20)), w0);
         } else {
-          nom = mathjs.add(
-            s,
-            mathjs.multiply(w0, mathjs.pow(10, mathjs.abs(gain) / 20))
-          );
+          nom = add(s, multiply(w0, pow(10, abs(gain) / 20)));
         }
 
-        const denom = mathjs.add(s, w0);
+        const denom = add(s, w0);
 
         if (gain > 0) {
-          return mathjs.divide(nom, denom); // Boost
+          return divide(nom, denom); // Boost
         }
+
         if (gain < 0) {
-          return mathjs.divide(denom, nom); // Cut
+          return divide(denom, nom); // Cut
         }
+
         return 1;
       })
     );
   }
 
   secondOrderShelving(f0, gain, isHighShelving) {
-    const w0 = 2 * mathjs.pi * f0;
-    const gainAbs = mathjs.pow(10, mathjs.abs(gain) / 20);
+    const w0 = 2 * pi * f0;
+    const gainAbs = pow(10, abs(gain) / 20);
     this.apply(
       this.frequencyPoints.map(frequenzy => {
-        const w = 2 * mathjs.pi * frequenzy; // Angular frequency w for frequency of interest
-        const s = mathjs.complex(0, w); // S = iw
+        const w = 2 * pi * frequenzy; // Angular frequency w for frequency of interest
+        const s = complex(0, w); // S = iw
 
         let temp1;
         if (isHighShelving) {
-          temp1 = mathjs.multiply(gainAbs, mathjs.pow(s, 2));
+          temp1 = multiply(gainAbs, pow(s, 2));
         } else {
-          temp1 = mathjs.multiply(gainAbs, mathjs.pow(w0, 2));
+          temp1 = multiply(gainAbs, pow(w0, 2));
         }
 
-        const temp2 = mathjs.multiply(mathjs.sqrt(2 * gainAbs) * w0, s);
-        const temp3 = mathjs.add(temp1, temp2);
+        const temp2 = multiply(sqrt(2 * gainAbs) * w0, s);
+        const temp3 = add(temp1, temp2);
 
         let nom;
         if (isHighShelving) {
-          nom = mathjs.add(temp3, mathjs.pow(w0, 2));
+          nom = add(temp3, pow(w0, 2));
         } else {
-          nom = mathjs.add(temp3, mathjs.pow(s, 2));
+          nom = add(temp3, pow(s, 2));
         }
 
-        const temp4 = mathjs.pow(s, 2);
-        const temp5 = mathjs.multiply(mathjs.sqrt(2) * w0, s);
-        const temp6 = mathjs.add(temp4, temp5);
-        const denom = mathjs.add(temp6, mathjs.pow(w0, 2));
+        const temp4 = pow(s, 2);
+        const temp5 = multiply(sqrt(2) * w0, s);
+        const temp6 = add(temp4, temp5);
+        const denom = add(temp6, pow(w0, 2));
         if (gain > 0) {
-          return mathjs.divide(nom, denom); // Boost
+          return divide(nom, denom); // Boost
         }
+
         if (gain < 0) {
-          return mathjs.divide(denom, nom); // Cut
+          return divide(denom, nom); // Cut
         }
+
         return 1;
       })
     );
@@ -282,6 +277,7 @@ class TransferFunction {
         this.secondOrderFilter(f0, 1.34, isHighpass);
         break;
       }
+
       default: {
         this.apply(this.frequencyPoints.map(() => 1));
       }

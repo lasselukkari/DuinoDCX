@@ -84,6 +84,7 @@ class EQPlot extends PureComponent {
     } else {
       width = 1080;
     }
+
     const height = width * 0.33;
 
     return (

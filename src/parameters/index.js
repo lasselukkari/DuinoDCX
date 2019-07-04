@@ -111,9 +111,11 @@ const createComponent = commmand => {
   if (commmand.type === 'enum') {
     return enumComponent(commmand);
   }
+
   if (commmand.type === 'bool') {
     return boolComponent(commmand);
   }
+
   if (commmand.type === 'number') {
     return numberComponent(commmand);
   }
