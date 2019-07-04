@@ -8,6 +8,7 @@ function handleFetchErrors(response) {
   if (!response.ok) {
     throw new Error(response.statusText);
   }
+
   return response;
 }
 
@@ -133,7 +134,7 @@ class Connection extends Component {
     }
 
     return (
-      <Form horizontal onSubmit={this.handleSubmit}>
+      <Form onSubmit={this.handleSubmit}>
         <Form.Group>
           <Form.Label>Network</Form.Label>
           <Form.Control
@@ -169,8 +170,9 @@ class Connection extends Component {
     if (!ip) {
       return this.loadingSpinner();
     }
+
     return (
-      <Form horizontal onSubmit={this.handleDisconnection}>
+      <Form onSubmit={this.handleDisconnection}>
         <Form.Group>
           <Form.Label>Network</Form.Label>
           <Form.Control disabled type="text" value={current} />

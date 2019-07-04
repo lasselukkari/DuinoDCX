@@ -75,7 +75,8 @@ class Upload extends PureComponent {
       case 'active':
         return (
           <ProgressBar
-            active
+            animated
+            style={{height: '20px'}}
             variant="info"
             now={percent}
             label={`${percent ? percent.toFixed(2) : 0.0}%`}
@@ -84,7 +85,7 @@ class Upload extends PureComponent {
       case 'fail':
         return 'Uploading failed. Check the file and try again.';
       case 'success':
-        return 'Uploading succeeded. Hard refresh the page to empty cached files.';
+        return 'Uploading succeeded. Refresh the page.';
       default:
         return 'Drag and drop a file or click to open the file dialog.';
     }
@@ -116,6 +117,7 @@ class Upload extends PureComponent {
     if (release.isLatest) {
       return <p>Latest firmware installed</p>;
     }
+
     return (
       <div>
         <p>New release found: {release.name}.</p>
@@ -147,25 +149,24 @@ class Upload extends PureComponent {
 
     return (
       <div>
-        <Dropzone
-          style={{
-            width: '100%',
-            height: '45px',
-            padding: '10px',
-            borderWidth: 2,
-            borderColor: '#666',
-            borderStyle: 'dashed',
-            borderRadius: 5
-          }}
-          activeStyle={{
-            borderStyle: 'solid',
-            borderColor: '#62C462',
-            backgroundColor: '#3e444c'
-          }}
-          multiple={false}
-          onDrop={this.handleDrop}
-        >
-          {this.statusMessage()}
+        <Dropzone multiple={false} onDrop={this.handleDrop}>
+          {({getRootProps, getInputProps}) => (
+            <div
+              style={{
+                width: '100%',
+                height: '45px',
+                padding: '10px',
+                borderWidth: 2,
+                borderColor: '#666',
+                borderStyle: 'dashed',
+                borderRadius: 5
+              }}
+              {...getRootProps()}
+            >
+              {this.statusMessage()}
+              <input {...getInputProps()} />
+            </div>
+          )}
         </Dropzone>
         <br />
         <div className="text-center">

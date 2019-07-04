@@ -10,9 +10,7 @@ class DeviceSelect extends PureComponent {
       return null;
     }
 
-    const deviceName = `${selectedDevice.id}. ${selectedDevice.name} ${
-      selectedDevice.version
-    } (${free}%)`;
+    const deviceName = `${selectedDevice.id}. ${selectedDevice.name} ${selectedDevice.version} (${free}%)`;
 
     return (
       <Nav onSelect={onSelect}>

@@ -16,9 +16,11 @@ class Parser {
     if (type === 'bool') {
       return value !== 0;
     }
+
     if (type === 'enum') {
       return values[value];
     }
+
     if (type === 'number') {
       return min + step * value;
     }
@@ -28,9 +30,11 @@ class Parser {
     if (type === 'bool') {
       return parameter ? 1 : 0;
     }
+
     if (type === 'enum') {
       return values.indexOf(parameter);
     }
+
     if (type === 'number') {
       return Math.round(Math.abs(min - parameter) / step);
     }
