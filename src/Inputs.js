@@ -25,7 +25,12 @@ class Inputs extends Component {
     const {channels, setup, onChange, blocking} = this.props;
     return (
       <div>
-        <Tabs defaultActiveKey="gain" id="inputs">
+        <Tabs
+          defaultActiveKey="gain"
+          variant="pills"
+          id="inputs"
+          className="control-menu"
+        >
           <Tab title="Gain" variant="primary" eventKey="gain">
             <Card>
               <Card.Header>Gain</Card.Header>

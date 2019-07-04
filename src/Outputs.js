@@ -27,7 +27,12 @@ class Outputs extends Component {
     const {channels, setup, onChange, blocking} = this.props;
     return (
       <div>
-        <Tabs defaultActiveKey="gain" id="outputs">
+        <Tabs
+          defaultActiveKey="gain"
+          variant="pills"
+          id="outputs"
+          className="control-menu"
+        >
           <Tab title="Gain" variant="primary" eventKey="gain">
             <Card>
               <Card.Header>Gain</Card.Header>
