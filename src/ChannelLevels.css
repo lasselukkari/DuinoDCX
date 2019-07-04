@@ -6,7 +6,7 @@
   float: left;
 }
 
-.channel-levels > ul {
+.channel-levels > .dropdown-menu {
   width: 212px !important;
 }
 
@@ -37,8 +37,8 @@
     -o-transform: rotate(270deg);
     -ms-transform: rotate(270deg);
     transform: rotate(270deg);
-    left: 100px;
-    top: -50px;
+    left: 98px;
+    top: -48px;
   }
 
   .responsive-rotate-90 {
@@ -49,7 +49,7 @@
     transform: rotate(90deg);
   }
 
-  #mute-all .glyphicon {
+  #mute-all svg {
     -webkit-transform: rotate(90deg);
     -moz-transform: rotate(90deg);
     -o-transform: rotate(90deg);

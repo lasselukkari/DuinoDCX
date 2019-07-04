@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Panel, Row, Col} from 'react-bootstrap';
+import {Card, Row, Col} from 'react-bootstrap';
 import isEqual from 'lodash.isequal';
 
 import pc from './parameters';
@@ -41,9 +41,9 @@ class InputRouting extends Component {
 
     return (
       <div>
-        <Panel>
-          <Panel.Heading>Source Setup</Panel.Heading>
-          <Panel.Body>
+        <Card>
+          <Card.Header>Source Setup</Card.Header>
+          <Card.Body>
             <Row>
               <Col xs={12} sm={4}>
                 <pc.InputABSource
@@ -67,11 +67,11 @@ class InputRouting extends Component {
                 />
               </Col>
             </Row>
-          </Panel.Body>
-        </Panel>
-        <Panel>
-          <Panel.Heading>Sum Setup</Panel.Heading>
-          <Panel.Body>
+          </Card.Body>
+        </Card>
+        <Card>
+          <Card.Header>Sum Setup</Card.Header>
+          <Card.Body>
             <pc.InputSumType
               includeLabel
               value={inputSumType}
@@ -95,8 +95,8 @@ class InputRouting extends Component {
               confirm={confirm}
               onChange={onChange}
             />
-          </Panel.Body>
-        </Panel>
+          </Card.Body>
+        </Card>
       </div>
     );
   }

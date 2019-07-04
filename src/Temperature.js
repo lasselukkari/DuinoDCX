@@ -33,11 +33,11 @@ class Temperature extends PureComponent {
     }
 
     return (
-      <InputGroup style={{margin: '10px 20px'}}>
+      <InputGroup>
         <FormControl
           disabled={!delayCorrection}
           value={value.toFixed(1)}
-          componentClass="select"
+          as="select"
           placeholder="select"
           onChange={this.handleValueChange}
         >
@@ -47,14 +47,14 @@ class Temperature extends PureComponent {
             </option>
           ))}
         </FormControl>
-        <InputGroup.Button>
+        <InputGroup.Append>
           <Button
-            bsStyle={delayCorrection ? 'success' : 'primary'}
+            variant={delayCorrection ? 'success' : 'primary'}
             onClick={() => this.handleCorrectionChange(delayCorrection)}
           >
             °{unit}
           </Button>
-        </InputGroup.Button>
+        </InputGroup.Append>
       </InputGroup>
     );
   }

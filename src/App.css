@@ -49,19 +49,19 @@ body {
   outline: none !important
 }
 
-.panel-body {
-  padding: 15px 15px 5px !important;
+.card {
+  margin-bottom: 15px;
 }
 
-.navbar-nav > li > .dropdown-menu {
-  border: 1px solid rgba(0, 0, 0, 0.6);
+.card-body {
+  padding: 15px 15px 5px !important;
 }
 
 .end-button {
   width: 25%;
 }
 
-.end-button > li {
+.end-button > .nav-item {
   width: 100%;
   text-align: center;
 }
@@ -70,59 +70,19 @@ body {
   width: 50%;
 }
 
-.middle-buttons > li {
+.middle-buttons > .nav-item {
   width: 50%;
   text-align: center;
 }
 
-.middle-buttons > li > a {
+.middle-buttons > .nav-item  > a {
   font-weight: bold;
 }
 
-.device-name {
-  float: left;
-  margin-right: 15px;
-}
 
-.form-header {
-  margin-top: 0;
-  font-weight: bold;
-}
 
-.navbar-nav {
-  margin: 0 !important;
-  float: left;
-}
 
-.navbar > .container-fluid {
-  margin-right: -15px !important;
-  margin-left: -15px !important;
-}
-
-.nav > li {
-  float: left !important;
-}
-
-.navbar-nav > li > a {
-  padding-top: 15px !important;
-  padding-bottom: 15px !important;
-}
-
-.navbar-nav > li > .dropdown-menu {
-  position: absolute !important;
-  background-color: #3a3f44 !important;
-}
-
-.navbar-right {
-  float: right !important;
-}
-
-.navbar-right .dropdown-menu {
-  left: auto !important;
-  right: 0 !important;
-}
-
-.middle-buttons > li.active > a {
+.middle-buttons .nav-link.active {
   background-image: -webkit-linear-gradient(#78cc78, #62c462 60%, #53be53);
   background-image: -o-linear-gradient(#78cc78, #62c462 60%, #53be53);
   background-image: -webkit-gradient(linear, left top, left bottom, from(#78cc78), color-stop(60%, #62c462), to(#53be53));
@@ -133,7 +93,7 @@ body {
   filter: none;
 }
 
-.middle-buttons > li.active > a:hover {
+.middle-buttons .nav-link.active:hover {
   background-image: -webkit-linear-gradient(#2f7d2f, #379337 40%, #3a9a3a);
   background-image: -o-linear-gradient(#2f7d2f, #379337 40%, #3a9a3a);
   background-image: -webkit-gradient(linear, left top, left bottom, from(#2f7d2f), color-stop(40%, #379337), to(#3a9a3a));
@@ -154,4 +114,46 @@ body {
 
 .Toastify__toast-body {
   margin: auto 15px;
+}
+
+
+.react-numeric-input input {
+  height: 48px;
+}
+
+.no-caret > .dropdown-toggle::after {
+  display: none;
+}
+
+.right-0  .dropdown-menu{
+  right: 0;
+  left: auto;
+}
+
+.icon-menu{
+  width: 50px;
+  text-align: center;
+}
+
+#localization-dropup {
+  width: 260px;
+  padding: 10px 15px 0 15px;
+}
+
+.header-button {
+  height: 22px;
+  font-size: 10px;
+  float: right;
+}
+
+.nav-tabs .nav-link.active {
+  color: #fff;
+  background-color: #3e444c;
+  border: 1px solid #1c1e22;
+  border-bottom-color: transparent;
+}
+
+.wide-nav {
+  margin-right: -15px !important;
+  margin-left: -15px !important;
 }

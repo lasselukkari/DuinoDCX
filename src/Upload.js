@@ -76,7 +76,7 @@ class Upload extends PureComponent {
         return (
           <ProgressBar
             active
-            bsStyle="info"
+            variant="info"
             now={percent}
             label={`${percent ? percent.toFixed(2) : 0.0}%`}
           />
@@ -119,7 +119,7 @@ class Upload extends PureComponent {
     return (
       <div>
         <p>New release found: {release.name}.</p>
-        <Button href={release.link} bsStyle="success">
+        <Button href={release.link} variant="success">
           Download
         </Button>
       </div>

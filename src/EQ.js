@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import {Panel, Row, Col} from 'react-bootstrap';
+import {Card, Row, Col} from 'react-bootstrap';
 
 import pc from './parameters';
 
@@ -18,9 +18,9 @@ class EQ extends PureComponent {
     } = this.props;
 
     return (
-      <Panel>
-        <Panel.Heading>{`Equalizer ${id}`}</Panel.Heading>
-        <Panel.Body>
+      <Card>
+        <Card.Header>{`Equalizer ${id}`}</Card.Header>
+        <Card.Body>
           <Row>
             <Col xs={12} sm={4}>
               <pc.EQType
@@ -89,8 +89,8 @@ class EQ extends PureComponent {
             }}
             onChange={onChange}
           />
-        </Panel.Body>
-      </Panel>
+        </Card.Body>
+      </Card>
     );
   }
 }

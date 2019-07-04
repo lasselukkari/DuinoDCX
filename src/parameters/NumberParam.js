@@ -1,14 +1,14 @@
 import React, {Component} from 'react';
 import {
   FormGroup,
-  ControlLabel,
+  FormLabel,
   Button,
-  Glyphicon,
   Popover,
   OverlayTrigger,
   InputGroup
 } from 'react-bootstrap';
 import Slider, {createSliderWithTooltip} from 'rc-slider';
+import {FaPlus, FaMinus} from 'react-icons/fa';
 import NumericInput from 'react-numeric-input';
 import './NumberParam.css'; // eslint-disable-line import/no-unassigned-import
 import 'rc-slider/assets/index.css'; // eslint-disable-line import/no-unassigned-import
@@ -191,9 +191,8 @@ class NumberParam extends Component {
               precision={2}
               onChange={this.handleManualChange}
             />
-            <InputGroup.Button>
-              <Button onClick={this.handleManualSet}>Set</Button>
-            </InputGroup.Button>
+
+            <Button onClick={this.handleManualSet}>Set</Button>
           </InputGroup>
         </FormGroup>
       </Popover>
@@ -202,10 +201,10 @@ class NumberParam extends Component {
     return (
       <FormGroup>
         {includeLabel !== false && (
-          <ControlLabel>
+          <FormLabel>
             {name}
             <br />
-          </ControlLabel>
+          </FormLabel>
         )}
 
         <div className="number-param-container">
@@ -218,7 +217,7 @@ class NumberParam extends Component {
               onMouseLeave={this.handlePressRelease}
               onClick={this.handleReduction}
             >
-              <Glyphicon glyph="minus" />
+              <FaMinus />
             </Button>
           </div>
           <div className="slider">
@@ -257,7 +256,7 @@ class NumberParam extends Component {
               onMouseLeave={this.handlePressRelease}
               onClick={this.handleAddition}
             >
-              <Glyphicon glyph="plus" />
+              <FaPlus />
             </Button>
           </div>
         </div>

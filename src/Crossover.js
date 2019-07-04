@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import {Row, Col, Panel} from 'react-bootstrap';
+import {Row, Col, Card, FormLabel} from 'react-bootstrap';
 
 import pc from './parameters';
 
@@ -17,16 +17,16 @@ class Crossover extends PureComponent {
     } = this.props;
 
     return (
-      <Panel>
-        <Panel.Heading>
+      <Card>
+        <Card.Header>
           {channelName
             ? `${channelId} . ${channelName}`
             : `Channel ${channelId}`}
-        </Panel.Heading>
-        <Panel.Body>
-          <h5 className="form-header">Highpass Filter</h5>
+        </Card.Header>
+        <Card.Body>
+          <FormLabel>Highpass Filter</FormLabel>
           <Row>
-            <Col xs={6} lg={12}>
+            <Col xs={6}>
               <pc.HighpassFilter
                 value={highpassFilter}
                 group={group}
@@ -34,7 +34,7 @@ class Crossover extends PureComponent {
                 onChange={onChange}
               />
             </Col>
-            <Col xs={6} lg={12}>
+            <Col xs={6}>
               <pc.HighpassFrequency
                 value={highpassFrequency}
                 group={group}
@@ -43,9 +43,9 @@ class Crossover extends PureComponent {
               />
             </Col>
           </Row>
-          <h5 className="form-header">Lowpass Filter</h5>
+          <FormLabel>Lowpass Filter</FormLabel>
           <Row>
-            <Col xs={6} lg={12}>
+            <Col xs={6}>
               <pc.LowpassFilter
                 value={lowpassFilter}
                 group={group}
@@ -53,7 +53,7 @@ class Crossover extends PureComponent {
                 onChange={onChange}
               />
             </Col>
-            <Col xs={6} lg={12}>
+            <Col xs={6}>
               <pc.LowpassFrequency
                 value={lowpassFrequency}
                 group={group}
@@ -62,8 +62,8 @@ class Crossover extends PureComponent {
               />
             </Col>
           </Row>
-        </Panel.Body>
-      </Panel>
+        </Card.Body>
+      </Card>
     );
   }
 }

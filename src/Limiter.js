@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import {Panel, Row, Col} from 'react-bootstrap';
+import {Card, Row, Col} from 'react-bootstrap';
 
 import pc from './parameters';
 
@@ -16,15 +16,15 @@ class Limiter extends PureComponent {
     } = this.props;
 
     return (
-      <Panel>
-        <Panel.Heading>
+      <Card>
+        <Card.Header>
           {channelName
             ? `${channelId} . ${channelName}`
             : `Channel ${channelId}`}
-        </Panel.Heading>
-        <Panel.Body>
+        </Card.Header>
+        <Card.Body>
           <Row>
-            <Col xs={6}>
+            <Col xs={6} md={12} lg={6}>
               <pc.Limiter
                 includeLabel
                 value={limiter}
@@ -33,7 +33,7 @@ class Limiter extends PureComponent {
                 onChange={onChange}
               />
             </Col>
-            <Col xs={6}>
+            <Col xs={6} md={12} lg={6}>
               <pc.LimiterRelease
                 includeLabel
                 value={limiterRelease}
@@ -50,8 +50,8 @@ class Limiter extends PureComponent {
             channelId={channelId}
             onChange={onChange}
           />
-        </Panel.Body>
-      </Panel>
+        </Card.Body>
+      </Card>
     );
   }
 }

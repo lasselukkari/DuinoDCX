@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Panel, Button} from 'react-bootstrap';
+import {Card, Button} from 'react-bootstrap';
 import isEqual from 'lodash.isequal';
 import CrossoverPlot from './plots/CrossoverPlot';
 
@@ -28,22 +28,22 @@ class CrossoverPlotPanel extends Component {
   render() {
     const {channels} = this.props;
     return (
-      <Panel>
-        <Panel.Heading>
+      <Card>
+        <Card.Header>
           Crossover Frequency Response
           <Button
-            bsSize="xs"
-            className="pull-right"
-            bsStyle={this.state.applyGain ? 'success' : 'default'}
+            size="sm"
+            className="header-button"
+            variant={this.state.applyGain ? 'success' : 'dark'}
             onClick={this.handleToggleGain}
           >
             Apply Gain
           </Button>
-        </Panel.Heading>
-        <Panel.Body>
+        </Card.Header>
+        <Card.Body>
           <CrossoverPlot channels={channels} applyGain={this.state.applyGain} />
-        </Panel.Body>
-      </Panel>
+        </Card.Body>
+      </Card>
     );
   }
 }

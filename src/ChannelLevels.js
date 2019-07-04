@@ -1,5 +1,6 @@
 import React, {PureComponent} from 'react';
-import {Button, Glyphicon} from 'react-bootstrap';
+import {Button} from 'react-bootstrap';
+import {FaRandom, FaVolumeUp, FaVolumeMute} from 'react-icons/fa';
 import ChannelControls from './ChannelControls';
 
 import './ChannelLevels.css'; // eslint-disable-line import/no-unassigned-import
@@ -149,29 +150,30 @@ class ChannelLevels extends PureComponent {
         <Button
           className="pull-left responsive-rotate-90"
           disabled={!isAnySelected}
-          bsStyle={isAnySelected ? 'info' : 'default'}
+          variant={isAnySelected ? 'info' : 'dark'}
           style={{
-            margin: '8px 1px',
+            margin: '8px 1px 0',
             width: '36px',
             height: '36px',
-            padding: '8px'
+            padding: '0px'
           }}
           onClick={this.handleToggle}
         >
-          <Glyphicon glyph="transfer" />
+          <FaRandom />
         </Button>
         <Button
           className="pull-left"
           id="mute-all"
-          bsStyle={isAnyUnmuted ? 'default' : 'danger'}
+          variant={isAnyUnmuted ? 'dark' : 'danger'}
           style={{
             width: '150px',
             height: '36px',
-            margin: '8px 1px'
+            margin: '8px 1px 0',
+            padding: '0px'
           }}
           onClick={() => this.handleMuteAll(isAnyUnmuted)}
         >
-          <Glyphicon glyph={isAnyUnmuted ? 'volume-up' : 'volume-off'} />
+          {isAnyUnmuted ? <FaVolumeUp /> : <FaVolumeMute />}
         </Button>
       </div>
     );

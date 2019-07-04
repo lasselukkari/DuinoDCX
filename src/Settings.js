@@ -1,12 +1,5 @@
 import React, {PureComponent} from 'react';
-import {
-  Form,
-  FormControl,
-  FormGroup,
-  ControlLabel,
-  Button,
-  Col
-} from 'react-bootstrap';
+import {Form, FormControl, Button, Col, Row} from 'react-bootstrap';
 import {toast} from 'react-toastify';
 import Spinner from 'react-spinkit';
 
@@ -138,9 +131,7 @@ class Settings extends PureComponent {
     const {username, password, apSsid, apPassword, mdnsHost} = this.state;
 
     return (
-      username.length > 0 &&
       username.length < 32 &&
-      password.length > 0 &&
       password.length < 32 &&
       apSsid.length > 0 &&
       apSsid.length < 32 &&
@@ -168,95 +159,82 @@ class Settings extends PureComponent {
 
     return (
       <Form horizontal method="POST" onSubmit={this.handleSubmit}>
-        <FormGroup
-          validationState={
-            username.length > 0 && username.length < 32 ? 'success' : 'error'
-          }
-        >
-          <Col componentClass={ControlLabel} md={4}>
+        <Form.Group as={Row}>
+          <Form.Label column sm="5">
             Username
-          </Col>
-          <Col md={8}>
+          </Form.Label>
+          <Col sm="7">
             <FormControl
               value={username}
-              placeholder="Username"
+              placeholder="Max 32 chars"
+              isInvalid={username.length > 32}
               onChange={this.handleUsernameChange}
             />
           </Col>
-        </FormGroup>
-        <FormGroup
-          validationState={
-            password.length > 0 && password.length < 32 ? 'success' : 'error'
-          }
-        >
-          <Col componentClass={ControlLabel} md={4}>
+        </Form.Group>
+        <Form.Group as={Row}>
+          <Form.Label column sm="5">
             Password
-          </Col>
-          <Col md={8}>
+          </Form.Label>
+          <Col sm="7">
             <FormControl
               value={password}
-              placeholder="Password"
+              placeholder="Max 32 chars"
+              isInvalid={password.length > 32}
               onChange={this.handlePasswordChange}
             />
           </Col>
-        </FormGroup>
-        <FormGroup
-          validationState={
-            apSsid.length > 0 && apSsid.length < 32 ? 'success' : 'error'
-          }
-        >
-          <Col componentClass={ControlLabel} md={4}>
+        </Form.Group>
+
+        <Form.Group as={Row}>
+          <Form.Label column sm="5">
             Access Point SSID
-          </Col>
-          <Col md={8}>
+          </Form.Label>
+          <Col sm="7">
             <FormControl
               value={apSsid}
-              placeholder="Access Point SSID"
+              placeholder="Min 1 and max 32 chars"
+              isInvalid={apSsid.length < 1 || apSsid.length > 32}
               onChange={this.handleApSsidChange}
             />
           </Col>
-        </FormGroup>
-        <FormGroup
-          validationState={
-            apPassword.length >= 8 && apPassword.length < 32
-              ? 'success'
-              : 'error'
-          }
-        >
-          <Col componentClass={ControlLabel} md={4}>
+        </Form.Group>
+
+        <Form.Group as={Row}>
+          <Form.Label column sm="5">
             Access Point Password
-          </Col>
-          <Col md={8}>
+          </Form.Label>
+          <Col sm="7">
             <FormControl
               value={apPassword}
-              placeholder="Access Point Password"
+              placeholder="Min 8 and max 32 chars"
+              isInvalid={apPassword.length < 8 || apPassword.length > 32}
               onChange={this.handleApPasswordChange}
             />
           </Col>
-        </FormGroup>
-        <FormGroup
-          validationState={
-            mdnsHost.length > 0 && mdnsHost.length < 32 ? 'success' : 'error'
-          }
-        >
-          <Col componentClass={ControlLabel} md={4}>
+        </Form.Group>
+
+        <Form.Group as={Row}>
+          <Form.Label column sm="5">
             MDNS Host Name
-          </Col>
-          <Col md={8}>
+          </Form.Label>
+          <Col sm="7">
             <FormControl
               value={mdnsHost}
-              placeholder="MDNS Host Name"
+              placeholder="Min 1 and max 32 chars"
+              isInvalid={mdnsHost.length < 1 || mdnsHost.length > 32}
               onChange={this.handleMdnsHost}
             />
           </Col>
-        </FormGroup>
-        <FormGroup>
-          <Col componentClass={ControlLabel} md={4}>
+        </Form.Group>
+
+        <Form.Group as={Row}>
+          <Form.Label column sm="5">
             Hardware Flow Control
-          </Col>
-          <Col md={8}>
+          </Form.Label>
+          <Col sm="7">
             <FormControl
-              componentClass="select"
+              as="select"
               value={flowControl}
               onChange={this.handleFlowControlChange}
             >
@@ -264,14 +242,11 @@ class Settings extends PureComponent {
               <option value="1">Enabled</option>
             </FormControl>
           </Col>
-        </FormGroup>
-        <FormGroup>
-          <Col mdOffset={4} md={8}>
-            <Button type="submit" disabled={!this.isFormValid()}>
-              Save
-            </Button>
-          </Col>
-        </FormGroup>
+        </Form.Group>
+
+        <Button block type="submit" disabled={!this.isFormValid()}>
+          Save
+        </Button>
       </Form>
     );
   }

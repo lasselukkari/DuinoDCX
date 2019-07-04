@@ -18,40 +18,34 @@ class ChannelLevel extends PureComponent {
     return (
       <div className="led-bar">
         <Button
-          bsStyle={level >= 1 ? 'success' : 'default'}
+          variant={level >= 1 ? 'success' : 'dark'}
           disabled={level < 1}
         />
 
         <Button
-          bsStyle={level >= 2 ? 'success' : 'default'}
+          variant={level >= 2 ? 'success' : 'dark'}
           disabled={level < 2}
         />
 
         <Button
-          bsStyle={level >= 3 ? 'success' : 'default'}
+          variant={level >= 3 ? 'success' : 'dark'}
           disabled={level < 3}
         />
 
         <Button
-          bsStyle={level >= 4 ? 'success' : 'default'}
+          variant={level >= 4 ? 'success' : 'dark'}
           disabled={level < 4}
         />
 
         <Button
-          bsStyle={level >= 5 ? 'warning' : 'default'}
+          variant={level >= 5 ? 'warning' : 'dark'}
           disabled={level < 5}
         />
 
-        <Button
-          bsStyle={level >= 6 ? 'danger' : 'default'}
-          disabled={level < 6}
-        />
+        <Button variant={level >= 6 ? 'danger' : 'dark'} disabled={level < 6} />
 
         {isOutput && (
-          <Button
-            bsStyle={limited ? 'danger' : 'default'}
-            disabled={!limited}
-          />
+          <Button variant={limited ? 'danger' : 'dark'} disabled={!limited} />
         )}
       </div>
     );

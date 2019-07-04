@@ -17,7 +17,7 @@ class Phases extends Component {
         {Object.keys(channels).map(channelId => {
           const {channelName, polarity, phase} = channels[channelId];
           return (
-            <Col key={channelId} xs={12} sm={6} md={4}>
+            <Col key={channelId} xs={12} md={6}>
               <Phase
                 key={channelId}
                 group={group}

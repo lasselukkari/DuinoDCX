@@ -23,7 +23,7 @@ class DelayUnits extends PureComponent {
         type="radio"
         name="delay-units"
         defaultValue={delayUnits}
-        style={{padding: '10px 20px', width: '100%', minWidth: '200px'}}
+        style={{padding: '10px 0', width: '100%'}}
         onChange={this.handleDelayUnitChange}
       >
         <ToggleButton value="mm" style={{width: '50%'}}>

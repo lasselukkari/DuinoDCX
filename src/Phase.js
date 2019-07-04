@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import {Panel} from 'react-bootstrap';
+import {Card} from 'react-bootstrap';
 
 import pc from './parameters';
 
@@ -15,13 +15,13 @@ class Phase extends PureComponent {
     } = this.props;
 
     return (
-      <Panel>
-        <Panel.Heading>
+      <Card>
+        <Card.Header>
           {channelName
             ? `${channelId} . ${channelName}`
             : `Channel ${channelId}`}
-        </Panel.Heading>
-        <Panel.Body>
+        </Card.Header>
+        <Card.Body>
           <pc.Polarity
             includeLabel
             value={polarity}
@@ -36,8 +36,8 @@ class Phase extends PureComponent {
             channelId={channelId}
             onChange={onChange}
           />
-        </Panel.Body>
-      </Panel>
+        </Card.Body>
+      </Card>
     );
   }
 }
