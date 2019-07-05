@@ -28,6 +28,7 @@
     "react": "^16.8.6",
     "react-block-ui": "^1.1.4",
     "react-bootstrap": "^1.0.0-beta.9",
+    "react-bootstrap-dialog": "^0.11.0",
     "react-dom": "^16.8.6",
     "react-dropzone": "^10.1.5",
     "react-icons": "^3.7.0",

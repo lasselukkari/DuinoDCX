@@ -65,7 +65,7 @@ class NumberParam extends Component {
       channelId,
       eq,
       onChange,
-      confirm,
+      confirm = () => Promise.resolve(),
       value: oldValue,
       formatter
     } = this.props;
@@ -74,12 +74,14 @@ class NumberParam extends Component {
       return this.setState({moving: false});
     }
 
-    if (confirm && !confirm({oldValue, newValue, unit, name, formatter})) {
-      return this.setState({moving: false, value: oldValue});
-    }
-
-    this.setState({moving: false, manualValue: newValue});
-    onChange({param, group, channelId, eq, value: newValue});
+    confirm({oldValue, newValue, unit, name, formatter})
+      .then(() => {
+        this.setState({moving: false, manualValue: newValue});
+        onChange({param, group, channelId, eq, value: newValue});
+      })
+      .catch(() => {
+        return this.setState({moving: false, value: oldValue});
+      });
   };
 
   handleReduction = () => {
@@ -153,20 +155,11 @@ class NumberParam extends Component {
 
     const marks = {
       [min.toString()]: {
-        style: {
-          left: '-10px',
-          margin: '1px 6px',
-          width: 'auto'
-        },
+        style: {marginTop: '3px'},
         label: labelFormatter(min, unit)
       },
       [max.toString()]: {
-        style: {
-          right: '-10px',
-          margin: '1px 6px',
-          width: 'auto',
-          left: 'auto'
-        },
+        style: {marginTop: '3px'},
         label: labelFormatter(max, unit)
       }
     };

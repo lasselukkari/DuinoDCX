@@ -1,8 +1,42 @@
 import React, {PureComponent} from 'react';
 import {FormLabel} from 'react-bootstrap';
+import Dialog from 'react-bootstrap-dialog';
 import pc from './parameters';
 
 class Gain extends PureComponent {
+  confirmChange = ({oldValue, newValue, name, unit, formatter}) => {
+    return new Promise((resolve, reject) => {
+      if (newValue - oldValue <= 6) {
+        return resolve();
+      }
+
+      this.dialog.show({
+        title: 'Confirm change',
+        body: (
+          <div style={{textAlign: 'center'}}>
+            <p>
+              You are about to change {name.toLowerCase()} from{' '}
+              {formatter(oldValue, unit)} to {formatter(newValue, unit)}.
+            </p>
+            <p>
+              This is {formatter(newValue - oldValue, unit)} increase. Are you
+              sure?
+            </p>
+          </div>
+        ),
+        bsSize: 'md',
+        actions: [
+          Dialog.CancelAction(() => reject()), // eslint-disable-line new-cap
+          Dialog.OKAction(() => resolve()) // eslint-disable-line new-cap
+        ],
+        onHide: dialog => {
+          dialog.hide();
+          reject();
+        }
+      });
+    });
+  };
+
   render() {
     const {channelName, gain, group, channelId, onChange} = this.props;
 
@@ -17,23 +51,13 @@ class Gain extends PureComponent {
           value={gain}
           group={group}
           channelId={channelId}
-          confirm={({oldValue, newValue, name, unit, formatter}) => {
-            if (newValue - oldValue > 6) {
-              // eslint-disable-next-line no-alert
-              return window.confirm(
-                `You are about to change ${name.toLowerCase()} from ${formatter(
-                  oldValue,
-                  unit
-                )} to ${formatter(newValue, unit)} (+${formatter(
-                  newValue - oldValue,
-                  unit
-                )}). Are you sure?`
-              );
-            }
-
-            return true;
-          }}
+          confirm={this.confirmChange}
           onChange={onChange}
+        />
+        <Dialog
+          ref={el => {
+            this.dialog = el;
+          }}
         />
       </div>
     );
