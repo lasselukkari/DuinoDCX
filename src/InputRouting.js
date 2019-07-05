@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Card, Row, Col} from 'react-bootstrap';
+import Dialog from 'react-bootstrap-dialog';
 import isEqual from 'lodash.isequal';
 
 import pc from './parameters';
@@ -9,6 +10,39 @@ class InputRouting extends Component {
     const {setup} = this.props;
     return !isEqual(setup, nextProps.setup);
   }
+
+  confirmChange = ({oldValue, newValue, name, unit, formatter}) => {
+    return new Promise((resolve, reject) => {
+      if (newValue - oldValue <= 6) {
+        return resolve();
+      }
+
+      this.dialog.show({
+        title: 'Confirm change',
+        body: (
+          <div style={{textAlign: 'center'}}>
+            <p>
+              You are about to change {name.toLowerCase()} from{' '}
+              {formatter(oldValue, unit)} to {formatter(newValue, unit)}.
+            </p>
+            <p>
+              This is {formatter(newValue - oldValue, unit)} increase. Are you
+              sure?
+            </p>
+          </div>
+        ),
+        bsSize: 'md',
+        actions: [
+          Dialog.CancelAction(() => reject()), // eslint-disable-line new-cap
+          Dialog.OKAction(() => resolve()) // eslint-disable-line new-cap
+        ],
+        onHide: dialog => {
+          dialog.hide();
+          reject();
+        }
+      });
+    });
+  };
 
   render() {
     const {setup, onChange} = this.props;
@@ -21,23 +55,6 @@ class InputRouting extends Component {
       inputBSumGain,
       inputCSumGain
     } = setup;
-
-    const confirm = ({oldValue, newValue, name, unit, formatter}) => {
-      if (newValue - oldValue > 6) {
-        // eslint-disable-next-line no-alert
-        return window.confirm(
-          `You are about to change ${name.toLowerCase()} from ${formatter(
-            oldValue,
-            unit
-          )} to ${formatter(newValue, unit)} (+${formatter(
-            newValue - oldValue,
-            unit
-          )}). Are you sure?`
-        );
-      }
-
-      return true;
-    };
 
     return (
       <div>
@@ -80,23 +97,28 @@ class InputRouting extends Component {
             <pc.InputASumGain
               includeLabel
               value={inputASumGain}
-              confirm={confirm}
+              confirm={this.confirmChange}
               onChange={onChange}
             />
             <pc.InputBSumGain
               includeLabel
               value={inputBSumGain}
-              confirm={confirm}
+              confirm={this.confirmChange}
               onChange={onChange}
             />
             <pc.InputCSumGain
               includeLabel
               value={inputCSumGain}
-              confirm={confirm}
+              confirm={this.confirmChange}
               onChange={onChange}
             />
           </Card.Body>
         </Card>
+        <Dialog
+          ref={el => {
+            this.dialog = el;
+          }}
+        />
       </div>
     );
   }
