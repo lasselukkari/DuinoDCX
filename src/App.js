@@ -69,8 +69,7 @@ class App extends Component {
         throw new Error(response.statusText);
       }
 
-      if (this.invalidate) {
-        this.invalidate = false;
+      if (this.invalidateUntil > new Date()) {
         return;
       }
 
@@ -131,9 +130,9 @@ class App extends Component {
 
     this.setState({device});
 
-    if (this.pollingState === true) {
-      this.invalidate = true;
-    }
+    const invalidateUntil = new Date();
+    invalidateUntil.setSeconds(invalidateUntil.getSeconds() + 2);
+    this.invalidateUntil = invalidateUntil;
 
     try {
       await fetch(`/api/commands`, {

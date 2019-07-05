@@ -2,6 +2,14 @@ import React, {PureComponent} from 'react';
 import {ToggleButtonGroup, ToggleButton} from 'react-bootstrap';
 
 class DelayUnits extends PureComponent {
+  constructor(props, context) {
+    super(props, context);
+
+    const {delayUnits} = this.props;
+
+    this.state = {delayUnits};
+  }
+
   handleValueChange = e => {
     const {onChange} = this.props;
     const {value} = e.target;
@@ -12,11 +20,12 @@ class DelayUnits extends PureComponent {
 
   handleDelayUnitChange = delayUnits => {
     const {onChange} = this.props;
+    this.setState({delayUnits});
     onChange({param: 'delayUnits', value: delayUnits});
   };
 
   render() {
-    const {delayUnits} = this.props;
+    const {delayUnits} = this.state;
 
     return (
       <ToggleButtonGroup
@@ -26,10 +35,18 @@ class DelayUnits extends PureComponent {
         style={{padding: '10px 0', width: '100%'}}
         onChange={this.handleDelayUnitChange}
       >
-        <ToggleButton value="mm" style={{width: '50%'}}>
+        <ToggleButton
+          value="mm"
+          variant={delayUnits === 'mm' ? 'info' : 'primary'}
+          style={{width: '50%'}}
+        >
           °C / mm
         </ToggleButton>
-        <ToggleButton value="inch" style={{width: '50%'}}>
+        <ToggleButton
+          value="inch"
+          variant={delayUnits === 'inch' ? 'info' : 'primary'}
+          style={{width: '50%'}}
+        >
           °F / inch
         </ToggleButton>
       </ToggleButtonGroup>
