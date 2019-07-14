@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import {Navbar, Nav, NavDropdown} from 'react-bootstrap';
 import {FaSignal, FaLock, FaEdit} from 'react-icons/fa';
 import isEqual from 'lodash.isequal';
@@ -97,5 +98,18 @@ class TopNavigation extends Component {
     );
   }
 }
+
+TopNavigation.propTypes = {
+  device: PropTypes.shape({
+    ready: PropTypes.bool
+  }).isRequired,
+  page: PropTypes.string.isRequired,
+  blocking: PropTypes.bool.isRequired,
+  inputs: PropTypes.array.isRequired,
+  outputs: PropTypes.array.isRequired,
+  onChange: PropTypes.func.isRequired,
+  onPageChange: PropTypes.func.isRequired,
+  onBlockingChange: PropTypes.func.isRequired
+};
 
 export default TopNavigation;

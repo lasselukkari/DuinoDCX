@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import {Row, Col} from 'react-bootstrap';
 import isEqual from 'lodash.isequal';
 import Gain from './Gain';
@@ -33,5 +34,16 @@ class Gains extends Component {
     );
   }
 }
+
+Gains.propTypes = {
+  group: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+  channels: PropTypes.objectOf(
+    PropTypes.shape({
+      channelName: PropTypes.string,
+      gain: PropTypes.number.isRequired
+    })
+  ).isRequired
+};
 
 export default Gains;

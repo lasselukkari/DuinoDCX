@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import {Row, Col} from 'react-bootstrap';
 import isEqual from 'lodash.isequal';
 import Phase from './Phase';
@@ -34,5 +35,11 @@ class Phases extends Component {
     );
   }
 }
+
+Phases.propTypes = {
+  channels: PropTypes.object.isRequired,
+  group: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired
+};
 
 export default Phases;

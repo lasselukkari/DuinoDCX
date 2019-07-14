@@ -1,4 +1,5 @@
 import React, {PureComponent} from 'react';
+import PropTypes from 'prop-types';
 import {Card, Row, Col} from 'react-bootstrap';
 import Dialog from 'react-bootstrap-dialog';
 import pc from './parameters';
@@ -165,5 +166,26 @@ class DynamicEQ extends PureComponent {
     );
   }
 }
+
+DynamicEQ.defaultProps = {
+  channelName: null
+};
+
+DynamicEQ.propTypes = {
+  dynamicEQ: PropTypes.bool.isRequired,
+  dynamicEQType: PropTypes.string.isRequired,
+  dynamicEQFrequency: PropTypes.string.isRequired,
+  dynamicEQGain: PropTypes.number.isRequired,
+  dynamicEQQ: PropTypes.string.isRequired,
+  dynamicEQShelving: PropTypes.string.isRequired,
+  dynamicEQAttack: PropTypes.string.isRequired,
+  dynamicEQRelease: PropTypes.string.isRequired,
+  dynamicEQRatio: PropTypes.string.isRequired,
+  dynamicEQThreshold: PropTypes.number.isRequired,
+  group: PropTypes.string.isRequired,
+  channelId: PropTypes.string.isRequired,
+  channelName: PropTypes.string,
+  onChange: PropTypes.func.isRequired
+};
 
 export default DynamicEQ;

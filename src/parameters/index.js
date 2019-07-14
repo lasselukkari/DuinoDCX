@@ -1,4 +1,5 @@
 import React, {PureComponent} from 'react';
+import PropTypes from 'prop-types';
 import Parser from '../dcx2496/parser';
 import BoolParam from './BoolParam';
 import EnumParam from './EnumParam';
@@ -34,6 +35,22 @@ const enumComponent = function({name, unit, values}, type) {
     }
   }
 
+  EnumComponent.defaultProps = {
+    includeLabel: false,
+    eq: null,
+    channelId: null,
+    group: null
+  };
+
+  EnumComponent.propTypes = {
+    value: PropTypes.string.isRequired,
+    group: PropTypes.string,
+    channelId: PropTypes.string,
+    onChange: PropTypes.func.isRequired,
+    eq: PropTypes.string,
+    includeLabel: PropTypes.bool
+  };
+
   return EnumComponent;
 };
 
@@ -66,11 +83,29 @@ const boolComponent = function({name}, type) {
     }
   }
 
+  BoolComponent.defaultProps = {
+    includeLabel: false,
+    inverted: false,
+    eq: null,
+    group: null,
+    channelId: null
+  };
+
+  BoolComponent.propTypes = {
+    value: PropTypes.bool.isRequired,
+    inverted: PropTypes.bool,
+    group: PropTypes.string,
+    channelId: PropTypes.string,
+    onChange: PropTypes.func.isRequired,
+    eq: PropTypes.string,
+    includeLabel: PropTypes.bool
+  };
+
   return BoolComponent;
 };
 
 const numberComponent = function({name, unit, min, max, step}, type) {
-  return class extends PureComponent {
+  class NumberComponent extends PureComponent {
     render() {
       const {
         value,
@@ -104,7 +139,32 @@ const numberComponent = function({name, unit, min, max, step}, type) {
         />
       );
     }
+  }
+
+  NumberComponent.defaultProps = {
+    formatter: (value, unit) =>
+      `${Math.round(value * 10) / 10} ${unit ? unit : ''}`,
+    labelFormatter: value => value.toString(),
+    includeLabel: false,
+    eq: null,
+    group: null,
+    channelId: null,
+    confirm: () => Promise.resolve()
   };
+
+  NumberComponent.propTypes = {
+    value: PropTypes.number.isRequired,
+    formatter: PropTypes.func,
+    group: PropTypes.string,
+    channelId: PropTypes.string,
+    onChange: PropTypes.func.isRequired,
+    eq: PropTypes.string,
+    confirm: PropTypes.func,
+    includeLabel: PropTypes.bool,
+    labelFormatter: PropTypes.func
+  };
+
+  return NumberComponent;
 };
 
 const createComponent = commmand => {

@@ -1,4 +1,5 @@
 import React, {PureComponent} from 'react';
+import PropTypes from 'prop-types';
 import {Nav, NavDropdown} from 'react-bootstrap';
 
 class DeviceSelect extends PureComponent {
@@ -6,7 +7,7 @@ class DeviceSelect extends PureComponent {
     const {onSelect, devices, free, selected} = this.props;
     const selectedDevice = devices.find(({id}) => id === selected);
 
-    if (devices.length === 0 || !selectedDevice) {
+    if (devices.length === 0 || !selectedDevice || !free) {
       return null;
     }
 
@@ -25,5 +26,12 @@ class DeviceSelect extends PureComponent {
     );
   }
 }
+
+DeviceSelect.propTypes = {
+  onSelect: PropTypes.func.isRequired,
+  devices: PropTypes.array.isRequired,
+  free: PropTypes.number.isRequired,
+  selected: PropTypes.number.isRequired
+};
 
 export default DeviceSelect;

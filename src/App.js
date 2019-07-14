@@ -191,16 +191,18 @@ class App extends Component {
 
     return (
       <div>
-        <TopNavigation
-          device={device}
-          blocking={blocking}
-          page={page}
-          inputs={inputs}
-          outputs={outputs}
-          onChange={this.handleDeviceUpdate}
-          onPageChange={this.handlePageChange}
-          onBlockingChange={this.handleBlockingChange}
-        />
+        {device && inputs && outputs && (
+          <TopNavigation
+            device={device}
+            blocking={blocking}
+            page={page}
+            inputs={inputs}
+            outputs={outputs}
+            onChange={this.handleDeviceUpdate}
+            onPageChange={this.handlePageChange}
+            onBlockingChange={this.handleBlockingChange}
+          />
+        )}
         <Device
           blocking={blocking}
           device={device}

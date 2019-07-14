@@ -6828,6 +6828,7 @@ const outputCommands = [
   {
     name: 'Phase',
     type: 'number',
+    unit: '°',
     syncResponses: [
       {
         bits6: {

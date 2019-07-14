@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import {Col, Card, Row} from 'react-bootstrap';
 import isEqual from 'lodash.isequal';
 
@@ -39,5 +40,11 @@ class OutputSources extends Component {
     );
   }
 }
+
+OutputSources.propTypes = {
+  channels: PropTypes.object.isRequired,
+  group: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired
+};
 
 export default OutputSources;

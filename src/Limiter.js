@@ -1,4 +1,5 @@
 import React, {PureComponent} from 'react';
+import PropTypes from 'prop-types';
 import {Card, Row, Col} from 'react-bootstrap';
 
 import pc from './parameters';
@@ -55,5 +56,15 @@ class Limiter extends PureComponent {
     );
   }
 }
+
+Limiter.propTypes = {
+  channelId: PropTypes.string.isRequired,
+  group: PropTypes.string.isRequired,
+  channelName: PropTypes.string.isRequired,
+  limiter: PropTypes.bool.isRequired,
+  limiterThreshold: PropTypes.number.isRequired,
+  limiterRelease: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired
+};
 
 export default Limiter;

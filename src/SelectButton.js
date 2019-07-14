@@ -1,4 +1,5 @@
 import React, {PureComponent} from 'react';
+import PropTypes from 'prop-types';
 import {Button} from 'react-bootstrap';
 
 class SelectButton extends PureComponent {
@@ -25,5 +26,14 @@ class SelectButton extends PureComponent {
     );
   }
 }
+
+SelectButton.propTypes = {
+  onChange: PropTypes.func.isRequired,
+  group: PropTypes.string.isRequired,
+  channelId: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  selected: PropTypes.bool.isRequired,
+  index: PropTypes.number.isRequired
+};
 
 export default SelectButton;

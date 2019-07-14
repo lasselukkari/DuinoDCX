@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import {Card} from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import isEqual from 'lodash.isequal';
@@ -93,5 +94,23 @@ class EQs extends Component {
     );
   }
 }
+
+EQs.defaultProps = {
+  channel: {
+    channelName: null
+  }
+};
+
+EQs.propTypes = {
+  channelId: PropTypes.string.isRequired,
+  group: PropTypes.string.isRequired,
+  channel: PropTypes.shape({
+    eqs: PropTypes.object.isRequired,
+    eQ: PropTypes.bool.isRequired,
+    channelName: PropTypes.string
+  }),
+  blocking: PropTypes.bool.isRequired,
+  onChange: PropTypes.func.isRequired
+};
 
 export default EQs;

@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import {Button, Modal, Navbar, Nav, NavDropdown} from 'react-bootstrap';
 import {FaCog} from 'react-icons/fa';
 import isEqual from 'lodash.isequal';
@@ -9,21 +10,19 @@ import Connection from './Connection';
 import Settings from './Settings';
 import Upload from './Upload';
 
-class TopNavigation extends Component {
+class BottomomNavigation extends Component {
   constructor(props) {
     super(props);
     this.state = {};
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    const {device, devices, free, inputs, outputs} = this.props;
+    const {device, devices, free} = this.props;
     const {showModal} = this.state;
 
     return !(
       isEqual(device, nextProps.device) &&
       isEqual(devices, nextProps.devices) &&
-      isEqual(inputs, nextProps.inputs) &&
-      isEqual(outputs, nextProps.outputs) &&
       free === nextProps.free &&
       showModal === nextState.showModal
     );
@@ -51,7 +50,7 @@ class TopNavigation extends Component {
         variant="dark"
         className="wide-nav justify-content-end"
       >
-        {devices && (
+        {devices.length > 0 && free && (
           <DeviceSelect
             devices={devices}
             selected={selected}
@@ -138,4 +137,26 @@ class TopNavigation extends Component {
   }
 }
 
-export default TopNavigation;
+BottomomNavigation.defaultProps = {
+  device: {
+    ready: false,
+    setup: {}
+  },
+  devices: [],
+  selected: null,
+  free: null
+};
+
+BottomomNavigation.propTypes = {
+  device: PropTypes.shape({
+    ready: PropTypes.bool,
+    setup: PropTypes.object
+  }),
+  devices: PropTypes.array,
+  selected: PropTypes.number,
+  free: PropTypes.number,
+  onChange: PropTypes.func.isRequired,
+  onSelectDevice: PropTypes.func.isRequired
+};
+
+export default BottomomNavigation;

@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import {Col, Card, Row} from 'react-bootstrap';
 import isEqual from 'lodash.isequal';
 import ChannelName from './ChannelName';
@@ -36,5 +37,15 @@ class ChannelNames extends Component {
     );
   }
 }
+
+ChannelNames.propTypes = {
+  onChange: PropTypes.func.isRequired,
+  group: PropTypes.string.isRequired,
+  channels: PropTypes.objectOf(
+    PropTypes.shape({
+      channelName: PropTypes.string
+    })
+  ).isRequired
+};
 
 export default ChannelNames;

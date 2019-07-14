@@ -1,4 +1,5 @@
 import React, {PureComponent} from 'react';
+import PropTypes from 'prop-types';
 import {Button} from 'react-bootstrap';
 import {FaRandom, FaVolumeUp, FaVolumeMute} from 'react-icons/fa';
 import ChannelControls from './ChannelControls';
@@ -109,6 +110,7 @@ class ChannelLevels extends PureComponent {
               <ChannelControls
                 key={channelId}
                 channelId={channelId}
+                isOutput={false}
                 isMuted={mute}
                 limited={limited}
                 level={level}
@@ -126,18 +128,17 @@ class ChannelLevels extends PureComponent {
           {outputChannels.map((channelId, index) => {
             const {limited, level} = outputs[index];
             const {mute} = device.outputs[channelId];
-            const isOutput = true;
             const {group, name, selected} = this.state.selected.outputs[index];
 
             return (
               <ChannelControls
                 key={channelId}
-                channelId={channelId}
+                isOutput
                 isMuted={mute}
-                isOutput={isOutput}
+                group={group}
                 level={level}
                 limited={limited}
-                group={group}
+                channelId={channelId}
                 name={name}
                 selected={selected}
                 index={index}
@@ -179,5 +180,26 @@ class ChannelLevels extends PureComponent {
     );
   }
 }
+
+ChannelLevels.propTypes = {
+  device: PropTypes.shape({
+    ready: PropTypes.bool.isRequired,
+    inputs: PropTypes.object,
+    outputs: PropTypes.object
+  }).isRequired,
+  inputs: PropTypes.arrayOf(
+    PropTypes.shape({
+      limited: PropTypes.bool.isRequired,
+      level: PropTypes.number.isRequired
+    })
+  ).isRequired,
+  outputs: PropTypes.arrayOf(
+    PropTypes.shape({
+      limited: PropTypes.bool.isRequired,
+      level: PropTypes.number.isRequired
+    })
+  ).isRequired,
+  onChange: PropTypes.func.isRequired
+};
 
 export default ChannelLevels;

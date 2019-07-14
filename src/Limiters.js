@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import {Row, Col} from 'react-bootstrap';
 import isEqual from 'lodash.isequal';
 
@@ -42,5 +43,11 @@ class Limiters extends Component {
     );
   }
 }
+
+Limiters.propTypes = {
+  channels: PropTypes.object.isRequired,
+  group: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired
+};
 
 export default Limiters;

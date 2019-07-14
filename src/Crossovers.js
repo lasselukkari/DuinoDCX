@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import {Row, Col} from 'react-bootstrap';
 import isEqual from 'lodash.isequal';
 
@@ -43,5 +44,11 @@ class Crossovers extends Component {
     );
   }
 }
+
+Crossovers.propTypes = {
+  group: PropTypes.string.isRequired,
+  channels: PropTypes.object.isRequired,
+  onChange: PropTypes.func.isRequired
+};
 
 export default Crossovers;

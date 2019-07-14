@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import {Card, Row, Col} from 'react-bootstrap';
 import Dialog from 'react-bootstrap-dialog';
 import isEqual from 'lodash.isequal';
@@ -123,5 +124,18 @@ class InputRouting extends Component {
     );
   }
 }
+
+InputRouting.propTypes = {
+  setup: PropTypes.shape({
+    inputABSource: PropTypes.string.isRequired,
+    stereolinkMode: PropTypes.string.isRequired,
+    inputSumType: PropTypes.string.isRequired,
+    inputCGain: PropTypes.string.isRequired,
+    inputASumGain: PropTypes.number.isRequired,
+    inputBSumGain: PropTypes.number.isRequired,
+    inputCSumGain: PropTypes.number.isRequired
+  }).isRequired,
+  onChange: PropTypes.func.isRequired
+};
 
 export default InputRouting;

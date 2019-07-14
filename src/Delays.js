@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import {Card} from 'react-bootstrap';
 import isEqual from 'lodash.isequal';
 import pc from './parameters';
@@ -56,5 +57,24 @@ class Delays extends Component {
     );
   }
 }
+
+Delays.propTypes = {
+  group: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+  channels: PropTypes.objectOf(
+    PropTypes.shape({
+      delay: PropTypes.bool.isRequired,
+      longDelay: PropTypes.number.isRequired,
+      shortDelay: PropTypes.number,
+      channelName: PropTypes.string
+    })
+  ).isRequired,
+  setup: PropTypes.shape({
+    airTemperature: PropTypes.number.isRequired,
+    delayCorrection: PropTypes.bool.isRequired,
+    delayUnits: PropTypes.string.isRequired,
+    delayLink: PropTypes.bool.isRequired
+  }).isRequired
+};
 
 export default Delays;

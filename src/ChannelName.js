@@ -1,4 +1,5 @@
 import React, {PureComponent} from 'react';
+import PropTypes from 'prop-types';
 import {FormLabel} from 'react-bootstrap';
 
 import pc from './parameters';
@@ -22,5 +23,12 @@ class ChannelName extends PureComponent {
     );
   }
 }
+
+ChannelName.propTypes = {
+  group: PropTypes.string.isRequired,
+  channelId: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+  channelName: PropTypes.string.isRequired
+};
 
 export default ChannelName;

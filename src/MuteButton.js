@@ -1,4 +1,5 @@
 import React, {PureComponent} from 'react';
+import PropTypes from 'prop-types';
 import {Button} from 'react-bootstrap';
 import {FaVolumeMute, FaVolumeUp} from 'react-icons/fa';
 
@@ -36,5 +37,12 @@ class MuteButton extends PureComponent {
     );
   }
 }
+
+MuteButton.propTypes = {
+  isMuted: PropTypes.bool.isRequired,
+  channelId: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+  isOutput: PropTypes.bool.isRequired
+};
 
 export default MuteButton;

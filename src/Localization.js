@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import {Nav, NavDropdown} from 'react-bootstrap';
 import {FaGlobe} from 'react-icons/fa';
 import isEqual from 'lodash.isequal';
@@ -38,5 +39,14 @@ class Localization extends Component {
     );
   }
 }
+
+Localization.propTypes = {
+  setup: PropTypes.shape({
+    airTemperature: PropTypes.number.isRequired,
+    delayCorrection: PropTypes.bool.isRequired,
+    delayUnits: PropTypes.string.isRequired
+  }).isRequired,
+  onChange: PropTypes.func.isRequired
+};
 
 export default Localization;

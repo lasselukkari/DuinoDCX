@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import {Card, Button} from 'react-bootstrap';
 import isEqual from 'lodash.isequal';
 import EQPlot from './plots/EQPlot';
@@ -48,5 +49,10 @@ class CrossoverPlotPanel extends Component {
     );
   }
 }
+
+CrossoverPlotPanel.propTypes = {
+  channels: PropTypes.object.isRequired,
+  group: PropTypes.string.isRequired
+};
 
 export default CrossoverPlotPanel;

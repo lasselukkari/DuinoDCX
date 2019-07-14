@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import Spinner from 'react-spinkit';
 import isEqual from 'lodash.isequal';
 
@@ -57,4 +58,26 @@ class Device extends Component {
     );
   }
 }
+
+Device.defaultProps = {
+  device: {
+    ready: false,
+    inputs: null,
+    outputs: null,
+    setup: null
+  }
+};
+
+Device.propTypes = {
+  blocking: PropTypes.bool.isRequired,
+  page: PropTypes.string.isRequired,
+  device: PropTypes.shape({
+    ready: PropTypes.bool,
+    inputs: PropTypes.object,
+    outputs: PropTypes.object,
+    setup: PropTypes.object
+  }),
+  onChange: PropTypes.func.isRequired
+};
+
 export default Device;

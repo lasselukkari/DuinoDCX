@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import {Card, Row, Col} from 'react-bootstrap';
 import isEqual from 'lodash.isequal';
 
@@ -69,5 +70,16 @@ class OutputRouting extends Component {
     );
   }
 }
+
+OutputRouting.propTypes = {
+  setup: PropTypes.shape({
+    stereolink: PropTypes.bool.isRequired,
+    muteOutsWhenPowered: PropTypes.bool.isRequired,
+    outputConfig: PropTypes.string.isRequired,
+    crossoverLink: PropTypes.bool.isRequired
+  }).isRequired,
+  outputs: PropTypes.object.isRequired,
+  onChange: PropTypes.func.isRequired
+};
 
 export default OutputRouting;
