@@ -1,4 +1,5 @@
 import React, {PureComponent} from 'react';
+import PropTypes from 'prop-types';
 import {Card} from 'react-bootstrap';
 import pc from './parameters';
 
@@ -111,5 +112,23 @@ class Delay extends PureComponent {
     );
   }
 }
+
+Delay.defaultProps = {
+  channelName: null,
+  shortDelay: null
+};
+
+Delay.propTypes = {
+  channelId: PropTypes.string.isRequired,
+  channelName: PropTypes.string,
+  group: PropTypes.string.isRequired,
+  delay: PropTypes.bool.isRequired,
+  longDelay: PropTypes.number.isRequired,
+  shortDelay: PropTypes.number,
+  airTemperature: PropTypes.number.isRequired,
+  delayCorrection: PropTypes.bool.isRequired,
+  delayUnits: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired
+};
 
 export default Delay;

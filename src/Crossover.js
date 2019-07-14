@@ -1,4 +1,5 @@
 import React, {PureComponent} from 'react';
+import PropTypes from 'prop-types';
 import {Row, Col, Card, FormLabel} from 'react-bootstrap';
 
 import pc from './parameters';
@@ -67,5 +68,16 @@ class Crossover extends PureComponent {
     );
   }
 }
+
+Crossover.propTypes = {
+  channelName: PropTypes.string.isRequired,
+  channelId: PropTypes.string.isRequired,
+  group: PropTypes.string.isRequired,
+  highpassFilter: PropTypes.string.isRequired,
+  highpassFrequency: PropTypes.string.isRequired,
+  lowpassFilter: PropTypes.string.isRequired,
+  lowpassFrequency: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired
+};
 
 export default Crossover;

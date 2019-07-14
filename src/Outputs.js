@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import {Card, Tabs, Tab} from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
 import isEqual from 'lodash.isequal';
@@ -113,5 +114,12 @@ class Outputs extends Component {
     );
   }
 }
+
+Outputs.propTypes = {
+  blocking: PropTypes.bool.isRequired,
+  channels: PropTypes.object.isRequired,
+  setup: PropTypes.object.isRequired,
+  onChange: PropTypes.func.isRequired
+};
 
 export default Outputs;

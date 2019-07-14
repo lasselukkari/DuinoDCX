@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import {FormGroup, Button, Form} from 'react-bootstrap';
 
 class BoolParam extends Component {
@@ -41,7 +42,23 @@ class BoolParam extends Component {
 }
 
 BoolParam.defaultProps = {
-  includeLabel: false
+  includeLabel: false,
+  inverted: false,
+  channelId: null,
+  eq: null,
+  group: null
+};
+
+BoolParam.propTypes = {
+  value: PropTypes.bool.isRequired,
+  inverted: PropTypes.bool,
+  param: PropTypes.string.isRequired,
+  group: PropTypes.string,
+  channelId: PropTypes.string,
+  onChange: PropTypes.func.isRequired,
+  eq: PropTypes.string,
+  name: PropTypes.string.isRequired,
+  includeLabel: PropTypes.bool
 };
 
 export default BoolParam;

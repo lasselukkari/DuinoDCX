@@ -1,4 +1,5 @@
 import React, {PureComponent} from 'react';
+import PropTypes from 'prop-types';
 import {Button} from 'react-bootstrap';
 
 class ChannelLevel extends PureComponent {
@@ -14,6 +15,10 @@ class ChannelLevel extends PureComponent {
 
   render() {
     const {limited, level, isOutput} = this.props;
+
+    if (limited === undefined || level === undefined) {
+      return null;
+    }
 
     return (
       <div className="led-bar">
@@ -51,5 +56,14 @@ class ChannelLevel extends PureComponent {
     );
   }
 }
+
+ChannelLevel.propTypes = {
+  channelId: PropTypes.string.isRequired,
+  isMuted: PropTypes.bool.isRequired,
+  isOutput: PropTypes.bool.isRequired,
+  limited: PropTypes.bool.isRequired,
+  level: PropTypes.number.isRequired,
+  onChange: PropTypes.func.isRequired
+};
 
 export default ChannelLevel;

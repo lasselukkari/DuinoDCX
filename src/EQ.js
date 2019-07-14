@@ -1,4 +1,5 @@
 import React, {PureComponent} from 'react';
+import PropTypes from 'prop-types';
 import {Card, Row, Col} from 'react-bootstrap';
 import Dialog from 'react-bootstrap-dialog';
 
@@ -118,5 +119,17 @@ class EQ extends PureComponent {
     );
   }
 }
+
+EQ.propTypes = {
+  channelId: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
+  group: PropTypes.string.isRequired,
+  eQType: PropTypes.string.isRequired,
+  eQFrequency: PropTypes.string.isRequired,
+  eQQ: PropTypes.string.isRequired,
+  eQShelving: PropTypes.string.isRequired,
+  eQGain: PropTypes.number.isRequired,
+  onChange: PropTypes.func.isRequired
+};
 
 export default EQ;

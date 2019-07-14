@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import {Tabs, Tab} from 'react-bootstrap';
 import isEqual from 'lodash.isequal';
 
@@ -42,5 +43,16 @@ class EQs extends Component {
     );
   }
 }
+
+EQs.propTypes = {
+  blocking: PropTypes.bool.isRequired,
+  group: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+  channels: PropTypes.objectOf(
+    PropTypes.shape({
+      channelName: PropTypes.string
+    })
+  ).isRequired
+};
 
 export default EQs;

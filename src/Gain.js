@@ -1,4 +1,5 @@
 import React, {PureComponent} from 'react';
+import PropTypes from 'prop-types';
 import {FormLabel} from 'react-bootstrap';
 import Dialog from 'react-bootstrap-dialog';
 import pc from './parameters';
@@ -63,5 +64,17 @@ class Gain extends PureComponent {
     );
   }
 }
+
+Gain.defaultProps = {
+  channelName: null
+};
+
+Gain.propTypes = {
+  channelName: PropTypes.string,
+  gain: PropTypes.number.isRequired,
+  group: PropTypes.string.isRequired,
+  channelId: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired
+};
 
 export default Gain;

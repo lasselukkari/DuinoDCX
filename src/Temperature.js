@@ -1,4 +1,5 @@
 import React, {PureComponent} from 'react';
+import PropTypes from 'prop-types';
 import {Button, FormControl, InputGroup} from 'react-bootstrap';
 
 class Temperature extends PureComponent {
@@ -59,5 +60,12 @@ class Temperature extends PureComponent {
     );
   }
 }
+
+Temperature.propTypes = {
+  onChange: PropTypes.func.isRequired,
+  delayUnits: PropTypes.string.isRequired,
+  airTemperature: PropTypes.number.isRequired,
+  delayCorrection: PropTypes.bool.isRequired
+};
 
 export default Temperature;

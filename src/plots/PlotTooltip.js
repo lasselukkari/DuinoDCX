@@ -1,8 +1,9 @@
 import React, {PureComponent} from 'react';
+import PropTypes from 'prop-types';
 
 class DefaultTooltipContent extends PureComponent {
   renderContent() {
-    const {payload, filter = () => true} = this.props;
+    const {payload, filter} = this.props;
 
     if (payload && payload.length > 0) {
       const items = payload.filter(filter).map(entry => {
@@ -62,5 +63,17 @@ class DefaultTooltipContent extends PureComponent {
     );
   }
 }
+
+DefaultTooltipContent.defaultProps = {
+  payload: null,
+  label: null,
+  filter: () => true
+};
+
+DefaultTooltipContent.propTypes = {
+  payload: PropTypes.array,
+  filter: PropTypes.func,
+  label: PropTypes.string
+};
 
 export default DefaultTooltipContent;

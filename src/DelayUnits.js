@@ -1,4 +1,5 @@
 import React, {PureComponent} from 'react';
+import PropTypes from 'prop-types';
 import {ToggleButtonGroup, ToggleButton} from 'react-bootstrap';
 
 class DelayUnits extends PureComponent {
@@ -53,5 +54,10 @@ class DelayUnits extends PureComponent {
     );
   }
 }
+
+DelayUnits.propTypes = {
+  delayUnits: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired
+};
 
 export default DelayUnits;

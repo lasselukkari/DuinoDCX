@@ -1,4 +1,5 @@
 import React, {PureComponent} from 'react';
+import PropTypes from 'prop-types';
 import {AreaChart, Area, XAxis, YAxis, Tooltip} from 'recharts';
 import windowSize from 'react-window-size';
 import PlotTooltip from './PlotTooltip';
@@ -103,5 +104,11 @@ class CrossoverPlot extends PureComponent {
     );
   }
 }
+
+CrossoverPlot.propTypes = {
+  channels: PropTypes.object.isRequired,
+  applyGain: PropTypes.bool.isRequired,
+  windowWidth: PropTypes.number.isRequired
+};
 
 export default windowSize(CrossoverPlot);

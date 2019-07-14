@@ -1,4 +1,5 @@
 import React, {PureComponent} from 'react';
+import PropTypes from 'prop-types';
 import windowSize from 'react-window-size';
 import {LineChart, Line, XAxis, YAxis, Tooltip} from 'recharts';
 import PlotTooltip from './PlotTooltip';
@@ -121,5 +122,15 @@ class EQPlot extends PureComponent {
     );
   }
 }
+
+EQPlot.defaultProps = {
+  applyGain: false
+};
+
+EQPlot.propTypes = {
+  channels: PropTypes.object.isRequired,
+  applyGain: PropTypes.bool,
+  windowWidth: PropTypes.number.isRequired
+};
 
 export default windowSize(EQPlot);
