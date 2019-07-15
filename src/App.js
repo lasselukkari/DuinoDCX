@@ -75,6 +75,7 @@ class App extends Component {
 
       const buffer = await response.arrayBuffer();
       this.setState(Parser.parseState(buffer));
+      toast.dismiss('no-connection');
     } catch {
       if (toast.isActive('no-connection')) {
         return;
@@ -104,6 +105,7 @@ class App extends Component {
 
       const buffer = await response.arrayBuffer();
       this.setState(Parser.parseStatus(buffer));
+      toast.dismiss('no-connection');
     } catch {
       if (toast.isActive('no-connection')) {
         return;
