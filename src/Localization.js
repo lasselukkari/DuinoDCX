@@ -9,19 +9,19 @@ import DelayUnits from './DelayUnits';
 
 class Localization extends Component {
   shouldComponentUpdate(nextProps) {
-    const {setup} = this.props;
-    return !isEqual(setup, nextProps.setup);
+    const {setup, xs} = this.props;
+    return !(isEqual(setup, nextProps.setup) && xs === nextProps.xs);
   }
 
   render() {
-    const {onChange, setup} = this.props;
+    const {onChange, setup, xs} = this.props;
     const {airTemperature, delayCorrection, delayUnits} = setup;
 
     return (
       <Nav>
         <NavDropdown
           title={<FaGlobe />}
-          drop="up"
+          drop={xs ? 'down' : 'up'}
           className="no-caret right-0 icon-menu"
         >
           <div id="localization-dropup">
@@ -46,6 +46,7 @@ Localization.propTypes = {
     delayCorrection: PropTypes.bool.isRequired,
     delayUnits: PropTypes.string.isRequired
   }).isRequired,
+  xs: PropTypes.bool.isRequired,
   onChange: PropTypes.func.isRequired
 };
 

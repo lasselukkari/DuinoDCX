@@ -1,19 +1,27 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {Navbar, Nav, NavDropdown} from 'react-bootstrap';
+import {withBreakpoints} from 'react-breakpoints';
 import {FaSignal, FaLock, FaEdit} from 'react-icons/fa';
 import isEqual from 'lodash.isequal';
 
 import ChannelLevels from './ChannelLevels';
 
-class TopNavigation extends Component {
+class DeviceNavigation extends Component {
   constructor(props) {
     super(props);
     this.state = {};
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    const {device, blocking, page, inputs, outputs} = this.props;
+    const {
+      device,
+      blocking,
+      page,
+      inputs,
+      outputs,
+      currentBreakpoint
+    } = this.props;
     const {showLevels} = this.state;
 
     return !(
@@ -22,7 +30,8 @@ class TopNavigation extends Component {
       isEqual(outputs, nextProps.outputs) &&
       blocking === nextProps.blocking &&
       page === nextProps.page &&
-      showLevels === nextState.showLevels
+      showLevels === nextState.showLevels &&
+      currentBreakpoint === nextProps.currentBreakpoint
     );
   }
 
@@ -44,21 +53,30 @@ class TopNavigation extends Component {
       outputs,
       onChange,
       onPageChange,
-      onBlockingChange
+      onBlockingChange,
+      currentBreakpoint
     } = this.props;
 
     if (!device || !device.ready || !inputs || !outputs) {
       return null;
     }
 
+    const xs = currentBreakpoint === 'xs';
+
     return (
-      <Navbar fixed="top" bg="primary" variant="dark" className="wide-nav">
+      <Navbar
+        fixed={xs ? 'bottom' : 'top'}
+        bg="primary"
+        variant="dark"
+        className="wide-nav"
+      >
         <Nav className="end-button">
           <NavDropdown
             open={showLevels}
             className="channel-levels no-caret"
             title={<FaSignal />}
             id="channel-levels-dropdown"
+            drop={xs ? 'up' : 'down'}
             onToggle={this.handleLevelsShowChange}
           >
             <ChannelLevels
@@ -99,7 +117,7 @@ class TopNavigation extends Component {
   }
 }
 
-TopNavigation.propTypes = {
+DeviceNavigation.propTypes = {
   device: PropTypes.shape({
     ready: PropTypes.bool
   }).isRequired,
@@ -107,9 +125,10 @@ TopNavigation.propTypes = {
   blocking: PropTypes.bool.isRequired,
   inputs: PropTypes.array.isRequired,
   outputs: PropTypes.array.isRequired,
+  currentBreakpoint: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
   onPageChange: PropTypes.func.isRequired,
   onBlockingChange: PropTypes.func.isRequired
 };
 
-export default TopNavigation;
+export default withBreakpoints(DeviceNavigation);

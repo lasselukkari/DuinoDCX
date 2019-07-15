@@ -1,6 +1,7 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import windowSize from 'react-window-size';
+import {withBreakpoints} from 'react-breakpoints';
 import {LineChart, Line, XAxis, YAxis, Tooltip} from 'recharts';
 import PlotTooltip from './PlotTooltip';
 import TransferFunction from './TransferFunction';
@@ -61,7 +62,7 @@ class EQPlot extends PureComponent {
   }
 
   render() {
-    const {channels, applyGain, windowWidth} = this.props;
+    const {channels, applyGain, windowWidth, currentBreakpoint} = this.props;
     const colors = [
       '#3498DB',
       '#307473',
@@ -73,17 +74,24 @@ class EQPlot extends PureComponent {
       '#95A5A6',
       '#18BC9C'
     ];
+
     let width;
-    if (windowWidth < 576) {
-      width = windowWidth - 60;
-    } else if (windowWidth < 768) {
-      width = 480;
-    } else if (windowWidth < 992) {
-      width = 660;
-    } else if (windowWidth < 1200) {
-      width = 900;
-    } else {
-      width = 1080;
+
+    switch (currentBreakpoint) {
+      case 'sm':
+        width = 480;
+        break;
+      case 'md':
+        width = 660;
+        break;
+      case 'lg':
+        width = 900;
+        break;
+      case 'xl':
+        width = 1080;
+        break;
+      default:
+        width = windowWidth - 60;
     }
 
     const height = width * 0.33;
@@ -130,7 +138,8 @@ EQPlot.defaultProps = {
 EQPlot.propTypes = {
   channels: PropTypes.object.isRequired,
   applyGain: PropTypes.bool,
-  windowWidth: PropTypes.number.isRequired
+  windowWidth: PropTypes.number.isRequired,
+  currentBreakpoint: PropTypes.string.isRequired
 };
 
-export default windowSize(EQPlot);
+export default windowSize(withBreakpoints(EQPlot));

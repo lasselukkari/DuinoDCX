@@ -4,9 +4,9 @@ import isEqual from 'lodash.isequal';
 import {ToastContainer, toast} from 'react-toastify';
 
 import Parser from './dcx2496/parser';
-import TopNavigation from './TopNavigation';
+import DeviceNavigation from './DeviceNavigation';
 import Device from './Device';
-import BottomNavigation from './BottomNavigation';
+import ConfigNavigation from './ConfigNavigation';
 
 import 'bootswatch/dist/slate/bootstrap.css'; // eslint-disable-line import/no-unassigned-import
 import 'react-toastify/dist/ReactToastify.css'; // eslint-disable-line import/no-unassigned-import
@@ -192,7 +192,7 @@ class App extends Component {
     return (
       <div>
         {device && inputs && outputs && (
-          <TopNavigation
+          <DeviceNavigation
             device={device}
             blocking={blocking}
             page={page}
@@ -209,7 +209,7 @@ class App extends Component {
           page={page}
           onChange={this.handleDeviceUpdate}
         />
-        <BottomNavigation
+        <ConfigNavigation
           device={device}
           devices={devices}
           selected={selected}
