@@ -1,5 +1,6 @@
-import React, {PureComponent} from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import isEqual from 'lodash.isequal';
 import windowSize from 'react-window-size';
 import {withBreakpoints} from 'react-breakpoints';
 import {LineChart, Line, XAxis, YAxis, Tooltip} from 'recharts';
@@ -12,7 +13,32 @@ const frequencyPoints = TransferFunction.generateFrequencyPoints(
   250
 );
 
-class EQPlot extends PureComponent {
+class EQPlot extends Component {
+  shouldComponentUpdate(nextProps) {
+    const {channels, applyGain, windowWidth, currentBreakpoint} = this.props;
+
+    if (!isEqual(channels, nextProps.channels)) {
+      return true;
+    }
+
+    if (applyGain !== nextProps.applyGain) {
+      return true;
+    }
+
+    if (
+      nextProps.currentBreakpoint === 'xs' &&
+      windowWidth !== nextProps.windowWidth
+    ) {
+      return true;
+    }
+
+    if (currentBreakpoint !== nextProps.currentBreakpoint) {
+      return true;
+    }
+
+    return false;
+  }
+
   plotData(channels, applyGain) {
     const values = Object.keys(channels).map(key => {
       const tf = new TransferFunction(frequencyPoints);

@@ -1,8 +1,9 @@
-import React, {PureComponent} from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {AreaChart, Area, XAxis, YAxis, Tooltip} from 'recharts';
+import isEqual from 'lodash.isequal';
 import windowSize from 'react-window-size';
 import {withBreakpoints} from 'react-breakpoints';
+import {AreaChart, Area, XAxis, YAxis, Tooltip} from 'recharts';
 import PlotTooltip from './PlotTooltip';
 import TransferFunction from './TransferFunction';
 
@@ -12,7 +13,32 @@ const frequencyPoints = TransferFunction.generateFrequencyPoints(
   250
 );
 
-class CrossoverPlot extends PureComponent {
+class CrossoverPlot extends Component {
+  shouldComponentUpdate(nextProps) {
+    const {channels, applyGain, windowWidth, currentBreakpoint} = this.props;
+
+    if (!isEqual(channels, nextProps.channels)) {
+      return true;
+    }
+
+    if (applyGain !== nextProps.applyGain) {
+      return true;
+    }
+
+    if (
+      nextProps.currentBreakpoint === 'xs' &&
+      windowWidth !== nextProps.windowWidth
+    ) {
+      return true;
+    }
+
+    if (currentBreakpoint !== nextProps.currentBreakpoint) {
+      return true;
+    }
+
+    return false;
+  }
+
   createPlotData(channels, applyGain) {
     const values = Object.keys(channels).map((key, index) => {
       const tf = new TransferFunction(frequencyPoints);
