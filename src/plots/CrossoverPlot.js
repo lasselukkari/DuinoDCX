@@ -2,6 +2,7 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {AreaChart, Area, XAxis, YAxis, Tooltip} from 'recharts';
 import windowSize from 'react-window-size';
+import {withBreakpoints} from 'react-breakpoints';
 import PlotTooltip from './PlotTooltip';
 import TransferFunction from './TransferFunction';
 
@@ -46,7 +47,7 @@ class CrossoverPlot extends PureComponent {
   }
 
   render() {
-    const {channels, applyGain, windowWidth} = this.props;
+    const {channels, applyGain, windowWidth, currentBreakpoint} = this.props;
     const colors = [
       '#307473',
       '#7A82AB',
@@ -58,17 +59,24 @@ class CrossoverPlot extends PureComponent {
       '#E74C3C',
       '#95A5A6'
     ];
+
     let width;
-    if (windowWidth < 576) {
-      width = windowWidth - 60;
-    } else if (windowWidth < 768) {
-      width = 480;
-    } else if (windowWidth < 992) {
-      width = 660;
-    } else if (windowWidth < 1200) {
-      width = 900;
-    } else {
-      width = 1080;
+
+    switch (currentBreakpoint) {
+      case 'sm':
+        width = 480;
+        break;
+      case 'md':
+        width = 660;
+        break;
+      case 'lg':
+        width = 900;
+        break;
+      case 'xl':
+        width = 1080;
+        break;
+      default:
+        width = windowWidth - 60;
     }
 
     const height = width * 0.33;
@@ -108,7 +116,8 @@ class CrossoverPlot extends PureComponent {
 CrossoverPlot.propTypes = {
   channels: PropTypes.object.isRequired,
   applyGain: PropTypes.bool.isRequired,
-  windowWidth: PropTypes.number.isRequired
+  windowWidth: PropTypes.number.isRequired,
+  currentBreakpoint: PropTypes.string.isRequired
 };
 
-export default windowSize(CrossoverPlot);
+export default windowSize(withBreakpoints(CrossoverPlot));

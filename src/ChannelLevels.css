@@ -30,7 +30,7 @@
   }
 }
 
-@media (min-width: 420px) {
+@media (min-width: 576px) {
   .channel-levels > .dropdown-menu {
     -webkit-transform: rotate(270deg);
     -moz-transform: rotate(270deg);
