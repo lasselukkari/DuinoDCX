@@ -28,7 +28,7 @@ class MuteButton extends PureComponent {
     return (
       <Button
         className="responsive-rotate-90"
-        variant={isMuted ? 'danger' : 'dark'}
+        variant={isMuted ? 'danger' : 'primary'}
         style={muteStyle}
         onClick={this.handleClick}
       >

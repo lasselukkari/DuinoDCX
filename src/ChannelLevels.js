@@ -149,9 +149,8 @@ class ChannelLevels extends PureComponent {
           })}
         </div>
         <Button
-          className="pull-left responsive-rotate-90"
-          disabled={!isAnySelected}
-          variant={isAnySelected ? 'info' : 'dark'}
+          className="responsive-rotate-90 pull-left"
+          variant={isAnySelected ? 'info' : 'primary'}
           style={{
             margin: '8px 1px 0',
             width: '36px',
@@ -165,7 +164,7 @@ class ChannelLevels extends PureComponent {
         <Button
           className="pull-left"
           id="mute-all"
-          variant={isAnyUnmuted ? 'dark' : 'danger'}
+          variant={isAnyUnmuted ? 'primary' : 'danger'}
           style={{
             width: '150px',
             height: '36px',

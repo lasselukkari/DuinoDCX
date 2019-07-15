@@ -17,7 +17,7 @@ class SelectButton extends PureComponent {
     return (
       <Button
         className="responsive-rotate-90"
-        variant={selected ? 'info' : 'dark'}
+        variant={selected ? 'info' : 'primary'}
         style={muteStyle}
         onClick={() => onChange({group, channelId, selected, index})}
       >
