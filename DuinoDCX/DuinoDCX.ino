@@ -4,6 +4,7 @@
 #include <Update.h>
 #include <Preferences.h>
 #include "aWOT.h"
+#include "StaticFiles.h"
 #include "Ultradrive.h"
 
 #define VERSION "v0.0.25"
