@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
-import {Nav, NavDropdown} from 'react-bootstrap';
 import {FaGlobe} from 'react-icons/fa';
+import Nav from 'react-bootstrap/Nav';
+import NavDropdown from 'react-bootstrap/NavDropdown';
+import PropTypes from 'prop-types';
 import isEqual from 'lodash.isequal';
-
 import Temperature from './Temperature';
 import DelayUnits from './DelayUnits';
 

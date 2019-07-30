@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
+import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
 import PropTypes from 'prop-types';
-import {Card, Button} from 'react-bootstrap';
 import isEqual from 'lodash.isequal';
 import EQPlot from './plots/EQPlot';
 

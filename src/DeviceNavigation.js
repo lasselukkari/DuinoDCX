@@ -1,10 +1,11 @@
+import {FaEdit, FaLock, FaSignal} from 'react-icons/fa';
 import React, {Component} from 'react';
+import Nav from 'react-bootstrap/Nav';
+import NavDropdown from 'react-bootstrap/NavDropdown';
+import Navbar from 'react-bootstrap/Navbar';
 import PropTypes from 'prop-types';
-import {Navbar, Nav, NavDropdown} from 'react-bootstrap';
-import {withBreakpoints} from 'react-breakpoints';
-import {FaSignal, FaLock, FaEdit} from 'react-icons/fa';
 import isEqual from 'lodash.isequal';
-
+import {withBreakpoints} from 'react-breakpoints';
 import ChannelLevels from './ChannelLevels';
 
 class DeviceNavigation extends Component {

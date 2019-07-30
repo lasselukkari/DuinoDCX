@@ -1,7 +1,7 @@
-import React, {PureComponent} from 'react';
-import PropTypes from 'prop-types';
-import {Button} from 'react-bootstrap';
 import {FaVolumeMute, FaVolumeUp} from 'react-icons/fa';
+import React, {PureComponent} from 'react';
+import Button from 'react-bootstrap/Button';
+import PropTypes from 'prop-types';
 
 class MuteButton extends PureComponent {
   handleClick = () => {

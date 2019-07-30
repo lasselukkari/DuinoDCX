@@ -1,7 +1,6 @@
 import React, {PureComponent} from 'react';
+import FormLabel from 'react-bootstrap/FormLabel';
 import PropTypes from 'prop-types';
-import {FormLabel} from 'react-bootstrap';
-
 import pc from './parameters';
 
 class OutputSource extends PureComponent {

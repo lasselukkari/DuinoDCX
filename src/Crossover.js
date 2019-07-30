@@ -1,7 +1,9 @@
 import React, {PureComponent} from 'react';
+import Card from 'react-bootstrap/Card';
+import Col from 'react-bootstrap/Col';
+import FormLabel from 'react-bootstrap/FormLabel';
 import PropTypes from 'prop-types';
-import {Row, Col, Card, FormLabel} from 'react-bootstrap';
-
+import Row from 'react-bootstrap/Row';
 import pc from './parameters';
 
 class Crossover extends PureComponent {

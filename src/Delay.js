@@ -1,6 +1,6 @@
 import React, {PureComponent} from 'react';
+import Card from 'react-bootstrap/Card';
 import PropTypes from 'prop-types';
-import {Card} from 'react-bootstrap';
 import pc from './parameters';
 
 class Delay extends PureComponent {

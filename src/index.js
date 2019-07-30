@@ -1,6 +1,6 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import ReactBreakpoints from 'react-breakpoints';
+import ReactDOM from 'react-dom';
 import App from './App';
 
 const breakpoints = {

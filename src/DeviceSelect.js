@@ -1,6 +1,7 @@
 import React, {PureComponent} from 'react';
+import Nav from 'react-bootstrap/Nav';
+import NavDropdown from 'react-bootstrap/NavDropdown';
 import PropTypes from 'prop-types';
-import {Nav, NavDropdown} from 'react-bootstrap';
 
 class DeviceSelect extends PureComponent {
   render() {

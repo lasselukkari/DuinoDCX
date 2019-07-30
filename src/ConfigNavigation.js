@@ -1,12 +1,11 @@
 import React, {Component} from 'react';
+import Navbar from 'react-bootstrap/Navbar';
 import PropTypes from 'prop-types';
-import {withBreakpoints} from 'react-breakpoints';
-import {Navbar} from 'react-bootstrap';
 import isEqual from 'lodash.isequal';
-
-import Config from './Config';
-import DeviceSelect from './DeviceSelect';
+import {withBreakpoints} from 'react-breakpoints';
 import Localization from './Localization';
+import DeviceSelect from './DeviceSelect';
+import Config from './Config';
 
 class ConfigNavigation extends Component {
   constructor(props) {

@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Tabs, Tab} from 'react-bootstrap';
+import Tab from 'react-bootstrap/Tab';
+import Tabs from 'react-bootstrap/Tabs';
 import isEqual from 'lodash.isequal';
-
 import EQList from './EQList';
 
 class EQs extends Component {

@@ -1,6 +1,8 @@
 import React, {PureComponent} from 'react';
+import Button from 'react-bootstrap/Button';
+import FormControl from 'react-bootstrap/FormControl';
+import InputGroup from 'react-bootstrap/InputGroup';
 import PropTypes from 'prop-types';
-import {Button, FormControl, InputGroup} from 'react-bootstrap';
 
 class Temperature extends PureComponent {
   handleValueChange = e => {

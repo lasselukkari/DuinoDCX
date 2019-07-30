@@ -1,14 +1,15 @@
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
-import {Card, Tabs, Tab} from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
+import Card from 'react-bootstrap/Card';
+import PropTypes from 'prop-types';
+import Tab from 'react-bootstrap/Tab';
+import Tabs from 'react-bootstrap/Tabs';
 import isEqual from 'lodash.isequal';
-
-import Gains from './Gains';
-import EQPlotPanel from './EQPlotPanel';
-import DynamicEQs from './DynamicEQs';
 import Delays from './Delays';
+import DynamicEQs from './DynamicEQs';
+import EQPlotPanel from './EQPlotPanel';
 import EQs from './EQs';
+import Gains from './Gains';
 import InputRouting from './InputRouting';
 
 class Inputs extends Component {

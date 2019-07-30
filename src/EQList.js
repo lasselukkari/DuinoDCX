@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
-import {Card} from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
+import Card from 'react-bootstrap/Card';
+import PropTypes from 'prop-types';
 import isEqual from 'lodash.isequal';
+import EQ from './EQ';
 import EQPlot from './plots/EQPlot';
 import pc from './parameters';
-import EQ from './EQ';
 
 class EQs extends Component {
   shouldComponentUpdate(nextProps) {

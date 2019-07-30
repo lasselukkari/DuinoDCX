@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
+import Col from 'react-bootstrap/Col';
 import PropTypes from 'prop-types';
-import {Row, Col} from 'react-bootstrap';
+import Row from 'react-bootstrap/Row';
 import isEqual from 'lodash.isequal';
 import Phase from './Phase';
 

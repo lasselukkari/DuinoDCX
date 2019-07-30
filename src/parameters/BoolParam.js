@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {FormGroup, Button, Form} from 'react-bootstrap';
+import FormGroup from 'react-bootstrap/FormGroup';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
 
 class BoolParam extends Component {
   handleClick = () => {

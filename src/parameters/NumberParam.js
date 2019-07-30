@@ -1,16 +1,15 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {
-  FormGroup,
-  FormLabel,
-  Button,
-  Popover,
-  OverlayTrigger,
-  InputGroup
-} from 'react-bootstrap';
+import FormGroup from 'react-bootstrap/FormGroup';
+import FormLabel from 'react-bootstrap/FormLabel';
+import Button from 'react-bootstrap/Button';
+import Popover from 'react-bootstrap/Popover';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import InputGroup from 'react-bootstrap/InputGroup';
 import Slider, {createSliderWithTooltip} from 'rc-slider';
 import {FaPlus, FaMinus} from 'react-icons/fa';
 import NumericInput from 'react-numeric-input';
+
 import './NumberParam.css'; // eslint-disable-line import/no-unassigned-import
 import 'rc-slider/assets/index.css'; // eslint-disable-line import/no-unassigned-import
 

@@ -1,6 +1,6 @@
 import React, {PureComponent} from 'react';
+import Button from 'react-bootstrap/Button';
 import PropTypes from 'prop-types';
-import {Button} from 'react-bootstrap';
 
 class SelectButton extends PureComponent {
   render() {
