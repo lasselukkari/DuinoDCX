@@ -1,18 +1,20 @@
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
-import {Card, Tabs, Tab} from 'react-bootstrap';
 import BlockUi from 'react-block-ui';
+import Card from 'react-bootstrap/Card';
+import PropTypes from 'prop-types';
+import Tab from 'react-bootstrap/Tab';
+import Tabs from 'react-bootstrap/Tabs';
 import isEqual from 'lodash.isequal';
-import DynamicEQs from './DynamicEQs';
+import CrossoverPlotPanel from './CrossoverPlotPanel';
+import Crossovers from './Crossovers';
 import Delays from './Delays';
+import DynamicEQs from './DynamicEQs';
+import EQPlotPanel from './EQPlotPanel';
 import EQs from './EQs';
 import Gains from './Gains';
-import Crossovers from './Crossovers';
 import Limiters from './Limiters';
-import Phases from './Phases';
-import CrossoverPlotPanel from './CrossoverPlotPanel';
-import EQPlotPanel from './EQPlotPanel';
 import OutputRouting from './OutputRouting';
+import Phases from './Phases';
 
 class Outputs extends Component {
   shouldComponentUpdate(nextProps) {

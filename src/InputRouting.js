@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
-import {Card, Row, Col} from 'react-bootstrap';
+import Card from 'react-bootstrap/Card';
+import Col from 'react-bootstrap/Col';
 import Dialog from 'react-bootstrap-dialog';
+import PropTypes from 'prop-types';
+import Row from 'react-bootstrap/Row';
 import isEqual from 'lodash.isequal';
-
 import pc from './parameters';
 
 class InputRouting extends Component {

@@ -1,10 +1,9 @@
 import React, {Component} from 'react';
+import Card from 'react-bootstrap/Card';
 import PropTypes from 'prop-types';
-import {Card} from 'react-bootstrap';
 import isEqual from 'lodash.isequal';
-import pc from './parameters';
-
 import Delay from './Delay';
+import pc from './parameters';
 
 class Delays extends Component {
   shouldComponentUpdate(nextProps) {

@@ -2,9 +2,8 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import Spinner from 'react-spinkit';
 import isEqual from 'lodash.isequal';
-
-import Inputs from './Inputs';
 import Outputs from './Outputs';
+import Inputs from './Inputs';
 
 class Device extends Component {
   constructor(props) {

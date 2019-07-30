@@ -1,7 +1,8 @@
 import React, {PureComponent} from 'react';
+import Card from 'react-bootstrap/Card';
+import Col from 'react-bootstrap/Col';
 import PropTypes from 'prop-types';
-import {Card, Row, Col} from 'react-bootstrap';
-
+import Row from 'react-bootstrap/Row';
 import pc from './parameters';
 
 class Limiter extends PureComponent {

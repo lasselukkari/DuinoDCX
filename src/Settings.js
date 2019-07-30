@@ -1,7 +1,11 @@
 import React, {PureComponent} from 'react';
-import {Form, FormControl, Button, Col, Row} from 'react-bootstrap';
-import {toast} from 'react-toastify';
+import Button from 'react-bootstrap/Button';
+import Col from 'react-bootstrap/Col';
+import Form from 'react-bootstrap/Form';
+import FormControl from 'react-bootstrap/FormControl';
+import Row from 'react-bootstrap/Row';
 import Spinner from 'react-spinkit';
+import {toast} from 'react-toastify';
 
 function handleFetchErrors(response) {
   if (!response.ok) {

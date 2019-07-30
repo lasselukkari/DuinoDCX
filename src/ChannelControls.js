@@ -1,8 +1,8 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
+import ChannelLevel from './ChannelLevel';
 import MuteButton from './MuteButton';
 import SelectButton from './SelectButton';
-import ChannelLevel from './ChannelLevel';
 
 class ChannelControls extends PureComponent {
   render() {

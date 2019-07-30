@@ -1,13 +1,11 @@
 import React, {Component} from 'react';
+import {ToastContainer, toast} from 'react-toastify';
 import cloneDeep from 'lodash.clonedeep';
 import isEqual from 'lodash.isequal';
-import {ToastContainer, toast} from 'react-toastify';
-
-import Parser from './dcx2496/parser';
-import DeviceNavigation from './DeviceNavigation';
-import Device from './Device';
 import ConfigNavigation from './ConfigNavigation';
-
+import Device from './Device';
+import DeviceNavigation from './DeviceNavigation';
+import Parser from './dcx2496/parser';
 import 'bootswatch/dist/slate/bootstrap.css'; // eslint-disable-line import/no-unassigned-import
 import 'react-toastify/dist/ReactToastify.css'; // eslint-disable-line import/no-unassigned-import
 import './App.css'; // eslint-disable-line import/no-unassigned-import

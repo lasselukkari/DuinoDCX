@@ -1,10 +1,11 @@
+import * as compareVersions from 'compare-versions';
 import React, {PureComponent} from 'react';
+import Button from 'react-bootstrap/Button';
 import Dropzone from 'react-dropzone';
+import ProgressBar from 'react-bootstrap/ProgressBar';
 import Request from 'superagent';
-import {ProgressBar, Button} from 'react-bootstrap';
 import Spinner from 'react-spinkit';
 import {toast} from 'react-toastify';
-import * as compareVersions from 'compare-versions';
 
 class Upload extends PureComponent {
   constructor() {

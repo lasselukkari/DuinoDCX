@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
+import Card from 'react-bootstrap/Card';
+import Col from 'react-bootstrap/Col';
 import PropTypes from 'prop-types';
-import {Col, Card, Row} from 'react-bootstrap';
+import Row from 'react-bootstrap/Row';
 import isEqual from 'lodash.isequal';
 import ChannelName from './ChannelName';
 

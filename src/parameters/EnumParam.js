@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {Form} from 'react-bootstrap';
+import Form from 'react-bootstrap/Form';
 
 class EnumParam extends Component {
   handleValueChange = e => {

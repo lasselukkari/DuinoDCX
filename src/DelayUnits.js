@@ -1,6 +1,7 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import {ToggleButtonGroup, ToggleButton} from 'react-bootstrap';
+import ToggleButton from 'react-bootstrap/ToggleButton';
+import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup';
 
 class DelayUnits extends PureComponent {
   constructor(props, context) {

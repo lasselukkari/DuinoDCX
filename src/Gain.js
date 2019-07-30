@@ -1,7 +1,7 @@
 import React, {PureComponent} from 'react';
-import PropTypes from 'prop-types';
-import {FormLabel} from 'react-bootstrap';
 import Dialog from 'react-bootstrap-dialog';
+import FormLabel from 'react-bootstrap/FormLabel';
+import PropTypes from 'prop-types';
 import pc from './parameters';
 
 class Gain extends PureComponent {

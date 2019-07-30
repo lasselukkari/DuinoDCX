@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
-import isEqual from 'lodash.isequal';
-import {Form, Button} from 'react-bootstrap';
-import {toast} from 'react-toastify';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
 import Spinner from 'react-spinkit';
+import isEqual from 'lodash.isequal';
+import {toast} from 'react-toastify';
 
 function handleFetchErrors(response) {
   if (!response.ok) {

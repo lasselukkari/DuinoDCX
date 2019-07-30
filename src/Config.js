@@ -1,8 +1,10 @@
 import React, {PureComponent} from 'react';
-import PropTypes from 'prop-types';
-import {Button, Modal, Nav, NavDropdown} from 'react-bootstrap';
+import Button from 'react-bootstrap/Button';
 import {FaCog} from 'react-icons/fa';
-
+import Modal from 'react-bootstrap/Modal';
+import Nav from 'react-bootstrap/Nav';
+import NavDropdown from 'react-bootstrap/NavDropdown';
+import PropTypes from 'prop-types';
 import Connection from './Connection';
 import Settings from './Settings';
 import Upload from './Upload';

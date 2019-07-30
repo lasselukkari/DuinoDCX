@@ -1,7 +1,7 @@
+import {FaRandom, FaVolumeMute, FaVolumeUp} from 'react-icons/fa';
 import React, {PureComponent} from 'react';
+import Button from 'react-bootstrap/Button';
 import PropTypes from 'prop-types';
-import {Button} from 'react-bootstrap';
-import {FaRandom, FaVolumeUp, FaVolumeMute} from 'react-icons/fa';
 import ChannelControls from './ChannelControls';
 
 import './ChannelLevels.css'; // eslint-disable-line import/no-unassigned-import
