@@ -21,7 +21,7 @@ Steps to reproduce the behavior:
 A clear and concise description of what you expected to happen.
 
 **Screenshots**
-If applicable, add screenshots to help explain your problem.
+If applicable, add screenshots or video to help explain your problem.
 
 **Desktop (please complete the following information):**
  - OS: [e.g. iOS]
@@ -34,5 +34,17 @@ If applicable, add screenshots to help explain your problem.
  - Browser [e.g. stock browser, safari]
  - Version [e.g. 22]
 
+**Hardware (please complete the following information):**
+ - DuinoDCX firmware version: [e.g. 0.0.25]
+ - Development board: [e.g. ESP32-DevKitC V4]
+ - RS232 adapter: [link to specs]
+ - Photo of wiring
+
+**Development environment (please complete the following information):**
+ - Arduino IDE version: [e.g. 1.8.9]
+ - ESP32 Arduino core version: [e.g. 1.0.1]
+ - Upload speed: [e.g. 921600]
+ - Partition Scheme: [eg. Minimal SPIFFS (Large apps with OTA)]
+ 
 **Additional context**
-Add any other context about the problem here.
+Add any other context about the problem here. 
