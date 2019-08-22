@@ -104,6 +104,11 @@
     "action": "upload"
   },
   "proxy": "http://192.168.1.110",
+  "renovate": {
+    "extends": [
+      "config:base"
+    ]
+  },
   "browserslist": [
     ">0.2%",
     "not dead",
