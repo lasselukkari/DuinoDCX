@@ -61,9 +61,11 @@ It is important that you install the right version of the Arduino ESP32 core.
 
 ### Upload process
 
-Download the latest firmaware release from: [https://github.com/lasselukkari/DuinoDCX/releases](https://github.com/lasselukkari/DuinoDCX/releases). You will need the `Source code (zip)` and the StaticFiles.h file located in the release assets. Extract the downloaded zip file and place the StaticFiles.h to the `DuinoDCX` directory with the main `DuinoDCX.ino` file.
+Download the latest firmaware release from: [https://github.com/lasselukkari/DuinoDCX/releases](https://github.com/lasselukkari/DuinoDCX/releases). You will need the `Source code (zip)` and the StaticFiles.h file located in the release assets. Extract the downloaded zip file and place the `StaticFiles.h` to the `DuinoDCX` directory with the main `DuinoDCX.ino` file.
 
-Next open the `DuinoDCX.ino` file with the Arduino IDE. Make sure you have the correct board type selected.
+Next open the `DuinoDCX.ino` file with the Arduino IDE. 
+
+Make sure you have the correct board type selected.
 
 <img src="images/board-select.jpg">
 
