@@ -50,13 +50,20 @@ Go to the  `SETUP -> MICELLANIOUS` config page. The `PORT` setting should be eit
 <p align="center"><img src="images/dcx-port.jpg"></p>
 
 ## 2. Flashing the Board
+
+### Environment
+
 Unless you already have the Arduino and Arduino ESP32 core development environments ready you will need to install:
 * [Arduino IDE](https://www.arduino.cc/en/main/software)
-* [Arduino ESP32 core 1.0.0](https://github.com/espressif/arduino-esp32#installation-instructions)
+* [Arduino ESP32 core 1.0.3-rc2 or later](https://github.com/espressif/arduino-esp32#installation-instructions)
 
-It is important that you install the right version of the Arduino ESP32 core. The project will update to the latest core version once it is stable again.
+It is important that you install the right version of the Arduino ESP32 core.
 
-Open the Arduino IDE and make sure you have the correct board type selected.
+### Upload process
+
+Download the latest firmaware release from: [https://github.com/lasselukkari/DuinoDCX/releases](https://github.com/lasselukkari/DuinoDCX/releases). You will need the `Source code (zip)` and the StaticFiles.h file located in the release assets. Extract the downloaded zip file and place the StaticFiles.h to the `DuinoDCX` directory with the main `DuinoDCX.ino` file.
+
+Next open the `DuinoDCX.ino` file with the Arduino IDE. Make sure you have the correct board type selected.
 
 <img src="images/board-select.jpg">
 
@@ -64,32 +71,15 @@ Next select the correct serial port. The port name varies between development bo
 
 <img src="images/port-select.jpg">
 
-Open the OTAWebUpdater sketch from the Examples menu. The OTAWebUpdater will help us to upload the initial version of the firmware to the microcontroller.
+Set the partiotion scheme to `Minimal SPIFFS (Large apps with OTA)`
 
-<img src="images/ota-menu.jpg">
-
-Update the ssid and password variables to match your own wifi network credentials.
-<img src="images/ota-sketch.jpg">
-Open the Serial Monitor under the tools menu.
-
-<img src="images/serial-monitor-menu.jpg">
+<img src="images/partition-select.jpg">
 
 Now upload the sketch.
 
 <img src="images/upload-menu.jpg">
 
-Once the uploading is done the ESP32 will reboot. When the device gets a wifi connection to the local network it will output the information to the serial monitor. Copy the IP address to the clipboard.
-<img src="images/connection-console-ouput.jpg">
-Next open the IP address in a browser and login. Username and password are both admin.
-<p align="center"><img src="images/ota-login.jpg"></p>
-
-Download the latest binary release from [https://github.com/lasselukkari/DuinoDCX/releases](https://github.com/lasselukkari/DuinoDCX/releases). Select the file by clicking the __Choose file__ -button and then click __Update__.
-
-<p align="center"><img src="images/uploading-firmware.jpg"></p>
-
-You can also follow the update progress in the serial monitor. 
-<img src="images/upload-console-output.jpg">
-Once the update is done the device will reboot. The firmware install is now complete.
+Once the uploading is completed we are done.
 
 ## 3. Hotspot Access
 The controller creates a wifi network with SSID `DCX2496`. The default password is `Ultradrive`.
