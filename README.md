@@ -34,7 +34,7 @@ As we want to control a another device with  the microcontroller the ESP32 need 
 
 ### Wiring 
 * RS232 board VCC to ESP32 3.3V
-* RS232 board GND to ESP32 3.3V GND
+* RS232 board GND to ESP32 GND
 * RS232 board TXD to ESP32 TX2
 * RS232 board RXD to ESP32 RX2
 
