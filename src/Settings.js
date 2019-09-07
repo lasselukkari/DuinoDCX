@@ -110,7 +110,7 @@ class Settings extends PureComponent {
     })
       .then(handleFetchErrors)
       .then(() => {
-        toast.info(`Settings updated`, {
+        toast.info(`Settings saved. Device will reboot now.`, {
           position: toast.POSITION.BOTTOM_LEFT
         });
       })

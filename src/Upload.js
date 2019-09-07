@@ -86,7 +86,7 @@ class Upload extends PureComponent {
       case 'fail':
         return 'Uploading failed. Check the file and try again.';
       case 'success':
-        return 'Uploading succeeded. Refresh the page.';
+        return 'Uploading succeeded. Device will reboot now.';
       default:
         return 'Drag and drop a file or click to open the file dialog.';
     }
