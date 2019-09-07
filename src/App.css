@@ -79,9 +79,6 @@ body {
   font-weight: bold;
 }
 
-
-
-
 .middle-buttons .nav-link.active {
   background-image: -webkit-linear-gradient(#78cc78, #62c462 60%, #53be53);
   background-image: -o-linear-gradient(#78cc78, #62c462 60%, #53be53);

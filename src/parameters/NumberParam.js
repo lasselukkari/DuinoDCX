@@ -167,7 +167,6 @@ class NumberParam extends Component {
     const handlerStyle = {
       height: 30,
       width: 30,
-      marginLeft: -15,
       marginTop: -15
     };
 
