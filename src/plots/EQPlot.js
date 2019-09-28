@@ -62,7 +62,7 @@ class EQPlot extends Component {
       const {eqs} = channels[key];
       Object.keys(eqs).forEach(eqsKey => {
         const eq = eqs[eqsKey];
-        if (channels[key].eQ === true && eq.eQGain !== 0) {
+        if (channels[key].isEQOn === true && eq.eQGain !== 0) {
           if (eq.eQType === 'Bandpass') {
             tf.parametricEQ(eq.eQFrequency, eq.eQGain, eq.eQQ);
           } else {
@@ -93,6 +93,7 @@ class EQPlot extends Component {
           : `Input ${key}`
       };
     });
+
     return frequencyPoints.map((hz, index) => {
       const result = {hz};
       values.forEach(value => {

@@ -11,7 +11,7 @@ class DefaultTooltipContent extends PureComponent {
   static propTypes = {
     payload: PropTypes.array,
     filter: PropTypes.func,
-    label: PropTypes.string
+    label: PropTypes.number
   };
 
   renderContent() {
