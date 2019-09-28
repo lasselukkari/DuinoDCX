@@ -80,7 +80,7 @@ class Upload extends PureComponent {
             style={{height: '20px'}}
             variant="info"
             now={percent}
-            label={`${percent ? percent.toFixed(2) : 0.0}%`}
+            label={`${percent ? percent.toFixed(2) : 0}%`}
           />
         );
       case 'fail':
