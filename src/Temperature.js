@@ -9,7 +9,7 @@ class Temperature extends PureComponent {
     onChange: PropTypes.func.isRequired,
     delayUnits: PropTypes.string.isRequired,
     airTemperature: PropTypes.number.isRequired,
-    isDelayCorrectionEnabled: PropTypes.bool.isRequired
+    isDelayCorrectionOn: PropTypes.bool.isRequired
   };
 
   handleValueChange = e => {
@@ -22,17 +22,17 @@ class Temperature extends PureComponent {
     onChange({param: 'airTemperature', value: unlocalizedValue});
   };
 
-  handleCorrectionChange = isDelayCorrectionEnabled => {
+  handleCorrectionChange = isDelayCorrectionOn => {
     const {onChange} = this.props;
     onChange({
-      param: 'isDelayCorrectionEnabled',
-      value: !isDelayCorrectionEnabled
+      param: 'isDelayCorrectionOn',
+      value: !isDelayCorrectionOn
     });
   };
 
   render() {
     const toFahrenheit = value => (value * 9) / 5 + 32;
-    const {airTemperature, isDelayCorrectionEnabled, delayUnits} = this.props;
+    const {airTemperature, isDelayCorrectionOn, delayUnits} = this.props;
     const unit = delayUnits === 'mm' ? 'C' : 'F';
     const min = delayUnits === 'mm' ? -20 : toFahrenheit(-20);
     const max = delayUnits === 'mm' ? 50 : toFahrenheit(50);
@@ -48,7 +48,7 @@ class Temperature extends PureComponent {
     return (
       <InputGroup>
         <FormControl
-          disabled={!isDelayCorrectionEnabled}
+          disabled={!isDelayCorrectionOn}
           value={value.toFixed(1)}
           as="select"
           placeholder="select"
@@ -62,9 +62,9 @@ class Temperature extends PureComponent {
         </FormControl>
         <InputGroup.Append>
           <Button
-            variant={isDelayCorrectionEnabled ? 'success' : 'primary'}
+            variant={isDelayCorrectionOn ? 'success' : 'primary'}
             onClick={() =>
-              this.handleCorrectionChange(isDelayCorrectionEnabled)
+              this.handleCorrectionChange(isDelayCorrectionOn)
             }
           >
             °{unit}

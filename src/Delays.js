@@ -19,7 +19,7 @@ class Delays extends Component {
     ).isRequired,
     setup: PropTypes.shape({
       airTemperature: PropTypes.number.isRequired,
-      isDelayCorrectionEnabled: PropTypes.bool.isRequired,
+      isDelayCorrectionOn: PropTypes.bool.isRequired,
       delayUnits: PropTypes.string.isRequired,
       delayLink: PropTypes.bool.isRequired
     }).isRequired
@@ -32,8 +32,8 @@ class Delays extends Component {
       isEqual(channels, nextProps.channels) &&
       setup.airTemperature === nextProps.setup.airTemperature &&
       setup.delayLink === nextProps.setup.delayLink &&
-      setup.isDelayCorrectionEnabled ===
-        nextProps.setup.isDelayCorrectionEnabled &&
+      setup.isDelayCorrectionOn ===
+        nextProps.setup.isDelayCorrectionOn &&
       setup.delayUnits === nextProps.setup.delayUnits
     );
   }
@@ -42,7 +42,7 @@ class Delays extends Component {
     const {channels, setup, group, onChange} = this.props;
     const {
       airTemperature,
-      isDelayCorrectionEnabled,
+      isDelayCorrectionOn,
       delayLink,
       delayUnits
     } = setup;
@@ -71,7 +71,7 @@ class Delays extends Component {
               shortDelay={channel.shortDelay}
               longDelay={channel.longDelay}
               airTemperature={airTemperature}
-              isDelayCorrectionEnabled={isDelayCorrectionEnabled}
+              isDelayCorrectionOn={isDelayCorrectionOn}
               channelName={channel.channelName}
               onChange={onChange}
             />
