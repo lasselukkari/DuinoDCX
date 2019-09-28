@@ -8,12 +8,12 @@ class SelectButton extends PureComponent {
     group: PropTypes.string.isRequired,
     channelId: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
-    selected: PropTypes.bool.isRequired,
+    isSelected: PropTypes.bool.isRequired,
     index: PropTypes.number.isRequired
   };
 
   render() {
-    const {onChange, group, channelId, name, selected, index} = this.props;
+    const {onChange, group, channelId, name, isSelected, index} = this.props;
 
     const muteStyle = {
       float: 'left',
@@ -26,9 +26,9 @@ class SelectButton extends PureComponent {
     return (
       <Button
         className="responsive-rotate-90"
-        variant={selected ? 'info' : 'primary'}
+        variant={isSelected ? 'info' : 'primary'}
         style={muteStyle}
-        onClick={() => onChange({group, channelId, selected, index})}
+        onClick={() => onChange({group, channelId, isSelected, index})}
       >
         {name}
       </Button>
