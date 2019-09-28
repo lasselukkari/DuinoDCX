@@ -18,23 +18,23 @@ import Phases from './Phases';
 
 class Outputs extends Component {
   static propTypes = {
-    blocking: PropTypes.bool.isRequired,
+    isBlocking: PropTypes.bool.isRequired,
     channels: PropTypes.object.isRequired,
     setup: PropTypes.object.isRequired,
     onChange: PropTypes.func.isRequired
   };
 
   shouldComponentUpdate(nextProps) {
-    const {blocking, channels, setup} = this.props;
+    const {isBlocking, channels, setup} = this.props;
     return !(
-      blocking === nextProps.blocking &&
+      isBlocking === nextProps.isBlocking &&
       isEqual(channels, nextProps.channels) &&
       isEqual(setup, nextProps.setup)
     );
   }
 
   render() {
-    const {channels, setup, onChange, blocking} = this.props;
+    const {channels, setup, onChange, isBlocking} = this.props;
     return (
       <div>
         <Tabs
@@ -47,7 +47,7 @@ class Outputs extends Component {
             <Card>
               <Card.Header>Gain</Card.Header>
               <Card.Body>
-                <BlockUi blocking={blocking}>
+                <BlockUi blocking={isBlocking}>
                   <Gains
                     group="outputs"
                     channels={channels}
@@ -59,7 +59,7 @@ class Outputs extends Component {
           </Tab>
           <Tab title="Crossover" variant="primary" eventKey="crossover">
             <CrossoverPlotPanel channels={channels} />
-            <BlockUi blocking={blocking}>
+            <BlockUi blocking={isBlocking}>
               <Crossovers
                 group="outputs"
                 channels={channels}
@@ -70,14 +70,14 @@ class Outputs extends Component {
           <Tab title="EQ" variant="primary" eventKey="eqs">
             <EQPlotPanel channels={channels} group="outputs" />
             <EQs
-              blocking={blocking}
+              isBlocking={isBlocking}
               group="outputs"
               channels={channels}
               onChange={onChange}
             />
           </Tab>
           <Tab title="Dynamic EQ" variant="primary" eventKey="dynamicEQs">
-            <BlockUi blocking={blocking}>
+            <BlockUi blocking={isBlocking}>
               <DynamicEQs
                 group="outputs"
                 channels={channels}
@@ -86,7 +86,7 @@ class Outputs extends Component {
             </BlockUi>
           </Tab>
           <Tab title="Limiter" variant="primary" eventKey="limiters">
-            <BlockUi blocking={blocking}>
+            <BlockUi blocking={isBlocking}>
               <Limiters
                 group="outputs"
                 channels={channels}
@@ -95,12 +95,12 @@ class Outputs extends Component {
             </BlockUi>
           </Tab>
           <Tab title="Phase" variant="primary" eventKey="phases">
-            <BlockUi blocking={blocking}>
+            <BlockUi blocking={isBlocking}>
               <Phases group="outputs" channels={channels} onChange={onChange} />
             </BlockUi>
           </Tab>
           <Tab title="Delay" variant="primary" eventKey="delays">
-            <BlockUi blocking={blocking}>
+            <BlockUi blocking={isBlocking}>
               <Delays
                 group="outputs"
                 channels={channels}
@@ -110,7 +110,7 @@ class Outputs extends Component {
             </BlockUi>
           </Tab>
           <Tab title="Routing" variant="primary" eventKey="routing">
-            <BlockUi blocking={blocking}>
+            <BlockUi blocking={isBlocking}>
               <OutputRouting
                 setup={setup}
                 outputs={channels}

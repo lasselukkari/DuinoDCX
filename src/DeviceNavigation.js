@@ -14,7 +14,7 @@ class DeviceNavigation extends Component {
       ready: PropTypes.bool
     }).isRequired,
     page: PropTypes.string.isRequired,
-    blocking: PropTypes.bool.isRequired,
+    isBlocking: PropTypes.bool.isRequired,
     inputs: PropTypes.array.isRequired,
     outputs: PropTypes.array.isRequired,
     currentBreakpoint: PropTypes.string.isRequired,
@@ -28,7 +28,7 @@ class DeviceNavigation extends Component {
   shouldComponentUpdate(nextProps, nextState) {
     const {
       device,
-      blocking,
+      isBlocking,
       page,
       inputs,
       outputs,
@@ -40,7 +40,7 @@ class DeviceNavigation extends Component {
       isEqual(device, nextProps.device) &&
       isEqual(inputs, nextProps.inputs) &&
       isEqual(outputs, nextProps.outputs) &&
-      blocking === nextProps.blocking &&
+      isBlocking === nextProps.isBlocking &&
       page === nextProps.page &&
       showLevels === nextState.showLevels &&
       currentBreakpoint === nextProps.currentBreakpoint
@@ -59,7 +59,7 @@ class DeviceNavigation extends Component {
     const {showLevels} = this.state;
     const {
       device,
-      blocking,
+      isBlocking,
       page,
       inputs,
       outputs,
@@ -95,7 +95,7 @@ class DeviceNavigation extends Component {
               device={device}
               inputs={inputs}
               outputs={outputs}
-              blocking={blocking}
+              isBlocking={isBlocking}
               onChange={onChange}
             />
           </NavDropdown>
@@ -112,11 +112,11 @@ class DeviceNavigation extends Component {
             </Nav.Link>
           </Nav.Item>
         </Nav>
-        <Nav activeKey="blocking" className="end-button">
+        <Nav activeKey="isBlocking" className="end-button">
           <Nav.Item onClick={onBlockingChange}>
             <Nav.Link>
               {' '}
-              {blocking ? (
+              {isBlocking ? (
                 <FaLock style={{color: '#ee5f5b'}} />
               ) : (
                 <FaEdit style={{color: '#62c462'}} />

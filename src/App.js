@@ -11,7 +11,7 @@ import 'react-toastify/dist/ReactToastify.css'; // eslint-disable-line import/no
 import './App.css'; // eslint-disable-line import/no-unassigned-import
 
 class App extends Component {
-  state = {page: 'inputs', blocking: true, showModal: false};
+  state = {page: 'inputs', isBlocking: true, showModal: false};
 
   shouldComponentUpdate(nextProps, nextState) {
     const {
@@ -21,7 +21,7 @@ class App extends Component {
       outputs,
       free,
       page,
-      blocking,
+      isBlocking,
       showModal,
       showLevels
     } = this.state;
@@ -33,7 +33,7 @@ class App extends Component {
       !isEqual(free, nextState.free) ||
       selected !== nextState.selected ||
       page !== nextState.page ||
-      blocking !== nextState.blocking ||
+      isBlocking !== nextState.isBlocking ||
       showModal !== nextState.showModal ||
       showLevels !== nextState.showLevels
     );
@@ -117,7 +117,7 @@ class App extends Component {
   }
 
   handleBlockingChange = () => {
-    this.setState(({blocking}) => ({blocking: !blocking}));
+    this.setState(({isBlocking}) => ({isBlocking: !isBlocking}));
   };
 
   handleDeviceUpdate = async commands => {
@@ -181,7 +181,7 @@ class App extends Component {
       devices,
       free,
       selected,
-      blocking,
+      isBlocking,
       inputs,
       outputs
     } = this.state;
@@ -191,7 +191,7 @@ class App extends Component {
         {device && inputs && outputs && (
           <DeviceNavigation
             device={device}
-            blocking={blocking}
+            isBlocking={isBlocking}
             page={page}
             inputs={inputs}
             outputs={outputs}
@@ -201,7 +201,7 @@ class App extends Component {
           />
         )}
         <Device
-          blocking={blocking}
+          isBlocking={isBlocking}
           device={device}
           page={page}
           onChange={this.handleDeviceUpdate}

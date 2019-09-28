@@ -7,7 +7,7 @@ import EQList from './EQList';
 
 class EQs extends Component {
   static propTypes = {
-    blocking: PropTypes.bool.isRequired,
+    isBlocking: PropTypes.bool.isRequired,
     group: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
     channels: PropTypes.objectOf(
@@ -18,14 +18,14 @@ class EQs extends Component {
   };
 
   shouldComponentUpdate(nextProps) {
-    const {channels, blocking} = this.props;
+    const {channels, isBlocking} = this.props;
     return (
-      !isEqual(channels, nextProps.channels) || blocking !== nextProps.blocking
+      !isEqual(channels, nextProps.channels) || isBlocking !== nextProps.isBlocking
     );
   }
 
   render() {
-    const {channels, group, onChange, blocking} = this.props;
+    const {channels, group, onChange, isBlocking} = this.props;
 
     return (
       <Tabs defaultActiveKey={Object.keys(channels)[0]} id="equalizers">
@@ -44,7 +44,7 @@ class EQs extends Component {
                 channel={channels[channelId]}
                 group={group}
                 channelId={channelId}
-                blocking={blocking}
+                isBlocking={isBlocking}
                 onChange={onChange}
               />
             </Tab>

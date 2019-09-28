@@ -14,24 +14,24 @@ import InputRouting from './InputRouting';
 
 class Inputs extends Component {
   static propTypes = {
-    blocking: PropTypes.bool.isRequired,
+    isBlocking: PropTypes.bool.isRequired,
     channels: PropTypes.object.isRequired,
     setup: PropTypes.object.isRequired,
     onChange: PropTypes.func.isRequired
   };
 
   shouldComponentUpdate(nextProps) {
-    const {blocking, channels, setup} = this.props;
+    const {isBlocking, channels, setup} = this.props;
 
     return !(
-      blocking === nextProps.blocking &&
+      isBlocking === nextProps.isBlocking &&
       isEqual(channels, nextProps.channels) &&
       isEqual(setup, nextProps.setup)
     );
   }
 
   render() {
-    const {channels, setup, onChange, blocking} = this.props;
+    const {channels, setup, onChange, isBlocking} = this.props;
 
     return (
       <div>
@@ -45,7 +45,7 @@ class Inputs extends Component {
             <Card>
               <Card.Header>Gain</Card.Header>
               <Card.Body>
-                <BlockUi blocking={blocking}>
+                <BlockUi blocking={isBlocking}>
                   <Gains
                     group="inputs"
                     channels={channels}
@@ -60,12 +60,12 @@ class Inputs extends Component {
             <EQs
               group="inputs"
               channels={channels}
-              blocking={blocking}
+              isBlocking={isBlocking}
               onChange={onChange}
             />
           </Tab>
           <Tab title="Dynamic EQ" variant="primary" eventKey="dynamicEQ">
-            <BlockUi blocking={blocking}>
+            <BlockUi blocking={isBlocking}>
               <DynamicEQs
                 group="inputs"
                 channels={channels}
@@ -74,7 +74,7 @@ class Inputs extends Component {
             </BlockUi>
           </Tab>
           <Tab title="Delay" variant="primary" eventKey="delays">
-            <BlockUi blocking={blocking}>
+            <BlockUi blocking={isBlocking}>
               <Delays
                 group="inputs"
                 channels={channels}
@@ -85,7 +85,7 @@ class Inputs extends Component {
           </Tab>
 
           <Tab title="Routing" variant="primary" eventKey="routing">
-            <BlockUi blocking={blocking}>
+            <BlockUi blocking={isBlocking}>
               <InputRouting setup={setup} onChange={onChange} />
             </BlockUi>
           </Tab>

@@ -16,7 +16,7 @@ class Device extends Component {
   };
 
   static propTypes = {
-    blocking: PropTypes.bool.isRequired,
+    isBlocking: PropTypes.bool.isRequired,
     page: PropTypes.string.isRequired,
     device: PropTypes.shape({
       ready: PropTypes.bool,
@@ -30,16 +30,16 @@ class Device extends Component {
   state = {};
 
   shouldComponentUpdate(nextProps) {
-    const {device, blocking, page} = this.props;
+    const {device, isBlocking, page} = this.props;
     return !(
       isEqual(device, nextProps.device) &&
-      blocking === nextProps.blocking &&
+      isBlocking === nextProps.isBlocking &&
       page === nextProps.page
     );
   }
 
   render() {
-    const {blocking, device, onChange, page} = this.props;
+    const {isBlocking, device, onChange, page} = this.props;
     const displayIfPage = (name, exected) => ({
       display: name === exected ? 'block' : 'none'
     });
@@ -59,7 +59,7 @@ class Device extends Component {
           <Inputs
             channels={device.inputs}
             setup={device.setup}
-            blocking={blocking}
+            isBlocking={isBlocking}
             onChange={onChange}
           />
         </div>
@@ -67,7 +67,7 @@ class Device extends Component {
           <Outputs
             channels={device.outputs}
             setup={device.setup}
-            blocking={blocking}
+            isBlocking={isBlocking}
             onChange={onChange}
           />
         </div>
