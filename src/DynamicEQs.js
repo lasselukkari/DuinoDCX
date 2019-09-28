@@ -11,7 +11,7 @@ class DynamicEQs extends Component {
     onChange: PropTypes.func.isRequired,
     channels: PropTypes.objectOf(
       PropTypes.shape({
-        dynamicEQ: PropTypes.bool.isRequired,
+        isDynamicEQOn: PropTypes.bool.isRequired,
         dynamicEQType: PropTypes.string.isRequired,
         dynamicEQFrequency: PropTypes.string.isRequired,
         dynamicEQGain: PropTypes.number.isRequired,
@@ -44,7 +44,7 @@ class DynamicEQs extends Component {
                 group={group}
                 channelId={channelId}
                 channelName={channel.channelName}
-                dynamicEQ={channel.dynamicEQ}
+                isDynamicEQOn={channel.isDynamicEQOn}
                 dynamicEQType={channel.dynamicEQType}
                 dynamicEQFrequency={channel.dynamicEQFrequency}
                 dynamicEQGain={channel.dynamicEQGain}

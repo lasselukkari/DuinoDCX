@@ -12,7 +12,7 @@ class DynamicEQ extends PureComponent {
   };
 
   static propTypes = {
-    dynamicEQ: PropTypes.bool.isRequired,
+    isDynamicEQOn: PropTypes.bool.isRequired,
     dynamicEQType: PropTypes.string.isRequired,
     dynamicEQFrequency: PropTypes.string.isRequired,
     dynamicEQGain: PropTypes.number.isRequired,
@@ -64,7 +64,7 @@ class DynamicEQ extends PureComponent {
   render() {
     const {
       channelName,
-      dynamicEQ,
+      isDynamicEQOn,
       dynamicEQType,
       dynamicEQFrequency,
       dynamicEQGain,
@@ -87,8 +87,8 @@ class DynamicEQ extends PureComponent {
             : `Channel ${channelId}`}
         </Card.Header>
         <Card.Body>
-          <pc.DynamicEQ
-            value={dynamicEQ}
+          <pc.IsDynamicEQOn
+            value={isDynamicEQOn}
             group={group}
             channelId={channelId}
             onChange={onChange}

@@ -229,7 +229,7 @@ export default {
   DynamicEQRelease: components.DynamicEQRelease,
   DynamicEQRatio: components.DynamicEQRatio,
   DynamicEQThreshold: components.DynamicEQThreshold,
-  DynamicEQ: components.DynamicEQ,
+  IsDynamicEQOn: components.IsDynamicEQOn,
   DynamicEQFrequency: components.DynamicEQFrequency,
   DynamicEQQ: components.DynamicEQQ,
   DynamicEQGain: components.DynamicEQGain,
