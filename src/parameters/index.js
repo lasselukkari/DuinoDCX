@@ -224,7 +224,7 @@ export default {
   // Io components
   Gain: components.Gain,
   Mute: components.Mute,
-  Delay: components.Delay,
+  IsDelayOn: components.IsDelayOn,
   LongDelay: components.LongDelay,
   IsEQOn: components.IsEQOn,
   EQNumber: components.EQNumber,
