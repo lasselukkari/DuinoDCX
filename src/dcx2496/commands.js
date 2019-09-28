@@ -6591,7 +6591,7 @@ const outputCommands = [
     ]
   },
   {
-    name: 'Limiter',
+    name: 'Is Limiter On',
     type: 'bool',
     syncResponses: [
       {

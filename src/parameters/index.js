@@ -58,6 +58,7 @@ const boolComponent = function({name}, type) {
   class BoolComponent extends PureComponent {
     static defaultProps = {
       hasLabel: false,
+      label: null,
       isInverted: false,
       eq: null,
       group: null,
@@ -71,7 +72,8 @@ const boolComponent = function({name}, type) {
       channelId: PropTypes.string,
       onChange: PropTypes.func.isRequired,
       eq: PropTypes.string,
-      hasLabel: PropTypes.bool
+      hasLabel: PropTypes.bool,
+      label: PropTypes.string
     };
 
     render() {
@@ -82,7 +84,8 @@ const boolComponent = function({name}, type) {
         eq,
         isInverted,
         onChange,
-        hasLabel
+        hasLabel,
+        label
       } = this.props;
       return (
         <BoolParam
@@ -95,6 +98,7 @@ const boolComponent = function({name}, type) {
           eq={eq}
           isInverted={isInverted}
           hasLabel={hasLabel}
+          label={label}
           onChange={onChange}
         />
       );
@@ -250,7 +254,7 @@ export default {
   HighpassFrequency: components.HighpassFrequency,
   LowpassFilter: components.LowpassFilter,
   LowpassFrequency: components.LowpassFrequency,
-  Limiter: components.Limiter,
+  IsLimiterOn: components.IsLimiterOn,
   LimiterThreshold: components.LimiterThreshold,
   LimiterRelease: components.LimiterRelease,
   Polarity: components.Polarity,

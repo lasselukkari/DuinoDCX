@@ -10,7 +10,7 @@ class Limiter extends PureComponent {
     channelId: PropTypes.string.isRequired,
     group: PropTypes.string.isRequired,
     channelName: PropTypes.string.isRequired,
-    limiter: PropTypes.bool.isRequired,
+    isLimiterOn: PropTypes.bool.isRequired,
     limiterThreshold: PropTypes.number.isRequired,
     limiterRelease: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired
@@ -19,7 +19,7 @@ class Limiter extends PureComponent {
   render() {
     const {
       channelName,
-      limiter,
+      isLimiterOn,
       limiterThreshold,
       limiterRelease,
       channelId,
@@ -37,9 +37,9 @@ class Limiter extends PureComponent {
         <Card.Body>
           <Row>
             <Col xs={6} md={12} lg={6}>
-              <pc.Limiter
-                hasLabel
-                value={limiter}
+              <pc.IsLimiterOn
+                value={isLimiterOn}
+                label="Limiter"
                 group={group}
                 channelId={channelId}
                 onChange={onChange}

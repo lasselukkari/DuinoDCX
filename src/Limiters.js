@@ -25,7 +25,7 @@ class Limiters extends Component {
         {Object.keys(channels).map(channelId => {
           const {
             channelName,
-            limiter,
+            isLimiterOn,
             limiterThreshold,
             limiterRelease
           } = channels[channelId];
@@ -37,7 +37,7 @@ class Limiters extends Component {
                 channelId={channelId}
                 group={group}
                 channelName={channelName}
-                limiter={limiter}
+                isLimiterOn={isLimiterOn}
                 limiterThreshold={limiterThreshold}
                 limiterRelease={limiterRelease}
                 onChange={onChange}
