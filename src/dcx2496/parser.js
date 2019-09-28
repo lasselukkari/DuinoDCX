@@ -173,17 +173,17 @@ class Parser {
       const data = buffer[index + 8];
 
       const level = Parser.clearBit(data, 5);
-      const limited = Parser.isBitSet(data, 5);
+      const isLimited = Parser.isBitSet(data, 5);
 
-      return {name, level, limited};
+      return {name, level, isLimited};
     });
 
     const outputs = constants.OUTPUTS.map((name, index) => {
       const data = buffer[index + 11];
       const level = Parser.clearBit(data, 5);
-      const limited = Parser.isBitSet(data, 5);
+      const isLimited = Parser.isBitSet(data, 5);
 
-      return {name, level, limited};
+      return {name, level, isLimited};
     });
 
     const free = buffer[21];

@@ -18,13 +18,13 @@ class ChannelLevels extends PureComponent {
     }).isRequired,
     inputs: PropTypes.arrayOf(
       PropTypes.shape({
-        limited: PropTypes.bool.isRequired,
+        isLimited: PropTypes.bool.isRequired,
         level: PropTypes.number.isRequired
       })
     ).isRequired,
     outputs: PropTypes.arrayOf(
       PropTypes.shape({
-        limited: PropTypes.bool.isRequired,
+        isLimited: PropTypes.bool.isRequired,
         level: PropTypes.number.isRequired
       })
     ).isRequired,
@@ -118,7 +118,7 @@ class ChannelLevels extends PureComponent {
       <div className="channels-container">
         <div className="channel-group">
           {inputChannels.map((channelId, index) => {
-            const {limited, level} = inputs[index];
+            const {isLimited, level} = inputs[index];
             const {mute} = device.inputs[channelId];
             const {group, name, isSelected} = this.state.selected.inputs[index];
 
@@ -128,7 +128,7 @@ class ChannelLevels extends PureComponent {
                 channelId={channelId}
                 isOutput={false}
                 isMuted={mute}
-                limited={limited}
+                isLimited={isLimited}
                 level={level}
                 group={group}
                 name={name}
@@ -142,7 +142,7 @@ class ChannelLevels extends PureComponent {
         </div>
         <div className="channel-group">
           {outputChannels.map((channelId, index) => {
-            const {limited, level} = outputs[index];
+            const {isLimited, level} = outputs[index];
             const {mute} = device.outputs[channelId];
             const {group, name, isSelected} = this.state.selected.outputs[
               index
@@ -155,7 +155,7 @@ class ChannelLevels extends PureComponent {
                 isMuted={mute}
                 group={group}
                 level={level}
-                limited={limited}
+                isLimited={isLimited}
                 channelId={channelId}
                 name={name}
                 isSelected={isSelected}
