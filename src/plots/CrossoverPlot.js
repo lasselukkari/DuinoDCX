@@ -16,19 +16,24 @@ const frequencyPoints = TransferFunction.generateFrequencyPoints(
 class CrossoverPlot extends Component {
   static propTypes = {
     channels: PropTypes.object.isRequired,
-    applyGain: PropTypes.bool.isRequired,
+    isGainApplied: PropTypes.bool.isRequired,
     windowWidth: PropTypes.number.isRequired,
     currentBreakpoint: PropTypes.string.isRequired
   };
 
   shouldComponentUpdate(nextProps) {
-    const {channels, applyGain, windowWidth, currentBreakpoint} = this.props;
+    const {
+      channels,
+      isGainApplied,
+      windowWidth,
+      currentBreakpoint
+    } = this.props;
 
     if (!isEqual(channels, nextProps.channels)) {
       return true;
     }
 
-    if (applyGain !== nextProps.applyGain) {
+    if (isGainApplied !== nextProps.isGainApplied) {
       return true;
     }
 
@@ -46,7 +51,7 @@ class CrossoverPlot extends Component {
     return false;
   }
 
-  createPlotData(channels, applyGain) {
+  createPlotData(channels, isGainApplied) {
     const values = Object.keys(channels).map((key, index) => {
       const tf = new TransferFunction(frequencyPoints);
 
@@ -72,7 +77,7 @@ class CrossoverPlot extends Component {
 
       values.forEach(value => {
         const rounded = Math.round(value.data[index] * 100) / 100;
-        result[value.channel] = applyGain ? rounded + value.gain : rounded;
+        result[value.channel] = isGainApplied ? rounded + value.gain : rounded;
       });
 
       return result;
@@ -80,7 +85,12 @@ class CrossoverPlot extends Component {
   }
 
   render() {
-    const {channels, applyGain, windowWidth, currentBreakpoint} = this.props;
+    const {
+      channels,
+      isGainApplied,
+      windowWidth,
+      currentBreakpoint
+    } = this.props;
     const colors = [
       '#307473',
       '#7A82AB',
@@ -116,7 +126,7 @@ class CrossoverPlot extends Component {
 
     return (
       <AreaChart
-        data={this.createPlotData(channels, applyGain)}
+        data={this.createPlotData(channels, isGainApplied)}
         width={width}
         height={height}
         baseValue="dataMin"
@@ -126,7 +136,7 @@ class CrossoverPlot extends Component {
         <YAxis
           allowDataOverflow
           type="number"
-          domain={[-20, applyGain ? 'auto' : 5]}
+          domain={[-20, isGainApplied ? 'auto' : 5]}
         />
         <Tooltip content={<PlotTooltip filter={({value}) => value > -20} />} />
         {Object.keys(channels).map((channelId, index) => (

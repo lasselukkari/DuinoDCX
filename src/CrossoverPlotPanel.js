@@ -11,20 +11,21 @@ class CrossoverPlotPanel extends Component {
   };
 
   state = {
-    applyGain: false
+    isGainApplied: false
   };
 
   shouldComponentUpdate(nextProps, nextState) {
     const {channels} = this.props;
-    const {applyGain} = this.state;
+    const {isGainApplied} = this.state;
     return !(
-      applyGain === nextState.applyGain && isEqual(channels, nextProps.channels)
+      isGainApplied === nextState.isGainApplied &&
+      isEqual(channels, nextProps.channels)
     );
   }
 
   handleToggleGain = () => {
     this.setState(prevState => ({
-      applyGain: !prevState.applyGain
+      isGainApplied: !prevState.isGainApplied
     }));
   };
 
@@ -37,14 +38,17 @@ class CrossoverPlotPanel extends Component {
           <Button
             size="sm"
             className="header-button"
-            variant={this.state.applyGain ? 'success' : 'dark'}
+            variant={this.state.isGainApplied ? 'success' : 'dark'}
             onClick={this.handleToggleGain}
           >
             Apply Gain
           </Button>
         </Card.Header>
         <Card.Body>
-          <CrossoverPlot channels={channels} applyGain={this.state.applyGain} />
+          <CrossoverPlot
+            channels={channels}
+            isGainApplied={this.state.isGainApplied}
+          />
         </Card.Body>
       </Card>
     );
