@@ -83,7 +83,7 @@ class EQs extends Component {
             </Card.Header>
             <Card.Body>
               <pc.IsEQOn
-                value={isEQOn}
+                isTrue={isEQOn}
                 group={group}
                 channelId={channelId}
                 onChange={onChange}

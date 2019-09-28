@@ -38,7 +38,7 @@ class Limiter extends PureComponent {
           <Row>
             <Col xs={6} md={12} lg={6}>
               <pc.IsLimiterOn
-                value={isLimiterOn}
+                isTrue={isLimiterOn}
                 label="Limiter"
                 group={group}
                 channelId={channelId}

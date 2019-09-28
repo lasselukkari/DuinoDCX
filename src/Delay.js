@@ -99,7 +99,7 @@ class Delay extends PureComponent {
         </Card.Header>
         <Card.Body>
           <pc.IsDelayOn
-            value={isDelayOn}
+            isTrue={isDelayOn}
             group={group}
             channelId={channelId}
             labelFormatter={labelFormatter}

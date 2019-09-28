@@ -52,14 +52,14 @@ class OutputRouting extends Component {
               <Col xs={12} sm={4}>
                 <pc.Stereolink
                   hasLabel
-                  value={stereolink}
+                  isTrue={stereolink}
                   onChange={onChange}
                 />
               </Col>
               <Col xs={12} sm={4}>
                 <pc.CrossoverLink
                   hasLabel
-                  value={crossoverLink}
+                  isTrue={crossoverLink}
                   onChange={onChange}
                 />
               </Col>
@@ -73,7 +73,7 @@ class OutputRouting extends Component {
           <Card.Header>Mute Outs When Powered</Card.Header>
           <Card.Body>
             <pc.MuteOutsWhenPowered
-              value={muteOutsWhenPowered}
+              isTrue={muteOutsWhenPowered}
               onChange={onChange}
             />
           </Card.Body>

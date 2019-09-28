@@ -88,7 +88,7 @@ class DynamicEQ extends PureComponent {
         </Card.Header>
         <Card.Body>
           <pc.IsDynamicEQOn
-            value={isDynamicEQOn}
+            isTrue={isDynamicEQOn}
             group={group}
             channelId={channelId}
             onChange={onChange}

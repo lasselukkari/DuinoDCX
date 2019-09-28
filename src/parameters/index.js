@@ -66,7 +66,7 @@ const boolComponent = function({name}, type) {
     };
 
     static propTypes = {
-      value: PropTypes.bool.isRequired,
+      isTrue: PropTypes.bool.isRequired,
       isInverted: PropTypes.bool,
       group: PropTypes.string,
       channelId: PropTypes.string,
@@ -78,7 +78,7 @@ const boolComponent = function({name}, type) {
 
     render() {
       const {
-        value,
+        isTrue,
         group,
         channelId,
         eq,
@@ -91,7 +91,7 @@ const boolComponent = function({name}, type) {
         <BoolParam
           name={name}
           type={type}
-          value={value}
+          isTrue={isTrue}
           param={Parser.camelize(name)}
           group={group}
           channelId={channelId}
