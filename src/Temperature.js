@@ -63,9 +63,7 @@ class Temperature extends PureComponent {
         <InputGroup.Append>
           <Button
             variant={isDelayCorrectionOn ? 'success' : 'primary'}
-            onClick={() =>
-              this.handleCorrectionChange(isDelayCorrectionOn)
-            }
+            onClick={() => this.handleCorrectionChange(isDelayCorrectionOn)}
           >
             °{unit}
           </Button>

@@ -11,7 +11,7 @@ class Delays extends Component {
     onChange: PropTypes.func.isRequired,
     channels: PropTypes.objectOf(
       PropTypes.shape({
-        delay: PropTypes.bool.isRequired,
+        isDelayOn: PropTypes.bool.isRequired,
         longDelay: PropTypes.number.isRequired,
         shortDelay: PropTypes.number,
         channelName: PropTypes.string
@@ -32,20 +32,14 @@ class Delays extends Component {
       isEqual(channels, nextProps.channels) &&
       setup.airTemperature === nextProps.setup.airTemperature &&
       setup.delayLink === nextProps.setup.delayLink &&
-      setup.isDelayCorrectionOn ===
-        nextProps.setup.isDelayCorrectionOn &&
+      setup.isDelayCorrectionOn === nextProps.setup.isDelayCorrectionOn &&
       setup.delayUnits === nextProps.setup.delayUnits
     );
   }
 
   render() {
     const {channels, setup, group, onChange} = this.props;
-    const {
-      airTemperature,
-      isDelayCorrectionOn,
-      delayLink,
-      delayUnits
-    } = setup;
+    const {airTemperature, isDelayCorrectionOn, delayLink, delayUnits} = setup;
 
     return (
       <div>
@@ -66,7 +60,7 @@ class Delays extends Component {
               channel
               group={group}
               channelId={channelId}
-              delay={channel.delay}
+              isDelayOn={channel.isDelayOn}
               delayUnits={delayUnits}
               shortDelay={channel.shortDelay}
               longDelay={channel.longDelay}

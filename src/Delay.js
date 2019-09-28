@@ -13,7 +13,7 @@ class Delay extends PureComponent {
     channelId: PropTypes.string.isRequired,
     channelName: PropTypes.string,
     group: PropTypes.string.isRequired,
-    delay: PropTypes.bool.isRequired,
+    isDelayOn: PropTypes.bool.isRequired,
     longDelay: PropTypes.number.isRequired,
     shortDelay: PropTypes.number,
     airTemperature: PropTypes.number.isRequired,
@@ -24,7 +24,7 @@ class Delay extends PureComponent {
 
   render() {
     const {
-      delay,
+      isDelayOn,
       shortDelay,
       longDelay,
       channelName,
@@ -98,8 +98,8 @@ class Delay extends PureComponent {
             : `Channel ${channelId}`}
         </Card.Header>
         <Card.Body>
-          <pc.Delay
-            value={delay}
+          <pc.IsDelayOn
+            value={isDelayOn}
             group={group}
             channelId={channelId}
             labelFormatter={labelFormatter}

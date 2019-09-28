@@ -430,7 +430,7 @@ const inputOutputCommands = [
     ]
   },
   {
-    name: 'Delay',
+    name: 'Is Delay On',
     type: 'bool',
     syncResponses: [
       {
