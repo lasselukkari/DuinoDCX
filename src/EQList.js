@@ -19,7 +19,7 @@ class EQs extends Component {
     group: PropTypes.string.isRequired,
     channel: PropTypes.shape({
       eqs: PropTypes.object.isRequired,
-      eQ: PropTypes.bool.isRequired,
+      isEQOn: PropTypes.bool.isRequired,
       channelName: PropTypes.string
     }),
     isBlocking: PropTypes.bool.isRequired,
@@ -36,7 +36,7 @@ class EQs extends Component {
 
   render() {
     const {channel, group, channelId, onChange, isBlocking} = this.props;
-    const {eqs, eQ} = channel;
+    const {eqs, isEQOn} = channel;
     const eqsKeys = Object.keys(eqs).sort();
     const activeEQs = [];
     let activeFound = false;
@@ -82,8 +82,8 @@ class EQs extends Component {
                 : `Input ${channelId} Equalizer`}
             </Card.Header>
             <Card.Body>
-              <pc.EQ
-                value={eQ}
+              <pc.IsEQOn
+                value={isEQOn}
                 group={group}
                 channelId={channelId}
                 onChange={onChange}

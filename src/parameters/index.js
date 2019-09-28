@@ -222,7 +222,7 @@ export default {
   Mute: components.Mute,
   Delay: components.Delay,
   LongDelay: components.LongDelay,
-  EQ: components.EQ,
+  IsEQOn: components.IsEQOn,
   EQNumber: components.EQNumber,
   EQIndex: components.EQIndex,
   DynamicEQAttack: components.DynamicEQAttack,
