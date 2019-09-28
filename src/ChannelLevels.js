@@ -35,7 +35,7 @@ class ChannelLevels extends PureComponent {
     selected: {
       inputs: inputChannels.map(channelId => ({
         name: channelId,
-        selected: false,
+        isSelected: false,
         group: 'inputs',
         channelId
       })),
@@ -44,7 +44,7 @@ class ChannelLevels extends PureComponent {
           .match(/\b\w/g)
           .join('')
           .toUpperCase(),
-        selected: false,
+        isSelected: false,
         group: 'outputs',
         channelId
       }))
@@ -74,17 +74,17 @@ class ChannelLevels extends PureComponent {
 
   handleToggleChange = ({group, index, selected: isSelected}) => {
     const selected = Object.assign({}, this.state.selected);
-    selected[group][index].selected = !isSelected;
+    selected[group][index].isSelected = !isSelected;
     this.setState(() => ({selected}));
   };
 
   handleToggle = () => {
     const {onChange, device} = this.props;
     const inputCommands = this.state.selected.inputs.filter(
-      input => input.selected
+      input => input.isSelected
     );
     const outputCommands = this.state.selected.outputs.filter(
-      ouput => ouput.selected
+      ouput => ouput.isSelected
     );
 
     const commands = inputCommands
@@ -111,8 +111,8 @@ class ChannelLevels extends PureComponent {
       outputChannels.some(channel => !device.outputs[channel].mute);
 
     const isAnySelected =
-      this.state.selected.inputs.some(channel => channel.selected) ||
-      this.state.selected.outputs.some(channel => channel.selected);
+      this.state.selected.inputs.some(channel => channel.isSelected) ||
+      this.state.selected.outputs.some(channel => channel.isSelected);
 
     return (
       <div className="channels-container">
@@ -120,7 +120,7 @@ class ChannelLevels extends PureComponent {
           {inputChannels.map((channelId, index) => {
             const {limited, level} = inputs[index];
             const {mute} = device.inputs[channelId];
-            const {group, name, selected} = this.state.selected.inputs[index];
+            const {group, name, isSelected} = this.state.selected.inputs[index];
 
             return (
               <ChannelControls
@@ -132,7 +132,7 @@ class ChannelLevels extends PureComponent {
                 level={level}
                 group={group}
                 name={name}
-                selected={selected}
+                isSelected={isSelected}
                 index={index}
                 onChange={onChange}
                 onToggleChange={this.handleToggleChange}
@@ -144,7 +144,9 @@ class ChannelLevels extends PureComponent {
           {outputChannels.map((channelId, index) => {
             const {limited, level} = outputs[index];
             const {mute} = device.outputs[channelId];
-            const {group, name, selected} = this.state.selected.outputs[index];
+            const {group, name, isSelected} = this.state.selected.outputs[
+              index
+            ];
 
             return (
               <ChannelControls
@@ -156,7 +158,7 @@ class ChannelLevels extends PureComponent {
                 limited={limited}
                 channelId={channelId}
                 name={name}
-                selected={selected}
+                isSelected={isSelected}
                 index={index}
                 onChange={onChange}
                 onToggleChange={this.handleToggleChange}

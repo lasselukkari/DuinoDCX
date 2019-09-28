@@ -13,7 +13,7 @@ class ChannelControls extends PureComponent {
     name: PropTypes.string.isRequired,
     channelId: PropTypes.string.isRequired,
     index: PropTypes.number.isRequired,
-    selected: PropTypes.bool.isRequired,
+    isSelected: PropTypes.bool.isRequired,
     group: PropTypes.string.isRequired,
     limited: PropTypes.bool.isRequired,
     level: PropTypes.number.isRequired,
@@ -36,7 +36,7 @@ class ChannelControls extends PureComponent {
       onToggleChange,
       group,
       name,
-      selected,
+      isSelected,
       index
     } = this.props;
     return (
@@ -47,7 +47,7 @@ class ChannelControls extends PureComponent {
           group={group}
           channelId={channelId}
           name={name}
-          selected={selected}
+          isSelected={isSelected}
           index={index}
           onChange={onToggleChange}
         />
