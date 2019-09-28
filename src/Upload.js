@@ -8,10 +8,7 @@ import Spinner from 'react-spinkit';
 import {toast} from 'react-toastify';
 
 class Upload extends PureComponent {
-  constructor() {
-    super();
-    this.state = {};
-  }
+  state = {};
 
   fetchVersion() {
     return fetch('/api/version', {credentials: 'same-origin'})

@@ -24,14 +24,6 @@ class NumberParam extends Component {
     return null;
   }
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      value: props.value,
-      manualValue: props.value
-    };
-  }
-
   static defaultProps = {
     formatter: (value, unit) =>
       `${Math.round(value * 10) / 10} ${unit ? unit : ''}`,
@@ -59,6 +51,11 @@ class NumberParam extends Component {
     confirm: PropTypes.func,
     includeLabel: PropTypes.bool,
     labelFormatter: PropTypes.func
+  };
+
+  state = {
+    value: this.props.value,
+    manualValue: this.props.value
   };
 
   shouldComponentUpdate(nextProps, nextState) {

@@ -10,31 +10,6 @@ const inputChannels = ['A', 'B', 'C'];
 const outputChannels = ['1', '2', '3', '4', '5', '6'];
 
 class ChannelLevels extends PureComponent {
-  constructor(props) {
-    super(props);
-
-    const {device} = this.props;
-
-    const inputs = inputChannels.map(channelId => ({
-      name: channelId,
-      selected: false,
-      group: 'inputs',
-      channelId
-    }));
-
-    const outputs = outputChannels.map(channelId => ({
-      name: device.outputs[channelId].channelName
-        .match(/\b\w/g)
-        .join('')
-        .toUpperCase(),
-      selected: false,
-      group: 'outputs',
-      channelId
-    }));
-
-    this.state = {selected: {inputs, outputs}};
-  }
-
   static propTypes = {
     device: PropTypes.shape({
       ready: PropTypes.bool.isRequired,
@@ -54,6 +29,26 @@ class ChannelLevels extends PureComponent {
       })
     ).isRequired,
     onChange: PropTypes.func.isRequired
+  };
+
+  state = {
+    selected: {
+      inputs: inputChannels.map(channelId => ({
+        name: channelId,
+        selected: false,
+        group: 'inputs',
+        channelId
+      })),
+      outputs: outputChannels.map(channelId => ({
+        name: this.props.device.outputs[channelId].channelName
+          .match(/\b\w/g)
+          .join('')
+          .toUpperCase(),
+        selected: false,
+        group: 'outputs',
+        channelId
+      }))
+    }
   };
 
   handleMuteAll = value => {

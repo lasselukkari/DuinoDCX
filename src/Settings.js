@@ -16,10 +16,7 @@ function handleFetchErrors(response) {
 }
 
 class Settings extends PureComponent {
-  constructor() {
-    super();
-    this.state = {};
-  }
+  state = {};
 
   fetchSettings() {
     return fetch('/api/settings', {credentials: 'same-origin'})

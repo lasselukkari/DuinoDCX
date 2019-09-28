@@ -6,16 +6,13 @@ import isEqual from 'lodash.isequal';
 import EQPlot from './plots/EQPlot';
 
 class CrossoverPlotPanel extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      applyGain: false
-    };
-  }
-
   static propTypes = {
     channels: PropTypes.object.isRequired,
     group: PropTypes.string.isRequired
+  };
+
+  state = {
+    applyGain: false
   };
 
   shouldComponentUpdate(nextProps, nextState) {

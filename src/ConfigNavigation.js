@@ -8,11 +8,6 @@ import DeviceSelect from './DeviceSelect';
 import Config from './Config';
 
 class ConfigNavigation extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
   static defaultProps = {
     device: {
       ready: false,
@@ -35,6 +30,8 @@ class ConfigNavigation extends Component {
     onChange: PropTypes.func.isRequired,
     onSelectDevice: PropTypes.func.isRequired
   };
+
+  state = {};
 
   shouldComponentUpdate(nextProps, nextState) {
     const {device, devices, free, currentBreakpoint} = this.props;

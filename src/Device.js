@@ -6,11 +6,6 @@ import Outputs from './Outputs';
 import Inputs from './Inputs';
 
 class Device extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
   static defaultProps = {
     device: {
       ready: false,
@@ -31,6 +26,8 @@ class Device extends Component {
     }),
     onChange: PropTypes.func.isRequired
   };
+
+  state = {};
 
   shouldComponentUpdate(nextProps) {
     const {device, blocking, page} = this.props;

@@ -10,14 +10,11 @@ import Settings from './Settings';
 import Upload from './Upload';
 
 class Config extends PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
   static propTypes = {
     xs: PropTypes.bool.isRequired
   };
+
+  state = {};
 
   handleShowModal = showModal => {
     this.setState({showModal});
