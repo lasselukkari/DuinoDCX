@@ -6,6 +6,12 @@ import isEqual from 'lodash.isequal';
 import Phase from './Phase';
 
 class Phases extends Component {
+  static propTypes = {
+    channels: PropTypes.object.isRequired,
+    group: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired
+  };
+
   shouldComponentUpdate(nextProps) {
     const {channels} = this.props;
     return !isEqual(channels, nextProps.channels);
@@ -36,11 +42,5 @@ class Phases extends Component {
     );
   }
 }
-
-Phases.propTypes = {
-  channels: PropTypes.object.isRequired,
-  group: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired
-};
 
 export default Phases;

@@ -2,6 +2,18 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 
 class DefaultTooltipContent extends PureComponent {
+  static defaultProps = {
+    payload: null,
+    label: null,
+    filter: () => true
+  };
+
+  static propTypes = {
+    payload: PropTypes.array,
+    filter: PropTypes.func,
+    label: PropTypes.string
+  };
+
   renderContent() {
     const {payload, filter} = this.props;
 
@@ -63,17 +75,5 @@ class DefaultTooltipContent extends PureComponent {
     );
   }
 }
-
-DefaultTooltipContent.defaultProps = {
-  payload: null,
-  label: null,
-  filter: () => true
-};
-
-DefaultTooltipContent.propTypes = {
-  payload: PropTypes.array,
-  filter: PropTypes.func,
-  label: PropTypes.string
-};
 
 export default DefaultTooltipContent;

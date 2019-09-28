@@ -32,6 +32,35 @@ class NumberParam extends Component {
     };
   }
 
+  static defaultProps = {
+    formatter: (value, unit) =>
+      `${Math.round(value * 10) / 10} ${unit ? unit : ''}`,
+    labelFormatter: value => value.toString(),
+    includeLabel: false,
+    confirm: () => Promise.resolve(),
+    group: null,
+    eq: null,
+    channelId: null
+  };
+
+  static propTypes = {
+    value: PropTypes.number.isRequired,
+    unit: PropTypes.string.isRequired,
+    min: PropTypes.number.isRequired,
+    max: PropTypes.number.isRequired,
+    step: PropTypes.number.isRequired,
+    formatter: PropTypes.func,
+    param: PropTypes.string.isRequired,
+    group: PropTypes.string,
+    channelId: PropTypes.string,
+    onChange: PropTypes.func.isRequired,
+    eq: PropTypes.string,
+    name: PropTypes.string.isRequired,
+    confirm: PropTypes.func,
+    includeLabel: PropTypes.bool,
+    labelFormatter: PropTypes.func
+  };
+
   shouldComponentUpdate(nextProps, nextState) {
     const {value, unit, formatter} = this.props;
 
@@ -256,34 +285,5 @@ class NumberParam extends Component {
     );
   }
 }
-
-NumberParam.defaultProps = {
-  formatter: (value, unit) =>
-    `${Math.round(value * 10) / 10} ${unit ? unit : ''}`,
-  labelFormatter: value => value.toString(),
-  includeLabel: false,
-  confirm: () => Promise.resolve(),
-  group: null,
-  eq: null,
-  channelId: null
-};
-
-NumberParam.propTypes = {
-  value: PropTypes.number.isRequired,
-  unit: PropTypes.string.isRequired,
-  min: PropTypes.number.isRequired,
-  max: PropTypes.number.isRequired,
-  step: PropTypes.number.isRequired,
-  formatter: PropTypes.func,
-  param: PropTypes.string.isRequired,
-  group: PropTypes.string,
-  channelId: PropTypes.string,
-  onChange: PropTypes.func.isRequired,
-  eq: PropTypes.string,
-  name: PropTypes.string.isRequired,
-  confirm: PropTypes.func,
-  includeLabel: PropTypes.bool,
-  labelFormatter: PropTypes.func
-};
 
 export default NumberParam;

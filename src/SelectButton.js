@@ -3,6 +3,15 @@ import Button from 'react-bootstrap/Button';
 import PropTypes from 'prop-types';
 
 class SelectButton extends PureComponent {
+  static propTypes = {
+    onChange: PropTypes.func.isRequired,
+    group: PropTypes.string.isRequired,
+    channelId: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    selected: PropTypes.bool.isRequired,
+    index: PropTypes.number.isRequired
+  };
+
   render() {
     const {onChange, group, channelId, name, selected, index} = this.props;
 
@@ -26,14 +35,5 @@ class SelectButton extends PureComponent {
     );
   }
 }
-
-SelectButton.propTypes = {
-  onChange: PropTypes.func.isRequired,
-  group: PropTypes.string.isRequired,
-  channelId: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  selected: PropTypes.bool.isRequired,
-  index: PropTypes.number.isRequired
-};
 
 export default SelectButton;

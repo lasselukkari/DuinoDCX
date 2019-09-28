@@ -13,6 +13,13 @@ import Gains from './Gains';
 import InputRouting from './InputRouting';
 
 class Inputs extends Component {
+  static propTypes = {
+    blocking: PropTypes.bool.isRequired,
+    channels: PropTypes.object.isRequired,
+    setup: PropTypes.object.isRequired,
+    onChange: PropTypes.func.isRequired
+  };
+
   shouldComponentUpdate(nextProps) {
     const {blocking, channels, setup} = this.props;
 
@@ -87,12 +94,5 @@ class Inputs extends Component {
     );
   }
 }
-
-Inputs.propTypes = {
-  blocking: PropTypes.bool.isRequired,
-  channels: PropTypes.object.isRequired,
-  setup: PropTypes.object.isRequired,
-  onChange: PropTypes.func.isRequired
-};
 
 export default Inputs;

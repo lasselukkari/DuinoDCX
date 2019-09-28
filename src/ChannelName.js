@@ -4,6 +4,13 @@ import PropTypes from 'prop-types';
 import pc from './parameters';
 
 class ChannelName extends PureComponent {
+  static propTypes = {
+    group: PropTypes.string.isRequired,
+    channelId: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired,
+    channelName: PropTypes.string.isRequired
+  };
+
   render() {
     const {channelName, channelId, onChange, group} = this.props;
 
@@ -22,12 +29,5 @@ class ChannelName extends PureComponent {
     );
   }
 }
-
-ChannelName.propTypes = {
-  group: PropTypes.string.isRequired,
-  channelId: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
-  channelName: PropTypes.string.isRequired
-};
 
 export default ChannelName;

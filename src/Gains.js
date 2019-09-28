@@ -6,6 +6,17 @@ import isEqual from 'lodash.isequal';
 import Gain from './Gain';
 
 class Gains extends Component {
+  static propTypes = {
+    group: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired,
+    channels: PropTypes.objectOf(
+      PropTypes.shape({
+        channelName: PropTypes.string,
+        gain: PropTypes.number.isRequired
+      })
+    ).isRequired
+  };
+
   shouldComponentUpdate(nextProps) {
     const {channels} = this.props;
     return !isEqual(channels, nextProps.channels);
@@ -35,16 +46,5 @@ class Gains extends Component {
     );
   }
 }
-
-Gains.propTypes = {
-  group: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
-  channels: PropTypes.objectOf(
-    PropTypes.shape({
-      channelName: PropTypes.string,
-      gain: PropTypes.number.isRequired
-    })
-  ).isRequired
-};
 
 export default Gains;

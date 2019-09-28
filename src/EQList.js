@@ -8,6 +8,24 @@ import EQPlot from './plots/EQPlot';
 import pc from './parameters';
 
 class EQs extends Component {
+  static defaultProps = {
+    channel: {
+      channelName: null
+    }
+  };
+
+  static propTypes = {
+    channelId: PropTypes.string.isRequired,
+    group: PropTypes.string.isRequired,
+    channel: PropTypes.shape({
+      eqs: PropTypes.object.isRequired,
+      eQ: PropTypes.bool.isRequired,
+      channelName: PropTypes.string
+    }),
+    blocking: PropTypes.bool.isRequired,
+    onChange: PropTypes.func.isRequired
+  };
+
   shouldComponentUpdate(nextProps) {
     const {channel, blocking} = this.props;
     return (
@@ -94,23 +112,5 @@ class EQs extends Component {
     );
   }
 }
-
-EQs.defaultProps = {
-  channel: {
-    channelName: null
-  }
-};
-
-EQs.propTypes = {
-  channelId: PropTypes.string.isRequired,
-  group: PropTypes.string.isRequired,
-  channel: PropTypes.shape({
-    eqs: PropTypes.object.isRequired,
-    eQ: PropTypes.bool.isRequired,
-    channelName: PropTypes.string
-  }),
-  blocking: PropTypes.bool.isRequired,
-  onChange: PropTypes.func.isRequired
-};
 
 export default EQs;

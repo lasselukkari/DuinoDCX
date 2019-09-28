@@ -12,6 +12,16 @@ class ChannelNames extends Component {
     return !isEqual(nextProps.channels, channels);
   }
 
+  static propTypes = {
+    onChange: PropTypes.func.isRequired,
+    group: PropTypes.string.isRequired,
+    channels: PropTypes.objectOf(
+      PropTypes.shape({
+        channelName: PropTypes.string
+      })
+    ).isRequired
+  };
+
   render() {
     const {channels, group, onChange} = this.props;
 
@@ -39,15 +49,5 @@ class ChannelNames extends Component {
     );
   }
 }
-
-ChannelNames.propTypes = {
-  onChange: PropTypes.func.isRequired,
-  group: PropTypes.string.isRequired,
-  channels: PropTypes.objectOf(
-    PropTypes.shape({
-      channelName: PropTypes.string
-    })
-  ).isRequired
-};
 
 export default ChannelNames;

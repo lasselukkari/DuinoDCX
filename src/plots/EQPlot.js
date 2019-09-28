@@ -14,6 +14,17 @@ const frequencyPoints = TransferFunction.generateFrequencyPoints(
 );
 
 class EQPlot extends Component {
+  static defaultProps = {
+    applyGain: false
+  };
+
+  static propTypes = {
+    channels: PropTypes.object.isRequired,
+    applyGain: PropTypes.bool,
+    windowWidth: PropTypes.number.isRequired,
+    currentBreakpoint: PropTypes.string.isRequired
+  };
+
   shouldComponentUpdate(nextProps) {
     const {channels, applyGain, windowWidth, currentBreakpoint} = this.props;
 
@@ -156,16 +167,5 @@ class EQPlot extends Component {
     );
   }
 }
-
-EQPlot.defaultProps = {
-  applyGain: false
-};
-
-EQPlot.propTypes = {
-  channels: PropTypes.object.isRequired,
-  applyGain: PropTypes.bool,
-  windowWidth: PropTypes.number.isRequired,
-  currentBreakpoint: PropTypes.string.isRequired
-};
 
 export default windowSize(withBreakpoints(EQPlot));

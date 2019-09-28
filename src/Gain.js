@@ -5,6 +5,18 @@ import PropTypes from 'prop-types';
 import pc from './parameters';
 
 class Gain extends PureComponent {
+  static defaultProps = {
+    channelName: null
+  };
+
+  static propTypes = {
+    channelName: PropTypes.string,
+    gain: PropTypes.number.isRequired,
+    group: PropTypes.string.isRequired,
+    channelId: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired
+  };
+
   confirmChange = ({oldValue, newValue, name, unit, formatter}) => {
     return new Promise((resolve, reject) => {
       if (newValue - oldValue <= 6) {
@@ -64,17 +76,5 @@ class Gain extends PureComponent {
     );
   }
 }
-
-Gain.defaultProps = {
-  channelName: null
-};
-
-Gain.propTypes = {
-  channelName: PropTypes.string,
-  gain: PropTypes.number.isRequired,
-  group: PropTypes.string.isRequired,
-  channelId: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired
-};
 
 export default Gain;

@@ -17,6 +17,13 @@ import OutputRouting from './OutputRouting';
 import Phases from './Phases';
 
 class Outputs extends Component {
+  static propTypes = {
+    blocking: PropTypes.bool.isRequired,
+    channels: PropTypes.object.isRequired,
+    setup: PropTypes.object.isRequired,
+    onChange: PropTypes.func.isRequired
+  };
+
   shouldComponentUpdate(nextProps) {
     const {blocking, channels, setup} = this.props;
     return !(
@@ -116,12 +123,5 @@ class Outputs extends Component {
     );
   }
 }
-
-Outputs.propTypes = {
-  blocking: PropTypes.bool.isRequired,
-  channels: PropTypes.object.isRequired,
-  setup: PropTypes.object.isRequired,
-  onChange: PropTypes.func.isRequired
-};
 
 export default Outputs;

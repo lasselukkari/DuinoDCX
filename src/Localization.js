@@ -8,6 +8,16 @@ import Temperature from './Temperature';
 import DelayUnits from './DelayUnits';
 
 class Localization extends Component {
+  static propTypes = {
+    setup: PropTypes.shape({
+      airTemperature: PropTypes.number.isRequired,
+      delayCorrection: PropTypes.bool.isRequired,
+      delayUnits: PropTypes.string.isRequired
+    }).isRequired,
+    xs: PropTypes.bool.isRequired,
+    onChange: PropTypes.func.isRequired
+  };
+
   shouldComponentUpdate(nextProps) {
     const {setup, xs} = this.props;
     return !(isEqual(setup, nextProps.setup) && xs === nextProps.xs);
@@ -39,15 +49,5 @@ class Localization extends Component {
     );
   }
 }
-
-Localization.propTypes = {
-  setup: PropTypes.shape({
-    airTemperature: PropTypes.number.isRequired,
-    delayCorrection: PropTypes.bool.isRequired,
-    delayUnits: PropTypes.string.isRequired
-  }).isRequired,
-  xs: PropTypes.bool.isRequired,
-  onChange: PropTypes.func.isRequired
-};
 
 export default Localization;

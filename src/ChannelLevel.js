@@ -3,6 +3,15 @@ import Button from 'react-bootstrap/Button';
 import PropTypes from 'prop-types';
 
 class ChannelLevel extends PureComponent {
+  static propTypes = {
+    channelId: PropTypes.string.isRequired,
+    isMuted: PropTypes.bool.isRequired,
+    isOutput: PropTypes.bool.isRequired,
+    limited: PropTypes.bool.isRequired,
+    level: PropTypes.number.isRequired,
+    onChange: PropTypes.func.isRequired
+  };
+
   handleClick = () => {
     const {channelId, isMuted, isOutput, onChange} = this.props;
     onChange({
@@ -56,14 +65,5 @@ class ChannelLevel extends PureComponent {
     );
   }
 }
-
-ChannelLevel.propTypes = {
-  channelId: PropTypes.string.isRequired,
-  isMuted: PropTypes.bool.isRequired,
-  isOutput: PropTypes.bool.isRequired,
-  limited: PropTypes.bool.isRequired,
-  level: PropTypes.number.isRequired,
-  onChange: PropTypes.func.isRequired
-};
 
 export default ChannelLevel;

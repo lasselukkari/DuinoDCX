@@ -9,6 +9,17 @@ import ChannelNames from './ChannelNames';
 import pc from './parameters';
 
 class OutputRouting extends Component {
+  static propTypes = {
+    setup: PropTypes.shape({
+      stereolink: PropTypes.bool.isRequired,
+      muteOutsWhenPowered: PropTypes.bool.isRequired,
+      outputConfig: PropTypes.string.isRequired,
+      crossoverLink: PropTypes.bool.isRequired
+    }).isRequired,
+    outputs: PropTypes.object.isRequired,
+    onChange: PropTypes.func.isRequired
+  };
+
   shouldComponentUpdate(nextProps) {
     const {outputs, setup} = this.props;
     return !(
@@ -71,16 +82,5 @@ class OutputRouting extends Component {
     );
   }
 }
-
-OutputRouting.propTypes = {
-  setup: PropTypes.shape({
-    stereolink: PropTypes.bool.isRequired,
-    muteOutsWhenPowered: PropTypes.bool.isRequired,
-    outputConfig: PropTypes.string.isRequired,
-    crossoverLink: PropTypes.bool.isRequired
-  }).isRequired,
-  outputs: PropTypes.object.isRequired,
-  onChange: PropTypes.func.isRequired
-};
 
 export default OutputRouting;

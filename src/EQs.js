@@ -6,6 +6,17 @@ import isEqual from 'lodash.isequal';
 import EQList from './EQList';
 
 class EQs extends Component {
+  static propTypes = {
+    blocking: PropTypes.bool.isRequired,
+    group: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired,
+    channels: PropTypes.objectOf(
+      PropTypes.shape({
+        channelName: PropTypes.string
+      })
+    ).isRequired
+  };
+
   shouldComponentUpdate(nextProps) {
     const {channels, blocking} = this.props;
     return (
@@ -43,16 +54,5 @@ class EQs extends Component {
     );
   }
 }
-
-EQs.propTypes = {
-  blocking: PropTypes.bool.isRequired,
-  group: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
-  channels: PropTypes.objectOf(
-    PropTypes.shape({
-      channelName: PropTypes.string
-    })
-  ).isRequired
-};
 
 export default EQs;

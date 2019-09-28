@@ -14,6 +14,13 @@ const frequencyPoints = TransferFunction.generateFrequencyPoints(
 );
 
 class CrossoverPlot extends Component {
+  static propTypes = {
+    channels: PropTypes.object.isRequired,
+    applyGain: PropTypes.bool.isRequired,
+    windowWidth: PropTypes.number.isRequired,
+    currentBreakpoint: PropTypes.string.isRequired
+  };
+
   shouldComponentUpdate(nextProps) {
     const {channels, applyGain, windowWidth, currentBreakpoint} = this.props;
 
@@ -138,12 +145,5 @@ class CrossoverPlot extends Component {
     );
   }
 }
-
-CrossoverPlot.propTypes = {
-  channels: PropTypes.object.isRequired,
-  applyGain: PropTypes.bool.isRequired,
-  windowWidth: PropTypes.number.isRequired,
-  currentBreakpoint: PropTypes.string.isRequired
-};
 
 export default windowSize(withBreakpoints(CrossoverPlot));

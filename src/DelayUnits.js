@@ -12,6 +12,11 @@ class DelayUnits extends PureComponent {
     this.state = {delayUnits};
   }
 
+  static propTypes = {
+    delayUnits: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired
+  };
+
   handleValueChange = e => {
     const {onChange} = this.props;
     const {value} = e.target;
@@ -55,10 +60,5 @@ class DelayUnits extends PureComponent {
     );
   }
 }
-
-DelayUnits.propTypes = {
-  delayUnits: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired
-};
 
 export default DelayUnits;

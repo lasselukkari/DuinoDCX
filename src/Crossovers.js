@@ -6,6 +6,12 @@ import isEqual from 'lodash.isequal';
 import Crossover from './Crossover';
 
 class Crossovers extends Component {
+  static propTypes = {
+    group: PropTypes.string.isRequired,
+    channels: PropTypes.object.isRequired,
+    onChange: PropTypes.func.isRequired
+  };
+
   shouldComponentUpdate(nextProps) {
     const {channels} = this.props;
     return !isEqual(channels, nextProps.channels);
@@ -44,11 +50,5 @@ class Crossovers extends Component {
     );
   }
 }
-
-Crossovers.propTypes = {
-  group: PropTypes.string.isRequired,
-  channels: PropTypes.object.isRequired,
-  onChange: PropTypes.func.isRequired
-};
 
 export default Crossovers;

@@ -4,6 +4,13 @@ import Button from 'react-bootstrap/Button';
 import PropTypes from 'prop-types';
 
 class MuteButton extends PureComponent {
+  static propTypes = {
+    isMuted: PropTypes.bool.isRequired,
+    channelId: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired,
+    isOutput: PropTypes.bool.isRequired
+  };
+
   handleClick = () => {
     const {channelId, isMuted, onChange, isOutput} = this.props;
     onChange({
@@ -37,12 +44,5 @@ class MuteButton extends PureComponent {
     );
   }
 }
-
-MuteButton.propTypes = {
-  isMuted: PropTypes.bool.isRequired,
-  channelId: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
-  isOutput: PropTypes.bool.isRequired
-};
 
 export default MuteButton;

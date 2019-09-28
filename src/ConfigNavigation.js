@@ -13,6 +13,29 @@ class ConfigNavigation extends Component {
     this.state = {};
   }
 
+  static defaultProps = {
+    device: {
+      ready: false,
+      setup: {}
+    },
+    devices: [],
+    selected: null,
+    free: null
+  };
+
+  static propTypes = {
+    device: PropTypes.shape({
+      ready: PropTypes.bool,
+      setup: PropTypes.object
+    }),
+    devices: PropTypes.array,
+    selected: PropTypes.number,
+    free: PropTypes.number,
+    currentBreakpoint: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired,
+    onSelectDevice: PropTypes.func.isRequired
+  };
+
   shouldComponentUpdate(nextProps, nextState) {
     const {device, devices, free, currentBreakpoint} = this.props;
     const {showModal} = this.state;
@@ -66,28 +89,5 @@ class ConfigNavigation extends Component {
     );
   }
 }
-
-ConfigNavigation.defaultProps = {
-  device: {
-    ready: false,
-    setup: {}
-  },
-  devices: [],
-  selected: null,
-  free: null
-};
-
-ConfigNavigation.propTypes = {
-  device: PropTypes.shape({
-    ready: PropTypes.bool,
-    setup: PropTypes.object
-  }),
-  devices: PropTypes.array,
-  selected: PropTypes.number,
-  free: PropTypes.number,
-  currentBreakpoint: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
-  onSelectDevice: PropTypes.func.isRequired
-};
 
 export default withBreakpoints(ConfigNavigation);

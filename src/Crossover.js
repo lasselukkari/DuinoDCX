@@ -7,6 +7,17 @@ import Row from 'react-bootstrap/Row';
 import pc from './parameters';
 
 class Crossover extends PureComponent {
+  static propTypes = {
+    channelName: PropTypes.string.isRequired,
+    channelId: PropTypes.string.isRequired,
+    group: PropTypes.string.isRequired,
+    highpassFilter: PropTypes.string.isRequired,
+    highpassFrequency: PropTypes.string.isRequired,
+    lowpassFilter: PropTypes.string.isRequired,
+    lowpassFrequency: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired
+  };
+
   render() {
     const {
       highpassFilter,
@@ -70,16 +81,5 @@ class Crossover extends PureComponent {
     );
   }
 }
-
-Crossover.propTypes = {
-  channelName: PropTypes.string.isRequired,
-  channelId: PropTypes.string.isRequired,
-  group: PropTypes.string.isRequired,
-  highpassFilter: PropTypes.string.isRequired,
-  highpassFrequency: PropTypes.string.isRequired,
-  lowpassFilter: PropTypes.string.isRequired,
-  lowpassFrequency: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired
-};
 
 export default Crossover;

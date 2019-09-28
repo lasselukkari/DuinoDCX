@@ -8,6 +8,19 @@ import isEqual from 'lodash.isequal';
 import pc from './parameters';
 
 class InputRouting extends Component {
+  static propTypes = {
+    setup: PropTypes.shape({
+      inputABSource: PropTypes.string.isRequired,
+      stereolinkMode: PropTypes.string.isRequired,
+      inputSumType: PropTypes.string.isRequired,
+      inputCGain: PropTypes.string.isRequired,
+      inputASumGain: PropTypes.number.isRequired,
+      inputBSumGain: PropTypes.number.isRequired,
+      inputCSumGain: PropTypes.number.isRequired
+    }).isRequired,
+    onChange: PropTypes.func.isRequired
+  };
+
   shouldComponentUpdate(nextProps) {
     const {setup} = this.props;
     return !isEqual(setup, nextProps.setup);
@@ -125,18 +138,5 @@ class InputRouting extends Component {
     );
   }
 }
-
-InputRouting.propTypes = {
-  setup: PropTypes.shape({
-    inputABSource: PropTypes.string.isRequired,
-    stereolinkMode: PropTypes.string.isRequired,
-    inputSumType: PropTypes.string.isRequired,
-    inputCGain: PropTypes.string.isRequired,
-    inputASumGain: PropTypes.number.isRequired,
-    inputBSumGain: PropTypes.number.isRequired,
-    inputCSumGain: PropTypes.number.isRequired
-  }).isRequired,
-  onChange: PropTypes.func.isRequired
-};
 
 export default InputRouting;

@@ -6,6 +6,26 @@ import isEqual from 'lodash.isequal';
 import DynamicEQ from './DynamicEQ';
 
 class DynamicEQs extends Component {
+  static propTypes = {
+    group: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired,
+    channels: PropTypes.objectOf(
+      PropTypes.shape({
+        dynamicEQ: PropTypes.bool.isRequired,
+        dynamicEQType: PropTypes.string.isRequired,
+        dynamicEQFrequency: PropTypes.string.isRequired,
+        dynamicEQGain: PropTypes.number.isRequired,
+        dynamicEQQ: PropTypes.string.isRequired,
+        dynamicEQShelving: PropTypes.string.isRequired,
+        dynamicEQAttack: PropTypes.string.isRequired,
+        dynamicEQRelease: PropTypes.string.isRequired,
+        dynamicEQRatio: PropTypes.string.isRequired,
+        dynamicEQThreshold: PropTypes.number.isRequired,
+        channelName: PropTypes.string
+      })
+    ).isRequired
+  };
+
   shouldComponentUpdate(nextProps) {
     const {channels} = this.props;
     return !isEqual(channels, nextProps.channels);
@@ -43,25 +63,5 @@ class DynamicEQs extends Component {
     );
   }
 }
-
-DynamicEQs.propTypes = {
-  group: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
-  channels: PropTypes.objectOf(
-    PropTypes.shape({
-      dynamicEQ: PropTypes.bool.isRequired,
-      dynamicEQType: PropTypes.string.isRequired,
-      dynamicEQFrequency: PropTypes.string.isRequired,
-      dynamicEQGain: PropTypes.number.isRequired,
-      dynamicEQQ: PropTypes.string.isRequired,
-      dynamicEQShelving: PropTypes.string.isRequired,
-      dynamicEQAttack: PropTypes.string.isRequired,
-      dynamicEQRelease: PropTypes.string.isRequired,
-      dynamicEQRatio: PropTypes.string.isRequired,
-      dynamicEQThreshold: PropTypes.number.isRequired,
-      channelName: PropTypes.string
-    })
-  ).isRequired
-};
 
 export default DynamicEQs;

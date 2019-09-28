@@ -7,6 +7,12 @@ import isEqual from 'lodash.isequal';
 import OutputSource from './OutputSource';
 
 class OutputSources extends Component {
+  static propTypes = {
+    channels: PropTypes.object.isRequired,
+    group: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired
+  };
+
   shouldComponentUpdate(nextProps) {
     const {channels} = this.props;
     return !isEqual(channels, nextProps.channels);
@@ -41,11 +47,5 @@ class OutputSources extends Component {
     );
   }
 }
-
-OutputSources.propTypes = {
-  channels: PropTypes.object.isRequired,
-  group: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired
-};
 
 export default OutputSources;
