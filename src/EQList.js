@@ -22,19 +22,19 @@ class EQs extends Component {
       eQ: PropTypes.bool.isRequired,
       channelName: PropTypes.string
     }),
-    blocking: PropTypes.bool.isRequired,
+    isBlocking: PropTypes.bool.isRequired,
     onChange: PropTypes.func.isRequired
   };
 
   shouldComponentUpdate(nextProps) {
-    const {channel, blocking} = this.props;
+    const {channel, isBlocking} = this.props;
     return (
-      !isEqual(channel, nextProps.channel) || blocking !== nextProps.blocking
+      !isEqual(channel, nextProps.channel) || isBlocking !== nextProps.isBlocking
     );
   }
 
   render() {
-    const {channel, group, channelId, onChange, blocking} = this.props;
+    const {channel, group, channelId, onChange, isBlocking} = this.props;
     const {eqs, eQ} = channel;
     const eqsKeys = Object.keys(eqs).sort();
     const activeEQs = [];
@@ -73,7 +73,7 @@ class EQs extends Component {
             <EQPlot channels={{[channelId]: channel}} />
           </Card.Body>
         </Card>
-        <BlockUi blocking={blocking}>
+        <BlockUi blocking={isBlocking}>
           <Card>
             <Card.Header>
               {channel.channelName
