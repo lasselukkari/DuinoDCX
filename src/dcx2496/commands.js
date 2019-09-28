@@ -1273,7 +1273,7 @@ const inputOutputCommands = [
     step: 0.1
   },
   {
-    name: 'Dynamic EQ',
+    name: 'Is Dynamic EQ On',
     type: 'bool',
     syncResponses: [
       {
