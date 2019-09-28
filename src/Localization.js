@@ -11,7 +11,7 @@ class Localization extends Component {
   static propTypes = {
     setup: PropTypes.shape({
       airTemperature: PropTypes.number.isRequired,
-      delayCorrection: PropTypes.bool.isRequired,
+      isDelayCorrectionEnabled: PropTypes.bool.isRequired,
       delayUnits: PropTypes.string.isRequired
     }).isRequired,
     isXs: PropTypes.bool.isRequired,
@@ -25,7 +25,7 @@ class Localization extends Component {
 
   render() {
     const {onChange, setup, isXs} = this.props;
-    const {airTemperature, delayCorrection, delayUnits} = setup;
+    const {airTemperature, isDelayCorrectionEnabled, delayUnits} = setup;
 
     return (
       <Nav>
@@ -37,7 +37,7 @@ class Localization extends Component {
           <div id="localization-dropup">
             <Temperature
               airTemperature={airTemperature}
-              delayCorrection={delayCorrection}
+              isDelayCorrectionEnabled={isDelayCorrectionEnabled}
               delayUnits={delayUnits}
               onChange={onChange}
             />
