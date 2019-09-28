@@ -6,6 +6,7 @@ import Form from 'react-bootstrap/Form';
 
 class BoolParam extends Component {
   static defaultProps = {
+    label: null,
     hasLabel: false,
     isInverted: false,
     channelId: null,
@@ -22,6 +23,7 @@ class BoolParam extends Component {
     onChange: PropTypes.func.isRequired,
     eq: PropTypes.string,
     name: PropTypes.string.isRequired,
+    label: PropTypes.string,
     hasLabel: PropTypes.bool
   };
 
@@ -36,15 +38,15 @@ class BoolParam extends Component {
   }
 
   render() {
-    const {name, value, isInverted, hasLabel} = this.props;
+    const {name, value, isInverted, hasLabel, label} = this.props;
     const onColor = isInverted ? 'danger' : 'success';
 
     return (
       <Form>
         <FormGroup>
-          {hasLabel !== false && (
+          {(label || hasLabel !== false) && (
             <Form.Label>
-              {name}
+              {label ? label : name}
               <br />
             </Form.Label>
           )}
