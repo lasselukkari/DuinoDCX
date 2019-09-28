@@ -8,8 +8,8 @@ import PlotTooltip from './PlotTooltip';
 import TransferFunction from './TransferFunction';
 
 const frequencyPoints = TransferFunction.generateFrequencyPoints(
-  10.0,
-  20000.0,
+  10,
+  20000,
   250
 );
 

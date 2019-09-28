@@ -135,8 +135,8 @@ const setupCommands = [
     name: 'Input A Sum Gain',
     type: 'number',
     unit: 'dB',
-    min: -15.0,
-    max: 15.0,
+    min: -15,
+    max: 15,
     step: 0.1,
     syncResponse: {
       bits6: {
@@ -158,8 +158,8 @@ const setupCommands = [
     name: 'Input B Sum Gain',
     type: 'number',
     unit: 'dB',
-    min: -15.0,
-    max: 15.0,
+    min: -15,
+    max: 15,
     step: 0.1,
     syncResponse: {
       bits6: {
@@ -181,8 +181,8 @@ const setupCommands = [
     name: 'Input C Sum Gain',
     type: 'number',
     unit: 'dB',
-    min: -15.0,
-    max: 15.0,
+    min: -15,
+    max: 15,
     step: 0.1,
     syncResponse: {
       bits6: {
