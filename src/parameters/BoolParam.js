@@ -15,7 +15,7 @@ class BoolParam extends Component {
   };
 
   static propTypes = {
-    value: PropTypes.bool.isRequired,
+    isTrue: PropTypes.bool.isRequired,
     isInverted: PropTypes.bool,
     param: PropTypes.string.isRequired,
     group: PropTypes.string,
@@ -28,17 +28,18 @@ class BoolParam extends Component {
   };
 
   handleClick = () => {
-    const {param, group, channelId, eq, onChange, value} = this.props;
-    onChange({param, group, channelId, eq, value: !value});
+    const {param, group, channelId, eq, onChange, isTrue} = this.props;
+
+    onChange({param, group, channelId, eq, value: !isTrue});
   };
 
   shouldComponentUpdate(nextProps) {
-    const {value} = this.props;
-    return value !== nextProps.value;
+    const {isTrue} = this.props;
+    return isTrue !== nextProps.isTrue;
   }
 
   render() {
-    const {name, value, isInverted, hasLabel, label} = this.props;
+    const {name, isTrue, isInverted, hasLabel, label} = this.props;
     const onColor = isInverted ? 'danger' : 'success';
 
     return (
@@ -53,11 +54,11 @@ class BoolParam extends Component {
 
           <Button
             block
-            variant={value ? onColor : 'primary'}
-            active={value}
+            variant={isTrue ? onColor : 'primary'}
+            active={isTrue}
             onClick={this.handleClick}
           >
-            {value ? 'On' : 'Off'}
+            {isTrue ? 'On' : 'Off'}
           </Button>
         </FormGroup>
       </Form>

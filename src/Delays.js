@@ -47,7 +47,7 @@ class Delays extends Component {
           <Card>
             <Card.Header>Long Delay Link</Card.Header>
             <Card.Body>
-              <pc.DelayLink value={delayLink} onChange={onChange} />
+              <pc.DelayLink isTrue={delayLink} onChange={onChange} />
             </Card.Body>
           </Card>
         )}
