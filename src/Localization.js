@@ -14,24 +14,24 @@ class Localization extends Component {
       delayCorrection: PropTypes.bool.isRequired,
       delayUnits: PropTypes.string.isRequired
     }).isRequired,
-    xs: PropTypes.bool.isRequired,
+    isXs: PropTypes.bool.isRequired,
     onChange: PropTypes.func.isRequired
   };
 
   shouldComponentUpdate(nextProps) {
-    const {setup, xs} = this.props;
-    return !(isEqual(setup, nextProps.setup) && xs === nextProps.xs);
+    const {setup, isXs} = this.props;
+    return !(isEqual(setup, nextProps.setup) && isXs === nextProps.isXs);
   }
 
   render() {
-    const {onChange, setup, xs} = this.props;
+    const {onChange, setup, isXs} = this.props;
     const {airTemperature, delayCorrection, delayUnits} = setup;
 
     return (
       <Nav>
         <NavDropdown
           title={<FaGlobe />}
-          drop={xs ? 'down' : 'up'}
+          drop={isXs ? 'down' : 'up'}
           className="no-caret right-0 icon-menu"
         >
           <div id="localization-dropup">

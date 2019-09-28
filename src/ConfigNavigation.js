@@ -60,11 +60,11 @@ class ConfigNavigation extends Component {
       onSelectDevice,
       currentBreakpoint
     } = this.props;
-    const xs = currentBreakpoint === 'xs';
+    const isXs = currentBreakpoint === 'xs';
 
     return (
       <Navbar
-        fixed={xs ? 'top' : 'bottom'}
+        fixed={isXs ? 'top' : 'bottom'}
         bg="primary"
         variant="dark"
         className="wide-nav justify-content-end"
@@ -74,14 +74,14 @@ class ConfigNavigation extends Component {
             devices={devices}
             selected={selected}
             free={free}
-            xs={xs}
+            isXs={isXs}
             onSelect={onSelectDevice}
           />
         )}
         {device && device.ready && (
-          <Localization setup={device.setup} xs={xs} onChange={onChange} />
+          <Localization setup={device.setup} isXs={isXs} onChange={onChange} />
         )}
-        <Config xs={xs} />
+        <Config isXs={isXs} />
       </Navbar>
     );
   }

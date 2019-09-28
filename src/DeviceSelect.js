@@ -9,11 +9,11 @@ class DeviceSelect extends PureComponent {
     devices: PropTypes.array.isRequired,
     free: PropTypes.number.isRequired,
     selected: PropTypes.number.isRequired,
-    xs: PropTypes.bool.isRequired
+    isXs: PropTypes.bool.isRequired
   };
 
   render() {
-    const {onSelect, devices, free, selected, xs} = this.props;
+    const {onSelect, devices, free, selected, isXs} = this.props;
     const selectedDevice = devices.find(({id}) => id === selected);
 
     if (devices.length === 0 || !selectedDevice || !free) {
@@ -26,7 +26,7 @@ class DeviceSelect extends PureComponent {
       <Nav onSelect={onSelect}>
         <NavDropdown
           title={deviceName}
-          drop={xs ? 'down' : 'up'}
+          drop={isXs ? 'down' : 'up'}
           className="right-0"
         >
           {devices.map(({name, id}, deviceId) => (

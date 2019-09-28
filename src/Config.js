@@ -11,7 +11,7 @@ import Upload from './Upload';
 
 class Config extends PureComponent {
   static propTypes = {
-    xs: PropTypes.bool.isRequired
+    isXs: PropTypes.bool.isRequired
   };
 
   state = {};
@@ -21,7 +21,7 @@ class Config extends PureComponent {
   };
 
   render() {
-    const {xs} = this.props;
+    const {isXs} = this.props;
     const {showModal} = this.state;
 
     return (
@@ -29,7 +29,7 @@ class Config extends PureComponent {
         <NavDropdown
           title={<FaCog />}
           id="nav-dropdown"
-          drop={xs ? 'down' : 'up'}
+          drop={isXs ? 'down' : 'up'}
           className="no-caret right-0 icon-menu"
         >
           <NavDropdown.Item
