@@ -48,7 +48,8 @@
     "eject": "react-scripts eject",
     "dist": "awot-static",
     "flash": "awot-command-line",
-    "lint": "xo --fix",
+    "lint": "xo",
+    "lint:fix": "xo --fix",
     "upload": "react-scripts build && awot-static && awot-command-line"
   },
   "xo": {
