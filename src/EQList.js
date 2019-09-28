@@ -29,7 +29,8 @@ class EQs extends Component {
   shouldComponentUpdate(nextProps) {
     const {channel, isBlocking} = this.props;
     return (
-      !isEqual(channel, nextProps.channel) || isBlocking !== nextProps.isBlocking
+      !isEqual(channel, nextProps.channel) ||
+      isBlocking !== nextProps.isBlocking
     );
   }
 

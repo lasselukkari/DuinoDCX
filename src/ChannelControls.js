@@ -15,7 +15,7 @@ class ChannelControls extends PureComponent {
     index: PropTypes.number.isRequired,
     isSelected: PropTypes.bool.isRequired,
     group: PropTypes.string.isRequired,
-    limited: PropTypes.bool.isRequired,
+    isLimited: PropTypes.bool.isRequired,
     level: PropTypes.number.isRequired,
     isMuted: PropTypes.bool.isRequired,
     isOutput: PropTypes.bool.isRequired,
@@ -26,7 +26,7 @@ class ChannelControls extends PureComponent {
 
   render() {
     const {
-      limited,
+      isLimited,
       level,
       onChange,
       channelId,
@@ -63,7 +63,7 @@ class ChannelControls extends PureComponent {
           channelId={channelId}
           isMuted={isMuted}
           isOutput={isOutput}
-          limited={limited}
+          isLimited={isLimited}
           level={level}
           onChange={onChange}
         />

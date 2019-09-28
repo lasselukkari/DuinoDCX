@@ -7,7 +7,7 @@ class ChannelLevel extends PureComponent {
     channelId: PropTypes.string.isRequired,
     isMuted: PropTypes.bool.isRequired,
     isOutput: PropTypes.bool.isRequired,
-    limited: PropTypes.bool.isRequired,
+    isLimited: PropTypes.bool.isRequired,
     level: PropTypes.number.isRequired,
     onChange: PropTypes.func.isRequired
   };
@@ -23,9 +23,9 @@ class ChannelLevel extends PureComponent {
   };
 
   render() {
-    const {limited, level, isOutput} = this.props;
+    const {isLimited, level, isOutput} = this.props;
 
-    if (limited === undefined || level === undefined) {
+    if (isLimited === undefined || level === undefined) {
       return null;
     }
 
@@ -59,7 +59,10 @@ class ChannelLevel extends PureComponent {
         <Button variant={level >= 6 ? 'danger' : 'dark'} disabled={level < 6} />
 
         {isOutput && (
-          <Button variant={limited ? 'danger' : 'dark'} disabled={!limited} />
+          <Button
+            variant={isLimited ? 'danger' : 'dark'}
+            disabled={!isLimited}
+          />
         )}
       </div>
     );
