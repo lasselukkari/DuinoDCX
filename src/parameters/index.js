@@ -58,7 +58,7 @@ const boolComponent = function({name}, type) {
   class BoolComponent extends PureComponent {
     static defaultProps = {
       hasLabel: false,
-      inverted: false,
+      isInverted: false,
       eq: null,
       group: null,
       channelId: null
@@ -66,7 +66,7 @@ const boolComponent = function({name}, type) {
 
     static propTypes = {
       value: PropTypes.bool.isRequired,
-      inverted: PropTypes.bool,
+      isInverted: PropTypes.bool,
       group: PropTypes.string,
       channelId: PropTypes.string,
       onChange: PropTypes.func.isRequired,
@@ -80,7 +80,7 @@ const boolComponent = function({name}, type) {
         group,
         channelId,
         eq,
-        inverted,
+        isInverted,
         onChange,
         hasLabel
       } = this.props;
@@ -93,7 +93,7 @@ const boolComponent = function({name}, type) {
           group={group}
           channelId={channelId}
           eq={eq}
-          inverted={inverted}
+          isInverted={isInverted}
           hasLabel={hasLabel}
           onChange={onChange}
         />
