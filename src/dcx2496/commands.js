@@ -87,7 +87,7 @@ const setupCommands = [
     }
   },
   {
-    name: 'Delay Correction',
+    name: 'Is Delay Correction Enabled',
     type: 'bool',
     syncResponse: {
       bits6: {
