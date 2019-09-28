@@ -656,7 +656,7 @@ const inputOutputCommands = [
     step: 5
   },
   {
-    name: 'EQ',
+    name: 'Is EQ On',
     type: 'bool',
     syncResponses: [
       {
