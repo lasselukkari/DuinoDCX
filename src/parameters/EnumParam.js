@@ -4,7 +4,7 @@ import Form from 'react-bootstrap/Form';
 
 class EnumParam extends Component {
   static defaultProps = {
-    includeLabel: false,
+    hasLabel: false,
     eq: null,
     channelId: null,
     group: null,
@@ -21,7 +21,7 @@ class EnumParam extends Component {
     onChange: PropTypes.func.isRequired,
     eq: PropTypes.string,
     name: PropTypes.string.isRequired,
-    includeLabel: PropTypes.bool
+    hasLabel: PropTypes.bool
   };
 
   handleValueChange = e => {
@@ -35,10 +35,10 @@ class EnumParam extends Component {
   }
 
   render() {
-    const {name, value, enums, unit, includeLabel} = this.props;
+    const {name, value, enums, unit, hasLabel} = this.props;
     return (
       <Form.Group>
-        {includeLabel !== false && (
+        {hasLabel !== false && (
           <Form.Label>
             {name} {unit && `(${unit})`}
           </Form.Label>

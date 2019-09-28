@@ -32,14 +32,14 @@ class Phase extends PureComponent {
         </Card.Header>
         <Card.Body>
           <pc.Polarity
-            includeLabel
+            hasLabel
             value={polarity}
             group={group}
             channelId={channelId}
             onChange={onChange}
           />
           <pc.Phase
-            includeLabel
+            hasLabel
             value={phase}
             group={group}
             channelId={channelId}

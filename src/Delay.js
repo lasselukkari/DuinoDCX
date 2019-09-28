@@ -107,7 +107,7 @@ class Delay extends PureComponent {
           />
           {group === 'outputs' && (
             <pc.ShortDelay
-              includeLabel
+              hasLabel
               value={shortDelay}
               group={group}
               channelId={channelId}
@@ -117,7 +117,7 @@ class Delay extends PureComponent {
             />
           )}
           <pc.LongDelay
-            includeLabel
+            hasLabel
             value={longDelay}
             group={group}
             channelId={channelId}

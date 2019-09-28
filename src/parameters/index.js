@@ -21,18 +21,18 @@ const enumComponent = function({name, unit, values}, type) {
       channelId: PropTypes.string,
       onChange: PropTypes.func.isRequired,
       eq: PropTypes.string,
-      includeLabel: PropTypes.bool
+      hasLabel: PropTypes.bool
     };
 
     static defaultProps = {
-      includeLabel: false,
+      hasLabel: false,
       eq: null,
       channelId: null,
       group: null
     };
 
     render() {
-      const {value, group, channelId, eq, onChange, includeLabel} = this.props;
+      const {value, group, channelId, eq, onChange, hasLabel} = this.props;
       return (
         <EnumParam
           name={name}
@@ -44,7 +44,7 @@ const enumComponent = function({name, unit, values}, type) {
           channelId={channelId}
           eq={eq}
           enums={values}
-          includeLabel={includeLabel}
+          hasLabel={hasLabel}
           onChange={onChange}
         />
       );
@@ -57,7 +57,7 @@ const enumComponent = function({name, unit, values}, type) {
 const boolComponent = function({name}, type) {
   class BoolComponent extends PureComponent {
     static defaultProps = {
-      includeLabel: false,
+      hasLabel: false,
       inverted: false,
       eq: null,
       group: null,
@@ -71,7 +71,7 @@ const boolComponent = function({name}, type) {
       channelId: PropTypes.string,
       onChange: PropTypes.func.isRequired,
       eq: PropTypes.string,
-      includeLabel: PropTypes.bool
+      hasLabel: PropTypes.bool
     };
 
     render() {
@@ -82,7 +82,7 @@ const boolComponent = function({name}, type) {
         eq,
         inverted,
         onChange,
-        includeLabel
+        hasLabel
       } = this.props;
       return (
         <BoolParam
@@ -94,7 +94,7 @@ const boolComponent = function({name}, type) {
           channelId={channelId}
           eq={eq}
           inverted={inverted}
-          includeLabel={includeLabel}
+          hasLabel={hasLabel}
           onChange={onChange}
         />
       );
@@ -110,7 +110,7 @@ const numberComponent = function({name, unit, min, max, step}, type) {
       formatter: (value, unit) =>
         `${Math.round(value * 10) / 10} ${unit ? unit : ''}`,
       labelFormatter: value => value.toString(),
-      includeLabel: false,
+      hasLabel: false,
       eq: null,
       group: null,
       channelId: null,
@@ -125,7 +125,7 @@ const numberComponent = function({name, unit, min, max, step}, type) {
       onChange: PropTypes.func.isRequired,
       eq: PropTypes.string,
       confirm: PropTypes.func,
-      includeLabel: PropTypes.bool,
+      hasLabel: PropTypes.bool,
       labelFormatter: PropTypes.func
     };
 
@@ -137,7 +137,7 @@ const numberComponent = function({name, unit, min, max, step}, type) {
         eq,
         onChange,
         formatter,
-        includeLabel,
+        hasLabel,
         confirm,
         labelFormatter
       } = this.props;
@@ -154,7 +154,7 @@ const numberComponent = function({name, unit, min, max, step}, type) {
           max={max}
           step={step}
           eq={eq}
-          includeLabel={includeLabel}
+          hasLabel={hasLabel}
           formatter={formatter}
           confirm={confirm}
           labelFormatter={labelFormatter}

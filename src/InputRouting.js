@@ -79,21 +79,21 @@ class InputRouting extends Component {
             <Row>
               <Col xs={12} sm={4}>
                 <pc.InputABSource
-                  includeLabel
+                  hasLabel
                   value={inputABSource}
                   onChange={onChange}
                 />
               </Col>
               <Col xs={12} sm={4}>
                 <pc.InputCGain
-                  includeLabel
+                  hasLabel
                   value={inputCGain}
                   onChange={onChange}
                 />
               </Col>
               <Col xs={12} sm={4}>
                 <pc.StereolinkMode
-                  includeLabel
+                  hasLabel
                   value={stereolinkMode}
                   onChange={onChange}
                 />
@@ -105,24 +105,24 @@ class InputRouting extends Component {
           <Card.Header>Sum Setup</Card.Header>
           <Card.Body>
             <pc.InputSumType
-              includeLabel
+              hasLabel
               value={inputSumType}
               onChange={onChange}
             />
             <pc.InputASumGain
-              includeLabel
+              hasLabel
               value={inputASumGain}
               confirm={this.confirmChange}
               onChange={onChange}
             />
             <pc.InputBSumGain
-              includeLabel
+              hasLabel
               value={inputBSumGain}
               confirm={this.confirmChange}
               onChange={onChange}
             />
             <pc.InputCSumGain
-              includeLabel
+              hasLabel
               value={inputCSumGain}
               confirm={this.confirmChange}
               onChange={onChange}
