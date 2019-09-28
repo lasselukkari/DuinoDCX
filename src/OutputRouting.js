@@ -44,21 +44,21 @@ class OutputRouting extends Component {
             <Row>
               <Col xs={12} sm={4}>
                 <pc.OutputConfig
-                  includeLabel
+                  hasLabel
                   value={outputConfig}
                   onChange={onChange}
                 />
               </Col>
               <Col xs={12} sm={4}>
                 <pc.Stereolink
-                  includeLabel
+                  hasLabel
                   value={stereolink}
                   onChange={onChange}
                 />
               </Col>
               <Col xs={12} sm={4}>
                 <pc.CrossoverLink
-                  includeLabel
+                  hasLabel
                   value={crossoverLink}
                   onChange={onChange}
                 />

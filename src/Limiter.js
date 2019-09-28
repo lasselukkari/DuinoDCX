@@ -38,7 +38,7 @@ class Limiter extends PureComponent {
           <Row>
             <Col xs={6} md={12} lg={6}>
               <pc.Limiter
-                includeLabel
+                hasLabel
                 value={limiter}
                 group={group}
                 channelId={channelId}
@@ -47,7 +47,7 @@ class Limiter extends PureComponent {
             </Col>
             <Col xs={6} md={12} lg={6}>
               <pc.LimiterRelease
-                includeLabel
+                hasLabel
                 value={limiterRelease}
                 group={group}
                 channelId={channelId}
@@ -56,7 +56,7 @@ class Limiter extends PureComponent {
             </Col>
           </Row>
           <pc.LimiterThreshold
-            includeLabel
+            hasLabel
             value={limiterThreshold}
             group={group}
             channelId={channelId}

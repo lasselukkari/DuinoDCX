@@ -28,7 +28,7 @@ class NumberParam extends Component {
     formatter: (value, unit) =>
       `${Math.round(value * 10) / 10} ${unit ? unit : ''}`,
     labelFormatter: value => value.toString(),
-    includeLabel: false,
+    hasLabel: false,
     confirm: () => Promise.resolve(),
     group: null,
     eq: null,
@@ -49,7 +49,7 @@ class NumberParam extends Component {
     eq: PropTypes.string,
     name: PropTypes.string.isRequired,
     confirm: PropTypes.func,
-    includeLabel: PropTypes.bool,
+    hasLabel: PropTypes.bool,
     labelFormatter: PropTypes.func
   };
 
@@ -174,7 +174,7 @@ class NumberParam extends Component {
       min,
       max,
       step,
-      includeLabel,
+      hasLabel,
       formatter,
       labelFormatter
     } = this.props;
@@ -218,7 +218,7 @@ class NumberParam extends Component {
 
     return (
       <FormGroup>
-        {includeLabel !== false && (
+        {hasLabel !== false && (
           <FormLabel>
             {name}
             <br />

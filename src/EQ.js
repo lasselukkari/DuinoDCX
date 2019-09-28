@@ -72,7 +72,7 @@ class EQ extends PureComponent {
           <Row>
             <Col xs={12} sm={4}>
               <pc.EQType
-                includeLabel
+                hasLabel
                 value={eQType}
                 eq={id}
                 group={group}
@@ -82,7 +82,7 @@ class EQ extends PureComponent {
             </Col>
             <Col xs={12} sm={4}>
               <pc.EQFrequency
-                includeLabel
+                hasLabel
                 value={eQFrequency}
                 eq={id}
                 group={group}
@@ -93,7 +93,7 @@ class EQ extends PureComponent {
             <Col xs={12} sm={4}>
               {eQType === 'Bandpass' && (
                 <pc.EQQ
-                  includeLabel
+                  hasLabel
                   value={eQQ}
                   eq={id}
                   group={group}
@@ -103,7 +103,7 @@ class EQ extends PureComponent {
               )}
               {eQType !== 'Bandpass' && (
                 <pc.EQShelving
-                  includeLabel
+                  hasLabel
                   value={eQShelving}
                   eq={id}
                   group={group}
@@ -114,7 +114,7 @@ class EQ extends PureComponent {
             </Col>
           </Row>
           <pc.EQGain
-            includeLabel
+            hasLabel
             value={eQGain}
             eq={id}
             group={group}

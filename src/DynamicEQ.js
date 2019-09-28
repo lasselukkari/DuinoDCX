@@ -96,7 +96,7 @@ class DynamicEQ extends PureComponent {
           <Row>
             <Col md={12} lg={6}>
               <pc.DynamicEQType
-                includeLabel
+                hasLabel
                 value={dynamicEQType}
                 group={group}
                 channelId={channelId}
@@ -105,7 +105,7 @@ class DynamicEQ extends PureComponent {
             </Col>
             <Col md={12} lg={6}>
               <pc.DynamicEQFrequency
-                includeLabel
+                hasLabel
                 value={dynamicEQFrequency}
                 group={group}
                 channelId={channelId}
@@ -117,7 +117,7 @@ class DynamicEQ extends PureComponent {
             <Col md={12} lg={6}>
               {dynamicEQType === 'Bandpass' && (
                 <pc.DynamicEQQ
-                  includeLabel
+                  hasLabel
                   value={dynamicEQQ}
                   group={group}
                   channelId={channelId}
@@ -126,7 +126,7 @@ class DynamicEQ extends PureComponent {
               )}
               {dynamicEQType !== 'Bandpass' && (
                 <pc.DynamicEQShelving
-                  includeLabel
+                  hasLabel
                   value={dynamicEQShelving}
                   group={group}
                   channelId={channelId}
@@ -136,7 +136,7 @@ class DynamicEQ extends PureComponent {
             </Col>
             <Col md={12} lg={6}>
               <pc.DynamicEQAttack
-                includeLabel
+                hasLabel
                 value={dynamicEQAttack}
                 group={group}
                 channelId={channelId}
@@ -147,7 +147,7 @@ class DynamicEQ extends PureComponent {
           <Row>
             <Col md={12} lg={6}>
               <pc.DynamicEQRelease
-                includeLabel
+                hasLabel
                 value={dynamicEQRelease}
                 group={group}
                 channelId={channelId}
@@ -156,7 +156,7 @@ class DynamicEQ extends PureComponent {
             </Col>
             <Col md={12} lg={6}>
               <pc.DynamicEQRatio
-                includeLabel
+                hasLabel
                 value={dynamicEQRatio}
                 group={group}
                 channelId={channelId}
@@ -165,7 +165,7 @@ class DynamicEQ extends PureComponent {
             </Col>
           </Row>
           <pc.DynamicEQGain
-            includeLabel
+            hasLabel
             value={dynamicEQGain}
             group={group}
             channelId={channelId}
@@ -173,7 +173,7 @@ class DynamicEQ extends PureComponent {
             onChange={onChange}
           />
           <pc.DynamicEQThreshold
-            includeLabel
+            hasLabel
             value={dynamicEQThreshold}
             group={group}
             channelId={channelId}
