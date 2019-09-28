@@ -12,7 +12,7 @@ const outputChannels = ['1', '2', '3', '4', '5', '6'];
 class ChannelLevels extends PureComponent {
   static propTypes = {
     device: PropTypes.shape({
-      ready: PropTypes.bool.isRequired,
+      isReady: PropTypes.bool.isRequired,
       inputs: PropTypes.object,
       outputs: PropTypes.object
     }).isRequired,
@@ -102,7 +102,7 @@ class ChannelLevels extends PureComponent {
   render() {
     const {device, inputs, outputs, onChange} = this.props;
 
-    if (!device || !device.ready || !inputs || !outputs) {
+    if (!device || !device.isReady || !inputs || !outputs) {
       return null;
     }
 
