@@ -73,11 +73,11 @@ class DeviceNavigation extends Component {
       return null;
     }
 
-    const xs = currentBreakpoint === 'xs';
+    const isXs = currentBreakpoint === 'xs';
 
     return (
       <Navbar
-        fixed={xs ? 'bottom' : 'top'}
+        fixed={isXs ? 'bottom' : 'top'}
         bg="primary"
         variant="dark"
         className="wide-nav"
@@ -88,7 +88,7 @@ class DeviceNavigation extends Component {
             className="channel-levels no-caret"
             title={<FaSignal />}
             id="channel-levels-dropdown"
-            drop={xs ? 'up' : 'down'}
+            drop={isXs ? 'up' : 'down'}
             onToggle={this.handleLevelsShowChange}
           >
             <ChannelLevels
