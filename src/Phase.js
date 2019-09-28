@@ -4,6 +4,15 @@ import PropTypes from 'prop-types';
 import pc from './parameters';
 
 class Phase extends PureComponent {
+  static propTypes = {
+    channelId: PropTypes.string.isRequired,
+    channelName: PropTypes.string.isRequired,
+    polarity: PropTypes.string.isRequired,
+    phase: PropTypes.number.isRequired,
+    onChange: PropTypes.func.isRequired,
+    group: PropTypes.string.isRequired
+  };
+
   render() {
     const {
       channelName,
@@ -41,14 +50,5 @@ class Phase extends PureComponent {
     );
   }
 }
-
-Phase.propTypes = {
-  channelId: PropTypes.string.isRequired,
-  channelName: PropTypes.string.isRequired,
-  polarity: PropTypes.string.isRequired,
-  phase: PropTypes.number.isRequired,
-  onChange: PropTypes.func.isRequired,
-  group: PropTypes.string.isRequired
-};
 
 export default Phase;

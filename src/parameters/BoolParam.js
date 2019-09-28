@@ -5,6 +5,26 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
 class BoolParam extends Component {
+  static defaultProps = {
+    includeLabel: false,
+    inverted: false,
+    channelId: null,
+    eq: null,
+    group: null
+  };
+
+  static propTypes = {
+    value: PropTypes.bool.isRequired,
+    inverted: PropTypes.bool,
+    param: PropTypes.string.isRequired,
+    group: PropTypes.string,
+    channelId: PropTypes.string,
+    onChange: PropTypes.func.isRequired,
+    eq: PropTypes.string,
+    name: PropTypes.string.isRequired,
+    includeLabel: PropTypes.bool
+  };
+
   handleClick = () => {
     const {param, group, channelId, eq, onChange, value} = this.props;
     onChange({param, group, channelId, eq, value: !value});
@@ -42,25 +62,5 @@ class BoolParam extends Component {
     );
   }
 }
-
-BoolParam.defaultProps = {
-  includeLabel: false,
-  inverted: false,
-  channelId: null,
-  eq: null,
-  group: null
-};
-
-BoolParam.propTypes = {
-  value: PropTypes.bool.isRequired,
-  inverted: PropTypes.bool,
-  param: PropTypes.string.isRequired,
-  group: PropTypes.string,
-  channelId: PropTypes.string,
-  onChange: PropTypes.func.isRequired,
-  eq: PropTypes.string,
-  name: PropTypes.string.isRequired,
-  includeLabel: PropTypes.bool
-};
 
 export default BoolParam;

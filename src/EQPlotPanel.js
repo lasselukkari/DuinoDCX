@@ -13,6 +13,11 @@ class CrossoverPlotPanel extends Component {
     };
   }
 
+  static propTypes = {
+    channels: PropTypes.object.isRequired,
+    group: PropTypes.string.isRequired
+  };
+
   shouldComponentUpdate(nextProps, nextState) {
     const {channels} = this.props;
     const {applyGain} = this.state;
@@ -50,10 +55,5 @@ class CrossoverPlotPanel extends Component {
     );
   }
 }
-
-CrossoverPlotPanel.propTypes = {
-  channels: PropTypes.object.isRequired,
-  group: PropTypes.string.isRequired
-};
 
 export default CrossoverPlotPanel;

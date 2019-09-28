@@ -6,6 +6,16 @@ import Row from 'react-bootstrap/Row';
 import pc from './parameters';
 
 class Limiter extends PureComponent {
+  static propTypes = {
+    channelId: PropTypes.string.isRequired,
+    group: PropTypes.string.isRequired,
+    channelName: PropTypes.string.isRequired,
+    limiter: PropTypes.bool.isRequired,
+    limiterThreshold: PropTypes.number.isRequired,
+    limiterRelease: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired
+  };
+
   render() {
     const {
       channelName,
@@ -57,15 +67,5 @@ class Limiter extends PureComponent {
     );
   }
 }
-
-Limiter.propTypes = {
-  channelId: PropTypes.string.isRequired,
-  group: PropTypes.string.isRequired,
-  channelName: PropTypes.string.isRequired,
-  limiter: PropTypes.bool.isRequired,
-  limiterThreshold: PropTypes.number.isRequired,
-  limiterRelease: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired
-};
 
 export default Limiter;

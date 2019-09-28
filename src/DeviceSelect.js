@@ -4,6 +4,14 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import PropTypes from 'prop-types';
 
 class DeviceSelect extends PureComponent {
+  static propTypes = {
+    onSelect: PropTypes.func.isRequired,
+    devices: PropTypes.array.isRequired,
+    free: PropTypes.number.isRequired,
+    selected: PropTypes.number.isRequired,
+    xs: PropTypes.bool.isRequired
+  };
+
   render() {
     const {onSelect, devices, free, selected, xs} = this.props;
     const selectedDevice = devices.find(({id}) => id === selected);
@@ -31,13 +39,5 @@ class DeviceSelect extends PureComponent {
     );
   }
 }
-
-DeviceSelect.propTypes = {
-  onSelect: PropTypes.func.isRequired,
-  devices: PropTypes.array.isRequired,
-  free: PropTypes.number.isRequired,
-  selected: PropTypes.number.isRequired,
-  xs: PropTypes.bool.isRequired
-};
 
 export default DeviceSelect;

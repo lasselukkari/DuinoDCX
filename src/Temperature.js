@@ -5,6 +5,13 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import PropTypes from 'prop-types';
 
 class Temperature extends PureComponent {
+  static propTypes = {
+    onChange: PropTypes.func.isRequired,
+    delayUnits: PropTypes.string.isRequired,
+    airTemperature: PropTypes.number.isRequired,
+    delayCorrection: PropTypes.bool.isRequired
+  };
+
   handleValueChange = e => {
     const {onChange, delayUnits} = this.props;
     const {value} = e.target;
@@ -62,12 +69,5 @@ class Temperature extends PureComponent {
     );
   }
 }
-
-Temperature.propTypes = {
-  onChange: PropTypes.func.isRequired,
-  delayUnits: PropTypes.string.isRequired,
-  airTemperature: PropTypes.number.isRequired,
-  delayCorrection: PropTypes.bool.isRequired
-};
 
 export default Temperature;

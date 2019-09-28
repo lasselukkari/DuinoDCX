@@ -3,6 +3,27 @@ import PropTypes from 'prop-types';
 import Form from 'react-bootstrap/Form';
 
 class EnumParam extends Component {
+  static defaultProps = {
+    includeLabel: false,
+    eq: null,
+    channelId: null,
+    group: null,
+    unit: null
+  };
+
+  static propTypes = {
+    value: PropTypes.string.isRequired,
+    unit: PropTypes.string,
+    enums: PropTypes.arrayOf(PropTypes.string).isRequired,
+    param: PropTypes.string.isRequired,
+    group: PropTypes.string,
+    channelId: PropTypes.string,
+    onChange: PropTypes.func.isRequired,
+    eq: PropTypes.string,
+    name: PropTypes.string.isRequired,
+    includeLabel: PropTypes.bool
+  };
+
   handleValueChange = e => {
     const {param, group, channelId, eq, onChange} = this.props;
     onChange({param, group, channelId, eq, value: e.target.value});
@@ -36,26 +57,5 @@ class EnumParam extends Component {
     );
   }
 }
-
-EnumParam.defaultProps = {
-  includeLabel: false,
-  eq: null,
-  channelId: null,
-  group: null,
-  unit: null
-};
-
-EnumParam.propTypes = {
-  value: PropTypes.string.isRequired,
-  unit: PropTypes.string,
-  enums: PropTypes.arrayOf(PropTypes.string).isRequired,
-  param: PropTypes.string.isRequired,
-  group: PropTypes.string,
-  channelId: PropTypes.string,
-  onChange: PropTypes.func.isRequired,
-  eq: PropTypes.string,
-  name: PropTypes.string.isRequired,
-  includeLabel: PropTypes.bool
-};
 
 export default EnumParam;

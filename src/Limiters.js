@@ -6,6 +6,12 @@ import isEqual from 'lodash.isequal';
 import Limiter from './Limiter';
 
 class Limiters extends Component {
+  static propTypes = {
+    channels: PropTypes.object.isRequired,
+    group: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired
+  };
+
   shouldComponentUpdate(nextProps) {
     const {channels} = this.props;
     return !isEqual(channels, nextProps.channels);
@@ -43,11 +49,5 @@ class Limiters extends Component {
     );
   }
 }
-
-Limiters.propTypes = {
-  channels: PropTypes.object.isRequired,
-  group: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired
-};
 
 export default Limiters;

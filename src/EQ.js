@@ -7,6 +7,18 @@ import Row from 'react-bootstrap/Row';
 import pc from './parameters';
 
 class EQ extends PureComponent {
+  static propTypes = {
+    channelId: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired,
+    group: PropTypes.string.isRequired,
+    eQType: PropTypes.string.isRequired,
+    eQFrequency: PropTypes.string.isRequired,
+    eQQ: PropTypes.string.isRequired,
+    eQShelving: PropTypes.string.isRequired,
+    eQGain: PropTypes.number.isRequired,
+    onChange: PropTypes.func.isRequired
+  };
+
   confirmChange = ({oldValue, newValue, name, unit, formatter}) => {
     return new Promise((resolve, reject) => {
       if (newValue - oldValue <= 6) {
@@ -120,17 +132,5 @@ class EQ extends PureComponent {
     );
   }
 }
-
-EQ.propTypes = {
-  channelId: PropTypes.string.isRequired,
-  id: PropTypes.string.isRequired,
-  group: PropTypes.string.isRequired,
-  eQType: PropTypes.string.isRequired,
-  eQFrequency: PropTypes.string.isRequired,
-  eQQ: PropTypes.string.isRequired,
-  eQShelving: PropTypes.string.isRequired,
-  eQGain: PropTypes.number.isRequired,
-  onChange: PropTypes.func.isRequired
-};
 
 export default EQ;

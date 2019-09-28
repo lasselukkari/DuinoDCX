@@ -7,6 +7,27 @@ import Row from 'react-bootstrap/Row';
 import pc from './parameters';
 
 class DynamicEQ extends PureComponent {
+  static defaultProps = {
+    channelName: null
+  };
+
+  static propTypes = {
+    dynamicEQ: PropTypes.bool.isRequired,
+    dynamicEQType: PropTypes.string.isRequired,
+    dynamicEQFrequency: PropTypes.string.isRequired,
+    dynamicEQGain: PropTypes.number.isRequired,
+    dynamicEQQ: PropTypes.string.isRequired,
+    dynamicEQShelving: PropTypes.string.isRequired,
+    dynamicEQAttack: PropTypes.string.isRequired,
+    dynamicEQRelease: PropTypes.string.isRequired,
+    dynamicEQRatio: PropTypes.string.isRequired,
+    dynamicEQThreshold: PropTypes.number.isRequired,
+    group: PropTypes.string.isRequired,
+    channelId: PropTypes.string.isRequired,
+    channelName: PropTypes.string,
+    onChange: PropTypes.func.isRequired
+  };
+
   confirmChange = ({oldValue, newValue, name, unit, formatter}) => {
     return new Promise((resolve, reject) => {
       if (newValue - oldValue <= 6) {
@@ -168,26 +189,5 @@ class DynamicEQ extends PureComponent {
     );
   }
 }
-
-DynamicEQ.defaultProps = {
-  channelName: null
-};
-
-DynamicEQ.propTypes = {
-  dynamicEQ: PropTypes.bool.isRequired,
-  dynamicEQType: PropTypes.string.isRequired,
-  dynamicEQFrequency: PropTypes.string.isRequired,
-  dynamicEQGain: PropTypes.number.isRequired,
-  dynamicEQQ: PropTypes.string.isRequired,
-  dynamicEQShelving: PropTypes.string.isRequired,
-  dynamicEQAttack: PropTypes.string.isRequired,
-  dynamicEQRelease: PropTypes.string.isRequired,
-  dynamicEQRatio: PropTypes.string.isRequired,
-  dynamicEQThreshold: PropTypes.number.isRequired,
-  group: PropTypes.string.isRequired,
-  channelId: PropTypes.string.isRequired,
-  channelName: PropTypes.string,
-  onChange: PropTypes.func.isRequired
-};
 
 export default DynamicEQ;

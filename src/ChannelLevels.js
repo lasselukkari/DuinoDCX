@@ -35,6 +35,27 @@ class ChannelLevels extends PureComponent {
     this.state = {selected: {inputs, outputs}};
   }
 
+  static propTypes = {
+    device: PropTypes.shape({
+      ready: PropTypes.bool.isRequired,
+      inputs: PropTypes.object,
+      outputs: PropTypes.object
+    }).isRequired,
+    inputs: PropTypes.arrayOf(
+      PropTypes.shape({
+        limited: PropTypes.bool.isRequired,
+        level: PropTypes.number.isRequired
+      })
+    ).isRequired,
+    outputs: PropTypes.arrayOf(
+      PropTypes.shape({
+        limited: PropTypes.bool.isRequired,
+        level: PropTypes.number.isRequired
+      })
+    ).isRequired,
+    onChange: PropTypes.func.isRequired
+  };
+
   handleMuteAll = value => {
     const {onChange} = this.props;
 
@@ -179,26 +200,5 @@ class ChannelLevels extends PureComponent {
     );
   }
 }
-
-ChannelLevels.propTypes = {
-  device: PropTypes.shape({
-    ready: PropTypes.bool.isRequired,
-    inputs: PropTypes.object,
-    outputs: PropTypes.object
-  }).isRequired,
-  inputs: PropTypes.arrayOf(
-    PropTypes.shape({
-      limited: PropTypes.bool.isRequired,
-      level: PropTypes.number.isRequired
-    })
-  ).isRequired,
-  outputs: PropTypes.arrayOf(
-    PropTypes.shape({
-      limited: PropTypes.bool.isRequired,
-      level: PropTypes.number.isRequired
-    })
-  ).isRequired,
-  onChange: PropTypes.func.isRequired
-};
 
 export default ChannelLevels;

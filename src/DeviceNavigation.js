@@ -14,6 +14,20 @@ class DeviceNavigation extends Component {
     this.state = {};
   }
 
+  static propTypes = {
+    device: PropTypes.shape({
+      ready: PropTypes.bool
+    }).isRequired,
+    page: PropTypes.string.isRequired,
+    blocking: PropTypes.bool.isRequired,
+    inputs: PropTypes.array.isRequired,
+    outputs: PropTypes.array.isRequired,
+    currentBreakpoint: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired,
+    onPageChange: PropTypes.func.isRequired,
+    onBlockingChange: PropTypes.func.isRequired
+  };
+
   shouldComponentUpdate(nextProps, nextState) {
     const {
       device,
@@ -117,19 +131,5 @@ class DeviceNavigation extends Component {
     );
   }
 }
-
-DeviceNavigation.propTypes = {
-  device: PropTypes.shape({
-    ready: PropTypes.bool
-  }).isRequired,
-  page: PropTypes.string.isRequired,
-  blocking: PropTypes.bool.isRequired,
-  inputs: PropTypes.array.isRequired,
-  outputs: PropTypes.array.isRequired,
-  currentBreakpoint: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
-  onPageChange: PropTypes.func.isRequired,
-  onBlockingChange: PropTypes.func.isRequired
-};
 
 export default withBreakpoints(DeviceNavigation);

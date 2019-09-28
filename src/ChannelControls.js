@@ -5,6 +5,25 @@ import MuteButton from './MuteButton';
 import SelectButton from './SelectButton';
 
 class ChannelControls extends PureComponent {
+  static defaultProps = {
+    toggleState: false
+  };
+
+  static propTypes = {
+    name: PropTypes.string.isRequired,
+    channelId: PropTypes.string.isRequired,
+    index: PropTypes.number.isRequired,
+    selected: PropTypes.bool.isRequired,
+    group: PropTypes.string.isRequired,
+    limited: PropTypes.bool.isRequired,
+    level: PropTypes.number.isRequired,
+    isMuted: PropTypes.bool.isRequired,
+    isOutput: PropTypes.bool.isRequired,
+    toggleState: PropTypes.bool,
+    onChange: PropTypes.func.isRequired,
+    onToggleChange: PropTypes.func.isRequired
+  };
+
   render() {
     const {
       limited,
@@ -52,24 +71,5 @@ class ChannelControls extends PureComponent {
     );
   }
 }
-
-ChannelControls.defaultProps = {
-  toggleState: false
-};
-
-ChannelControls.propTypes = {
-  name: PropTypes.string.isRequired,
-  channelId: PropTypes.string.isRequired,
-  index: PropTypes.number.isRequired,
-  selected: PropTypes.bool.isRequired,
-  group: PropTypes.string.isRequired,
-  limited: PropTypes.bool.isRequired,
-  level: PropTypes.number.isRequired,
-  isMuted: PropTypes.bool.isRequired,
-  isOutput: PropTypes.bool.isRequired,
-  toggleState: PropTypes.bool,
-  onChange: PropTypes.func.isRequired,
-  onToggleChange: PropTypes.func.isRequired
-};
 
 export default ChannelControls;

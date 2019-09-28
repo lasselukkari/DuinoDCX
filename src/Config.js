@@ -15,6 +15,10 @@ class Config extends PureComponent {
     this.state = {};
   }
 
+  static propTypes = {
+    xs: PropTypes.bool.isRequired
+  };
+
   handleShowModal = showModal => {
     this.setState({showModal});
   };
@@ -96,9 +100,5 @@ class Config extends PureComponent {
     );
   }
 }
-
-Config.propTypes = {
-  xs: PropTypes.bool.isRequired
-};
 
 export default Config;
