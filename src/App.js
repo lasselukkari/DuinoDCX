@@ -11,10 +11,7 @@ import 'react-toastify/dist/ReactToastify.css'; // eslint-disable-line import/no
 import './App.css'; // eslint-disable-line import/no-unassigned-import
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {page: 'inputs', blocking: true, showModal: false};
-  }
+  state = {page: 'inputs', blocking: true, showModal: false};
 
   shouldComponentUpdate(nextProps, nextState) {
     const {

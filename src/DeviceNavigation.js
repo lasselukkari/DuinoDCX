@@ -9,11 +9,6 @@ import {withBreakpoints} from 'react-breakpoints';
 import ChannelLevels from './ChannelLevels';
 
 class DeviceNavigation extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
   static propTypes = {
     device: PropTypes.shape({
       ready: PropTypes.bool
@@ -27,6 +22,8 @@ class DeviceNavigation extends Component {
     onPageChange: PropTypes.func.isRequired,
     onBlockingChange: PropTypes.func.isRequired
   };
+
+  state = {};
 
   shouldComponentUpdate(nextProps, nextState) {
     const {

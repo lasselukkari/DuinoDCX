@@ -4,18 +4,12 @@ import ToggleButton from 'react-bootstrap/ToggleButton';
 import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup';
 
 class DelayUnits extends PureComponent {
-  constructor(props, context) {
-    super(props, context);
-
-    const {delayUnits} = this.props;
-
-    this.state = {delayUnits};
-  }
-
   static propTypes = {
     delayUnits: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired
   };
+
+  state = {delayUnits: this.props.delayUnits};
 
   handleValueChange = e => {
     const {onChange} = this.props;

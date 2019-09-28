@@ -14,11 +14,8 @@ function handleFetchErrors(response) {
 }
 
 class Connection extends Component {
-  constructor() {
-    super();
-    this.state = {networks: [], password: ''};
-    this.toastOptions = {position: toast.POSITION.BOTTOM_LEFT};
-  }
+  state = {networks: [], password: ''};
+  toastOptions = {position: toast.POSITION.BOTTOM_LEFT};
 
   shouldComponentUpdate(nextProps, nextState) {
     const {networks, selected, password, ip, hostname} = this.state;
