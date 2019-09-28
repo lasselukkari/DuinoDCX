@@ -213,7 +213,7 @@ export default {
   StereolinkMode: components.StereolinkMode,
   DelayLink: components.DelayLink,
   CrossoverLink: components.CrossoverLink,
-  IsDelayCorrectionEnabled: components.IsDelayCorrectionEnabled,
+  IsDelayCorrectionOn: components.IsDelayCorrectionOn,
   AirTemperature: components.AirTemperature,
   DelayUnits: components.DelayUnits,
   MuteOutsWhenPowered: components.MuteOutsWhenPowered,

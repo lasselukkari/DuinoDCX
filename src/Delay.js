@@ -17,7 +17,7 @@ class Delay extends PureComponent {
     longDelay: PropTypes.number.isRequired,
     shortDelay: PropTypes.number,
     airTemperature: PropTypes.number.isRequired,
-    isDelayCorrectionEnabled: PropTypes.bool.isRequired,
+    isDelayCorrectionOn: PropTypes.bool.isRequired,
     delayUnits: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired
   };
@@ -30,12 +30,12 @@ class Delay extends PureComponent {
       channelName,
       channelId,
       airTemperature,
-      isDelayCorrectionEnabled,
+      isDelayCorrectionOn,
       delayUnits,
       onChange,
       group
     } = this.props;
-    const temperature = isDelayCorrectionEnabled ? airTemperature : 20;
+    const temperature = isDelayCorrectionOn ? airTemperature : 20;
     // https://en.wikipedia.org/wiki/Speed_of_sound#Practical_formula_for_dry_air
     const temperatureFactor = 1 / (331.3 + 0.606 * temperature);
     const round = value => Math.round(value * 100) / 100;
