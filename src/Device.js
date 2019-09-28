@@ -8,7 +8,7 @@ import Inputs from './Inputs';
 class Device extends Component {
   static defaultProps = {
     device: {
-      ready: false,
+      isReady: false,
       inputs: null,
       outputs: null,
       setup: null
@@ -19,7 +19,7 @@ class Device extends Component {
     isBlocking: PropTypes.bool.isRequired,
     page: PropTypes.string.isRequired,
     device: PropTypes.shape({
-      ready: PropTypes.bool,
+      isReady: PropTypes.bool,
       inputs: PropTypes.object,
       outputs: PropTypes.object,
       setup: PropTypes.object
@@ -44,7 +44,7 @@ class Device extends Component {
       display: name === exected ? 'block' : 'none'
     });
 
-    if (!device || !device.ready) {
+    if (!device || !device.isReady) {
       return (
         <div className="text-center content-loader" alt="loading">
           <Spinner fadeIn="none" name="line-scale" color="#3498DB" />

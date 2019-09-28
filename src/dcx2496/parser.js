@@ -200,7 +200,7 @@ class Parser {
     const device = Parser.parseDevice([part0Buffer, part1buffer]);
     const devices = Parser.parseDevices(devicesBuffer);
 
-    device.ready = devices.some(({id}) => id === selected);
+    device.isReady = devices.some(({id}) => id === selected);
 
     return {selected, device, devices};
   }

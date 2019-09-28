@@ -10,7 +10,7 @@ import Config from './Config';
 class ConfigNavigation extends Component {
   static defaultProps = {
     device: {
-      ready: false,
+      isReady: false,
       setup: {}
     },
     devices: [],
@@ -20,7 +20,7 @@ class ConfigNavigation extends Component {
 
   static propTypes = {
     device: PropTypes.shape({
-      ready: PropTypes.bool,
+      isReady: PropTypes.bool,
       setup: PropTypes.object
     }),
     devices: PropTypes.array,
@@ -78,7 +78,7 @@ class ConfigNavigation extends Component {
             onSelect={onSelectDevice}
           />
         )}
-        {device && device.ready && (
+        {device && device.isReady && (
           <Localization setup={device.setup} isXs={isXs} onChange={onChange} />
         )}
         <Config isXs={isXs} />

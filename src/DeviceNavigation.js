@@ -11,7 +11,7 @@ import ChannelLevels from './ChannelLevels';
 class DeviceNavigation extends Component {
   static propTypes = {
     device: PropTypes.shape({
-      ready: PropTypes.bool
+      isReady: PropTypes.bool
     }).isRequired,
     page: PropTypes.string.isRequired,
     isBlocking: PropTypes.bool.isRequired,
@@ -69,7 +69,7 @@ class DeviceNavigation extends Component {
       currentBreakpoint
     } = this.props;
 
-    if (!device || !device.ready || !inputs || !outputs) {
+    if (!device || !device.isReady || !inputs || !outputs) {
       return null;
     }
 
