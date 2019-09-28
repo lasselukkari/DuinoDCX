@@ -6,7 +6,7 @@ import SelectButton from './SelectButton';
 
 class ChannelControls extends PureComponent {
   static defaultProps = {
-    toggleState: false
+    isToggled: false
   };
 
   static propTypes = {
@@ -19,7 +19,7 @@ class ChannelControls extends PureComponent {
     level: PropTypes.number.isRequired,
     isMuted: PropTypes.bool.isRequired,
     isOutput: PropTypes.bool.isRequired,
-    toggleState: PropTypes.bool,
+    isToggled: PropTypes.bool,
     onChange: PropTypes.func.isRequired,
     onToggleChange: PropTypes.func.isRequired
   };
@@ -32,7 +32,7 @@ class ChannelControls extends PureComponent {
       channelId,
       isOutput,
       isMuted,
-      toggleState,
+      isToggled,
       onToggleChange,
       group,
       name,
@@ -43,7 +43,7 @@ class ChannelControls extends PureComponent {
       <div>
         <SelectButton
           key={'toggle-' + channelId}
-          state={toggleState}
+          state={isToggled}
           group={group}
           channelId={channelId}
           name={name}
