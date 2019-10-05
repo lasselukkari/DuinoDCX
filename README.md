@@ -63,8 +63,17 @@ It is important that you install the right version of the Arduino ESP32 core.
 
 Download the latest firmaware release from: [https://github.com/lasselukkari/DuinoDCX/releases](https://github.com/lasselukkari/DuinoDCX/releases). You will need the `Source code (zip)` and the StaticFiles.h file located in the release assets. Extract the downloaded zip file and place the `StaticFiles.h` to the `DuinoDCX` directory with the main `DuinoDCX.ino` file.
 
-Next open the `DuinoDCX.ino` file with the Arduino IDE. 
+Next open the `DuinoDCX.ino` file with the Arduino IDE and hook up you development board to the USB port.
 
+If you have the [SerialChiller](https://github.com/lasselukkari/SerialChiller) board you need to follow a few extra steps to make the board boot in the flash mode. Normally when the board starts it runs the application that has been previously flashed. Instead of that we want to make the board run a special program that reads and stores the new firmware that we are about to upload.
+
+<img src="https://i.imgur.com/sKjFjxz.jpg" width="480">
+
+To make the [SerialChiller](https://github.com/lasselukkari/SerialChiller) start in the boot mode press and hold the small button on the right side of the ESP32 module while you plug the USB connector to the computer. The button needs to be pressed down when the board gets powered. Once the USB plug has been connected you can release the button.
+
+The [SerialChiller](https://github.com/lasselukkari/SerialChiller) uses a cheap chinece clone of a popular USB to serial port adapter. On Windows people have had problems with the latest official drivers provided by the original manufacturer. These drivers have been reported to work better: [http://www.miklor.com/COM/UV_Drivers.php#install](http://www.miklor.com/COM/UV_Drivers.php#install).
+
+#### Arduino IDe settings
 Make sure you have the correct board type selected.
 
 <img src="images/board-select.jpg">
@@ -82,6 +91,7 @@ Now upload the sketch.
 <img src="images/upload-menu.jpg">
 
 Once the uploading is completed we are done.
+
 
 ## 3. Hotspot Access
 The controller creates a wifi network with SSID `DCX2496`. The default password is `Ultradrive`.
