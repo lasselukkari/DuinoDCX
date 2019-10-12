@@ -1,7 +1,5 @@
 /*
-  Link the male RS232 connector pins 2 and 3 with a standard jumper cable. It is
-  important that you test the whole connection chain including any possible
-  cables or adatpers as they may change the outcome.
+  Link the male RS232 connector pins 2 and 3 with a standard jumper cable.
 
   Optionally link the pins 7 and 8 to verify that the flow control is working.
 
