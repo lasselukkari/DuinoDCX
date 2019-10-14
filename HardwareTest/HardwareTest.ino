@@ -1,56 +1,32 @@
-/*
-  Link the male RS232 connector pins 2 and 3 with a standard jumper cable.
+// Link the male RS232 connector pins 2 (RXD) and 3 (TXD) with a standard jumper 
+// cable. It is important that you test the whole connection chain including 
+// any possible cables or adatpers as they may change the outcome.
 
-  Optionally link the pins 7 and 8 to verify that the flow control is working.
-
-  If you see errors with the RX/TX line your setup can not work.
-  If you see errors with the RTS/CTS line do not enable hardware flow control.
-*/
-
+// The serial port logging verifies that the loop is working properly but the
+// polarity of the signals may still be wrong. Set your multimeter to 20V DC 
+// and take a measurement between the RS232 pins 5 (GND) and 3 (TXD). The 
+// reading should fluctuate between -5V and 5V. If you instead get the expected
+// result between the 5 (GND) and 2 (RXD) the polarity is the wrong way around.
+  
 int txPin = 17;
 int rxPin = 16;
-
-int rtsPin = 21;
-int ctsPin = 22;
 
 void setup() {
   Serial.begin(115200);
   pinMode(txPin, OUTPUT);
-  pinMode(rxPin, INPUT);
-  pinMode(rtsPin, OUTPUT);
-  pinMode(ctsPin, INPUT);
+  pinMode(rxPin, INPUT_PULLUP);
 }
 
 void loop() {
-  delay(1000);
   digitalWrite(txPin, LOW);
-  if (!digitalRead(rxPin)) {
-    Serial.println("RX/TX circuit LOW: ERROR");
-  } else {
-    Serial.println("RX/TX circuit LOW: OK");
-  }
-
   delay(1000);
+  
+  if(digitalRead(rxPin)) {
+    Serial.println("Error");
+  } else {
+    Serial.println("OK");
+  }
+  
   digitalWrite(txPin, HIGH);
-  if (digitalRead(rxPin)) {
-    Serial.println("RX/TX circuit HIGH: ERROR");
-  } else {
-    Serial.println("RX/TX circuit HIGH: OK");
-  }
-
   delay(1000);
-  digitalWrite(rtsPin, LOW);
-  if (!digitalRead(ctsPin)) {
-    Serial.println("RTS/CTS circuit LOW: ERROR");
-  } else {
-    Serial.println("RTS/CTS circuit LOW: OK");
-  }
-
-  delay(1000);
-  digitalWrite(rtsPin, HIGH);
-  if (digitalRead(ctsPin)) {
-    Serial.println("RTS/CTSX circuit HIGH: ERROR");
-  } else {
-    Serial.println("RTS/CTS circuit HIGH: OK");
-  }
 }
