@@ -331,7 +331,6 @@ void processWebServer() {
 
   if (client.connected()) {
     app.process(&client);
-    client.flush();
   }
 }
 
