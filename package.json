@@ -38,7 +38,7 @@
     "react-spinkit": "3.0.0",
     "react-toastify": "5.4.0",
     "react-window-size": "1.2.2",
-    "recharts": "1.8.2",
+    "recharts": "1.8.3",
     "superagent": "5.1.0"
   },
   "scripts": {
