@@ -55,7 +55,7 @@ Go to the  `SETUP -> MICELLANIOUS` config page. The `PORT` setting should be eit
 
 Unless you already have the Arduino and Arduino ESP32 core development environments ready you will need to install:
 * [Arduino IDE](https://www.arduino.cc/en/main/software)
-* [Arduino ESP32 core 1.0.3-rc2 or later](https://github.com/espressif/arduino-esp32#installation-instructions)
+* [Arduino ESP32 core 1.0.4](https://github.com/espressif/arduino-esp32#installation-instructions)
 
 It is important that you install the right version of the Arduino ESP32 core.
 
