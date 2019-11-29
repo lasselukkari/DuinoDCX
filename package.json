@@ -12,7 +12,7 @@
     "awot-scripts": "0.0.33",
     "eslint-config-xo-react": "0.20.0",
     "eslint-plugin-babel": "5.3.0",
-    "eslint-plugin-react": "7.16.0",
+    "eslint-plugin-react": "7.17.0",
     "prettier": "1.19.1",
     "react-scripts": "3.2.0",
     "xo": "0.25.3"
