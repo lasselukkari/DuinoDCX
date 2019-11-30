@@ -18,7 +18,7 @@
     "xo": "0.25.3"
   },
   "dependencies": {
-    "bootswatch": "4.3.1",
+    "bootswatch": "4.4.1",
     "compare-versions": "3.5.1",
     "lodash.clonedeep": "4.5.0",
     "lodash.isequal": "4.5.0",
