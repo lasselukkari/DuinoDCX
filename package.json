@@ -39,7 +39,7 @@
     "react-toastify": "5.4.1",
     "react-window-size": "1.2.2",
     "recharts": "1.8.5",
-    "superagent": "5.1.1"
+    "superagent": "5.1.2"
   },
   "scripts": {
     "start": "react-scripts start",
