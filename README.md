@@ -1,7 +1,7 @@
 
 DuinoDCX [![Build Status](https://travis-ci.org/lasselukkari/DuinoDCX.svg?branch=master)](https://travis-ci.org/lasselukkari/DuinoDCX)
 ========
-ESP32 based WIFI remote controller for the [Behringer Ultradrive Pro / DCX2496](https://www.behringer.com/p/P0B6H). No wifi router or internet connection needed, no applications to install.
+ESP32 based WIFI remote controller for the [Behringer Ultradrive Pro / DCX2496](https://www.behringer.com/p/P0B6H).
 
 ## Disclaimer
 I take no responsibility if you destroy your sound system using this.
@@ -9,7 +9,7 @@ I take no responsibility if you destroy your sound system using this.
 ## Support
 The project is free software and there is no official support.
 
-If you need help or have a feature request please [create an issue](https://github.com/lasselukkari/DuinoDCX/issues/new/choose) rather than sending email to me directly.
+If you need help or have a feature request please [create an issue](https://github.com/lasselukkari/DuinoDCX/issues/new/choose).
 
 ## Demo
 http://duinodcx.herokuapp.com/
@@ -18,13 +18,12 @@ http://duinodcx.herokuapp.com/
 [![DuinoDCX Demo Video](https://img.youtube.com/vi/Z5CDjev1ydA/0.jpg)](https://www.youtube.com/watch?v=Z5CDjev1ydA)
 
 ## User Guide
-[DuinoDCX User Guide](https://lasselukkari.github.io/DuinoDCX). The guide includes step by step instruction for building the harware setup and goes trough the software installation and basic usage.  Contributions to the manual are really welcome. 
+[DuinoDCX User Guide](https://lasselukkari.github.io/DuinoDCX). The guide includes step by step instruction for building the harware setup and goes trough the software installation and basic usage. Contributions to the manual are really welcome. 
   
 ## Development
 Install [Node.js](https://nodejs.org), [Arduino IDE](https://www.arduino.cc/en/Main/Software) and the support for the [ESP32](https://github.com/espressif/arduino-esp32#installation-instructions) boards.
 
 ### Required Hardware
-
 * ESP32 development board
 * RS232 To TTL converter
 
