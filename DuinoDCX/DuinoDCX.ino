@@ -15,6 +15,7 @@
 #define DEFAULT_SOFT_AP_PASSWORD "Ultradrive"
 #define DEFAULT_MDNS_NAME "ultradrive"
 #define DEFAULT_FLOW_CONTROL false
+#define DEFAULT_AUTO_DISABLE_AP false
 
 #define RTS_PIN 21
 #define CTS_PIN 22
@@ -27,6 +28,7 @@
 #define SOFT_AP_SSID_KEY "apSsid"
 #define MDNS_HOST_KEY "mdnsHost"
 #define FLOW_CONTROL_KEY "flowControl"
+#define AUTO_DISABLE_AP_KEY "autoDisableAP"
 
 #define AUTH_BUFFER_LENGHT 200
 #define MAX_DEVICES 16
@@ -54,6 +56,7 @@ char softApSsid[SOFT_AP_SSID_LENGTH];
 char softApPassword[SOFT_AP_PASSWORD_LENGTH];
 char mdnsName[MDDNS_NAME_LENGTH];
 bool flowControl;
+bool autoDisableAP;
 
 char authBuffer[AUTH_BUFFER_LENGHT];
 char ssidBuffer[SSID_MAX_LENGTH];
@@ -180,6 +183,11 @@ void getSettings(Request &req, Response &res) {
   res.print("\"" FLOW_CONTROL_KEY "\":");
   res.print("\"");
   res.print(flowControl);
+  res.print("\", ");
+
+  res.print("\"" AUTO_DISABLE_AP_KEY "\":");
+  res.print("\"");
+  res.print(autoDisableAP);
   res.print("\"");
 
   res.print("}");
@@ -220,6 +228,9 @@ void updateSettings(Request &req, Response &res) {
     } else if (strcmp(name, FLOW_CONTROL_KEY) == 0) {
       bool isEnabled = (value[0] != '0');
       preferences.putBool(FLOW_CONTROL_KEY, isEnabled);
+    } else if (strcmp(name, AUTO_DISABLE_AP_KEY) == 0) {
+      bool isEnabled = (value[0] != '0');
+      preferences.putBool(AUTO_DISABLE_AP_KEY, isEnabled);
     } else {
       preferences.end();
       return res.sendStatus(400);
@@ -372,6 +383,8 @@ void loadPreferences() {
 
   flowControl = preferences.getBool(FLOW_CONTROL_KEY, DEFAULT_FLOW_CONTROL);
 
+  autoDisableAP = preferences.getBool(AUTO_DISABLE_AP_KEY, DEFAULT_AUTO_DISABLE_AP);
+
   preferences.end();
 }
 
@@ -413,12 +426,6 @@ void setup() {
     pinMode(CTS_PIN, INPUT);
   }
 
-  WiFi.softAP(softApSsid, softApPassword);
-
-  MDNS.begin(mdnsName);
-  MDNS.addService("http", "tcp", 80);
-
-  setupHttpServer();
   WiFi.begin();
   unsigned long timeout = millis() + CONNECTION_TIMEOUT;
   while (WiFi.status() != WL_CONNECTED && millis() < timeout) {
@@ -428,6 +435,15 @@ void setup() {
   if (WiFi.status() != WL_CONNECTED) {
     WiFi.disconnect(false, false);
   }
+
+  if (WiFi.status() != WL_CONNECTED || autoDisableAP == false) {
+    WiFi.softAP(softApSsid, softApPassword);
+  }
+
+  setupHttpServer();
+
+  MDNS.begin(mdnsName);
+  MDNS.addService("http", "tcp", 80);
 }
 
 void loop() {
