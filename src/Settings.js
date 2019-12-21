@@ -23,7 +23,14 @@ class Settings extends PureComponent {
       .then(handleFetchErrors)
       .then(response => response.json())
       .then(settings => {
-        const {apSsid, apPassword, auth, mdnsHost, flowControl} = settings;
+        const {
+          apSsid,
+          apPassword,
+          auth,
+          mdnsHost,
+          flowControl,
+          autoDisableAP
+        } = settings;
 
         const basicAuth = atob(auth.replace('Basic ', '')).split(':');
         const username = basicAuth[0];
@@ -36,6 +43,7 @@ class Settings extends PureComponent {
           apPassword,
           mdnsHost,
           flowControl,
+          autoDisableAP,
           loadingDone: true
         });
       });
@@ -79,6 +87,11 @@ class Settings extends PureComponent {
     this.setState({flowControl});
   };
 
+  handleAutoDisableAPChange = e => {
+    const autoDisableAP = e.target.value;
+    this.setState({autoDisableAP});
+  };
+
   handleSubmit = e => {
     e.preventDefault();
 
@@ -88,7 +101,8 @@ class Settings extends PureComponent {
       apSsid,
       apPassword,
       mdnsHost,
-      flowControl
+      flowControl,
+      autoDisableAP
     } = this.state;
     const auth = `Basic ${btoa(`${username}:${password}`)}`;
 
@@ -97,6 +111,7 @@ class Settings extends PureComponent {
     formData.append('apPassword', apPassword);
     formData.append('mdnsHost', mdnsHost);
     formData.append('flowControl', flowControl);
+    formData.append('autoDisableAP', autoDisableAP);
     formData.append('auth', auth);
     const data = new URLSearchParams(formData);
 
@@ -152,6 +167,7 @@ class Settings extends PureComponent {
       apPassword,
       mdnsHost,
       flowControl,
+      autoDisableAP,
       loadingDone
     } = this.state;
 
@@ -239,6 +255,22 @@ class Settings extends PureComponent {
               as="select"
               value={flowControl}
               onChange={this.handleFlowControlChange}
+            >
+              <option value="0">Disabled</option>
+              <option value="1">Enabled</option>
+            </FormControl>
+          </Col>
+        </Form.Group>
+
+        <Form.Group as={Row}>
+          <Form.Label column sm="5">
+            Automatically disable AP
+          </Form.Label>
+          <Col sm="7">
+            <FormControl
+              as="select"
+              value={autoDisableAP}
+              onChange={this.handleAutoDisableAPChange}
             >
               <option value="0">Disabled</option>
               <option value="1">Enabled</option>
