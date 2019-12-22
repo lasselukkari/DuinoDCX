@@ -423,7 +423,7 @@ void setup() {
   if (flowControl) {
     deviceManager.enableFlowControl(true);
     pinMode(RTS_PIN, OUTPUT);
-    pinMode(CTS_PIN, INPUT);
+    pinMode(CTS_PIN, INPUT_PULLUP);
   }
 
   WiFi.begin();
