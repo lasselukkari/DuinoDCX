@@ -22,7 +22,7 @@
     "compare-versions": "3.5.1",
     "lodash.clonedeep": "4.5.0",
     "lodash.isequal": "4.5.0",
-    "mathjs": "6.4.0",
+    "mathjs": "6.5.0",
     "prop-types": "15.7.2",
     "rc-slider": "8.7.1",
     "rc-tooltip": "3.7.3",
