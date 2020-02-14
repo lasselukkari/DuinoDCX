@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "bootswatch": "4.4.1",
-    "compare-versions": "3.5.1",
+    "compare-versions": "3.6.0",
     "lodash.clonedeep": "4.5.0",
     "lodash.isequal": "4.5.0",
     "mathjs": "6.6.0",
