@@ -10,43 +10,43 @@ import {toast} from 'react-toastify';
 class Upload extends PureComponent {
   state = {};
 
-  fetchVersion() {
-    return fetch('/api/version', {credentials: 'same-origin'})
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(response.statusText);
-        }
-
-        return response;
-      })
-      .then(response => response.json())
-      .then(version => {
-        this.setState({version});
-      });
-  }
-
-  fetchReleases() {
-    return fetch('https://api.github.com/repos/lasselukkari/DuinoDCX/releases')
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(response.statusText);
-        }
-
-        return response;
-      })
-      .then(response => response.json())
-      .then(releases => {
-        this.setState({releases});
-      });
-  }
-
   componentDidMount() {
-    this.fetchVersion().catch(() => {
+    this.fetchVersion();
+    this.fetchReleases();
+  }
+
+  async fetchVersion() {
+    try {
+      const response = await fetch('/api/version', {
+        credentials: 'same-origin'
+      });
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+
+      const version = await response.json();
+
+      this.setState({version});
+    } catch {
       toast.error(`Fetching firmware version failed.`, {
         position: toast.POSITION.BOTTOM_LEFT
       });
-    });
-    this.fetchReleases().catch(() => {});
+    }
+  }
+
+  async fetchReleases() {
+    try {
+      const response = fetch(
+        'https://api.github.com/repos/lasselukkari/DuinoDCX/releases'
+      );
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+
+      const releases = await response.json();
+
+      this.setState({releases});
+    } catch {}
   }
 
   handleDrop = acceptedFiles => {
