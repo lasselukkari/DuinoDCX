@@ -82,7 +82,7 @@ class NumberParam extends Component {
     this.overlay.hide();
   };
 
-  handleOnAfterChange = newValue => {
+  async confirmChange(newValue) {
     const {
       name,
       unit,
@@ -100,15 +100,16 @@ class NumberParam extends Component {
       return this.setState({moving: false});
     }
 
-    confirm({oldValue, newValue, unit, name, formatter})
-      .then(() => {
-        this.setState({moving: false, manualValue: newValue});
-        onChange({param, group, channelId, eq, value: newValue});
-      })
-      .catch(() => {
-        return this.setState({moving: false, value: oldValue});
-      });
-  };
+    try {
+      await confirm({oldValue, newValue, unit, name, formatter});
+      this.setState({moving: false, manualValue: newValue});
+      onChange({param, group, channelId, eq, value: newValue});
+    } catch {
+      this.setState({moving: false, value: oldValue});
+    }
+  }
+
+  handleOnAfterChange = newValue => this.confirmChange(newValue);
 
   handleReduction = () => {
     const {

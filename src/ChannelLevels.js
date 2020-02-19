@@ -72,7 +72,7 @@ class ChannelLevels extends PureComponent {
     onChange(commands);
   };
 
-  handleToggleChange = ({group, index, selected: isSelected}) => {
+  handleToggleChange = ({group, index, isSelected}) => {
     const selected = Object.assign({}, this.state.selected);
     selected[group][index].isSelected = !isSelected;
     this.setState(() => ({selected}));

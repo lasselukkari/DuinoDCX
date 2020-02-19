@@ -7,54 +7,51 @@ import Row from 'react-bootstrap/Row';
 import Spinner from 'react-spinkit';
 import {toast} from 'react-toastify';
 
-function handleFetchErrors(response) {
-  if (!response.ok) {
-    throw new Error(response.statusText);
-  }
-
-  return response;
-}
-
 class Settings extends PureComponent {
   state = {};
-
-  fetchSettings() {
-    return fetch('/api/settings', {credentials: 'same-origin'})
-      .then(handleFetchErrors)
-      .then(response => response.json())
-      .then(settings => {
-        const {
-          apSsid,
-          apPassword,
-          auth,
-          mdnsHost,
-          flowControl,
-          autoDisableAP
-        } = settings;
-
-        const basicAuth = atob(auth.replace('Basic ', '')).split(':');
-        const username = basicAuth[0];
-        const password = basicAuth[1];
-
-        this.setState({
-          username,
-          password,
-          apSsid,
-          apPassword,
-          mdnsHost,
-          flowControl,
-          autoDisableAP,
-          loadingDone: true
-        });
-      });
-  }
+  toastOptions = {position: toast.POSITION.BOTTOM_LEFT};
 
   componentDidMount() {
-    this.fetchSettings().catch(() => {
+    this.fetchSettings();
+  }
+
+  async fetchSettings() {
+    try {
+      const response = await fetch('/api/settings', {
+        credentials: 'same-origin'
+      });
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+
+      const {
+        apSsid,
+        apPassword,
+        auth,
+        mdnsHost,
+        flowControl,
+        autoDisableAP
+      } = await response.json();
+
+      const basicAuth = atob(auth.replace('Basic ', '')).split(':');
+      const username = basicAuth[0];
+      const password = basicAuth[1];
+
+      this.setState({
+        username,
+        password,
+        apSsid,
+        apPassword,
+        mdnsHost,
+        flowControl,
+        autoDisableAP,
+        loadingDone: true
+      });
+    } catch {
       toast.error(`Fetching settings failed.`, {
         position: toast.POSITION.BOTTOM_LEFT
       });
-    });
+    }
   }
 
   handleUsernameChange = e => {
@@ -92,9 +89,7 @@ class Settings extends PureComponent {
     this.setState({autoDisableAP});
   };
 
-  handleSubmit = e => {
-    e.preventDefault();
-
+  async updateSettings() {
     const {
       username,
       password,
@@ -115,22 +110,26 @@ class Settings extends PureComponent {
     formData.append('auth', auth);
     const data = new URLSearchParams(formData);
 
-    fetch('/api/settings', {
-      method: 'PATCH',
-      body: data,
-      credentials: 'same-origin'
-    })
-      .then(handleFetchErrors)
-      .then(() => {
-        toast.info(`Settings saved. Device will reboot now.`, {
-          position: toast.POSITION.BOTTOM_LEFT
-        });
-      })
-      .catch(() => {
-        toast.error(`Failed to update settings`, {
-          position: toast.POSITION.BOTTOM_LEFT
-        });
+    try {
+      const response = await fetch('/api/settings', {
+        method: 'PATCH',
+        body: data,
+        credentials: 'same-origin'
       });
+
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+
+      toast.info(`Settings saved. Device will reboot now.`, this.toastOptions);
+    } catch {
+      toast.error(`Failed to update settings`, this.toastOptions);
+    }
+  }
+
+  handleSubmit = e => {
+    e.preventDefault();
+    this.updateSettings();
   };
 
   loadingSpinner() {

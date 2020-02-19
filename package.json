@@ -104,7 +104,7 @@
     },
     "action": "upload"
   },
-  "proxy": "http://192.168.1.110",
+  "proxy": "http://192.168.1.109",
   "renovate": {
     "extends": [
       "config:base"

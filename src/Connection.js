@@ -5,14 +5,6 @@ import Spinner from 'react-spinkit';
 import isEqual from 'lodash.isequal';
 import {toast} from 'react-toastify';
 
-function handleFetchErrors(response) {
-  if (!response.ok) {
-    throw new Error(response.statusText);
-  }
-
-  return response;
-}
-
 class Connection extends Component {
   state = {networks: [], password: ''};
   toastOptions = {position: toast.POSITION.BOTTOM_LEFT};
@@ -29,34 +21,41 @@ class Connection extends Component {
     );
   }
 
-  updateConnection() {
-    return fetch('/api/connection', {credentials: 'same-origin'})
-      .then(handleFetchErrors)
-      .then(response => response.json())
-      .then(connection => {
-        this.setState({selected: connection.current, ...connection});
-      });
-  }
-
   componentDidMount() {
-    this.updateConnection()
-      .then(() => this.updateNetworks())
-      .catch(() =>
-        toast.error(`Fetching WiFi status failed.`, this.toastOptions)
-      );
+    this.fetchConnection();
+    this.fetchNetworks();
   }
 
-  updateNetworks() {
-    return fetch('/api/networks', {credentials: 'same-origin'})
-      .then(handleFetchErrors)
-      .then(response => response.json())
-      .then(networks => {
-        if (networks.length === 0) {
-          return this.updateNetworks();
-        }
-
-        this.setState({networks});
+  async fetchConnection() {
+    try {
+      const response = await fetch('/api/connection', {
+        credentials: 'same-origin'
       });
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+
+      const connection = await response.json();
+      this.setState({selected: connection.current, ...connection});
+    } catch {
+      toast.error(`Fetching WiFi status failed.`, this.toastOptions);
+    }
+  }
+
+  async fetchNetworks() {
+    try {
+      const response = await fetch('/api/networks', {
+        credentials: 'same-origin'
+      });
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+
+      const networks = await response.json();
+      this.setState({networks});
+    } catch {
+      toast.error(`Fetching WiFi status failed.`, this.toastOptions);
+    }
   }
 
   handleNetworkSelect = e => {
@@ -69,8 +68,7 @@ class Connection extends Component {
     this.setState({password});
   };
 
-  handleSubmit = e => {
-    e.preventDefault();
+  async updateConnection() {
     this.setState({ip: null});
 
     const {selected, password} = this.state;
@@ -79,38 +77,52 @@ class Connection extends Component {
     formData.append('password', password);
     const data = new URLSearchParams(formData);
 
-    fetch('/api/connection', {
-      method: 'PATCH',
-      body: data,
-      credentials: 'same-origin'
-    })
-      .then(handleFetchErrors)
-      .then(response => response.json())
-      .then(connection => {
-        this.setState({
-          ...connection,
-          selected: connection.current,
-          password: ''
-        });
-      })
-      .catch(() => {
-        this.setState({ip: '0.0.0.0'});
-        toast.error(
-          `Could not connect to network ${selected}`,
-          this.toastOptions
-        );
+    try {
+      const response = await fetch('/api/connection', {
+        method: 'PATCH',
+        body: data,
+        credentials: 'same-origin'
       });
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+
+      const connection = await response.json();
+      this.setState({
+        ...connection,
+        selected: connection.current,
+        password: ''
+      });
+    } catch {
+      this.setState({ip: '0.0.0.0'});
+      toast.error(
+        `Could not connect to network ${selected}`,
+        this.toastOptions
+      );
+    }
+  }
+
+  async diconnectConnetion() {
+    try {
+      await fetch('/api/connection', {
+        credentials: 'same-origin',
+        method: 'DELETE'
+      });
+
+      this.updateConnection();
+    } catch {
+      toast.error('WiFi disconnected', this.toastOptions);
+    }
+  }
+
+  handleSubmit = e => {
+    e.preventDefault();
+    this.updateConnection();
   };
 
   handleDisconnection = e => {
     e.preventDefault();
-    return fetch('/api/connection', {
-      credentials: 'same-origin',
-      method: 'DELETE'
-    })
-      .then(handleFetchErrors)
-      .then(() => this.updateConnection())
-      .catch(() => toast.error('WiFi disconnected', this.toastOptions));
+    this.diconnectConnetion();
   };
 
   loadingSpinner() {
