@@ -15,7 +15,7 @@
     "eslint-plugin-react": "7.19.0",
     "prettier": "1.19.1",
     "react-scripts": "3.4.0",
-    "xo": "0.27.2"
+    "xo": "0.28.0"
   },
   "dependencies": {
     "bootswatch": "4.4.1",
