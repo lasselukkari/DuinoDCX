@@ -44,7 +44,7 @@ class EQ extends PureComponent {
           Dialog.CancelAction(() => reject()), // eslint-disable-line new-cap
           Dialog.OKAction(() => resolve()) // eslint-disable-line new-cap
         ],
-        onHide: dialog => {
+        onHide: (dialog) => {
           dialog.hide();
           reject();
         }
@@ -124,7 +124,7 @@ class EQ extends PureComponent {
           />
         </Card.Body>
         <Dialog
-          ref={element => {
+          ref={(element) => {
             this.dialog = element;
           }}
         />

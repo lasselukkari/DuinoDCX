@@ -75,7 +75,7 @@ class CrossoverPlot extends Component {
     return frequencyPoints.map((hz, index) => {
       const result = {hz};
 
-      values.forEach(value => {
+      values.forEach((value) => {
         const rounded = Math.round(value.data[index] * 100) / 100;
         result[value.channel] = isGainApplied ? rounded + value.gain : rounded;
       });
@@ -132,7 +132,7 @@ class CrossoverPlot extends Component {
         baseValue="dataMin"
         margin={{top: 20, right: 10, bottom: 5, left: -30}}
       >
-        <XAxis dataKey="hz" tickFormatter={tick => Math.round(tick)} />
+        <XAxis dataKey="hz" tickFormatter={(tick) => Math.round(tick)} />
         <YAxis
           allowDataOverflow
           type="number"

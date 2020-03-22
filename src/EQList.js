@@ -90,7 +90,7 @@ class EQs extends Component {
               />
             </Card.Body>
           </Card>
-          {activeEQs.map(eq => {
+          {activeEQs.map((eq) => {
             const {eQType, eQFrequency, eQQ, eQShelving, eQGain} = eq;
             return (
               <EQ

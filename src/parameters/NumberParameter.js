@@ -27,7 +27,7 @@ class NumberParameter extends Component {
   static defaultProps = {
     formatter: (value, unit) =>
       `${Math.round(value * 10) / 10} ${unit ? unit : ''}`,
-    labelFormatter: value => value.toString(),
+    labelFormatter: (value) => value.toString(),
     hasLabel: false,
     confirm: () => Promise.resolve(),
     group: null,
@@ -70,9 +70,9 @@ class NumberParameter extends Component {
 
   handleOnBeforeChange = () => this.setState({moving: true});
 
-  handleOnChange = value => this.setState({value});
+  handleOnChange = (value) => this.setState({value});
 
-  handleManualChange = manualValue => this.setState({manualValue});
+  handleManualChange = (manualValue) => this.setState({manualValue});
 
   handleManualSet = () => {
     const {param, group, channelId, eq, onChange} = this.props;
@@ -109,7 +109,7 @@ class NumberParameter extends Component {
     }
   }
 
-  handleOnAfterChange = newValue => this.confirmChange(newValue);
+  handleOnAfterChange = (newValue) => this.confirmChange(newValue);
 
   handleReduction = () => {
     const {
@@ -153,7 +153,7 @@ class NumberParameter extends Component {
 
   handlePressRelease = () => clearTimeout(this.pressTimer);
 
-  createRef = overlay => {
+  createRef = (overlay) => {
     if (!overlay) {
       return;
     }
@@ -248,7 +248,7 @@ class NumberParameter extends Component {
                 max={max}
                 min={min}
                 step={step}
-                tipFormatter={value => formatter(value, unit)}
+                tipFormatter={(value) => formatter(value, unit)}
                 onChange={this.handleOnChange}
                 onBeforeChange={this.handleOnBeforeChange}
                 onAfterChange={this.handleOnAfterChange}

@@ -13,7 +13,7 @@ const commandTypes = {
   OUTPUT_COMMAND: 3
 };
 
-const enumComponent = function({name, unit, values}, type) {
+const enumComponent = function ({name, unit, values}, type) {
   class EnumComponent extends PureComponent {
     static propTypes = {
       value: PropTypes.string.isRequired,
@@ -54,7 +54,7 @@ const enumComponent = function({name, unit, values}, type) {
   return EnumComponent;
 };
 
-const boolComponent = function({name}, type) {
+const boolComponent = function ({name}, type) {
   class BoolComponent extends PureComponent {
     static defaultProps = {
       hasLabel: false,
@@ -108,12 +108,12 @@ const boolComponent = function({name}, type) {
   return BoolComponent;
 };
 
-const numberComponent = function({name, unit, min, max, step}, type) {
+const numberComponent = function ({name, unit, min, max, step}, type) {
   class NumberComponent extends PureComponent {
     static defaultProps = {
       formatter: (value, unit) =>
         `${Math.round(value * 10) / 10} ${unit ? unit : ''}`,
-      labelFormatter: value => value.toString(),
+      labelFormatter: (value) => value.toString(),
       hasLabel: false,
       eq: null,
       group: null,
@@ -171,7 +171,7 @@ const numberComponent = function({name, unit, min, max, step}, type) {
   return NumberComponent;
 };
 
-const createComponent = commmand => {
+const createComponent = (commmand) => {
   if (commmand.type === 'enum') {
     return enumComponent(commmand);
   }
@@ -185,21 +185,21 @@ const createComponent = commmand => {
   }
 };
 
-const squeeze = word => word.replace(/\s/g, '');
+const squeeze = (word) => word.replace(/\s/g, '');
 
-Parser.commands.setupCommands.forEach(command => {
+Parser.commands.setupCommands.forEach((command) => {
   components[squeeze(command.name)] = createComponent(command);
 });
 
-Parser.commands.inputOutputCommands.forEach(command => {
+Parser.commands.inputOutputCommands.forEach((command) => {
   components[squeeze(command.name)] = createComponent(command);
 });
 
-Parser.commands.eqCommands.forEach(command => {
+Parser.commands.eqCommands.forEach((command) => {
   components[squeeze(command.name)] = createComponent(command);
 });
 
-Parser.commands.outputCommands.forEach(command => {
+Parser.commands.outputCommands.forEach((command) => {
   components[squeeze(command.name)] = createComponent(command);
 });
 

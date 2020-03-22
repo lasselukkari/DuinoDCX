@@ -32,7 +32,7 @@ class TransferFunction {
     const w0 = 2 * pi * f0;
 
     this.apply(
-      this.frequencyPoints.map(frequencyPoint => {
+      this.frequencyPoints.map((frequencyPoint) => {
         const w = 2 * pi * frequencyPoint;
         const s = complex(0, w);
         const giveMeName = add(divide(s, w0), 1);
@@ -50,7 +50,7 @@ class TransferFunction {
     const w0 = 2 * pi * f0;
 
     this.apply(
-      this.frequencyPoints.map(frequencyPoint => {
+      this.frequencyPoints.map((frequencyPoint) => {
         const w = 2 * pi * frequencyPoint;
         const s = complex(0, w);
         const giveMeName = divide(
@@ -68,11 +68,11 @@ class TransferFunction {
   }
 
   getMagnitude() {
-    return this.transferFunction.map(point => 20 * log10(point.toPolar().r));
+    return this.transferFunction.map((point) => 20 * log10(point.toPolar().r));
   }
 
   getAngle() {
-    return this.transferFunction.map(point =>
+    return this.transferFunction.map((point) =>
       divide(180 * point.toPolar().phi, pi)
     );
   }
@@ -84,7 +84,7 @@ class TransferFunction {
   getGroupDelay() {
     const angle = this.getAngle();
     const angUw = TransferFunction.unwrapPhase(angle).map(
-      number => (number * 1000) / 360
+      (number) => (number * 1000) / 360
     );
 
     const diff = [];
@@ -96,7 +96,7 @@ class TransferFunction {
 
     diff.push(diff[diff.length - 1]);
 
-    return diff.map(number => -1 * number);
+    return diff.map((number) => -1 * number);
   }
 
   static unwrapPhase(angle) {
@@ -121,7 +121,7 @@ class TransferFunction {
     const B = (K * w0) / q;
 
     this.apply(
-      this.frequencyPoints.map(frequenzy => {
+      this.frequencyPoints.map((frequenzy) => {
         const w = 2 * pi * frequenzy;
         const s = complex(0, w);
         const nom = add(add(pow(s, 2), multiply(B, s)), pow(w0, 2));
@@ -134,7 +134,7 @@ class TransferFunction {
   firstOrderShelving(f0, gain, isHighShelving) {
     const w0 = 2 * pi * f0;
     this.apply(
-      this.frequencyPoints.map(frequenzy => {
+      this.frequencyPoints.map((frequenzy) => {
         const w = 2 * pi * frequenzy;
         const s = complex(0, w);
         let nom;
@@ -164,7 +164,7 @@ class TransferFunction {
     const w0 = 2 * pi * f0;
     const gainAbs = pow(10, abs(gain) / 20);
     this.apply(
-      this.frequencyPoints.map(frequenzy => {
+      this.frequencyPoints.map((frequenzy) => {
         const w = 2 * pi * frequenzy;
         const s = complex(0, w);
 

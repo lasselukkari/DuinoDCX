@@ -96,7 +96,7 @@ class Settings extends PureComponent {
     }
   }
 
-  handleSubmit = event => {
+  handleSubmit = (event) => {
     event.preventDefault();
     this.updateSettings();
   };
@@ -154,7 +154,7 @@ class Settings extends PureComponent {
               value={username}
               placeholder="Max 32 chars"
               isInvalid={username.length > 32}
-              onChange={event => this.handlePropertyChange('username', event)}
+              onChange={(event) => this.handlePropertyChange('username', event)}
             />
           </Col>
         </Form.Group>
@@ -167,7 +167,7 @@ class Settings extends PureComponent {
               value={password}
               placeholder="Max 32 chars"
               isInvalid={password.length > 32}
-              onChange={event => this.handlePropertyChange('password', event)}
+              onChange={(event) => this.handlePropertyChange('password', event)}
             />
           </Col>
         </Form.Group>
@@ -181,7 +181,7 @@ class Settings extends PureComponent {
               value={apSsid}
               placeholder="Min 1 and max 32 chars"
               isInvalid={apSsid.length < 1 || apSsid.length > 32}
-              onChange={event => this.handlePropertyChange('apSsid', event)}
+              onChange={(event) => this.handlePropertyChange('apSsid', event)}
             />
           </Col>
         </Form.Group>
@@ -195,7 +195,9 @@ class Settings extends PureComponent {
               value={apPassword}
               placeholder="Min 8 and max 32 chars"
               isInvalid={apPassword.length < 8 || apPassword.length > 32}
-              onChange={event => this.handlePropertyChange('apPassword', event)}
+              onChange={(event) =>
+                this.handlePropertyChange('apPassword', event)
+              }
             />
           </Col>
         </Form.Group>
@@ -209,7 +211,7 @@ class Settings extends PureComponent {
               value={mdnsHost}
               placeholder="Min 1 and max 32 chars"
               isInvalid={mdnsHost.length < 1 || mdnsHost.length > 32}
-              onChange={event => this.handlePropertyChange('mdnsHost', event)}
+              onChange={(event) => this.handlePropertyChange('mdnsHost', event)}
             />
           </Col>
         </Form.Group>
@@ -222,7 +224,7 @@ class Settings extends PureComponent {
             <FormControl
               as="select"
               value={flowControl}
-              onChange={event =>
+              onChange={(event) =>
                 this.handlePropertyChange('flowControl', event)
               }
             >
@@ -240,7 +242,7 @@ class Settings extends PureComponent {
             <FormControl
               as="select"
               value={autoDisableAP}
-              onChange={event =>
+              onChange={(event) =>
                 this.handlePropertyChange('autoDisableAP', event)
               }
             >

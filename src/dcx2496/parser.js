@@ -87,7 +87,7 @@ class Parser {
     const messages = [];
     let newMessage = [];
 
-    devices.forEach(hex => {
+    devices.forEach((hex) => {
       if (hex === 247) {
         messages.push(newMessage);
         newMessage = [];
@@ -96,12 +96,12 @@ class Parser {
       }
     });
 
-    return messages.map(message => ({
+    return messages.map((message) => ({
       id: message[4],
       version: Number.parseFloat(`${message[7]}.${message[8]}`),
       name: message
         .slice(9, 25)
-        .map(number => String.fromCharCode(number))
+        .map((number) => String.fromCharCode(number))
         .join('')
         .trim()
     }));
@@ -117,13 +117,13 @@ class Parser {
       };
     });
 
-    commands.setupCommands.forEach(command => {
+    commands.setupCommands.forEach((command) => {
       const parameterName = Parser.camelize(command.name);
       const value = Parser.getValue(parts, command.syncResponse);
       state.setup[parameterName] = Parser.reverseCommandData(command, value);
     });
 
-    commands.inputOutputCommands.forEach(command => {
+    commands.inputOutputCommands.forEach((command) => {
       command.syncResponses.forEach((syncResponse, index) => {
         const group = index < 4 ? 'inputs' : 'outputs';
         const id = constants.CHANNELS[index];
@@ -137,7 +137,7 @@ class Parser {
       });
     });
 
-    commands.outputCommands.forEach(command => {
+    commands.outputCommands.forEach((command) => {
       command.syncResponses.forEach((syncResponse, index) => {
         const id = constants.OUTPUTS[index];
         const parameterName = Parser.camelize(command.name);
@@ -150,7 +150,7 @@ class Parser {
       });
     });
 
-    commands.eqCommands.forEach(command => {
+    commands.eqCommands.forEach((command) => {
       constants.CHANNELS.forEach((channelId, ioIndex) => {
         for (let eqIndex = 0; eqIndex < 9; eqIndex++) {
           const group = ioIndex < 4 ? 'inputs' : 'outputs';
@@ -211,7 +211,7 @@ class Parser {
   static serializeCommands(deviceId, device, data) {
     const commands = Array.isArray(data) ? data : [data];
     const commandBuffer = commands
-      .map(command => Parser[command.param](device, command))
+      .map((command) => Parser[command.param](device, command))
       .join('');
 
     const command = `F0002032${Parser.toPaddedHex(
@@ -235,7 +235,7 @@ class Parser {
 commands.setupCommands.forEach((command, index) => {
   const camelName = Parser.camelize(command.name);
 
-  Parser[camelName] = function(device, {value}) {
+  Parser[camelName] = function (device, {value}) {
     const data = Parser.getCommandData(command, value);
     const commandNumber = index + (index > 9 ? 10 : 2);
     device.setup[camelName] = value;
@@ -247,7 +247,7 @@ commands.setupCommands.forEach((command, index) => {
 commands.inputOutputCommands.forEach((command, index) => {
   const camelName = Parser.camelize(command.name);
 
-  Parser[camelName] = function(device, {group, channelId, value}) {
+  Parser[camelName] = function (device, {group, channelId, value}) {
     const channelNumber =
       group === 'inputs'
         ? constants.INPUTS.indexOf(channelId) + 1
@@ -263,7 +263,7 @@ commands.inputOutputCommands.forEach((command, index) => {
 commands.eqCommands.forEach((command, index) => {
   const camelName = Parser.camelize(command.name);
 
-  Parser[camelName] = function(device, {group, channelId, eq, value}) {
+  Parser[camelName] = function (device, {group, channelId, eq, value}) {
     const channelNumber =
       group === 'inputs'
         ? constants.INPUTS.indexOf(channelId) + 1
@@ -280,7 +280,7 @@ commands.eqCommands.forEach((command, index) => {
 commands.outputCommands.forEach((command, index) => {
   const camelName = Parser.camelize(command.name);
 
-  Parser[camelName] = function(device, {channelId, value}) {
+  Parser[camelName] = function (device, {channelId, value}) {
     const data = Parser.getCommandData(command, value);
     const output = constants.OUTPUTS.indexOf(channelId) + 5;
     const commandNumber = index + 64;

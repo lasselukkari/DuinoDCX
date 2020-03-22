@@ -30,7 +30,7 @@ class ChannelNames extends Component {
         <Card.Header>Output Names</Card.Header>
         <Card.Body>
           <Row>
-            {Object.keys(channels).map(channelId => {
+            {Object.keys(channels).map((channelId) => {
               return (
                 <Col key={channelId} xs={12} sm={6} md={4}>
                   <ChannelName

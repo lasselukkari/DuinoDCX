@@ -120,12 +120,12 @@ class Connection extends Component {
     }
   }
 
-  handleSubmit = event => {
+  handleSubmit = (event) => {
     event.preventDefault();
     this.updateConnection();
   };
 
-  handleDisconnection = event => {
+  handleDisconnection = (event) => {
     event.preventDefault();
     this.diconnectConnetion();
   };
@@ -155,9 +155,9 @@ class Connection extends Component {
           <Form.Control
             as="select"
             value={selected}
-            onChange={event => this.handlePropertyChange('selected', event)}
+            onChange={(event) => this.handlePropertyChange('selected', event)}
           >
-            {networks.sort().map(enumeral => (
+            {networks.sort().map((enumeral) => (
               <option key={enumeral}>{enumeral}</option>
             ))}
           </Form.Control>
@@ -168,7 +168,7 @@ class Connection extends Component {
             value={password}
             type="password"
             placeholder="Password"
-            onChange={event => this.handlePropertyChange('password', event)}
+            onChange={(event) => this.handlePropertyChange('password', event)}
           />
         </Form.Group>
 
