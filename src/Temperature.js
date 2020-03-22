@@ -12,7 +12,7 @@ class Temperature extends PureComponent {
     isDelayCorrectionOn: PropTypes.bool.isRequired
   };
 
-  handleValueChange = event => {
+  handleValueChange = (event) => {
     const {onChange, delayUnits} = this.props;
     const {value} = event.target;
 
@@ -22,7 +22,7 @@ class Temperature extends PureComponent {
     onChange({param: 'airTemperature', value: unlocalizedValue});
   };
 
-  handleCorrectionChange = isDelayCorrectionOn => {
+  handleCorrectionChange = (isDelayCorrectionOn) => {
     const {onChange} = this.props;
     onChange({
       param: 'isDelayCorrectionOn',
@@ -31,7 +31,7 @@ class Temperature extends PureComponent {
   };
 
   render() {
-    const toFahrenheit = value => (value * 9) / 5 + 32;
+    const toFahrenheit = (value) => (value * 9) / 5 + 32;
     const {airTemperature, isDelayCorrectionOn, delayUnits} = this.props;
     const unit = delayUnits === 'mm' ? 'C' : 'F';
     const min = delayUnits === 'mm' ? -20 : toFahrenheit(-20);
@@ -54,7 +54,7 @@ class Temperature extends PureComponent {
           placeholder="select"
           onChange={this.handleValueChange}
         >
-          {options.map(option => (
+          {options.map((option) => (
             <option key={option} value={option}>
               {option}
             </option>

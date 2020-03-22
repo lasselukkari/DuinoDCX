@@ -35,7 +35,7 @@ class DynamicEQs extends Component {
     const {channels, group, onChange} = this.props;
     return (
       <Row className="show-grid">
-        {Object.keys(channels).map(channelId => {
+        {Object.keys(channels).map((channelId) => {
           const channel = channels[channelId];
           return (
             <Col key={channelId} xs={12} md={6}>

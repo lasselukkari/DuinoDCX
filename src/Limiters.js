@@ -22,7 +22,7 @@ class Limiters extends Component {
 
     return (
       <Row className="show-grid">
-        {Object.keys(channels).map(channelId => {
+        {Object.keys(channels).map((channelId) => {
           const {
             channelName,
             isLimiterOn,

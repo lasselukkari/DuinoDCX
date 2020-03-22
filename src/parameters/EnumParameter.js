@@ -24,7 +24,7 @@ class EnumParameter extends Component {
     hasLabel: PropTypes.bool
   };
 
-  handleValueChange = event => {
+  handleValueChange = (event) => {
     const {param, group, channelId, eq, onChange} = this.props;
     onChange({param, group, channelId, eq, value: event.target.value});
   };
@@ -49,7 +49,7 @@ class EnumParameter extends Component {
           value={value}
           onChange={this.handleValueChange}
         >
-          {enums.map(enumeral => (
+          {enums.map((enumeral) => (
             <option key={enumeral}>{enumeral}</option>
           ))}
         </Form.Control>

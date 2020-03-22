@@ -27,7 +27,7 @@ class Gains extends Component {
 
     return (
       <Row className="show-grid">
-        {Object.keys(channels).map(channelId => {
+        {Object.keys(channels).map((channelId) => {
           const {channelName, gain} = channels[channelId];
           return (
             <Col key={channelId} xs={12}>

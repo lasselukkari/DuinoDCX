@@ -33,13 +33,13 @@ class ChannelLevels extends PureComponent {
 
   state = {
     selected: {
-      inputs: inputChannels.map(channelId => ({
+      inputs: inputChannels.map((channelId) => ({
         name: channelId,
         isSelected: false,
         group: 'inputs',
         channelId
       })),
-      outputs: outputChannels.map(channelId => ({
+      outputs: outputChannels.map((channelId) => ({
         name: this.props.device.outputs[channelId].channelName
           .match(/\b\w/g)
           .join('')
@@ -51,16 +51,16 @@ class ChannelLevels extends PureComponent {
     }
   };
 
-  handleMuteAll = value => {
+  handleMuteAll = (value) => {
     const {onChange} = this.props;
 
-    const inputs = inputChannels.map(channelId => ({
+    const inputs = inputChannels.map((channelId) => ({
       param: 'mute',
       group: 'inputs',
       channelId,
       value
     }));
-    const outputs = outputChannels.map(channelId => ({
+    const outputs = outputChannels.map((channelId) => ({
       param: 'mute',
       group: 'outputs',
       channelId,
@@ -81,10 +81,10 @@ class ChannelLevels extends PureComponent {
   handleToggle = () => {
     const {onChange, device} = this.props;
     const inputCommands = this.state.selected.inputs.filter(
-      input => input.isSelected
+      (input) => input.isSelected
     );
     const outputCommands = this.state.selected.outputs.filter(
-      ouput => ouput.isSelected
+      (ouput) => ouput.isSelected
     );
 
     const commands = inputCommands
@@ -107,12 +107,12 @@ class ChannelLevels extends PureComponent {
     }
 
     const isAnyUnmuted =
-      inputChannels.some(channel => !device.inputs[channel].mute) ||
-      outputChannels.some(channel => !device.outputs[channel].mute);
+      inputChannels.some((channel) => !device.inputs[channel].mute) ||
+      outputChannels.some((channel) => !device.outputs[channel].mute);
 
     const isAnySelected =
-      this.state.selected.inputs.some(channel => channel.isSelected) ||
-      this.state.selected.outputs.some(channel => channel.isSelected);
+      this.state.selected.inputs.some((channel) => channel.isSelected) ||
+      this.state.selected.outputs.some((channel) => channel.isSelected);
 
     return (
       <div className="channels-container">

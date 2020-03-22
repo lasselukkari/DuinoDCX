@@ -30,7 +30,7 @@ class EQs extends Component {
 
     return (
       <Tabs defaultActiveKey={Object.keys(channels)[0]} id="equalizers">
-        {Object.keys(channels).map(channelId => {
+        {Object.keys(channels).map((channelId) => {
           return (
             <Tab
               key={channelId}

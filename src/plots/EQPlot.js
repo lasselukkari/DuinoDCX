@@ -56,11 +56,11 @@ class EQPlot extends Component {
   }
 
   plotData(channels, isGainApplied) {
-    const values = Object.keys(channels).map(key => {
+    const values = Object.keys(channels).map((key) => {
       const tf = new TransferFunction(frequencyPoints);
 
       const {eqs} = channels[key];
-      Object.keys(eqs).forEach(eqsKey => {
+      Object.keys(eqs).forEach((eqsKey) => {
         const eq = eqs[eqsKey];
         if (channels[key].isEQOn === true && eq.eQGain !== 0) {
           if (eq.eQType === 'Bandpass') {
@@ -96,7 +96,7 @@ class EQPlot extends Component {
 
     return frequencyPoints.map((hz, index) => {
       const result = {hz};
-      values.forEach(value => {
+      values.forEach((value) => {
         const rounded = Math.round(value.data[index] * 100) / 100;
         result[value.channel] = isGainApplied ? rounded + value.gain : rounded;
       });
@@ -151,7 +151,7 @@ class EQPlot extends Component {
         height={height}
         margin={{top: 20, right: 30, bottom: 5, left: -30}}
       >
-        <XAxis dataKey="hz" tickFormatter={tick => Math.round(tick)} />
+        <XAxis dataKey="hz" tickFormatter={(tick) => Math.round(tick)} />
         <YAxis
           allowDataOverflow
           type="number"

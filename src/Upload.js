@@ -49,13 +49,13 @@ class Upload extends PureComponent {
     } catch {}
   }
 
-  handleDrop = acceptedFiles => {
+  handleDrop = (acceptedFiles) => {
     this.setState({uploading: 'active'});
 
     Request.post('/api/update')
       .send(acceptedFiles[0])
       .on('progress', ({percent}) => this.setState({percent}))
-      .end(err => {
+      .end((err) => {
         if (err) {
           this.setState({uploading: 'fail'});
         } else {
@@ -97,7 +97,7 @@ class Upload extends PureComponent {
     }
 
     const {browser_download_url: link, name} = release.assets.filter(
-      asset => asset.name === `duinodcx-${release.tag_name}.bin`
+      (asset) => asset.name === `duinodcx-${release.tag_name}.bin`
     )[0];
 
     if (!link || !name) {
