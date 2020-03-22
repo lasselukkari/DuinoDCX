@@ -38,9 +38,11 @@ class Delay extends PureComponent {
     const temperature = isDelayCorrectionOn ? airTemperature : 20;
     // https://en.wikipedia.org/wiki/Speed_of_sound#Practical_formula_for_dry_air
     const temperatureFactor = 1 / (331.3 + 0.606 * temperature);
-    const round = value => Math.round(value * 100) / 100;
+    const round = (value) => Math.round(value * 100) / 100;
     const localizeLength =
-      delayUnits === 'mm' ? value => value : value => (value * 0.393701) / 10;
+      delayUnits === 'mm'
+        ? (value) => value
+        : (value) => (value * 0.393701) / 10;
 
     const localizeUnit = (delayUnits, unit) => {
       if (delayUnits === 'mm') {

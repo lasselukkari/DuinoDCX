@@ -18,7 +18,7 @@ class DefaultTooltipContent extends PureComponent {
     const {payload, filter} = this.props;
 
     if (payload && payload.length > 0) {
-      const items = payload.filter(filter).map(entry => {
+      const items = payload.filter(filter).map((entry) => {
         return (
           <li
             key={`tooltip-item-${entry.dataKey}`}

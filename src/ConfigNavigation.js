@@ -46,7 +46,7 @@ class ConfigNavigation extends Component {
     );
   }
 
-  handleShowModal = showModal => {
+  handleShowModal = (showModal) => {
     this.setState({showModal});
   };
 

@@ -16,7 +16,7 @@ class Config extends PureComponent {
 
   state = {};
 
-  handleShowModal = showModal => {
+  handleShowModal = (showModal) => {
     this.setState({showModal});
   };
 

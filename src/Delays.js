@@ -52,7 +52,7 @@ class Delays extends Component {
           </Card>
         )}
 
-        {Object.keys(channels).map(channelId => {
+        {Object.keys(channels).map((channelId) => {
           const channel = channels[channelId];
           return (
             <Delay

@@ -120,7 +120,7 @@ class App extends Component {
     this.setState(({isBlocking}) => ({isBlocking: !isBlocking}));
   };
 
-  handleDeviceUpdate = async commands => {
+  handleDeviceUpdate = async (commands) => {
     const {device: oldDevice, selected} = this.state;
     const device = cloneDeep(oldDevice);
     const data = Parser.serializeCommands(selected, device, commands);
@@ -148,7 +148,7 @@ class App extends Component {
     }
   };
 
-  handleDeviceSelect = async selected => {
+  handleDeviceSelect = async (selected) => {
     const oldSelected = this.state.selected;
     this.setState({selected});
 
@@ -169,7 +169,7 @@ class App extends Component {
     }
   };
 
-  handlePageChange = page => {
+  handlePageChange = (page) => {
     this.setState({page});
     window.scrollTo(0, 0);
   };

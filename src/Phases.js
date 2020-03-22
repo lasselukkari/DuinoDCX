@@ -22,7 +22,7 @@ class Phases extends Component {
 
     return (
       <Row className="show-grid">
-        {Object.keys(channels).map(channelId => {
+        {Object.keys(channels).map((channelId) => {
           const {channelName, polarity, phase} = channels[channelId];
           return (
             <Col key={channelId} xs={12} md={6}>

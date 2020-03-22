@@ -22,7 +22,7 @@ class Crossovers extends Component {
     return (
       <div>
         <Row className="show-grid">
-          {Object.keys(channels).map(channelId => {
+          {Object.keys(channels).map((channelId) => {
             const {
               highpassFilter,
               highpassFrequency,

@@ -26,7 +26,7 @@ class OutputSources extends Component {
         <Card.Header>Output Source</Card.Header>
         <Card.Body>
           <Row>
-            {Object.keys(channels).map(channelId => {
+            {Object.keys(channels).map((channelId) => {
               const {channelName, source} = channels[channelId];
               return (
                 <Col key={channelId} sm={4} xs={12}>
