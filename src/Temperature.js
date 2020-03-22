@@ -12,9 +12,9 @@ class Temperature extends PureComponent {
     isDelayCorrectionOn: PropTypes.bool.isRequired
   };
 
-  handleValueChange = e => {
+  handleValueChange = event => {
     const {onChange, delayUnits} = this.props;
-    const {value} = e.target;
+    const {value} = event.target;
 
     const unlocalizedValue =
       delayUnits === 'mm' ? Number(value) : ((value - 32) * 5) / 9;

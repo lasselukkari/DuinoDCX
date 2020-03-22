@@ -1,9 +1,9 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import Parser from '../dcx2496/parser';
-import BoolParam from './BoolParam';
-import EnumParam from './EnumParam';
-import NumberParam from './NumberParam';
+import BoolParameter from './BoolParameter';
+import EnumParameter from './EnumParameter';
+import NumberParameter from './NumberParameter';
 
 const components = {};
 const commandTypes = {
@@ -34,7 +34,7 @@ const enumComponent = function({name, unit, values}, type) {
     render() {
       const {value, group, channelId, eq, onChange, hasLabel} = this.props;
       return (
-        <EnumParam
+        <EnumParameter
           name={name}
           type={type}
           unit={unit}
@@ -88,7 +88,7 @@ const boolComponent = function({name}, type) {
         label
       } = this.props;
       return (
-        <BoolParam
+        <BoolParameter
           name={name}
           type={type}
           isTrue={isTrue}
@@ -146,7 +146,7 @@ const numberComponent = function({name, unit, min, max, step}, type) {
         labelFormatter
       } = this.props;
       return (
-        <NumberParam
+        <NumberParameter
           name={name}
           type={type}
           unit={unit}

@@ -26,6 +26,17 @@ class Connection extends Component {
     this.fetchNetworks();
   }
 
+  showFetchError() {
+    if (toast.isActive('fetch-failed')) {
+      return;
+    }
+
+    toast.error(`Fetching WiFi status failed.`, {
+      ...this.toastOptions,
+      toastId: 'fetch-failed'
+    });
+  }
+
   async fetchConnection() {
     try {
       const response = await fetch('/api/connection', {
@@ -38,7 +49,7 @@ class Connection extends Component {
       const connection = await response.json();
       this.setState({selected: connection.current, ...connection});
     } catch {
-      toast.error(`Fetching WiFi status failed.`, this.toastOptions);
+      this.showFetchError();
     }
   }
 
@@ -54,19 +65,13 @@ class Connection extends Component {
       const networks = await response.json();
       this.setState({networks});
     } catch {
-      toast.error(`Fetching WiFi status failed.`, this.toastOptions);
+      this.showFetchError();
     }
   }
 
-  handleNetworkSelect = e => {
-    const selected = e.target.value;
-    this.setState({selected});
-  };
-
-  handlePasswordChange = e => {
-    const password = e.target.value;
-    this.setState({password});
-  };
+  handlePropertyChange(property, event) {
+    this.setState({[property]: event.target.value});
+  }
 
   async updateConnection() {
     this.setState({ip: null});
@@ -115,13 +120,13 @@ class Connection extends Component {
     }
   }
 
-  handleSubmit = e => {
-    e.preventDefault();
+  handleSubmit = event => {
+    event.preventDefault();
     this.updateConnection();
   };
 
-  handleDisconnection = e => {
-    e.preventDefault();
+  handleDisconnection = event => {
+    event.preventDefault();
     this.diconnectConnetion();
   };
 
@@ -150,7 +155,7 @@ class Connection extends Component {
           <Form.Control
             as="select"
             value={selected}
-            onChange={this.handleNetworkSelect}
+            onChange={event => this.handlePropertyChange('selected', event)}
           >
             {networks.sort().map(enumeral => (
               <option key={enumeral}>{enumeral}</option>
@@ -163,7 +168,7 @@ class Connection extends Component {
             value={password}
             type="password"
             placeholder="Password"
-            onChange={this.handlePasswordChange}
+            onChange={event => this.handlePropertyChange('password', event)}
           />
         </Form.Group>
 

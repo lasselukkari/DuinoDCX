@@ -24,8 +24,8 @@ class CrossoverPlotPanel extends Component {
   }
 
   handleToggleGain = () => {
-    this.setState(prevState => ({
-      isGainApplied: !prevState.isGainApplied
+    this.setState(previousState => ({
+      isGainApplied: !previousState.isGainApplied
     }));
   };
 
