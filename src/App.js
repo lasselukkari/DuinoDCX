@@ -6,9 +6,9 @@ import ConfigNavigation from './ConfigNavigation';
 import Device from './Device';
 import DeviceNavigation from './DeviceNavigation';
 import Parser from './dcx2496/parser';
-import 'bootswatch/dist/slate/bootstrap.css'; // eslint-disable-line import/no-unassigned-import
-import 'react-toastify/dist/ReactToastify.css'; // eslint-disable-line import/no-unassigned-import
-import './App.css'; // eslint-disable-line import/no-unassigned-import
+import 'bootswatch/dist/slate/bootstrap.css';
+import 'react-toastify/dist/ReactToastify.css';
+import './App.css';
 
 class App extends Component {
   state = {page: 'inputs', isBlocking: true, showModal: false};

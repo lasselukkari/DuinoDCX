@@ -4,7 +4,7 @@ import FormGroup from 'react-bootstrap/FormGroup';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
-class BoolParam extends Component {
+class BoolParameter extends Component {
   static defaultProps = {
     label: null,
     hasLabel: false,
@@ -66,4 +66,4 @@ class BoolParam extends Component {
   }
 }
 
-export default BoolParam;
+export default BoolParameter;

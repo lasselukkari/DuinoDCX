@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button';
 import PropTypes from 'prop-types';
 import ChannelControls from './ChannelControls';
 
-import './ChannelLevels.css'; // eslint-disable-line import/no-unassigned-import
+import './ChannelLevels.css';
 
 const inputChannels = ['A', 'B', 'C'];
 const outputChannels = ['1', '2', '3', '4', '5', '6'];

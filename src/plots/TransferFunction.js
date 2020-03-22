@@ -29,12 +29,12 @@ class TransferFunction {
   }
 
   firstOrderFilter(f0, isHighPass) {
-    const w0 = 2 * pi * f0; // Angular frequency w0 for cut of frequency
+    const w0 = 2 * pi * f0;
 
     this.apply(
       this.frequencyPoints.map(frequencyPoint => {
-        const w = 2 * pi * frequencyPoint; // Angular frequency w for frequency of interest
-        const s = complex(0, w); // S = iw
+        const w = 2 * pi * frequencyPoint;
+        const s = complex(0, w);
         const giveMeName = add(divide(s, w0), 1);
 
         if (isHighPass) {
@@ -47,12 +47,12 @@ class TransferFunction {
   }
 
   secondOrderFilter(f0, Q, isHighpass) {
-    const w0 = 2 * pi * f0; // Angular frequency w0 for cut of frequency
+    const w0 = 2 * pi * f0;
 
     this.apply(
       this.frequencyPoints.map(frequencyPoint => {
-        const w = 2 * pi * frequencyPoint; // Angular frequency w for frequency of interest
-        const s = complex(0, w); // S = iw
+        const w = 2 * pi * frequencyPoint;
+        const s = complex(0, w);
         const giveMeName = divide(
           pow(w0, 2),
           add(add(pow(s, 2), divide(multiply(s, w0), Q)), pow(w0, 2))
@@ -84,7 +84,7 @@ class TransferFunction {
   getGroupDelay() {
     const angle = this.getAngle();
     const angUw = TransferFunction.unwrapPhase(angle).map(
-      num => (num * 1000) / 360
+      number => (number * 1000) / 360
     );
 
     const diff = [];
@@ -94,9 +94,9 @@ class TransferFunction {
         (this.frequencyPoints[j + 1] - this.frequencyPoints[j]);
     }
 
-    diff.push(diff[diff.length - 1]); // Add last element
+    diff.push(diff[diff.length - 1]);
 
-    return diff.map(num => -1 * num);
+    return diff.map(number => -1 * number);
   }
 
   static unwrapPhase(angle) {
@@ -116,21 +116,16 @@ class TransferFunction {
 
   parametricEQ(f0, g, q) {
     const w0 = 2 * pi * f0;
-    const temp3 = divide(g, 40);
-    const K = pow(10, temp3);
+    const K = pow(10, divide(g, 40));
     const A = w0 / q / K;
     const B = (K * w0) / q;
 
     this.apply(
       this.frequencyPoints.map(frequenzy => {
-        const w = 2 * pi * frequenzy; // Angular frequency w for frequency of interest
-        const s = complex(0, w); // S = iw
-        // H=(s.^2 + B*s + w0^2) ./ (s.^2 + A*s + w0^2);
-        const temp1 = add(pow(s, 2), multiply(B, s));
-        const nom = add(temp1, pow(w0, 2));
-
-        const temp2 = add(pow(s, 2), multiply(A, s));
-        const denom = add(temp2, pow(w0, 2));
+        const w = 2 * pi * frequenzy;
+        const s = complex(0, w);
+        const nom = add(add(pow(s, 2), multiply(B, s)), pow(w0, 2));
+        const denom = add(add(pow(s, 2), multiply(A, s)), pow(w0, 2));
         return divide(nom, denom);
       })
     );
@@ -140,9 +135,10 @@ class TransferFunction {
     const w0 = 2 * pi * f0;
     this.apply(
       this.frequencyPoints.map(frequenzy => {
-        const w = 2 * pi * frequenzy; // Angular frequency w for frequency of interest
-        const s = complex(0, w); // S = iw
+        const w = 2 * pi * frequenzy;
+        const s = complex(0, w);
         let nom;
+
         if (isHighShelving) {
           nom = add(multiply(s, pow(10, abs(gain) / 20)), w0);
         } else {
@@ -152,11 +148,11 @@ class TransferFunction {
         const denom = add(s, w0);
 
         if (gain > 0) {
-          return divide(nom, denom); // Boost
+          return divide(nom, denom);
         }
 
         if (gain < 0) {
-          return divide(denom, nom); // Cut
+          return divide(denom, nom);
         }
 
         return 1;
@@ -169,36 +165,36 @@ class TransferFunction {
     const gainAbs = pow(10, abs(gain) / 20);
     this.apply(
       this.frequencyPoints.map(frequenzy => {
-        const w = 2 * pi * frequenzy; // Angular frequency w for frequency of interest
-        const s = complex(0, w); // S = iw
+        const w = 2 * pi * frequenzy;
+        const s = complex(0, w);
 
-        let temp1;
+        let temporary1;
         if (isHighShelving) {
-          temp1 = multiply(gainAbs, pow(s, 2));
+          temporary1 = multiply(gainAbs, pow(s, 2));
         } else {
-          temp1 = multiply(gainAbs, pow(w0, 2));
+          temporary1 = multiply(gainAbs, pow(w0, 2));
         }
 
-        const temp2 = multiply(sqrt(2 * gainAbs) * w0, s);
-        const temp3 = add(temp1, temp2);
+        const temporary2 = add(temporary1, multiply(sqrt(2 * gainAbs) * w0, s));
 
         let nom;
         if (isHighShelving) {
-          nom = add(temp3, pow(w0, 2));
+          nom = add(temporary2, pow(w0, 2));
         } else {
-          nom = add(temp3, pow(s, 2));
+          nom = add(temporary2, pow(s, 2));
         }
 
-        const temp4 = pow(s, 2);
-        const temp5 = multiply(sqrt(2) * w0, s);
-        const temp6 = add(temp4, temp5);
-        const denom = add(temp6, pow(w0, 2));
+        const denom = add(
+          add(pow(s, 2), multiply(sqrt(2) * w0, s)),
+          pow(w0, 2)
+        );
+
         if (gain > 0) {
-          return divide(nom, denom); // Boost
+          return divide(nom, denom);
         }
 
         if (gain < 0) {
-          return divide(denom, nom); // Cut
+          return divide(denom, nom);
         }
 
         return 1;

@@ -10,14 +10,14 @@ import Slider, {createSliderWithTooltip} from 'rc-slider';
 import {FaPlus, FaMinus} from 'react-icons/fa';
 import NumericInput from 'react-numeric-input';
 
-import './NumberParam.css'; // eslint-disable-line import/no-unassigned-import
-import 'rc-slider/assets/index.css'; // eslint-disable-line import/no-unassigned-import
+import './NumberParameter.css';
+import 'rc-slider/assets/index.css';
 
 const SliderWithTooltip = createSliderWithTooltip(Slider);
 
-class NumberParam extends Component {
-  static getDerivedStateFromProps(nextProps, prevState) {
-    if (prevState.moving !== true) {
+class NumberParameter extends Component {
+  static getDerivedStateFromProps(nextProps, previousState) {
+    if (previousState.moving !== true) {
       return {value: nextProps.value};
     }
 
@@ -284,4 +284,4 @@ class NumberParam extends Component {
   }
 }
 
-export default NumberParam;
+export default NumberParameter;
