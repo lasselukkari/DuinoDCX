@@ -48,7 +48,7 @@ class Device extends Component {
       return (
         <div className="text-center content-loader" alt="loading">
           <Spinner fadeIn="none" name="line-scale" color="#3498DB" />
-          <h5 className="text-center">Searching...</h5>
+          <h5 className="text-center">Searching…</h5>
         </div>
       );
     }

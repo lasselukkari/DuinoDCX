@@ -68,8 +68,8 @@ class Gain extends PureComponent {
           onChange={onChange}
         />
         <Dialog
-          ref={el => {
-            this.dialog = el;
+          ref={element => {
+            this.dialog = element;
           }}
         />
       </div>

@@ -130,8 +130,8 @@ class InputRouting extends Component {
           </Card.Body>
         </Card>
         <Dialog
-          ref={el => {
-            this.dialog = el;
+          ref={element => {
+            this.dialog = element;
           }}
         />
       </div>

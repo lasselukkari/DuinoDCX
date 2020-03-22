@@ -124,8 +124,8 @@ class EQ extends PureComponent {
           />
         </Card.Body>
         <Dialog
-          ref={el => {
-            this.dialog = el;
+          ref={element => {
+            this.dialog = element;
           }}
         />
       </Card>

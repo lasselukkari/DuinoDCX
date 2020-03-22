@@ -2,8 +2,8 @@ const constants = require('./constants');
 const commands = require('./commands');
 
 class Parser {
-  static camelize(str) {
-    return str.replace(/(?:^\w|[A-Z]|\b\w|\s+)/g, (match, index) => {
+  static camelize(string) {
+    return string.replace(/^\w|[A-Z]|\b\w|\s+/g, (match, index) => {
       if (Number(match) === 0) {
         return '';
       }
@@ -40,10 +40,10 @@ class Parser {
     }
   }
 
-  static hexStringToByte(str) {
+  static hexStringToByte(string) {
     const a = [];
-    for (let i = 0, len = str.length; i < len; i += 2) {
-      a.push(parseInt(str.slice(i, i + 2), 16));
+    for (let i = 0, length = string.length; i < length; i += 2) {
+      a.push(parseInt(string.slice(i, i + 2), 16));
     }
 
     return new Uint8Array(a);
@@ -85,21 +85,21 @@ class Parser {
 
   static parseDevices(devices) {
     const messages = [];
-    let message = [];
+    let newMessage = [];
 
     devices.forEach(hex => {
       if (hex === 247) {
-        messages.push(message);
-        message = [];
+        messages.push(newMessage);
+        newMessage = [];
       } else {
-        message.push(hex);
+        newMessage.push(hex);
       }
     });
 
-    return messages.map(msg => ({
-      id: msg[4],
-      version: Number.parseFloat(`${msg[7]}.${msg[8]}`),
-      name: msg
+    return messages.map(message => ({
+      id: message[4],
+      version: Number.parseFloat(`${message[7]}.${message[8]}`),
+      name: message
         .slice(9, 25)
         .map(number => String.fromCharCode(number))
         .join('')
@@ -118,29 +118,32 @@ class Parser {
     });
 
     commands.setupCommands.forEach(command => {
-      const paramName = Parser.camelize(command.name);
+      const parameterName = Parser.camelize(command.name);
       const value = Parser.getValue(parts, command.syncResponse);
-      state.setup[paramName] = Parser.reverseCommandData(command, value);
+      state.setup[parameterName] = Parser.reverseCommandData(command, value);
     });
 
     commands.inputOutputCommands.forEach(command => {
       command.syncResponses.forEach((syncResponse, index) => {
         const group = index < 4 ? 'inputs' : 'outputs';
         const id = constants.CHANNELS[index];
-        const paramName = Parser.camelize(command.name);
+        const parameterName = Parser.camelize(command.name);
         const value = Parser.getValue(parts, syncResponse);
 
-        state[group][id][paramName] = Parser.reverseCommandData(command, value);
+        state[group][id][parameterName] = Parser.reverseCommandData(
+          command,
+          value
+        );
       });
     });
 
     commands.outputCommands.forEach(command => {
       command.syncResponses.forEach((syncResponse, index) => {
         const id = constants.OUTPUTS[index];
-        const paramName = Parser.camelize(command.name);
+        const parameterName = Parser.camelize(command.name);
         const value = Parser.getValue(parts, syncResponse);
 
-        state.outputs[id][paramName] = Parser.reverseCommandData(
+        state.outputs[id][parameterName] = Parser.reverseCommandData(
           command,
           value
         );
@@ -152,12 +155,12 @@ class Parser {
         for (let eqIndex = 0; eqIndex < 9; eqIndex++) {
           const group = ioIndex < 4 ? 'inputs' : 'outputs';
           const eq = eqIndex + 1;
-          const paramName = Parser.camelize(command.name);
+          const parameterName = Parser.camelize(command.name);
           const syncResponse = command.syncResponses[ioIndex * 9 + eqIndex];
           const value = Parser.getValue(parts, syncResponse);
 
           state[group][channelId].eqs[eq][
-            paramName
+            parameterName
           ] = Parser.reverseCommandData(command, value);
         }
       });

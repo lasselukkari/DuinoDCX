@@ -54,40 +54,9 @@ class Settings extends PureComponent {
     }
   }
 
-  handleUsernameChange = e => {
-    const username = e.target.value;
-    this.setState({username});
-  };
-
-  handlePasswordChange = e => {
-    const password = e.target.value;
-    this.setState({password});
-  };
-
-  handleApSsidChange = e => {
-    const apSsid = e.target.value;
-    this.setState({apSsid});
-  };
-
-  handleApPasswordChange = e => {
-    const apPassword = e.target.value;
-    this.setState({apPassword});
-  };
-
-  handleMdnsHost = e => {
-    const mdnsHost = e.target.value;
-    this.setState({mdnsHost});
-  };
-
-  handleFlowControlChange = e => {
-    const flowControl = e.target.value;
-    this.setState({flowControl});
-  };
-
-  handleAutoDisableAPChange = e => {
-    const autoDisableAP = e.target.value;
-    this.setState({autoDisableAP});
-  };
+  handlePropertyChange(property, event) {
+    this.setState({[property]: event.target.value});
+  }
 
   async updateSettings() {
     const {
@@ -127,8 +96,8 @@ class Settings extends PureComponent {
     }
   }
 
-  handleSubmit = e => {
-    e.preventDefault();
+  handleSubmit = event => {
+    event.preventDefault();
     this.updateSettings();
   };
 
@@ -185,7 +154,7 @@ class Settings extends PureComponent {
               value={username}
               placeholder="Max 32 chars"
               isInvalid={username.length > 32}
-              onChange={this.handleUsernameChange}
+              onChange={event => this.handlePropertyChange('username', event)}
             />
           </Col>
         </Form.Group>
@@ -198,7 +167,7 @@ class Settings extends PureComponent {
               value={password}
               placeholder="Max 32 chars"
               isInvalid={password.length > 32}
-              onChange={this.handlePasswordChange}
+              onChange={event => this.handlePropertyChange('password', event)}
             />
           </Col>
         </Form.Group>
@@ -212,7 +181,7 @@ class Settings extends PureComponent {
               value={apSsid}
               placeholder="Min 1 and max 32 chars"
               isInvalid={apSsid.length < 1 || apSsid.length > 32}
-              onChange={this.handleApSsidChange}
+              onChange={event => this.handlePropertyChange('apSsid', event)}
             />
           </Col>
         </Form.Group>
@@ -226,7 +195,7 @@ class Settings extends PureComponent {
               value={apPassword}
               placeholder="Min 8 and max 32 chars"
               isInvalid={apPassword.length < 8 || apPassword.length > 32}
-              onChange={this.handleApPasswordChange}
+              onChange={event => this.handlePropertyChange('apPassword', event)}
             />
           </Col>
         </Form.Group>
@@ -240,7 +209,7 @@ class Settings extends PureComponent {
               value={mdnsHost}
               placeholder="Min 1 and max 32 chars"
               isInvalid={mdnsHost.length < 1 || mdnsHost.length > 32}
-              onChange={this.handleMdnsHost}
+              onChange={event => this.handlePropertyChange('mdnsHost', event)}
             />
           </Col>
         </Form.Group>
@@ -253,7 +222,9 @@ class Settings extends PureComponent {
             <FormControl
               as="select"
               value={flowControl}
-              onChange={this.handleFlowControlChange}
+              onChange={event =>
+                this.handlePropertyChange('flowControl', event)
+              }
             >
               <option value="0">Disabled</option>
               <option value="1">Enabled</option>
@@ -269,7 +240,9 @@ class Settings extends PureComponent {
             <FormControl
               as="select"
               value={autoDisableAP}
-              onChange={this.handleAutoDisableAPChange}
+              onChange={event =>
+                this.handlePropertyChange('autoDisableAP', event)
+              }
             >
               <option value="0">Disabled</option>
               <option value="1">Enabled</option>

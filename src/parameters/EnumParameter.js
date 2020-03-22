@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import Form from 'react-bootstrap/Form';
 
-class EnumParam extends Component {
+class EnumParameter extends Component {
   static defaultProps = {
     hasLabel: false,
     eq: null,
@@ -24,9 +24,9 @@ class EnumParam extends Component {
     hasLabel: PropTypes.bool
   };
 
-  handleValueChange = e => {
+  handleValueChange = event => {
     const {param, group, channelId, eq, onChange} = this.props;
-    onChange({param, group, channelId, eq, value: e.target.value});
+    onChange({param, group, channelId, eq, value: event.target.value});
   };
 
   shouldComponentUpdate(nextProps) {
@@ -58,4 +58,4 @@ class EnumParam extends Component {
   }
 }
 
-export default EnumParam;
+export default EnumParameter;

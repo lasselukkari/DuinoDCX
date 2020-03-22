@@ -11,9 +11,9 @@ class DelayUnits extends PureComponent {
 
   state = {delayUnits: this.props.delayUnits};
 
-  handleValueChange = e => {
+  handleValueChange = event => {
     const {onChange} = this.props;
-    const {value} = e.target;
+    const {value} = event.target;
     if (value) {
       onChange({param: 'airTemperature', value: Number(value)});
     }
