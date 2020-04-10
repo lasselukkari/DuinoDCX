@@ -43,7 +43,7 @@ class Parser {
   static hexStringToByte(string) {
     const a = [];
     for (let i = 0, length = string.length; i < length; i += 2) {
-      a.push(parseInt(string.slice(i, i + 2), 16));
+      a.push(Number.parseInt(string.slice(i, i + 2), 16));
     }
 
     return new Uint8Array(a);
