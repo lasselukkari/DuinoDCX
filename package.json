@@ -17,7 +17,7 @@
   "scripts": {
     "build": "awot-static",
     "flash": "awot-command-line",
-    "upload": "react-scripts build && awot-static && awot-command-line"
+    "upload": "awot-static && awot-command-line"
   },
   "awot-static": {
     "sources": "./node_modules/dcx-ui/dist",
