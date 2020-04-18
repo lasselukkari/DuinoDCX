@@ -6,11 +6,6 @@ ESP32 based WIFI remote controller for the [Behringer Ultradrive Pro / DCX2496](
 ## Disclaimer
 I take no responsibility if you destroy your sound system using this.
 
-## Support
-The project is free software and there is no official support.
-
-If you need help or have a feature request please [create an issue](https://github.com/lasselukkari/DuinoDCX/issues/new/choose).
-
 ## Introduction Video
 [![DuinoDCX Demo Video](https://img.youtube.com/vi/oZoBElP5jPo/0.jpg)](https://www.youtube.com/watch?v=oZoBElP5jPo)
 
@@ -22,11 +17,16 @@ http://duinodcx.herokuapp.com/
 ## User Guide
 [DuinoDCX User Guide](https://lasselukkari.github.io/DuinoDCX). The guide includes step by step instruction for building the harware setup and goes trough the software installation and basic usage. Contributions to the manual are really welcome.
 
-## User Interface
-The user interface has been slit to a separate project [dcx-ui](https://github.com/lasselukkari/dcx-ui).
+## Support
+The project is free software and there is no official support.
+
+If you need help or have a feature request please [create an issue](https://github.com/lasselukkari/DuinoDCX/issues/new/choose).
   
 ## Development
 Install [Node.js](https://nodejs.org), [Arduino IDE](https://www.arduino.cc/en/Main/Software) and the support for the [ESP32](https://github.com/espressif/arduino-esp32#installation-instructions) boards.
+
+### User Interface
+The user interface has been slit to a separate project [dcx-ui](https://github.com/lasselukkari/dcx-ui).
 
 ### Required Hardware
 * ESP32 development board
