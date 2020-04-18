@@ -34,16 +34,16 @@ or
 ### Building and uploading
 Run `npm install` to fetch dependencies.
 
-To build the project run `npm run build` and then `npm run dist`.
+To build the project run `npm run build`.
 
-The dist command will read the minified files from the `build` dir and then rewrites the gzipped hex payloads for the static files to `DuinoDCX/StaticFiles.h` file.
+The build command will read the minified user interface files and then rewrites the gzipped hex payloads for the static files to `DuinoDCX/StaticFiles.h` file.
 
 Open the `DuinoDCX/DuinoDCX.ino` Arduino sketch file using Arduino IDE. Set the Partition Scheme to Minimal SPIFFS (Large apps with OTA) and upload the project to the microcontroller.
 
 Precompiled binaires can be uploded using the ESP32 OTAWebUpdater example or using the built in functionality after the initial installation.
 
 ## Acknowledgements
-Thanks to Ilkka Huhtakallio for contributing the transfer function code. Without that this project would not have all those pretty graphs.
+Thanks to Ilkka Huhtakallio for contributing the transfer function code for the user interface. Without him this project would not have all those pretty graphs.
 
 ## License
 [MIT](LICENSE)

@@ -3,11 +3,7 @@
 # dependencies
 /node_modules
 
-# testing
-/coverage
-
 # production
-/build
 /DuinoDCX/StaticFiles.h
 /DuinoDCX/DuinoDCX.ino.esp32.bin
 
@@ -23,3 +19,4 @@ yarn-debug.log*
 yarn-error.log*
 
 .idea/
+.vscode
