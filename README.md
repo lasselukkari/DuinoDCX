@@ -15,7 +15,7 @@ Please note that this project is not affiliated with the author of the video.
 http://duinodcx.herokuapp.com/
 
 ## User Guide
-[DuinoDCX User Guide](https://lasselukkari.github.io/DuinoDCX). The guide includes step by step instruction for building the harware setup and goes trough the software installation and basic usage. Contributions to the manual are really welcome.
+[The user guide](https://lasselukkari.github.io/DuinoDCX) includes step by step instruction for building the harware setup and goes trough the software installation and basic usage. Contributions to the manual are really welcome.
 
 ## Support
 The project is free software and there is no official support.
