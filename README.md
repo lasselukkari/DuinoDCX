@@ -14,11 +14,13 @@ If you need help or have a feature request please [create an issue](https://gith
 ## User Interface
 The user interface has been slit to a separate project [dcx-ui](https://github.com/lasselukkari/dcx-ui).
 
-## Demo
-http://duinodcx.herokuapp.com/
+### Introduction Video
+[![DuinoDCX Demo Video](https://img.youtube.com/vi/oZoBElP5jPo/0.jpg)](https://www.youtube.com/watch?v=oZoBElP5jPo)
 
-### Demo Video
-[![DuinoDCX Demo Video](https://img.youtube.com/vi/Z5CDjev1ydA/0.jpg)](https://www.youtube.com/watch?v=Z5CDjev1ydA)
+Please note that this project is not affiliated with the author of the video.
+
+## Online Demo
+http://duinodcx.herokuapp.com/
 
 ## User Guide
 [DuinoDCX User Guide](https://lasselukkari.github.io/DuinoDCX). The guide includes step by step instruction for building the harware setup and goes trough the software installation and basic usage. Contributions to the manual are really welcome. 
