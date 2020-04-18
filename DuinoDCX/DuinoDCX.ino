@@ -7,7 +7,7 @@
 #include "StaticFiles.h"
 #include "Ultradrive.h"
 
-#define VERSION "v0.0.31"
+#define VERSION "v0.0.32"
 #define BUILD_DATE __DATE__ " " __TIME__
 
 #define DEFAULT_AUTH "Basic RENYMjQ5NjpVbHRyYWRyaXZl" // DCX2496:Ultradrive in base64
@@ -49,7 +49,6 @@ HardwareSerial UltradriveSerial(2);
 Ultradrive deviceManager(&UltradriveSerial, RTS_PIN, CTS_PIN);
 Application app;
 Router apiRouter("/api");
-Router logEndRouter("");
 
 char basicAuth[BASIC_AUTH_LENGTH];
 char softApSsid[SOFT_AP_SSID_LENGTH];
@@ -314,7 +313,7 @@ void getStatus(Request &req, Response &res) {
 void selectDevice(Request &req, Response &res) {
   byte buffer[100];
 
-  if (!req.body(buffer, 100)) {
+  if (!req.readBytes(buffer, 100)) {
     return res.sendStatus(400);
   }
 
@@ -403,13 +402,13 @@ void setupHttpServer() {
   apiRouter.get("/networks", &getNetworks);
   apiRouter.post("/update", &update);
   apiRouter.get("/version", &getVersion);
-  logEndRouter.use(&logRequestEnd);
+
 
   app.use(&logRequestStart);
   app.use(&auth);
   app.route(&apiRouter);
   app.route(staticFiles());
-  app.route(&logEndRouter);
+  app.use(&logRequestEnd);
 
   httpServer.begin();
 }
