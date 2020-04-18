@@ -11,6 +11,9 @@ The project is free software and there is no official support.
 
 If you need help or have a feature request please [create an issue](https://github.com/lasselukkari/DuinoDCX/issues/new/choose).
 
+## User Interface
+The user interface has been slit to a separate project [dcx-ui](https://github.com/lasselukkari/dcx-ui).
+
 ## Demo
 http://duinodcx.herokuapp.com/
 
