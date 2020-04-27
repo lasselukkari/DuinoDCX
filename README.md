@@ -11,7 +11,7 @@ I take no responsibility if you destroy your sound system using this.
 ## Introduction Video
 [![DuinoDCX Demo Video](https://i.imgur.com/CIlFvt8.png)](https://streamable.com/z9yxto)
 
-A big thank you for <em>DCX Link</em> for creating the video. This project is not affiliated with the author of the video.
+A big thank you for <em>DCX Link</em> for creating the video.
 
 ## Online Demo
 http://duinodcx.herokuapp.com/
