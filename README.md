@@ -3,13 +3,15 @@ DuinoDCX [![Build Status](https://travis-ci.org/lasselukkari/DuinoDCX.svg?branch
 ========
 ESP32 based WIFI remote controller for the [Behringer Ultradrive Pro / DCX2496](https://www.behringer.com/p/P0B6H).
 
+<img src="https://i.imgur.com/2BB5tPi.png" width="100%" />
+
 ## Disclaimer
 I take no responsibility if you destroy your sound system using this.
 
 ## Introduction Video
-[![DuinoDCX Demo Video](https://img.youtube.com/vi/oZoBElP5jPo/0.jpg)](https://www.youtube.com/watch?v=oZoBElP5jPo)
+[![DuinoDCX Demo Video](https://i.imgur.com/CIlFvt8.png)](https://streamable.com/z9yxto)
 
-A big thank you for the Youtube user DCX Link for creating the video. Please note that this project is not affiliated with the author.
+A big thank you for <em>DCX Link</em> for creating the video. This project is not affiliated with the author of the video.
 
 ## Online Demo
 http://duinodcx.herokuapp.com/
