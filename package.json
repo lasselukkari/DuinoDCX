@@ -12,7 +12,7 @@
     "awot-scripts": "0.0.38"
   },
   "dependencies": {
-    "dcx-ui": "0.0.2"
+    "dcx-ui": "0.0.3"
   },
   "scripts": {
     "build": "awot-static",
