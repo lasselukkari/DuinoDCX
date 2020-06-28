@@ -1,7 +1,7 @@
 {
   "name": "DuinoDCX",
   "description": "Standalone WIFI remote controller for the Behringer Ultradrive Pro (DCX2496)",
-  "version": "0.0.32",
+  "version": "0.0.33",
   "author": "Lasse Lukkari <lasse.lukkari@gmai.com>",
   "contributors": [
     "Ilkka Huhtakallio"
