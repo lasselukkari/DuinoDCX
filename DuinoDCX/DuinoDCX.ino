@@ -7,7 +7,7 @@
 #include "StaticFiles.h"
 #include "Ultradrive.h"
 
-#define VERSION "v0.0.35"
+#define VERSION "v0.0.36"
 #define BUILD_DATE __DATE__ " " __TIME__
 
 #define DEFAULT_AUTH "Basic RENYMjQ5NjpVbHRyYWRyaXZl" // DCX2496:Ultradrive in base64
