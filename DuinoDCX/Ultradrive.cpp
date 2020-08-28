@@ -196,6 +196,7 @@ void Ultradrive::readCommands(unsigned long now) {
     if (memcmp(serialBuffer, vendorHeader, 5) != 0) {
       return;
     }
+
     int command = serialBuffer[COMMAND_BYTE];
     switch (command) {
       case SEARCH_RESPONSE: {
@@ -210,8 +211,6 @@ void Ultradrive::readCommands(unsigned long now) {
           break;
         }
       case DUMP_RESPONSE: {
-
-
           int part = serialBuffer[PART_BYTE];
 
           if (part == 0) {
@@ -325,6 +324,7 @@ DataLocation Ultradrive::setupLocations[22] =  {
   {{0, 142}, {0, 148, 1}, {0, 143}},
   {{0, 144}, {0, 148, 3}, {0, 145}}
 };
+
 DataLocation Ultradrive::inputLocations[4][62] =  {
   {
     {{0, 146}, {0, 148, 5}, {0, 147}},
@@ -580,6 +580,7 @@ DataLocation Ultradrive::inputLocations[4][62] =  {
     {{0, 711}, { -1, -1, -1}, { -1, -1}}
   }
 };
+
 DataLocation Ultradrive::outputLocations[6][74] =  {
   {
     {{0, 713}, {0, 716, 4}, {0, 714}},
