@@ -27,12 +27,9 @@ http://duinodcx.herokuapp.com/
 The project is free software and there is no official support.
 
 If you need help or have a feature request please [create an issue](https://github.com/lasselukkari/DuinoDCX/issues/new/choose).
-  
-## Development
-Install [Node.js](https://nodejs.org), [Arduino IDE](https://www.arduino.cc/en/Main/Software) and the support for the [ESP32](https://github.com/espressif/arduino-esp32#installation-instructions) boards.
 
 ### User Interface
-The user interface has been slit to a separate project [dcx-ui](https://github.com/lasselukkari/dcx-ui).
+The user interface has been split to a separate project [dcx-ui](https://github.com/lasselukkari/dcx-ui).
 
 ### Required Hardware
 * ESP32 development board
@@ -43,6 +40,8 @@ or
 * The [SerialChiller](https://github.com/lasselukkari/SerialChiller) board
 
 ### Building and uploading
+You only need to do this if you are planning to modify the source code. You can use ready made binaries if you just want to use the software. 
+
 Run `npm install` to fetch dependencies.
 
 To build the project run `npm run build`.
