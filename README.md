@@ -26,11 +26,13 @@ As we want to control a another device with  the microcontroller the ESP32 need 
 #### Four jumper cables
 <img src="images/jumper-wires.jpg">
 
+#### Male to female RS232 null modem cable
+<img src="images/rs232-cable.jpg">
+
 #### Male to male RS232 gender changer
 <img src="images/gender-changer.jpg">
 
-#### Male to female RS232 Null modem cable
-<img src="images/rs232-cable.jpg">
+Male to male null modem cables are really hard to find. Because of this need to use a male to male gender changer combined with a female to male null modem cable. Do not buy a cable if you are not sure that it is a null modem cable.
 
 ### Wiring 
 * RS232 board VCC to ESP32 3.3V
@@ -73,7 +75,7 @@ To make the [SerialChiller](https://github.com/lasselukkari/SerialChiller) start
 
 The [SerialChiller](https://github.com/lasselukkari/SerialChiller) uses a cheap chinece clone of a popular USB to serial port adapter. On Windows people have had problems with the latest official drivers provided by the original manufacturer. These drivers have been reported to work better: [http://www.miklor.com/COM/UV_Drivers.php#install](http://www.miklor.com/COM/UV_Drivers.php#install).
 
-#### Arduino IDe settings
+#### Arduino Ide settings
 Make sure you have the correct board type selected.
 
 <img src="images/board-select.jpg">
