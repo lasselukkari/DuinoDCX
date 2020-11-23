@@ -32,7 +32,7 @@ As we want to control a another device with  the microcontroller the ESP32 need 
 #### Male to male RS232 gender changer
 <img src="images/gender-changer.jpg">
 
-Male to male null modem cables are really hard to find. Because of this need to use a male to male gender changer combined with a female to male null modem cable. Do not buy a cable if you are not sure that it is a null modem cable.
+Male to male null modem cables are really hard to find. Because of this we need to use a male to male gender changer combined with a female to male null modem cable. Do not buy a cable if you are not sure that it is a null modem cable.
 
 ### Wiring 
 * RS232 board VCC to ESP32 3.3V
