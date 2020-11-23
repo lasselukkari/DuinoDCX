@@ -19,6 +19,10 @@ http://duinodcx.herokuapp.com/
 ## User Guide
 [The user guide](https://lasselukkari.github.io/DuinoDCX) includes step by step instruction for building the harware setup and goes trough the software installation and basic usage. Contributions to the manual are really welcome.
 
+## Known limitations
+* Does not support preset saving or recalling
+* Support for linked devices does not work
+
 ## Support
 The project is free software and there is no official support.
 
