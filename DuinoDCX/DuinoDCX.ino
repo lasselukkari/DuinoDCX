@@ -6,42 +6,7 @@
 #include "aWOT.h"
 #include "StaticFiles.h"
 #include "Ultradrive.h"
-
-#define VERSION "v0.0.39"
-#define BUILD_DATE __DATE__ " " __TIME__
-
-#define DEFAULT_AUTH "Basic RENYMjQ5NjpVbHRyYWRyaXZl" // DCX2496:Ultradrive in base64
-#define DEFAULT_SOFT_AP_SSID "DCX2496"
-#define DEFAULT_SOFT_AP_PASSWORD "Ultradrive"
-#define DEFAULT_MDNS_NAME "ultradrive"
-#define DEFAULT_FLOW_CONTROL false
-#define DEFAULT_AUTO_DISABLE_AP false
-
-#define RTS_PIN 21
-#define CTS_PIN 22
-
-#define RESET_PIN 13
-
-#define WIFI_HOST_NAME "ultradrive"
-#define AUTH_KEY "auth"
-#define SOFT_AP_PASSWORD_KEY "apPassword"
-#define SOFT_AP_SSID_KEY "apSsid"
-#define MDNS_HOST_KEY "mdnsHost"
-#define FLOW_CONTROL_KEY "flowControl"
-#define AUTO_DISABLE_AP_KEY "autoDisableAP"
-
-#define AUTH_BUFFER_LENGHT 200
-#define MAX_DEVICES 16
-#define POST_PARAM_SSID_KEY "ssid"
-#define POST_PARAM_PASSWORD_KEY "password"
-#define SSID_MAX_LENGTH 33
-#define PASSWORD_MAX_LENGHT 65
-#define CONNECTION_TIMEOUT 10000
-#define RECONNECT_INTERVAL 20000
-#define BASIC_AUTH_LENGTH 200
-#define SOFT_AP_SSID_LENGTH 65
-#define SOFT_AP_PASSWORD_LENGTH 65
-#define MDDNS_NAME_LENGTH 65
+#include "Config.h"
 
 Preferences preferences;
 WiFiServer httpServer(80);
