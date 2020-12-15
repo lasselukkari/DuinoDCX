@@ -10,6 +10,7 @@ title_separator          : "-"
 subtitle                 : "WiFi remote controller for the Behringer Ultradrive."
 name                     : "Lasse Lukkari"
 description              : "DuinoDCX User Guide."
+repository               : "lasselukkari/DuinoDCX"
 
 titles_from_headings:
   enabled:     true
