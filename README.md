@@ -1,9 +1,13 @@
 # DuinoDCX User Guide
+<img src="https://i.imgur.com/2BB5tPi.png" width="100%" />
 
 ## Introduction Video
 [![DuinoDCX Demo Video](https://i.imgur.com/CIlFvt8.png)](https://streamable.com/z9yxto)
 
 A big thank you for <em>DCX Link</em> for creating the video.
+
+## Online Demo
+http://duinodcx.herokuapp.com/
 
 ## Table of Contents
 1. [Hardware Setup](#1-hardware-setup)
