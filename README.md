@@ -1,5 +1,10 @@
 # DuinoDCX User Quide
 
+## Introduction Video
+[![DuinoDCX Demo Video](https://i.imgur.com/CIlFvt8.png)](https://streamable.com/z9yxto)
+
+A big thank you for <em>DCX Link</em> for creating the video.
+
 ## Table of Contents
 1. [Hardware Setup](#1-hardware-setup)
 2. [Flashing the Board](#2-flashing-the-board)
