@@ -1,5 +1,3 @@
-# DuinoDCX User Guide
-
 ## Table of Contents
 1. [Hardware Setup](#1-hardware-setup)
 2. [Flashing the Board](#2-flashing-the-board)
