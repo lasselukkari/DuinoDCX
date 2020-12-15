@@ -1,6 +1,4 @@
----
-title: DuinoDCX User Quide
----
+# DuinoDCX User Quide
 
 ## Table of Contents
 1. [Hardware Setup](#1-hardware-setup)
