@@ -1,4 +1,4 @@
-# DuinoDCX User Quide
+# DuinoDCX User Guide
 
 ## Introduction Video
 [![DuinoDCX Demo Video](https://i.imgur.com/CIlFvt8.png)](https://streamable.com/z9yxto)
