@@ -17,7 +17,7 @@ A big thank you for <em>DCX Link</em> for creating the video.
 http://duinodcx.herokuapp.com/
 
 ## User Guide
-[The user guide](https://lasselukkari.github.io/DuinoDCX) includes step by step instruction for building the harware setup and goes trough the software installation and basic usage. Contributions to the manual are really welcome.
+[The user guide](https://lasselukkari.github.io/DuinoDCX) includes step by step instructions for building the harware setup and goes trough the software installation and basic usage. Contributions to the manual are really welcome.
 
 ## Known limitations
 * Does not support preset saving or recalling
