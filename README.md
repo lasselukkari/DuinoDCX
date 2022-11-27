@@ -14,7 +14,7 @@ I take no responsibility if you destroy your sound system using this.
 A big thank you for <em>DCX Link</em> for creating the video.
 
 ## Online Demo
-http://duinodcx.herokuapp.com/
+https://lasselukkari.github.io/dcx-ui
 
 ## User Guide
 [The user guide](https://lasselukkari.github.io/DuinoDCX) includes step by step instructions for building the harware setup and goes trough the software installation and basic usage. Contributions to the manual are really welcome.
