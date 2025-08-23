@@ -1,4 +1,9 @@
 #include "Ultradrive.h"
+#ifdef ESP32
+  #define DEBUG_SERIAL Serial
+#elif defined(ESP8266)
+  #define DEBUG_SERIAL Serial1
+#endif
 
 Ultradrive::Ultradrive(HardwareSerial *serial,  int rtsPin, int ctsPin) :
   selectedDevice(0), serial(serial), rtsPin(rtsPin), ctsPin(ctsPin), isFirstRun(true), flowControl(false) {
@@ -20,24 +25,24 @@ void Ultradrive::processIncoming(unsigned long now) {
   }
 
   if (now - lastSearch >= SEARCH_INTEVAL) {
-    Serial.print(now);
-    Serial.println(": Searching for devices.");
+    DEBUG_SERIAL.print(now);
+    DEBUG_SERIAL.println(": Searching for devices.");
     lastSearch = now;
     return search();
   }
 
   if (now - lastPing >= PING_INTEVAL) {
     lastPing = now;
-    Serial.print(now);
-    Serial.println(": Pinging selected device.");
+    DEBUG_SERIAL.print(now);
+    DEBUG_SERIAL.println(": Pinging selected device.");
     return ping(selectedDevice);
   }
 
   if (now - lastResync >= RESYNC_INTEVAL) {
     if (devices[selectedDevice].lastResponse && now - devices[selectedDevice].lastResponse < TIMEOUT_TIME) {
       lastResync = now;
-      Serial.print(now);
-      Serial.println(": Syncing selected device.");
+      DEBUG_SERIAL.print(now);
+      DEBUG_SERIAL.println(": Syncing selected device.");
       setTransmitMode(selectedDevice);
       dump(selectedDevice, 0);
       dump(selectedDevice, 1);
@@ -173,8 +178,8 @@ void Ultradrive::readCommands(unsigned long now) {
   byte b = serial->read();
 
   if (b == COMMAND_START) {
-    Serial.print(now);
-    Serial.println(": Started receiving data from device");
+    DEBUG_SERIAL.print(now);
+    DEBUG_SERIAL.println(": Started receiving data from device");
     readingCommand = true;
     serialRead = 0;
   }
@@ -188,8 +193,8 @@ void Ultradrive::readCommands(unsigned long now) {
   }
 
   if (b == TERMINATOR) {
-    Serial.print(now);
-    Serial.println(": Received end of data from device");
+    DEBUG_SERIAL.print(now);
+    DEBUG_SERIAL.println(": Received end of data from device");
     readingCommand = false;
     byte vendorHeader[] = {0xF0, 0x00, 0x20, 0x32, 0x00};
 
@@ -201,8 +206,8 @@ void Ultradrive::readCommands(unsigned long now) {
     switch (command) {
       case SEARCH_RESPONSE: {
           if (serialRead == SEARCH_RESPONSE_LENGTH) {
-            Serial.print(now);
-            Serial.println(": Received search response");
+            DEBUG_SERIAL.print(now);
+            DEBUG_SERIAL.println(": Received search response");
             int deviceId = serialBuffer[ID_BYTE];
             devices[deviceId].lastResponse = millis();
             memcpy(&devices[deviceId].response, serialBuffer, SEARCH_RESPONSE_LENGTH);
@@ -218,8 +223,8 @@ void Ultradrive::readCommands(unsigned long now) {
               break;
             }
             if (serialRead == PART_0_LENGTH) {
-              Serial.print(now);
-              Serial.println(": Received state part 0");
+              DEBUG_SERIAL.print(now);
+              DEBUG_SERIAL.println(": Received state part 0");
               memcpy(dump0, serialBuffer, PART_0_LENGTH);
             }
           } else if (part == 1) {
@@ -228,8 +233,8 @@ void Ultradrive::readCommands(unsigned long now) {
               break;
             }
             if (serialRead == PART_1_LENGTH) {
-              Serial.print(now);
-              Serial.println(": Received state part 1");
+              DEBUG_SERIAL.print(now);
+              DEBUG_SERIAL.println(": Received state part 1");
               memcpy(dump1, serialBuffer, PART_1_LENGTH);
             }
           }
@@ -238,8 +243,8 @@ void Ultradrive::readCommands(unsigned long now) {
         }
       case PING_RESPONSE: {
           if (serialRead == PING_RESPONSE_LENGTH) {
-            Serial.print(now);
-            Serial.println(": Received ping response");
+            DEBUG_SERIAL.print(now);
+            DEBUG_SERIAL.println(": Received ping response");
             memcpy(pingResponse, serialBuffer, PING_RESPONSE_LENGTH);
           }
 
@@ -247,8 +252,8 @@ void Ultradrive::readCommands(unsigned long now) {
         }
       case DIRECT_COMMAND: {
           int count = serialBuffer[PARAM_COUNT_BYTE];
-          Serial.print(now);
-          Serial.println(": Received commands");
+          DEBUG_SERIAL.print(now);
+          DEBUG_SERIAL.println(": Received commands");
           for (int i = 0; i < count; i++) {
             int offset = (4 * i);
             int channel = serialBuffer[CHANNEL_BYTE + offset];
