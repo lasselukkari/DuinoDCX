@@ -1,7 +1,6 @@
-
 DuinoDCX [![Build Status](https://travis-ci.org/lasselukkari/DuinoDCX.svg?branch=master)](https://travis-ci.org/lasselukkari/DuinoDCX)
 ========
-ESP32 based WIFI remote controller for the [Behringer Ultradrive Pro / DCX2496](https://www.behringer.com/p/P0B6H).
+ESP32 and ESP8266 based WIFI remote controller for the [Behringer Ultradrive Pro / DCX2496](https://www.behringer.com/p/P0B6H).
 
 <img src="https://i.imgur.com/2BB5tPi.png" width="100%" />
 
@@ -32,12 +31,14 @@ If you need help or have a feature request please [create an issue](https://gith
 The user interface has been split to a separate project [dcx-ui](https://github.com/lasselukkari/dcx-ui).
 
 ### Required Hardware
-* ESP32 development board
+* ESP32 or ESP8266 development board
 * RS232 To TTL converter
 
 or
 
 * The [SerialChiller](https://github.com/lasselukkari/SerialChiller) board
+
+> **Note:** On ESP8266, logging output is sent to UART1 (TX pin at D4).
 
 ### Building and uploading
 You only need to do this if you are planning to modify the source code. You can use ready made binaries if you just want to use the software. 

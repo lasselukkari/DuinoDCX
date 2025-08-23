@@ -1,17 +1,35 @@
-#include <esp_wifi.h>
-#include <WiFi.h>
-#include <ESPmDNS.h>
-#include <Update.h>
+#ifdef ESP32
+  #include <esp_wifi.h>
+  #include <WiFi.h>
+  #include <ESPmDNS.h>
+  #include <Update.h>
+#elif defined(ESP8266)
+  #include <ESP8266WiFi.h>
+  #include <ESP8266mDNS.h>
+#endif
+
 #include <Preferences.h>
 #include "aWOT.h"
 #include "StaticFiles.h"
 #include "Ultradrive.h"
-#include "Config.h"
+#include "config.h"
 
 Preferences preferences;
 WiFiServer httpServer(80);
-HardwareSerial UltradriveSerial(2);
-Ultradrive deviceManager(&UltradriveSerial, RTS_PIN, CTS_PIN);
+
+#ifdef ESP32
+  HardwareSerial UltradriveSerial(2);
+  Ultradrive deviceManager(&UltradriveSerial, RTS_PIN, CTS_PIN);
+  #define DEBUG_SERIAL Serial
+  #define ULTRADRIVE_SERIAL UltradriveSerial
+#elif defined(ESP8266)
+  // On ESP8266, due to resource constraints, Serial is used for Ultradrive communication 
+  // so Serial1 is used for logging/debug output to avoid conflicts.
+  Ultradrive deviceManager(&Serial, RTS_PIN, CTS_PIN);
+  #define DEBUG_SERIAL Serial1
+  #define ULTRADRIVE_SERIAL Serial
+#endif
+
 Application app;
 Router apiRouter("/api");
 
@@ -31,44 +49,44 @@ unsigned long requestStart;
 
 void logRequestStart(Request &req, Response &res) {
   unsigned long now = millis();
-  Serial.print(now);
-  Serial.print(": HTTP ");
+  DEBUG_SERIAL.print(now);
+  DEBUG_SERIAL.print(": HTTP ");
 
   switch (req.method()) {
     case  Request::GET: {
-        Serial.print("GET ");
+        DEBUG_SERIAL.print("GET ");
         break;
       }
     case  Request::POST: {
-        Serial.print("POST ");
+        DEBUG_SERIAL.print("POST ");
         break;
       }
     case  Request::PUT: {
-        Serial.print("PUT ");
+        DEBUG_SERIAL.print("PUT ");
         break;
       }
     case  Request::PATCH: {
-        Serial.print("GET ");
+        DEBUG_SERIAL.print("GET ");
         break;
       }
     case  Request::DELETE: {
-        Serial.print("DELETE ");
+        DEBUG_SERIAL.print("DELETE ");
         break;
       }
     default: {}
   }
 
-  Serial.print(req.path());
-  Serial.print(" ");
+  DEBUG_SERIAL.print(req.path());
+  DEBUG_SERIAL.print(" ");
   requestStart = micros();
 }
 
 void logRequestEnd(Request &req, Response &res) {
   float delta = (micros() - requestStart) / 1000.0;
-  Serial.print(res.bytesSent());
-  Serial.print(" b ");
-  Serial.print(delta);
-  Serial.println(" ms");
+  DEBUG_SERIAL.print(res.bytesSent());
+  DEBUG_SERIAL.print(" b ");
+  DEBUG_SERIAL.print(delta);
+  DEBUG_SERIAL.println(" ms");
 }
 
 void auth(Request &req, Response &res) {
@@ -379,8 +397,13 @@ void setupHttpServer() {
 }
 
 void setup() {
-  Serial.begin(38400);
-  UltradriveSerial.begin(38400);
+  #ifdef ESP32
+    Serial.begin(38400);
+    UltradriveSerial.begin(38400);
+  #elif defined(ESP8266)
+    Serial.begin(38400);
+    Serial1.begin(38400);
+  #endif
 
   loadPreferences();
 
