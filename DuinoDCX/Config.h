@@ -7,6 +7,8 @@
 #define WIFI_HOST_NAME "ultradrive"
 #define DEFAULT_FLOW_CONTROL false
 #define DEFAULT_AUTO_DISABLE_AP false
+#define RX2_PIN 16
+#define TX2_PIN 17
 #define RTS_PIN 21
 #define CTS_PIN 22
 #define RESET_PIN 13

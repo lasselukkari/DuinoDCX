@@ -380,6 +380,7 @@ void setupHttpServer() {
 
 void setup() {
   Serial.begin(38400);
+  UltradriveSerial.setPins(RX2_PIN, TX2_PIN);
   UltradriveSerial.begin(38400);
 
   loadPreferences();
