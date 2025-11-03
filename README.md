@@ -65,7 +65,7 @@ Unless you already have the Arduino and Arduino ESP32 core development environme
 * [Arduino IDE](https://www.arduino.cc/en/main/software)
 * [Arduino ESP32 core 1.0.4](https://github.com/espressif/arduino-esp32#installation-instructions)
 
-It is important that you install the right version of the Arduino ESP32 core.
+~~It is important that you install the right version of the Arduino ESP32 core.~~ Update 3.11.2026: The latest version of the of the Arduino core should work. Please report any proeblmes as a github issue.
 
 ### Upload process
 
