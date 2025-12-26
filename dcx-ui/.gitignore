@@ -1,11 +1,13 @@
 # See https://help.github.com/ignore-files/ for more about ignoring files.
 
+# distributed files
+/dist
+
 # dependencies
 /node_modules
 
-# production
-/DuinoDCX/StaticFiles.h
-/DuinoDCX/DuinoDCX.ino.esp32.bin
+# testing
+/coverage
 
 # misc
 .DS_Store
@@ -19,5 +21,5 @@ yarn-debug.log*
 yarn-error.log*
 
 .idea/
-.vscode
-*.o
+
+

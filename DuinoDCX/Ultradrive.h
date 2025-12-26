@@ -44,9 +44,9 @@
 #define COMMAND_START 240
 #define TERMINATOR 247
 
+#include "aWOT.h"
 #include <Arduino.h>
 #include <Stream.h>
-#include "aWOT.h"
 
 struct HighByte {
   int part;
@@ -71,61 +71,60 @@ struct DataLocation {
 };
 
 class Ultradrive {
-    struct Device {
-      unsigned long lastResponse;
-      byte response[SEARCH_RESPONSE_LENGTH];
-    } devices[MAX_DEVICES];
+  struct Device {
+    unsigned long lastResponse;
+    byte response[SEARCH_RESPONSE_LENGTH];
+  } devices[MAX_DEVICES];
 
-  public:
-    Ultradrive(HardwareSerial *serial, int rtsPin = 0, int ctsPin = 0);
-    void enableFlowControl(bool enabled);
-    void processIncoming(unsigned long now);
-    void processOutgoing(Request* req);
-    void writeDevice(Response* res);
-    void writeDeviceStatus(Response* res);
-    void writeDevices(Response* res);
-    void setSelected(int deviceId);
-    int getSelected();
+public:
+  Ultradrive(HardwareSerial *serial, int rtsPin = 0, int ctsPin = 0);
+  void enableFlowControl(bool enabled);
+  void processIncoming(unsigned long now);
+  void processOutgoing(Request *req);
+  void writeDevice(Response *res);
+  void writeDeviceStatus(Response *res);
+  void writeDevices(Response *res);
+  void setSelected(int deviceId);
+  int getSelected();
 
-  private:
-    size_t write(const uint8_t *buffer, size_t size);
-    bool requestToSend(int timeout);
-    void endSend();
-    void search();
-    void setTransmitMode(int deviceId);
-    void ping(int deviceId);
-    void dump(int deviceId, int part);
-    void readCommands(unsigned long now);
-    void patchBuffer(int low, int high, DataLocation l);
-    
-    bool invalidateSync;
-    byte dump0[PART_0_LENGTH];
-    byte dump1[PART_1_LENGTH];
-    byte pingResponse[PING_RESPONSE_LENGTH];
-    unsigned long lastResync;
-    unsigned long lastPing;
-    int selectedDevice;
+private:
+  size_t write(const uint8_t *buffer, size_t size);
+  bool requestToSend(int timeout);
+  void endSend();
+  void search();
+  void setTransmitMode(int deviceId);
+  void ping(int deviceId);
+  void dump(int deviceId, int part);
+  void readCommands(unsigned long now);
+  void patchBuffer(int low, int high, DataLocation l);
 
-    HardwareSerial *serial;
-    int rtsPin;
-    int ctsPin;
+  bool invalidateSync;
+  byte dump0[PART_0_LENGTH];
+  byte dump1[PART_1_LENGTH];
+  byte pingResponse[PING_RESPONSE_LENGTH];
+  unsigned long lastResync;
+  unsigned long lastPing;
+  int selectedDevice;
 
-    bool isFirstRun;
-    bool flowControl;
-    bool readingCommand;
-    int serialRead;
+  HardwareSerial *serial;
+  int rtsPin;
+  int ctsPin;
 
-    unsigned long lastSearch;
-    unsigned long lastReconnect;
+  bool isFirstRun;
+  bool flowControl;
+  bool readingCommand;
+  int serialRead;
 
-    byte serialBuffer[PART_0_LENGTH];
-    byte serverBuffer[PART_0_LENGTH];
+  unsigned long lastSearch;
 
-    static DataLocation setupLocations[22];
-    static DataLocation inputLocations[4][62];
-    static DataLocation outputLocations[6][74];
+  byte serialBuffer[PART_0_LENGTH];
+  byte serverBuffer[PART_0_LENGTH];
 
-    static byte vendorHeader[5];
+  static DataLocation setupLocations[22];
+  static DataLocation inputLocations[4][62];
+  static DataLocation outputLocations[6][74];
+
+  static byte vendorHeader[5];
 };
 
 #endif

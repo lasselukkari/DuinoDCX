@@ -1,0 +1,165 @@
+body {
+  padding-top: 70px;
+  padding-bottom: 50px;
+}
+
+.block-ui {
+  position: relative;
+  min-height: 3em;
+}
+
+.block-ui-container {
+  position: absolute;
+  z-index: 1010;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 100%;
+  min-height: 2em;
+  cursor: not-allowed;
+  overflow: hidden;
+}
+
+.block-ui-container:focus {
+  outline: none;
+}
+
+.block-ui-overlay {
+  width: 100%;
+  height: 100%;
+}
+
+.content-loader {
+  margin-top: 30px;
+}
+
+.content-loader h5 {
+  margin-top: 20px;
+}
+
+.line-scale > div {
+  width: 30px;
+  height: 144px;
+  border-radius: 10px;
+  margin: 5px;
+}
+
+*:focus {
+  outline: none !important
+}
+
+.card {
+  margin-bottom: 15px;
+}
+
+.card-body {
+  padding: 15px 15px 5px !important;
+}
+
+.end-button {
+  width: 25%;
+}
+
+.end-button > .nav-item {
+  width: 100%;
+  text-align: center;
+}
+
+.middle-buttons {
+  width: 50%;
+}
+
+.middle-buttons > .nav-item {
+  width: 50%;
+  text-align: center;
+}
+
+.middle-buttons > .nav-item  > a {
+  font-weight: bold;
+}
+
+.middle-buttons .nav-link.active {
+  background-image: -webkit-linear-gradient(#78cc78, #62c462 60%, #53be53);
+  background-image: -o-linear-gradient(#78cc78, #62c462 60%, #53be53);
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#78cc78), color-stop(60%, #62c462), to(#53be53));
+  background-image: linear-gradient(#78cc78, #62c462 60%, #53be53);
+  background-repeat: no-repeat;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff78cc78', endColorstr='#ff53be53', GradientType=0);
+  -webkit-filter: none;
+  filter: none;
+}
+
+.middle-buttons .nav-link.active:hover {
+  background-image: -webkit-linear-gradient(#2f7d2f, #379337 40%, #3a9a3a);
+  background-image: -o-linear-gradient(#2f7d2f, #379337 40%, #3a9a3a);
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#2f7d2f), color-stop(40%, #379337), to(#3a9a3a));
+  background-image: linear-gradient(#2f7d2f, #379337 40%, #3a9a3a);
+  background-repeat: no-repeat;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff2f7d2f', endColorstr='#ff3a9a3a', GradientType=0);
+  -webkit-filter: none;
+  filter: none;
+}
+
+.end-button > li.open > a {
+  color: #62c462 !important;
+}
+
+.recharts-default-tooltip {
+  background-color: #272b30 !important;
+}
+
+.Toastify__toast-body {
+  margin: auto 15px;
+}
+
+
+.react-numeric-input input {
+  height: 48px;
+}
+
+.no-caret > .dropdown-toggle::after {
+  display: none;
+}
+
+.right-0  .dropdown-menu{
+  right: 0;
+  left: auto;
+}
+
+.icon-menu{
+  width: 50px;
+  text-align: center;
+}
+
+#localization-dropup {
+  width: 260px;
+  padding: 10px 15px 0 15px;
+}
+
+.header-button {
+  height: 22px;
+  font-size: 10px;
+  float: right;
+}
+
+.nav-tabs .nav-link.active {
+  color: #fff;
+  background-color: #3e444c;
+  border: 1px solid #1c1e22;
+  border-bottom-color: transparent;
+}
+
+.wide-nav {
+  margin-right: -15px !important;
+  margin-left: -15px !important;
+}
+
+.control-menu {
+  margin-bottom: 12px;
+  justify-content: center;
+}
+
+.control-menu  > .nav-item{
+  margin: 2px;
+}

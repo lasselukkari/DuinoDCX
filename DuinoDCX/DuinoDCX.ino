@@ -1,19 +1,21 @@
-#include <esp_wifi.h>
-#include <WiFi.h>
-#include <ESPmDNS.h>
-#include <Update.h>
-#include <Preferences.h>
-#include "aWOT.h"
+#include "Config.h"
+#include "RouteHandlers.h"
 #include "StaticFiles.h"
 #include "Ultradrive.h"
-#include "Config.h"
+#include "aWOT.h"
+#include <ESPmDNS.h>
+#include <Preferences.h>
+#include <Update.h>
+#include <WiFi.h>
+#include <esp_wifi.h>
 
 Preferences preferences;
 WiFiServer httpServer(80);
 HardwareSerial UltradriveSerial(2);
 Ultradrive deviceManager(&UltradriveSerial, RTS_PIN, CTS_PIN);
-Application app;
-Router apiRouter("/api");
+Ultradrive *deviceManagerPtr = &deviceManager;
+App app;
+Router apiRouter;
 
 char basicAuth[BASIC_AUTH_LENGTH];
 char softApSsid[SOFT_AP_SSID_LENGTH];
@@ -35,32 +37,34 @@ void logRequestStart(Request &req, Response &res) {
   Serial.print(": HTTP ");
 
   switch (req.method()) {
-    case  Request::GET: {
-        Serial.print("GET ");
-        break;
-      }
-    case  Request::POST: {
-        Serial.print("POST ");
-        break;
-      }
-    case  Request::PUT: {
-        Serial.print("PUT ");
-        break;
-      }
-    case  Request::PATCH: {
-        Serial.print("GET ");
-        break;
-      }
-    case  Request::DELETE: {
-        Serial.print("DELETE ");
-        break;
-      }
-    default: {}
+  case Request::GET: {
+    Serial.print("GET ");
+    break;
+  }
+  case Request::POST: {
+    Serial.print("POST ");
+    break;
+  }
+  case Request::PUT: {
+    Serial.print("PUT ");
+    break;
+  }
+  case Request::PATCH: {
+    Serial.print("GET ");
+    break;
+  }
+  case Request::DELETE: {
+    Serial.print("DELETE ");
+    break;
+  }
+  default: {
+  }
   }
 
   Serial.print(req.path());
   Serial.print(" ");
   requestStart = micros();
+  req.next();
 }
 
 void logRequestEnd(Request &req, Response &res) {
@@ -72,12 +76,14 @@ void logRequestEnd(Request &req, Response &res) {
 }
 
 void auth(Request &req, Response &res) {
-  char * authHeader = req.get("Authorization");
+  char *authHeader = req.get("Authorization");
 
   if (strcmp(authHeader, basicAuth) != 0) {
     res.set("WWW-Authenticate", "Basic realm=\"Ultradrive\"");
     res.sendStatus(401);
     res.end();
+  } else {
+    req.next();
   }
 }
 
@@ -232,9 +238,9 @@ void updateConnection(Request &req, Response &res) {
   while (req.left()) {
     req.form(name, 10, value, PASSWORD_MAX_LENGHT);
     if (strcmp(name, POST_PARAM_SSID_KEY) == 0) {
-      strcpy (ssidBuffer, value);
+      strcpy(ssidBuffer, value);
     } else if (strcmp(name, POST_PARAM_PASSWORD_KEY) == 0) {
-      strcpy (passwordBuffer, value);
+      strcpy(passwordBuffer, value);
     } else {
       return res.sendStatus(400);
     }
@@ -260,42 +266,6 @@ void updateConnection(Request &req, Response &res) {
 void removeConnection(Request &req, Response &res) {
   if (!WiFi.disconnect(false, true)) {
     return res.sendStatus(500);
-  }
-
-  res.sendStatus(204);
-}
-
-void getDevice(Request &req, Response &res) {
-  res.set("Content-Type", "application/binary");
-  deviceManager.writeDevice(&res);
-}
-
-void getStatus(Request &req, Response &res) {
-  res.set("Content-Type", "application/binary");
-  deviceManager.writeDeviceStatus(&res);
-}
-
-void selectDevice(Request &req, Response &res) {
-  byte buffer[100];
-
-  if (!req.readBytes(buffer, 100)) {
-    return res.sendStatus(400);
-  }
-
-  int id = atoi((const char *)buffer);
-  deviceManager.setSelected(id);
-}
-
-void getState(Request &req, Response &res) {
-  res.set("Content-Type", "application/binary");
-  res.write(deviceManager.getSelected());
-  deviceManager.writeDevice(&res);
-  deviceManager.writeDevices(&res);
-}
-
-void createDirectCommand(Request &req, Response &res) {
-  while (req.left()) {
-    deviceManager.processOutgoing(&req);
   }
 
   res.sendStatus(204);
@@ -333,11 +303,13 @@ void loadPreferences() {
     strcpy(basicAuth, DEFAULT_AUTH);
   }
 
-  if (!preferences.getString(SOFT_AP_SSID_KEY, softApSsid, SOFT_AP_SSID_LENGTH)) {
+  if (!preferences.getString(SOFT_AP_SSID_KEY, softApSsid,
+                             SOFT_AP_SSID_LENGTH)) {
     strcpy(softApSsid, DEFAULT_SOFT_AP_SSID);
   }
 
-  if (!preferences.getString(SOFT_AP_PASSWORD_KEY, softApPassword, SOFT_AP_PASSWORD_LENGTH)) {
+  if (!preferences.getString(SOFT_AP_PASSWORD_KEY, softApPassword,
+                             SOFT_AP_PASSWORD_LENGTH)) {
     strcpy(softApPassword, DEFAULT_SOFT_AP_PASSWORD);
   }
 
@@ -347,7 +319,8 @@ void loadPreferences() {
 
   flowControl = preferences.getBool(FLOW_CONTROL_KEY, DEFAULT_FLOW_CONTROL);
 
-  autoDisableAP = preferences.getBool(AUTO_DISABLE_AP_KEY, DEFAULT_AUTO_DISABLE_AP);
+  autoDisableAP =
+      preferences.getBool(AUTO_DISABLE_AP_KEY, DEFAULT_AUTO_DISABLE_AP);
 
   preferences.end();
 }
@@ -355,10 +328,7 @@ void loadPreferences() {
 void setupHttpServer() {
   app.header("Authorization", authBuffer, AUTH_BUFFER_LENGHT);
 
-  apiRouter.get("/state", &getState);
-  apiRouter.get("/status", &getStatus);
-  apiRouter.put("/selected", &selectDevice);
-  apiRouter.post("/commands", &createDirectCommand);
+  setupApiRoutes(apiRouter);
   apiRouter.get("/connection", &getConnection);
   apiRouter.patch("/connection", &updateConnection);
   apiRouter.del("/connection", &removeConnection);
@@ -368,11 +338,10 @@ void setupHttpServer() {
   apiRouter.post("/update", &update);
   apiRouter.get("/version", &getVersion);
 
-
   app.use(&logRequestStart);
   app.use(&auth);
-  app.route(&apiRouter);
-  app.route(staticFiles());
+  app.use("/api", &apiRouter);
+  app.use("/", staticFiles());
   app.use(&logRequestEnd);
 
   httpServer.begin();
