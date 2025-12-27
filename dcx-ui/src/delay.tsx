@@ -1,25 +1,23 @@
 import React, {PureComponent} from 'react';
 import Card from 'react-bootstrap/Card';
-import PropTypes from 'prop-types';
-import pc from './parameters.tsx';
+import pc, {type ChangeEventArgs} from './parameters/index.tsx';
 
-class Delay extends PureComponent {
+type DelayProps = {
+  readonly isDelayOn: boolean;
+  readonly shortDelay: number | string;
+  readonly longDelay: number | string;
+  readonly channelName?: string | undefined;
+  readonly channelId: number | string;
+  readonly airTemperature: number;
+  readonly isDelayCorrectionOn: boolean;
+  readonly delayUnits: string; // 'mm', 'inch', etc
+  readonly onChange: (args: ChangeEventArgs) => void;
+  readonly group: string;
+};
+
+class Delay extends PureComponent<DelayProps> {
   static defaultProps = {
-    channelName: null,
-    shortDelay: null,
-  };
-
-  static propTypes = {
-    channelId: PropTypes.string.isRequired,
-    channelName: PropTypes.string,
-    group: PropTypes.string.isRequired,
-    isDelayOn: PropTypes.bool.isRequired,
-    longDelay: PropTypes.number.isRequired,
-    shortDelay: PropTypes.number,
-    airTemperature: PropTypes.number.isRequired,
-    isDelayCorrectionOn: PropTypes.bool.isRequired,
-    delayUnits: PropTypes.string.isRequired,
-    onChange: PropTypes.func.isRequired,
+    channelName: undefined,
   };
 
   render() {
@@ -38,13 +36,17 @@ class Delay extends PureComponent {
     const temperature = isDelayCorrectionOn ? airTemperature : 20;
     // https://en.wikipedia.org/wiki/Speed_of_sound#Practical_formula_for_dry_air
     const temperatureFactor = 1 / (331.3 + 0.606 * temperature);
-    const round = (value) => Math.round(value * 100) / 100;
-    const localizeLength =
-      delayUnits === 'mm'
-        ? (value) => value
-        : (value) => (value * 0.393_701) / 10;
+    const round = (value: number) => Math.round(value * 100) / 100;
 
-    const localizeUnit = (delayUnits, unit) => {
+    const localizeLength = (value: number) => {
+      if (delayUnits === 'mm') {
+        return value;
+      }
+
+      return (value * 0.393_701) / 10;
+    };
+
+    const localizeUnit = (delayUnits: string, unit: string) => {
       if (delayUnits === 'mm') {
         if (unit === 'mm') {
           return 'mm';
@@ -60,7 +62,7 @@ class Delay extends PureComponent {
       return 'ft';
     };
 
-    const localizeDividor = (delayUnits, unit) => {
+    const localizeDividor = (delayUnits: string, unit: string) => {
       if (delayUnits === 'mm') {
         if (unit === 'mm') {
           return 1;
@@ -78,16 +80,18 @@ class Delay extends PureComponent {
           return 1.2;
         }
       }
+
+      return 1;
     };
 
-    const formatter = (value, unit) =>
+    const formatter = (value: number, unit: string) =>
       `${round(
         localizeLength(value) / localizeDividor(delayUnits, unit),
       )} ${localizeUnit(delayUnits, unit)} / ${round(
         temperatureFactor * value * (unit === 'cm' ? 10 : 1),
       )} ms`;
 
-    const labelFormatter = (value, unit) =>
+    const labelFormatter = (value: number, unit: string) =>
       round(
         localizeLength(value) / localizeDividor(delayUnits, unit),
       ).toString();

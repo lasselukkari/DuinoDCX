@@ -2,26 +2,14 @@ import React from 'react';
 import Card from 'react-bootstrap/Card';
 import isEqual from 'lodash.isequal';
 import Delay from './delay.tsx';
-import pc from './parameters.tsx';
+import pc from './parameters/index.tsx';
+import {type Channel, type Setup} from './dcx2496/parser.ts';
 
 type Props = {
   readonly group: string;
   readonly onChange: (args: any) => void;
-  readonly channels: Record<
-    string,
-    {
-      isDelayOn: boolean;
-      longDelay: number;
-      shortDelay?: number;
-      channelName: string;
-    }
-  >;
-  readonly setup: {
-    airTemperature: number;
-    isDelayCorrectionOn: boolean;
-    delayUnits: string;
-    delayLink: boolean;
-  };
+  readonly channels: Record<string, Channel>;
+  readonly setup: Setup;
 };
 
 function Delays({channels, setup, group, onChange}: Props) {
@@ -45,13 +33,13 @@ function Delays({channels, setup, group, onChange}: Props) {
             key={channelId}
             group={group}
             channelId={channelId}
-            isDelayOn={channel.isDelayOn}
+            isDelayOn={channel.isDelayOn ?? false}
             delayUnits={delayUnits}
-            shortDelay={channel.shortDelay}
-            longDelay={channel.longDelay}
+            shortDelay={channel.shortDelay ?? 0}
+            longDelay={channel.longDelay ?? 0}
             airTemperature={airTemperature}
             isDelayCorrectionOn={isDelayCorrectionOn}
-            channelName={channel.channelName}
+            channelName={channel.channelName ?? ''}
             onChange={onChange}
           />
         );

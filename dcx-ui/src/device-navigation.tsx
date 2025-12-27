@@ -1,12 +1,12 @@
-import {FaEdit, FaLock, FaSignal} from 'react-icons/fa';
-import React, {useState} from 'react';
+import { FaEdit, FaLock, FaSignal } from 'react-icons/fa';
+import React, { useState } from 'react';
 import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Navbar from 'react-bootstrap/Navbar';
 import isEqual from 'lodash.isequal';
 import ChannelLevels from './channel-levels.tsx';
-import {useBreakpoint} from './hooks/use-breakpoint.ts';
-import {type State} from './dcx2496/parser.tsx';
+import { useBreakpoint } from './hooks/use-breakpoint.ts';
+import { type State } from './dcx2496/parser.tsx';
 
 type ChangeEventArgs = {
   param?: string;
@@ -29,7 +29,7 @@ type Props = {
   readonly onChange: (args: ChangeEventArgs) => void;
   readonly onPageChange: (
     eventKey: string | undefined,
-    e: React.SyntheticEvent<unknown>,
+    event: React.SyntheticEvent<unknown>,
   ) => void;
   readonly onBlockingChange: () => void;
 };
@@ -51,35 +51,11 @@ function DeviceNavigation({
     return null;
   }
 
-  const handleLevelsShowChange = (
-    isOpen: boolean,
-    event: React.SyntheticEvent<unknown>,
-    metadata: {source: string},
-  ) => {
-    if (metadata.source === 'rootClose') {
-      setShowLevels(true); // Logic seems to imply keeping it open or something? Original: ({showLevels: true}) on rootClose?
-      // Wait, original: if source === 'rootClose' { showLevels: true }. This prevents closing on click outside?
-      // Or maybe it forces it open?
-      // Let's assume original logic was: rootClose -> keep true?
-      // "rootClose" usually means user clicked outside.
-      // If original logic kept it open, that's weird.
-      // Let's preserve original logic:
-      // setState(() => ({showLevels: true}));
-    } else {
-      setShowLevels(!showLevels);
-    }
-  };
-
-  // Actually, let's simplify toggle logic.
-  // Original:
-  // if (source === 'rootClose') { this.setState(() => ({showLevels: true})); }
-  // else { this.setState(({showLevels}) => ({showLevels: !showLevels})); }
-  // This looks like it PREVENTS closing on rootClose?
   // Let's verify standard NavDropdown behavior. usually you want to close.
   // Maybe "rootClose" logic was inverse?
   // I'll implement exactly as is.
 
-  const handleToggle = (nextShow: boolean, meta: {source?: string}) => {
+  const handleToggle = (nextShow: boolean, meta: { source?: string }) => {
     if (meta.source === 'rootClose') {
       setShowLevels(true);
     } else {
@@ -94,7 +70,7 @@ function DeviceNavigation({
       fixed={isXs ? 'bottom' : 'top'}
       bg="primary"
       variant="dark"
-      className="wide-nav"
+      className="p-0"
     >
       <Nav className="end-button">
         <NavDropdown
@@ -136,9 +112,9 @@ function DeviceNavigation({
           <Nav.Link>
             {' '}
             {isBlocking ? (
-              <FaLock style={{color: '#ee5f5b'}} />
+              <FaLock style={{ color: '#ee5f5b' }} />
             ) : (
-              <FaEdit style={{color: '#62c462'}} />
+              <FaEdit style={{ color: '#62c462' }} />
             )}
           </Nav.Link>
         </Nav.Item>

@@ -1,19 +1,24 @@
 import React, {Component} from 'react';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
-import PropTypes from 'prop-types';
 import Row from 'react-bootstrap/Row';
 import isEqual from 'lodash.isequal';
 import OutputSource from './output-source.tsx';
+import {type ChangeEventArgs} from './parameters/index.tsx';
 
-class OutputSources extends Component {
-  static propTypes = {
-    channels: PropTypes.object.isRequired,
-    group: PropTypes.string.isRequired,
-    onChange: PropTypes.func.isRequired,
-  };
+type ChannelData = {
+  channelName?: string;
+  source?: number | string;
+};
 
-  shouldComponentUpdate(nextProps) {
+type OutputSourcesProps = {
+  readonly channels: Record<string, ChannelData>;
+  readonly group: string;
+  readonly onChange: (args: ChangeEventArgs) => void;
+};
+
+class OutputSources extends Component<OutputSourcesProps> {
+  shouldComponentUpdate(nextProps: OutputSourcesProps) {
     const {channels} = this.props;
     return !isEqual(channels, nextProps.channels);
   }

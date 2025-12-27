@@ -1,20 +1,20 @@
 import React from 'react';
-import BlockUi from 'react-block-ui';
 import Card from 'react-bootstrap/Card';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import isEqual from 'lodash.isequal';
+import BlockUi from './components/block-ui.tsx';
 import CrossoverPlotPanel from './crossover-plot-panel.tsx';
 import Crossovers from './crossovers.tsx';
 import Delays from './delays.tsx';
-import DynamicEQs from './dynamic-e-qs.tsx';
-import EqPlotPanel from './e-q-plot-panel.tsx';
-import Eqs from './e-qs.tsx';
+import Equalizers from './equalizers.tsx';
+import EqualizerPlotPanel from './equalizer-plot-panel.tsx';
+import DynamicEqualizers from './dynamic-equalizers.tsx';
 import Gains from './gains.tsx';
 import Limiters from './limiters.tsx';
 import OutputRouting from './output-routing.tsx';
 import Phases from './phases.tsx';
-import {type Channel} from './dcx2496/parser.ts';
+import { type Channel, type Setup } from './dcx2496/parser.ts';
 
 type ChangeEventArgs = {
   param?: string;
@@ -26,11 +26,11 @@ type ChangeEventArgs = {
 type Props = {
   readonly isBlocking: boolean;
   readonly channels: Record<string, Channel>;
-  readonly setup: Record<string, unknown>;
+  readonly setup: Setup;
   readonly onChange: (args: ChangeEventArgs | ChangeEventArgs[]) => void;
 };
 
-function Outputs({channels, setup, onChange, isBlocking}: Props) {
+function Outputs({ channels, setup, onChange, isBlocking }: Props) {
   return (
     <div>
       <Tabs
@@ -44,8 +44,7 @@ function Outputs({channels, setup, onChange, isBlocking}: Props) {
           <Card>
             <Card.Header>Gain</Card.Header>
             <Card.Body>
-              {/* @ts-ignore */}
-              <BlockUi blocking={isBlocking}>
+              <BlockUi isBlocking={isBlocking}>
                 <Gains
                   group="outputs"
                   channels={channels}
@@ -57,8 +56,7 @@ function Outputs({channels, setup, onChange, isBlocking}: Props) {
         </Tab>
         <Tab title="Crossover" eventKey="crossover">
           <CrossoverPlotPanel channels={channels} />
-          {/* @ts-ignore */}
-          <BlockUi blocking={isBlocking}>
+          <BlockUi isBlocking={isBlocking}>
             <Crossovers
               group="outputs"
               channels={channels}
@@ -67,39 +65,38 @@ function Outputs({channels, setup, onChange, isBlocking}: Props) {
           </BlockUi>
         </Tab>
         <Tab title="EQ" eventKey="eqs">
-          <EqPlotPanel channels={channels} group="outputs" />
-          <Eqs
+          <EqualizerPlotPanel channels={channels} group="outputs" />
+          <Equalizers
             isBlocking={isBlocking}
             group="outputs"
             channels={channels}
             onChange={onChange}
           />
         </Tab>
-        <Tab title="Dynamic EQ" eventKey="dynamicEQs">
-          {/* @ts-ignore */}
-          <BlockUi blocking={isBlocking}>
-            <DynamicEQs
+        <Tab eventKey="dynamicEqualizers" title="Dynamic EQ">
+          <BlockUi isBlocking={isBlocking}>
+            <DynamicEqualizers
               group="outputs"
               channels={channels}
               onChange={onChange}
             />
           </BlockUi>
         </Tab>
+        <Tab eventKey="equalizerPlots" title="EQ Plot">
+          <EqualizerPlotPanel channels={channels} group="outputs" />
+        </Tab>
         <Tab title="Limiter" eventKey="limiters">
-          {/* @ts-ignore */}
-          <BlockUi blocking={isBlocking}>
+          <BlockUi isBlocking={isBlocking}>
             <Limiters group="outputs" channels={channels} onChange={onChange} />
           </BlockUi>
         </Tab>
         <Tab title="Phase" eventKey="phases">
-          {/* @ts-ignore */}
-          <BlockUi blocking={isBlocking}>
+          <BlockUi isBlocking={isBlocking}>
             <Phases group="outputs" channels={channels} onChange={onChange} />
           </BlockUi>
         </Tab>
         <Tab title="Delay" eventKey="delays">
-          {/* @ts-ignore */}
-          <BlockUi blocking={isBlocking}>
+          <BlockUi isBlocking={isBlocking}>
             <Delays
               group="outputs"
               channels={channels}
@@ -109,8 +106,7 @@ function Outputs({channels, setup, onChange, isBlocking}: Props) {
           </BlockUi>
         </Tab>
         <Tab title="Routing" eventKey="routing">
-          {/* @ts-ignore */}
-          <BlockUi blocking={isBlocking}>
+          <BlockUi isBlocking={isBlocking}>
             <OutputRouting
               setup={setup}
               outputs={channels}

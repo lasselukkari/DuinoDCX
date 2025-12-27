@@ -3,17 +3,12 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import isEqual from 'lodash.isequal';
 import Gain from './gain.tsx';
+import {type Channel} from './dcx2496/parser.ts';
 
 type Props = {
   readonly group: string;
   readonly onChange: (args: any) => void;
-  readonly channels: Record<
-    string,
-    {
-      channelName: string;
-      gain: number;
-    }
-  >;
+  readonly channels: Record<string, Channel>;
 };
 
 function Gains({channels, group, onChange}: Props) {

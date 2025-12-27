@@ -1,23 +1,22 @@
-import React, {PureComponent} from 'react';
+import React, { PureComponent } from 'react';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
-import PropTypes from 'prop-types';
 import Row from 'react-bootstrap/Row';
-import pc from './parameters.tsx';
+import pc, { type ChangeEventArgs } from './parameters/index.tsx';
 
-class EQ extends PureComponent {
-  static propTypes = {
-    channelId: PropTypes.string.isRequired,
-    id: PropTypes.string.isRequired,
-    group: PropTypes.string.isRequired,
-    eQType: PropTypes.string.isRequired,
-    eQFrequency: PropTypes.string.isRequired,
-    eQQ: PropTypes.string.isRequired,
-    eQShelving: PropTypes.string.isRequired,
-    eQGain: PropTypes.number.isRequired,
-    onChange: PropTypes.func.isRequired,
-  };
+type EqualizerProps = {
+  readonly eQType: string;
+  readonly eQFrequency: number | string;
+  readonly eQQ: number | string;
+  readonly eQShelving: string;
+  readonly eQGain: number | string;
+  readonly id: string | number;
+  readonly onChange: (args: ChangeEventArgs) => void;
+  readonly group: string;
+  readonly channelId: string | number;
+};
 
+class Equalizer extends PureComponent<EqualizerProps> {
   render() {
     const {
       eQType,
@@ -40,7 +39,7 @@ class EQ extends PureComponent {
               <pc.EQType
                 hasLabel
                 value={eQType}
-                eq={id}
+                eq={id as string}
                 group={group}
                 channelId={channelId}
                 onChange={onChange}
@@ -50,7 +49,7 @@ class EQ extends PureComponent {
               <pc.EQFrequency
                 hasLabel
                 value={eQFrequency}
-                eq={id}
+                eq={id as string}
                 group={group}
                 channelId={channelId}
                 onChange={onChange}
@@ -61,7 +60,7 @@ class EQ extends PureComponent {
                 <pc.EQQ
                   hasLabel
                   value={eQQ}
-                  eq={id}
+                  eq={id as string}
                   group={group}
                   channelId={channelId}
                   onChange={onChange}
@@ -71,7 +70,7 @@ class EQ extends PureComponent {
                 <pc.EQShelving
                   hasLabel
                   value={eQShelving}
-                  eq={id}
+                  eq={id as string}
                   group={group}
                   channelId={channelId}
                   onChange={onChange}
@@ -82,9 +81,9 @@ class EQ extends PureComponent {
           <pc.EQGain
             hasLabel
             value={eQGain}
-            eq={id}
+            eq={id as string}
             group={group}
-            channelId={channelId}
+            channelId={channelId as string}
             onChange={onChange}
           />
         </Card.Body>
@@ -93,4 +92,4 @@ class EQ extends PureComponent {
   }
 }
 
-export default EQ;
+export default Equalizer;

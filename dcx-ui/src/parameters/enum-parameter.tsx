@@ -1,4 +1,4 @@
-import React, {type ChangeEvent} from 'react';
+import React, { type ChangeEvent } from 'react';
 import Form from 'react-bootstrap/Form';
 
 type Props = {
@@ -33,11 +33,11 @@ export function EnumParameter({
   onChange,
 }: Props) {
   const handleValueChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    onChange({param, group, channelId, eq, value: event.target.value});
+    onChange({ param, group, channelId, eq, value: event.target.value });
   };
 
   return (
-    <Form.Group>
+    <Form.Group style={{ marginBottom: '15px' }}>
       {hasLabel ? (
         <Form.Label>
           {name} {unit ? `(${unit})` : null}

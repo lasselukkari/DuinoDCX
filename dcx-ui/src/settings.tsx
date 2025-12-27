@@ -1,11 +1,11 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import FormControl from 'react-bootstrap/FormControl';
 import Row from 'react-bootstrap/Row';
 import Spinner from 'react-bootstrap/Spinner';
-import {toast, ToastPosition} from 'react-toastify';
+import { toast } from 'react-toastify';
 
 function Settings() {
   const [username, setUsername] = useState('');
@@ -14,13 +14,13 @@ function Settings() {
   const [apPassword, setApPassword] = useState('');
   const [mdnsHost, setMdnsHost] = useState('');
   const [flowControl, setFlowControl] = useState('0');
-  const [autoDisableAp, setAutoDisableAP] = useState('0');
+  const [autoDisableAp, setAutoDisableAp] = useState('0');
   const [loadingDone, setLoadingDone] = useState(false);
 
-  const toastOptions = {position: 'bottom-left' as const};
+  const toastOptions = { position: 'bottom-left' as const };
 
   useEffect(() => {
-    fetchSettings();
+    void fetchSettings();
   }, []);
 
   const fetchSettings = async () => {
@@ -32,10 +32,18 @@ function Settings() {
         throw new Error(response.statusText);
       }
 
-      const data = await response.json();
-      const {apSsid, apPassword, auth, mdnsHost, flowControl, autoDisableAp} =
+      const data = (await response.json()) as {
+        apSsid: string;
+        apPassword: string;
+        auth: string;
+        mdnsHost: string;
+        flowControl: string;
+        autoDisableAp: string;
+      };
+      const { apSsid, apPassword, auth, mdnsHost, flowControl, autoDisableAp } =
         data;
 
+      // eslint-disable-next-line no-restricted-globals
       const basicAuth = atob(auth.replace('Basic ', '')).split(':');
       setUsername(basicAuth[0]);
       setPassword(basicAuth[1]);
@@ -43,11 +51,8 @@ function Settings() {
       setApPassword(apPassword);
       setMdnsHost(mdnsHost);
       setFlowControl(flowControl);
-      setAutoDisableAP(autoDisableAp);
+      setAutoDisableAp(autoDisableAp);
       setLoadingDone(true);
-      toast.error(`Fetching settings failed.`, {
-        position: 'bottom-left',
-      });
     } catch {
       toast.error(`Fetching settings failed.`, {
         position: 'bottom-left',
@@ -56,6 +61,7 @@ function Settings() {
   };
 
   const updateSettings = async () => {
+    // eslint-disable-next-line no-restricted-globals
     const auth = `Basic ${btoa(`${username}:${password}`)}`;
 
     const formData = new FormData();
@@ -65,6 +71,7 @@ function Settings() {
     formData.append('flowControl', flowControl);
     formData.append('autoDisableAp', autoDisableAp);
     formData.append('auth', auth);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const data = new URLSearchParams(formData as any);
 
     try {
@@ -86,7 +93,7 @@ function Settings() {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    updateSettings();
+    void updateSettings();
   };
 
   const isFormValid = () => {
@@ -218,7 +225,7 @@ function Settings() {
             as="select"
             value={autoDisableAp}
             onChange={(event) => {
-              setAutoDisableAP(event.target.value);
+              setAutoDisableAp(event.target.value);
             }}
           >
             <option value="0">Disabled</option>

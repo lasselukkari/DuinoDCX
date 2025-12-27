@@ -5,7 +5,7 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 type Props = {
   readonly onSelect: (
     eventKey: string | undefined,
-    e: React.SyntheticEvent<unknown>,
+    event: React.SyntheticEvent<unknown>,
   ) => void;
   readonly devices: Array<{id: number; name: string; version: number}>;
   readonly free: number;

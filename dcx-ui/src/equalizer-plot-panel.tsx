@@ -1,17 +1,16 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import isEqual from 'lodash.isequal';
-import EqPlot from './plots/eq-plot.tsx';
-import {type Channel} from './dcx2496/parser.ts';
+import EqualizerPlot from './plots/equalizer-plot.tsx';
+import { type Channel } from './dcx2496/parser.ts';
 
 type Props = {
   readonly channels: Record<string, Channel>;
-
   readonly group: string;
 };
 
-function EqPlotPanel({channels, group}: Props) {
+function EqualizerPlotPanel({ channels, group }: Props) {
   const [isGainApplied, setIsGainApplied] = useState(false);
 
   const handleToggleGain = () => {
@@ -21,7 +20,7 @@ function EqPlotPanel({channels, group}: Props) {
   return (
     <Card>
       <Card.Header>
-        EQ Frequency Response: All{' '}
+        Equalizer Frequency Response: All{' '}
         {group.charAt(0).toUpperCase() + group.slice(1)}
         <Button
           size="sm"
@@ -33,12 +32,12 @@ function EqPlotPanel({channels, group}: Props) {
         </Button>
       </Card.Header>
       <Card.Body>
-        <EqPlot channels={channels} isGainApplied={isGainApplied} />
+        <EqualizerPlot channels={channels} isGainApplied={isGainApplied} />
       </Card.Body>
     </Card>
   );
 }
 
-export default React.memo(EqPlotPanel, (previousProps, nextProps) => {
+export default React.memo(EqualizerPlotPanel, (previousProps, nextProps) => {
   return isEqual(previousProps.channels, nextProps.channels);
 });

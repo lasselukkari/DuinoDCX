@@ -1,19 +1,22 @@
 import React, {PureComponent} from 'react';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
-import PropTypes from 'prop-types';
 import Row from 'react-bootstrap/Row';
-import pc from './parameters.tsx';
+import pc, {type ChangeEventArgs} from './parameters/index.tsx';
 
-class Limiter extends PureComponent {
-  static propTypes = {
-    channelId: PropTypes.string.isRequired,
-    group: PropTypes.string.isRequired,
-    channelName: PropTypes.string.isRequired,
-    isLimiterOn: PropTypes.bool.isRequired,
-    limiterThreshold: PropTypes.number.isRequired,
-    limiterRelease: PropTypes.string.isRequired,
-    onChange: PropTypes.func.isRequired,
+type LimiterProps = {
+  readonly channelName?: string | undefined;
+  readonly isLimiterOn: boolean;
+  readonly limiterThreshold: number | string;
+  readonly limiterRelease: number | string;
+  readonly channelId: number | string;
+  readonly onChange: (args: ChangeEventArgs) => void;
+  readonly group: string;
+};
+
+class Limiter extends PureComponent<LimiterProps> {
+  static defaultProps = {
+    channelName: undefined,
   };
 
   render() {

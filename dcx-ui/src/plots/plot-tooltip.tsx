@@ -5,16 +5,26 @@ import {
   type ValueType,
 } from 'recharts/types/component/DefaultTooltipContent';
 
+type Entry = {
+  readonly name: string;
+  readonly value: number;
+  readonly unit?: string;
+  readonly color?: string;
+  readonly dataKey?: string;
+};
+
 type Props = {
-  readonly filter?: (entry: any) => boolean;
+  readonly filter?: (entry: Entry) => boolean;
+  readonly payload?: any[];
+  readonly label?: any;
 } & TooltipProps<ValueType, NameType>;
 
-function PlotTooltip({payload, label, filter = () => true}: Props) {
+function PlotTooltip({payload, label, filter}: Props) {
   const renderContent = () => {
     if (payload && payload.length > 0) {
       const items = payload
-        .filter((entry) => filter(entry))
-        .map((entry) => {
+        .filter((entry: Entry) => (filter ? filter(entry) : true))
+        .map((entry: Entry) => {
           return (
             <li
               key={`tooltip-item-${entry.dataKey}`}
@@ -23,7 +33,7 @@ function PlotTooltip({payload, label, filter = () => true}: Props) {
                 display: 'block',
                 paddingTop: 4,
                 paddingBottom: 4,
-                color: entry.color || '#000',
+                color: entry.color ?? '#000',
               }}
             >
               <span className="recharts-tooltip-item-name">{entry.name}</span>

@@ -815,6 +815,7 @@ const PART_BYTE = 12;
 const PART_0 = 0;
 const PART_1 = 1;
 
+// eslint-disable-next-line import-x/no-anonymous-default-export
 export default {
   logFrequencyScale,
   logZeroTo4000Ms,

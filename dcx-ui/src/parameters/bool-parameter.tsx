@@ -37,29 +37,24 @@ export function BoolParameter({
   const onColor = isInverted ? 'danger' : 'success';
 
   const handleClick = () => {
-    onChange({param, group, channelId, eq, value: !isTrue});
+    onChange({ param, group, channelId, eq, value: !isTrue });
   };
 
   return (
-    <Form>
-      <FormGroup>
-        {label || hasLabel ? (
-          <Form.Label>
-            {label ? label : name}
-            <br />
-          </Form.Label>
-        ) : null}
+    <FormGroup style={{ marginBottom: '15px' }}>
+      {(label ?? hasLabel) ? (
+        <Form.Label style={{ marginBottom: '5px', display: 'block' }}>{label ?? name}</Form.Label>
+      ) : null}
 
-        <Button
-          className="w-100"
-          variant={isTrue ? onColor : 'primary'}
-          active={isTrue}
-          onClick={handleClick}
-        >
-          {isTrue ? 'On' : 'Off'}
-        </Button>
-      </FormGroup>
-    </Form>
+      <Button
+        className="w-100"
+        variant={isTrue ? onColor : 'primary'}
+        active={isTrue}
+        onClick={handleClick}
+      >
+        {isTrue ? 'On' : 'Off'}
+      </Button>
+    </FormGroup>
   );
 }
 

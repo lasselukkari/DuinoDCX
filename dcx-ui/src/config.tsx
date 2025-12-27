@@ -4,7 +4,6 @@ import {FaCog} from 'react-icons/fa';
 import Modal from 'react-bootstrap/Modal';
 import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-import PropTypes from 'prop-types';
 import Connection from './connection.tsx';
 import Settings from './settings.tsx';
 import Upload from './upload.tsx';
@@ -14,10 +13,6 @@ type ConfigProps = {
 };
 
 class Config extends PureComponent<ConfigProps> {
-  static propTypes = {
-    isXs: PropTypes.bool.isRequired,
-  };
-
   state: {
     showModal?: string | false;
   } = {};

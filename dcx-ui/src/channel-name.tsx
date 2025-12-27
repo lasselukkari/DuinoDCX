@@ -1,6 +1,6 @@
 import React from 'react';
 import FormLabel from 'react-bootstrap/FormLabel';
-import pc from './parameters.tsx';
+import pc from './parameters/index.tsx';
 
 type Props = {
   readonly group: string;

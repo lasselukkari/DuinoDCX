@@ -37,10 +37,10 @@ function ChannelLevels({device, inputs, outputs, onChange}: Props) {
     })),
     outputs: outputChannels.map((channelId) => ({
       name: device.outputs?.[channelId]?.channelName
-        ? device.outputs[channelId].channelName
+        ? (device.outputs[channelId].channelName
             .match(/\b\w/g)
             ?.join('')
-            .toUpperCase() || channelId
+            .toUpperCase() ?? channelId)
         : channelId,
       isSelected: false,
       group: 'outputs',
@@ -66,7 +66,7 @@ function ChannelLevels({device, inputs, outputs, onChange}: Props) {
       value,
     }));
 
-    const commands = inputsCmd.concat(outputsCmd);
+    const commands = [...inputsCmd, ...outputsCmd];
 
     onChange(commands);
   };
@@ -93,14 +93,14 @@ function ChannelLevels({device, inputs, outputs, onChange}: Props) {
       (output) => output.isSelected,
     );
 
-    const commands = inputCommands
-      .concat(outputCommands)
-      .map(({group, channelId}) => ({
+    const commands = [...inputCommands, ...outputCommands].map(
+      ({group, channelId}) => ({
         param: 'mute',
         group,
         channelId,
         value: !device[group][channelId].mute,
-      }));
+      }),
+    );
 
     onChange(commands);
   };
@@ -117,11 +117,11 @@ function ChannelLevels({device, inputs, outputs, onChange}: Props) {
     <div className="channels-container">
       <div className="channel-group">
         {inputChannels.map((channelId, index) => {
-          const {isLimited, level} = inputs[index] || {
+          const {isLimited, level} = inputs[index] ?? {
             isLimited: false,
             level: -1,
           };
-          const {mute} = device.inputs[channelId];
+          const {mute = false} = device.inputs[channelId];
           const {group, name, isSelected} = selected.inputs[index];
 
           return (
@@ -144,8 +144,11 @@ function ChannelLevels({device, inputs, outputs, onChange}: Props) {
       </div>
       <div className="channel-group">
         {outputChannels.map((channelId, index) => {
-          const {isLimited, level} = outputs[index];
-          const {mute} = device.outputs[channelId];
+          const {isLimited, level} = outputs[index] ?? {
+            isLimited: false,
+            level: -1,
+          };
+          const {mute = false} = device.outputs[channelId];
           const {group, name, isSelected} = selected.outputs[index];
 
           return (

@@ -1,4 +1,5 @@
-import constants from './constants.tsx';
+/* eslint-disable max-lines */
+import constants from './constants.ts';
 
 export type SyncResponse = {
   bits6?: {

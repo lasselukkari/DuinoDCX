@@ -1,45 +1,44 @@
-import React, {PureComponent} from 'react';
+import React, { PureComponent } from 'react';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
-import PropTypes from 'prop-types';
 import Row from 'react-bootstrap/Row';
-import pc from './parameters.tsx';
+import pc, { type ChangeEventArgs } from './parameters/index.tsx';
 
-class DynamicEQ extends PureComponent {
+type DynamicEqualizerProps = {
+  readonly channelName?: string | undefined;
+  readonly isDynamicEQOn: boolean;
+  readonly dynamicEQType: string;
+  readonly dynamicEQFrequency: number | string;
+  readonly dynamicEQGain: number | string;
+  readonly dynamicEQQ: number | string;
+  readonly dynamicEQShelving: string;
+  readonly dynamicEQAttack: number | string;
+  readonly dynamicEQRelease: number | string;
+  readonly dynamicEQRatio: number | string;
+  readonly dynamicEQThreshold: number | string;
+  readonly group: string;
+  readonly channelId: string | number;
+  readonly onChange: (args: ChangeEventArgs) => void;
+};
+
+class DynamicEqualizer extends PureComponent<DynamicEqualizerProps> {
   static defaultProps = {
     channelName: null,
-  };
-
-  static propTypes = {
-    isDynamicEqOn: PropTypes.bool.isRequired,
-    dynamicEqType: PropTypes.string.isRequired,
-    dynamicEqFrequency: PropTypes.string.isRequired,
-    dynamicEqGain: PropTypes.number.isRequired,
-    dynamicEqQ: PropTypes.string.isRequired,
-    dynamicEqShelving: PropTypes.string.isRequired,
-    dynamicEqAttack: PropTypes.string.isRequired,
-    dynamicEqRelease: PropTypes.string.isRequired,
-    dynamicEqRatio: PropTypes.string.isRequired,
-    dynamicEqThreshold: PropTypes.number.isRequired,
-    group: PropTypes.string.isRequired,
-    channelId: PropTypes.string.isRequired,
-    channelName: PropTypes.string,
-    onChange: PropTypes.func.isRequired,
   };
 
   render() {
     const {
       channelName,
-      isDynamicEqOn,
-      dynamicEqType,
-      dynamicEqFrequency,
-      dynamicEqGain,
-      dynamicEqQ,
-      dynamicEqShelving,
-      dynamicEqAttack,
-      dynamicEqRelease,
-      dynamicEqRatio,
-      dynamicEqThreshold,
+      isDynamicEQOn,
+      dynamicEQType,
+      dynamicEQFrequency,
+      dynamicEQGain,
+      dynamicEQQ,
+      dynamicEQShelving,
+      dynamicEQAttack,
+      dynamicEQRelease,
+      dynamicEQRatio,
+      dynamicEQThreshold,
       group,
       channelId,
       onChange,
@@ -53,26 +52,26 @@ class DynamicEQ extends PureComponent {
             : `Channel ${channelId}`}
         </Card.Header>
         <Card.Body>
-          <pc.IsDynamicEqOn
-            isTrue={isDynamicEqOn}
+          <pc.IsDynamicEQOn
+            isTrue={isDynamicEQOn}
             group={group}
-            channelId={channelId}
+            channelId={channelId as string}
             onChange={onChange}
           />
           <Row>
             <Col md={12} lg={6}>
-              <pc.DynamicEqType
+              <pc.DynamicEQType
                 hasLabel
-                value={dynamicEqType}
+                value={dynamicEQType}
                 group={group}
                 channelId={channelId}
                 onChange={onChange}
               />
             </Col>
             <Col md={12} lg={6}>
-              <pc.DynamicEqFrequency
+              <pc.DynamicEQFrequency
                 hasLabel
-                value={dynamicEqFrequency}
+                value={dynamicEQFrequency}
                 group={group}
                 channelId={channelId}
                 onChange={onChange}
@@ -81,19 +80,19 @@ class DynamicEQ extends PureComponent {
           </Row>
           <Row>
             <Col md={12} lg={6}>
-              {dynamicEqType === 'Bandpass' && (
-                <pc.DynamicEqQ
+              {dynamicEQType === 'Bandpass' && (
+                <pc.DynamicEQQ
                   hasLabel
-                  value={dynamicEqQ}
+                  value={dynamicEQQ}
                   group={group}
                   channelId={channelId}
                   onChange={onChange}
                 />
               )}
-              {dynamicEqType !== 'Bandpass' && (
-                <pc.DynamicEqShelving
+              {dynamicEQType !== 'Bandpass' && (
+                <pc.DynamicEQShelving
                   hasLabel
-                  value={dynamicEqShelving}
+                  value={dynamicEQShelving}
                   group={group}
                   channelId={channelId}
                   onChange={onChange}
@@ -101,9 +100,9 @@ class DynamicEQ extends PureComponent {
               )}
             </Col>
             <Col md={12} lg={6}>
-              <pc.DynamicEqAttack
+              <pc.DynamicEQAttack
                 hasLabel
-                value={dynamicEqAttack}
+                value={dynamicEQAttack}
                 group={group}
                 channelId={channelId}
                 onChange={onChange}
@@ -112,34 +111,34 @@ class DynamicEQ extends PureComponent {
           </Row>
           <Row>
             <Col md={12} lg={6}>
-              <pc.DynamicEqRelease
+              <pc.DynamicEQRelease
                 hasLabel
-                value={dynamicEqRelease}
+                value={dynamicEQRelease}
                 group={group}
                 channelId={channelId}
                 onChange={onChange}
               />
             </Col>
             <Col md={12} lg={6}>
-              <pc.DynamicEqRatio
+              <pc.DynamicEQRatio
                 hasLabel
-                value={dynamicEqRatio}
+                value={dynamicEQRatio}
                 group={group}
                 channelId={channelId}
                 onChange={onChange}
               />
             </Col>
           </Row>
-          <pc.DynamicEqGain
+          <pc.DynamicEQGain
             hasLabel
-            value={dynamicEqGain}
+            value={dynamicEQGain}
             group={group}
             channelId={channelId}
             onChange={onChange}
           />
-          <pc.DynamicEqThreshold
+          <pc.DynamicEQThreshold
             hasLabel
-            value={dynamicEqThreshold}
+            value={dynamicEQThreshold}
             group={group}
             channelId={channelId}
             onChange={onChange}
@@ -150,4 +149,4 @@ class DynamicEQ extends PureComponent {
   }
 }
 
-export default DynamicEQ;
+export default DynamicEqualizer;

@@ -1,5 +1,6 @@
-import constants from './constants.tsx';
-import * as commands from './commands.tsx';
+/* eslint-disable no-bitwise, @typescript-eslint/no-extraneous-class */
+import constants from './constants.ts';
+import * as commands from './commands.ts';
 
 export type Device = {
   id: number;
@@ -7,9 +8,18 @@ export type Device = {
   name: string;
 };
 
-export type EQ = Record<string, unknown>;
+export type EQ = {
+  [key: string]: unknown;
+  eQType?: string;
+  eQFrequency?: number;
+  eQGain?: number;
+  eQQ?: number;
+  eQShelving?: string;
+};
 
 export type Channel = {
+  // Allow dynamic properties but use unknown instead of any
+  [key: string]: unknown;
   // Known channel properties from commands
   channelName?: string;
   gain?: number;
@@ -17,19 +27,19 @@ export type Channel = {
   isDelayOn?: boolean;
   longDelay?: number;
   shortDelay?: number;
-  isEqOn?: boolean;
-  eqNumber?: number;
+  isEQOn?: boolean;
+  eQNumber?: number;
   // Dynamic EQ properties
-  isDynamicEqOn?: boolean;
-  dynamicEqType?: string;
-  dynamicEqFrequency?: number;
-  dynamicEqGain?: number;
-  dynamicEqQ?: number;
-  dynamicEqShelving?: string;
-  dynamicEqAttack?: string;
-  dynamicEqRelease?: string;
-  dynamicEqRatio?: string;
-  dynamicEqThreshold?: number;
+  isDynamicEQOn?: boolean;
+  dynamicEQType?: string;
+  dynamicEQFrequency?: number;
+  dynamicEQGain?: number;
+  dynamicEQQ?: number;
+  dynamicEQShelving?: string;
+  dynamicEQAttack?: string;
+  dynamicEQRelease?: string;
+  dynamicEQRatio?: string;
+  dynamicEQThreshold?: number;
   // Crossover properties
   highpassFilter?: string;
   highpassFrequency?: number;
@@ -45,13 +55,18 @@ export type Channel = {
   // Output properties
   source?: string;
   // EQ banks
-  eqs: Record<number, EQ>;
-  // Allow dynamic properties but use unknown instead of any
+  eqs: Record<string, EQ>;
+};
+
+export type Setup = {
   [key: string]: unknown;
+  airTemperature?: number;
+  isDelayCorrectionOn?: boolean;
+  delayUnits?: string;
 };
 
 export type State = {
-  setup: Record<string, any>;
+  setup: Setup;
   inputs: Record<string, Channel>;
   outputs: Record<string, Channel>;
   selected?: number;
@@ -61,8 +76,8 @@ export type State = {
 };
 
 export type Status = {
-  inputs: Array<{name: string; level: number; isLimited: boolean}>;
-  outputs: Array<{name: string; level: number; isLimited: boolean}>;
+  inputs: Array<{ name: string; level: number; isLimited: boolean }>;
+  outputs: Array<{ name: string; level: number; isLimited: boolean }>;
   free: number;
 };
 
@@ -71,20 +86,24 @@ class Parser {
   static commands: typeof commands;
 
   static camelize(string: string): string {
-    return string.replaceAll(/^\w|[A-Z]|\b\w|\s+/g, (match, index) => {
-      if (Number(match) === 0) {
-        return '';
-      }
+    // eslint-disable-next-line unicorn/prefer-string-replace-all
+    return string.replace(
+      /^\w|[A-Z]|\b\w|\s+/g,
+      (match: string, index: number) => {
+        if (Number(match) === 0) {
+          return '';
+        }
 
-      return index === 0 ? match.toLowerCase() : match.toUpperCase();
-    });
+        return index === 0 ? match.toLowerCase() : match.toUpperCase();
+      },
+    );
   }
 
   static reverseCommandData(
     command: commands.Command,
     value: number,
   ): number | boolean | string {
-    const {type, min = 0, step = 1, values} = command;
+    const { type, min = 0, step = 1, values } = command;
 
     if (type === 'bool') {
       return value !== 0;
@@ -101,19 +120,22 @@ class Parser {
     return value;
   }
 
-  static getCommandData(command: commands.Command, parameter: any): number {
-    const {type, min = 0, step = 1, values} = command;
+  static getCommandData(
+    command: commands.Command,
+    parameter: number | boolean | string,
+  ): number {
+    const { type, min = 0, step = 1, values } = command;
 
     if (type === 'bool') {
       return parameter ? 1 : 0;
     }
 
     if (type === 'enum' && values) {
-      return values.indexOf(parameter);
+      return values.indexOf(parameter as string);
     }
 
     if (type === 'number') {
-      return Math.round(Math.abs(min - parameter) / step);
+      return Math.round(Math.abs(min - (parameter as number)) / step);
     }
 
     return 0;
@@ -121,7 +143,7 @@ class Parser {
 
   static hexStringToByte(string: string): Uint8Array {
     const a = [];
-    for (let i = 0, {length} = string; i < length; i += 2) {
+    for (let i = 0, { length } = string; i < length; i += 2) {
       a.push(Number.parseInt(string.slice(i, i + 2), 16));
     }
 
@@ -148,7 +170,7 @@ class Parser {
 
   static getValue(
     parts: Uint8Array[],
-    {bits6, bit7, bits8}: commands.SyncResponse,
+    { bits6, bit7, bits8 }: commands.SyncResponse,
   ): number {
     if (!bits6) return 0;
 
@@ -185,21 +207,21 @@ class Parser {
       version: Number.parseFloat(`${message[7]}.${message[8]}`),
       name: message
         .slice(9, 25)
-        .map((number) => String.fromCharCode(number))
+        .map((number) => String.fromCodePoint(number))
         .join('')
         .trim(),
     }));
   }
 
   static parseDevice(parts: Uint8Array[]): State {
-    const state: State = {setup: {}, inputs: {}, outputs: {}};
+    const state: State = { setup: {}, inputs: {}, outputs: {} };
 
-    constants.channels.forEach((channelId: string, index: number) => {
+    for (const [index, channelId] of constants.CHANNELS.entries()) {
       const group = index < 4 ? 'inputs' : 'outputs';
       state[group][channelId] = {
-        eqs: {1: {}, 2: {}, 3: {}, 4: {}, 5: {}, 6: {}, 7: {}, 8: {}, 9: {}},
+        eqs: { 1: {}, 2: {}, 3: {}, 4: {}, 5: {}, 6: {}, 7: {}, 8: {}, 9: {} },
       };
-    });
+    }
 
     for (const command of commands.setupCommands) {
       if (!command.syncResponse) continue;
@@ -212,7 +234,7 @@ class Parser {
       if (!command.syncResponses) continue;
       for (const [index, syncResponse] of command.syncResponses.entries()) {
         const group = index < 4 ? 'inputs' : 'outputs';
-        const id = constants.channels[index];
+        const id = constants.CHANNELS[index];
         const parameterName = Parser.camelize(command.name);
         const value = Parser.getValue(parts, syncResponse);
 
@@ -226,7 +248,7 @@ class Parser {
     for (const command of commands.outputCommands) {
       if (!command.syncResponses) continue;
       for (const [index, syncResponse] of command.syncResponses.entries()) {
-        const id = constants.outputs[index];
+        const id = constants.OUTPUTS[index];
         const parameterName = Parser.camelize(command.name);
         const value = Parser.getValue(parts, syncResponse);
 
@@ -239,7 +261,7 @@ class Parser {
 
     for (const command of commands.eqCommands) {
       if (!command.syncResponses) continue;
-      for (const [ioIndex, channelId] of constants.channels.entries()) {
+      for (const [ioIndex, channelId] of constants.CHANNELS.entries()) {
         for (let eqIndex = 0; eqIndex < 9; eqIndex++) {
           const group = ioIndex < 4 ? 'inputs' : 'outputs';
           const eq = eqIndex + 1;
@@ -265,20 +287,20 @@ class Parser {
       const level = Parser.clearBit(data, 5);
       const isLimited = Parser.isBitSet(data, 5);
 
-      return {name, level, isLimited};
+      return { name, level, isLimited };
     });
 
-    const outputs = constants.outputs.map((name, index) => {
+    const outputs = constants.OUTPUTS.map((name, index) => {
       const data = buffer[index + 11];
       const level = Parser.clearBit(data, 5);
       const isLimited = Parser.isBitSet(data, 5);
 
-      return {name, level, isLimited};
+      return { name, level, isLimited };
     });
 
     const free = buffer[21];
 
-    return {inputs, outputs, free};
+    return { inputs, outputs, free };
   }
 
   static parseState(state: ArrayBuffer): State {
@@ -290,7 +312,7 @@ class Parser {
     const device = Parser.parseDevice([part0Buffer, part1buffer]);
     const devices = Parser.parseDevices(devicesBuffer);
 
-    device.isReady = devices.some(({id}) => id === selected);
+    device.isReady = devices.some(({ id }) => id === selected);
 
     return {
       selected,
@@ -309,7 +331,13 @@ class Parser {
   ): Uint8Array {
     const commands = Array.isArray(data) ? data : [data];
     const commandBuffer = commands
-      .map((command: any) => Parser[command.param](device, command))
+      .map((command: any) => {
+        const handler = Parser[command.param] as (
+          device: State,
+          command: any,
+        ) => string;
+        return handler(device, command);
+      })
       .join('');
 
     const command = `F0002032${Parser.toPaddedHex(
@@ -333,7 +361,7 @@ class Parser {
 for (const [index, command] of commands.setupCommands.entries()) {
   const camelName = Parser.camelize(command.name);
 
-  Parser[camelName] = function (device: State, {value}: {value: number}) {
+  Parser[camelName] = function (device: State, { value }: { value: number }) {
     const data = Parser.getCommandData(command, value);
     const commandNumber = index + (index > 9 ? 10 : 2);
     device.setup[camelName] = value;
@@ -351,12 +379,12 @@ for (const [index, command] of commands.inputOutputCommands.entries()) {
       group,
       channelId,
       value,
-    }: {group: 'inputs' | 'outputs'; channelId: string; value: number},
+    }: { group: 'inputs' | 'outputs'; channelId: string; value: number },
   ) {
     const channelNumber =
       group === 'inputs'
-        ? constants.inputs.indexOf(channelId) + 1
-        : constants.outputs.indexOf(channelId) + 5;
+        ? constants.INPUTS.indexOf(channelId) + 1
+        : constants.OUTPUTS.indexOf(channelId) + 5;
     const commandNumber = index + 2;
     const data = Parser.getCommandData(command, value);
     device[group][channelId][camelName] = value;
@@ -384,8 +412,8 @@ for (const [index, command] of commands.eqCommands.entries()) {
   ) {
     const channelNumber =
       group === 'inputs'
-        ? constants.inputs.indexOf(channelId) + 1
-        : constants.outputs.indexOf(channelId) + 5;
+        ? constants.INPUTS.indexOf(channelId) + 1
+        : constants.OUTPUTS.indexOf(channelId) + 5;
 
     const commandNumber = index + (eq - 1) * 5 + 19;
     const data = Parser.getCommandData(command, value);
@@ -400,10 +428,10 @@ for (const [index, command] of commands.outputCommands.entries()) {
 
   Parser[camelName] = function (
     device: State,
-    {channelId, value}: {channelId: string; value: number},
+    { channelId, value }: { channelId: string; value: number },
   ) {
     const data = Parser.getCommandData(command, value);
-    const output = constants.outputs.indexOf(channelId) + 5;
+    const output = constants.OUTPUTS.indexOf(channelId) + 5;
     const commandNumber = index + 64;
     device.outputs[channelId][camelName] = value;
 

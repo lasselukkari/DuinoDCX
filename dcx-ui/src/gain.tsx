@@ -1,35 +1,33 @@
-import React, {PureComponent} from 'react';
+import React, { PureComponent } from 'react';
 import FormLabel from 'react-bootstrap/FormLabel';
-import PropTypes from 'prop-types';
-import pc from './parameters.tsx';
+import pc, { type ChangeEventArgs } from './parameters/index.tsx';
 
-class Gain extends PureComponent {
+type GainProps = {
+  readonly channelName?: string;
+  readonly gain?: number | string;
+  readonly group: string;
+  readonly channelId: number | string;
+  readonly onChange: (args: ChangeEventArgs) => void;
+};
+
+class Gain extends PureComponent<GainProps> {
   static defaultProps = {
     channelName: null,
-  };
-
-  static propTypes = {
-    channelName: PropTypes.string,
-    gain: PropTypes.number.isRequired,
-    group: PropTypes.string.isRequired,
-    channelId: PropTypes.string.isRequired,
-    onChange: PropTypes.func.isRequired,
+    gain: undefined,
   };
 
   render() {
-    const {channelName, gain, group, channelId, onChange} = this.props;
+    const { channelName, gain, group, channelId, onChange } = this.props;
 
     return (
       <div>
-        <FormLabel className="form-header">
-          {channelName
-            ? `${channelId} . ${channelName}`
-            : `Channel ${channelId}`}
+        <FormLabel className="form-header" style={{ marginBottom: '5px', display: 'block' }}>
+          {`Channel ${channelName}`}
         </FormLabel>
         <pc.Gain
           value={gain}
           group={group}
-          channelId={channelId}
+          channelId={channelId as string}
           onChange={onChange}
         />
       </div>

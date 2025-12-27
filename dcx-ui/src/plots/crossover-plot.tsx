@@ -1,10 +1,10 @@
-import React, {useMemo} from 'react';
+import React, { useMemo } from 'react';
 import isEqual from 'lodash.isequal';
-import {AreaChart, Area, XAxis, YAxis, Tooltip} from 'recharts';
-import {useWindowSize} from '../hooks/use-window-size.ts';
-import {useBreakpoint} from '../hooks/use-breakpoint.ts';
-import {type Channel} from '../dcx2496/parser.tsx';
-import TransferFunction from './transfer-function.tsx';
+import { AreaChart, Area, XAxis, YAxis, Tooltip } from 'recharts';
+import { useWindowSize } from '../hooks/use-window-size.ts';
+import { useBreakpoint } from '../hooks/use-breakpoint.ts';
+import { type Channel } from '../dcx2496/parser.tsx';
+import TransferFunction from './transfer-function.ts';
 import PlotTooltip from './plot-tooltip.tsx';
 
 const frequencyPoints = TransferFunction.generateFrequencyPoints(
@@ -16,6 +16,11 @@ const frequencyPoints = TransferFunction.generateFrequencyPoints(
 type Props = {
   readonly channels: Record<string, Channel>;
   readonly isGainApplied: boolean;
+};
+
+type PlotData = {
+  [key: string]: number;
+  hz: number;
 };
 
 function createPlotData(
@@ -32,8 +37,8 @@ function createPlotData(
       lowpassFrequency,
       gain,
     } = channels[key];
-    tf.applyCrosover(highpassFilter, highpassFrequency, true);
-    tf.applyCrosover(lowpassFilter, lowpassFrequency, false);
+    tf.applyCrosover(highpassFilter ?? '', highpassFrequency ?? 0, true);
+    tf.applyCrosover(lowpassFilter ?? '', lowpassFrequency ?? 0, false);
 
     return {
       data: tf.getMagnitude(),
@@ -43,19 +48,21 @@ function createPlotData(
   });
 
   return frequencyPoints.map((hz, index) => {
-    const result: any = {hz};
+    const result: PlotData = { hz };
 
     for (const value of values) {
       const rounded = Math.round(value.data[index] * 100) / 100;
-      result[value.channel] = isGainApplied ? rounded + value.gain : rounded;
+      result[value.channel] = isGainApplied
+        ? rounded + (value.gain ?? 0)
+        : rounded;
     }
 
     return result;
   });
 }
 
-function CrossoverPlot({channels, isGainApplied}: Props) {
-  const {width: windowWidth} = useWindowSize();
+function CrossoverPlot({ channels, isGainApplied }: Props) {
+  const { width: windowWidth } = useWindowSize();
   const currentBreakpoint = useBreakpoint();
 
   const data = useMemo(
@@ -78,6 +85,7 @@ function CrossoverPlot({channels, isGainApplied}: Props) {
   let width;
 
   switch (currentBreakpoint) {
+    case 'xs':
     case 'sm': {
       width = 480;
       break;
@@ -97,10 +105,6 @@ function CrossoverPlot({channels, isGainApplied}: Props) {
       width = 1080;
       break;
     }
-
-    default: {
-      width = windowWidth - 60;
-    }
   }
 
   const height = width * 0.33;
@@ -110,18 +114,18 @@ function CrossoverPlot({channels, isGainApplied}: Props) {
       data={data}
       width={width}
       height={height}
-      margin={{top: 20, right: 10, bottom: 5, left: -30}}
+      margin={{ top: 20, right: 10, bottom: 5, left: -30 }}
     >
       <XAxis
         dataKey="hz"
-        tickFormatter={(tick) => Math.round(tick).toString()}
+        tickFormatter={(tick: number) => Math.round(tick).toString()}
       />
       <YAxis
         allowDataOverflow
         type="number"
         domain={[-20, isGainApplied ? 'auto' : 5]}
       />
-      <Tooltip content={<PlotTooltip filter={({value}) => value > -20} />} />
+      <Tooltip content={<PlotTooltip filter={({ value }) => value > -20} />} />
       {Object.keys(channels).map((channelId, index) => (
         <Area
           key={channelId}
@@ -132,6 +136,7 @@ function CrossoverPlot({channels, isGainApplied}: Props) {
           fill={colors[index]}
           fillOpacity={0.2}
           unit="dB"
+          baseValue={-20}
         />
       ))}
     </AreaChart>

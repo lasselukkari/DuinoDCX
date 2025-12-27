@@ -1,16 +1,19 @@
 import React, {PureComponent} from 'react';
 import Card from 'react-bootstrap/Card';
-import PropTypes from 'prop-types';
-import pc from './parameters.tsx';
+import pc, {type ChangeEventArgs} from './parameters/index.tsx';
 
-class Phase extends PureComponent {
-  static propTypes = {
-    channelId: PropTypes.string.isRequired,
-    channelName: PropTypes.string.isRequired,
-    polarity: PropTypes.string.isRequired,
-    phase: PropTypes.number.isRequired,
-    onChange: PropTypes.func.isRequired,
-    group: PropTypes.string.isRequired,
+type PhaseProps = {
+  readonly channelName?: string | undefined;
+  readonly polarity: boolean | number | string;
+  readonly phase: boolean | number | string;
+  readonly channelId: string | number;
+  readonly group: string;
+  readonly onChange: (args: ChangeEventArgs) => void;
+};
+
+class Phase extends PureComponent<PhaseProps> {
+  static defaultProps = {
+    channelName: undefined,
   };
 
   render() {
@@ -29,14 +32,14 @@ class Phase extends PureComponent {
             hasLabel
             value={polarity}
             group={group}
-            channelId={channelId}
+            channelId={channelId as string}
             onChange={onChange}
           />
           <pc.Phase
             hasLabel
             value={phase}
             group={group}
-            channelId={channelId}
+            channelId={channelId as string}
             onChange={onChange}
           />
         </Card.Body>

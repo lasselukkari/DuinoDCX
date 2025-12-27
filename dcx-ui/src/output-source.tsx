@@ -1,15 +1,19 @@
 import React, {PureComponent} from 'react';
 import FormLabel from 'react-bootstrap/FormLabel';
-import PropTypes from 'prop-types';
-import pc from './parameters.tsx';
+import pc, {type ChangeEventArgs} from './parameters/index.tsx';
 
-class OutputSource extends PureComponent {
-  static propTypes = {
-    channelName: PropTypes.string.isRequired,
-    source: PropTypes.string.isRequired,
-    group: PropTypes.string.isRequired,
-    channelId: PropTypes.string.isRequired,
-    onChange: PropTypes.func.isRequired,
+type OutputSourceProps = {
+  readonly channelName?: string;
+  readonly source?: number | string;
+  readonly channelId: number | string;
+  readonly onChange: (args: ChangeEventArgs) => void;
+  readonly group: string;
+};
+
+class OutputSource extends PureComponent<OutputSourceProps> {
+  static defaultProps = {
+    channelName: undefined,
+    source: undefined,
   };
 
   render() {
@@ -22,7 +26,7 @@ class OutputSource extends PureComponent {
         <pc.Source
           value={source}
           group={group}
-          channelId={channelId}
+          channelId={channelId as string}
           onChange={onChange}
         />
       </div>

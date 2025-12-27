@@ -5,25 +5,13 @@ import Row from 'react-bootstrap/Row';
 import isEqual from 'lodash.isequal';
 import OutputSources from './output-sources.tsx';
 import ChannelNames from './channel-names.tsx';
-import pc from './parameters.tsx';
-import {type Channel} from './dcx2496/parser.ts';
-
-type ChangeEventArgs = {
-  param?: string;
-  group?: string;
-  channelId?: string;
-  value?: boolean | number | string;
-};
+import pc from './parameters/index.tsx';
+import {type Channel, type Setup} from './dcx2496/parser.ts';
 
 type Props = {
-  readonly setup: {
-    stereolink: boolean;
-    muteOutsWhenPowered: boolean;
-    outputConfig: string;
-    crossoverLink: boolean;
-  };
+  readonly setup: Setup;
   readonly outputs: Record<string, Channel>;
-  readonly onChange: (args: ChangeEventArgs) => void;
+  readonly onChange: (args: any) => void;
 };
 
 function OutputRouting({setup, onChange, outputs}: Props) {

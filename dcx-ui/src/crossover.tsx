@@ -2,9 +2,8 @@ import React, { PureComponent } from 'react';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import FormLabel from 'react-bootstrap/FormLabel';
-import PropTypes from 'prop-types';
 import Row from 'react-bootstrap/Row';
-import pc from './parameters.tsx';
+import pc from './parameters/index.tsx';
 
 type ChangeEventArgs = {
   param: string;
@@ -25,6 +24,13 @@ type Props = {
 };
 
 class Crossover extends PureComponent<Props> {
+  static defaultProps = {
+    channelName: undefined,
+    highpassFilter: undefined,
+    highpassFrequency: undefined,
+    lowpassFilter: undefined,
+    lowpassFrequency: undefined,
+  };
 
   render() {
     const {

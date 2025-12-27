@@ -4,14 +4,18 @@ import Form from 'react-bootstrap/Form';
 import Spinner from 'react-bootstrap/Spinner';
 import { toast } from 'react-toastify';
 
-type ConnectionProps = {};
+// Type ConnectionProps = Record<string, never>; // Unused
+// or
+type ConnectionProps = Record<string, never>;
 
 function Connection(_props: ConnectionProps) {
   const [networks, setNetworks] = useState<string[]>([]);
   const [selected, setSelected] = useState('');
   const [password, setPassword] = useState('');
-  const [ip, setIp] = useState<string | undefined>(null);
-  const [current, setCurrent] = useState<string | undefined>(null);
+
+  const [ip, setIp] = useState<string | undefined>(undefined);
+
+  const [current, setCurrent] = useState<string | undefined>(undefined);
 
   // Connection state from API
   // const [hostname, setHostname] = useState<string | null | null>(null); // Unused in original render? Original checked hostname in shouldComponentUpdate but didn't use it?
@@ -34,11 +38,15 @@ function Connection(_props: ConnectionProps) {
         throw new Error(response.statusText);
       }
 
-      const connection = await response.json();
+      const connection = (await response.json()) as {
+        current?: string;
+        ip?: string;
+        hostname?: string;
+      };
       // Connection contains { current, ip, hostname, ... }
-      setCurrent(connection.current || null);
-      setIp(connection.ip || null);
-      if (connection.current) {
+      setCurrent(connection.current ?? undefined);
+      setIp(connection.ip ?? undefined);
+      if (connection.current !== undefined) {
         setSelected(connection.current);
       }
       // SetHostname(connection.hostname);
@@ -56,7 +64,7 @@ function Connection(_props: ConnectionProps) {
         throw new Error(response.statusText);
       }
 
-      const nets = await response.json();
+      const nets = (await response.json()) as string[];
       setNetworks(nets);
     } catch {
       showFetchError();
@@ -64,17 +72,19 @@ function Connection(_props: ConnectionProps) {
   }, []);
 
   useEffect(() => {
-    fetchConnection();
-    fetchNetworks();
+    void fetchConnection();
+    void fetchNetworks();
   }, [fetchConnection, fetchNetworks]);
 
   const updateConnection = async () => {
-    setIp(null); // Loading state equivalent
+    setIp(undefined); // Loading state equivalent
 
     const formData = new FormData();
     formData.append('ssid', selected);
     formData.append('password', password);
-    const data = new URLSearchParams(formData as unknown as Record<string, string>);
+    const data = new URLSearchParams(
+      formData as unknown as Record<string, string>,
+    );
 
     try {
       const response = await fetch('/api/connection', {
@@ -86,10 +96,16 @@ function Connection(_props: ConnectionProps) {
         throw new Error(response.statusText);
       }
 
-      const connection = await response.json();
-      setCurrent(connection.current);
-      setIp(connection.ip);
-      setSelected(connection.current);
+      const connection = (await response.json()) as {
+        current?: string;
+        ip?: string;
+      };
+      setCurrent(connection.current ?? undefined);
+      setIp(connection.ip ?? undefined);
+      if (connection.current) {
+        setSelected(connection.current);
+      }
+
       setPassword('');
     } catch {
       setIp('0.0.0.0'); // Error state?
@@ -106,7 +122,7 @@ function Connection(_props: ConnectionProps) {
         method: 'DELETE',
       });
 
-      updateConnection(); // Re-fetch or update? Original called updateConnection() which triggers PATCH?
+      void updateConnection(); // Re-fetch or update? Original called updateConnection() which triggers PATCH?
       // Wait, original: `this.updateConnection()` called after DELETE?
       // `updateConnection` uses state `selected` and `password`.
       // If we disconnect, why call updateConnection (connect)?
@@ -128,7 +144,7 @@ function Connection(_props: ConnectionProps) {
       // But `updateConnection` effectively performs a PATCH request.
       // I'll stick to `fetchConnection` which makes more sense (refresh status).
 
-      fetchConnection(); // Safe bet.
+      void fetchConnection(); // Safe bet.
     } catch {
       toast.error('WiFi disconnected', { position: 'bottom-left' });
     }
@@ -136,12 +152,12 @@ function Connection(_props: ConnectionProps) {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    updateConnection();
+    void updateConnection();
   };
 
   const handleDisconnection = (event: React.FormEvent) => {
     event.preventDefault();
-    disconnectConnection();
+    void disconnectConnection();
   };
 
   const renderLoadingSpinner = () => {
@@ -167,8 +183,8 @@ function Connection(_props: ConnectionProps) {
           <Form.Control
             as="select"
             value={selected}
-            onChange={(e) => {
-              setSelected(e.target.value);
+            onChange={(event) => {
+              setSelected(event.target.value);
             }}
           >
             {networks.sort().map((enumeral) => (
@@ -182,8 +198,8 @@ function Connection(_props: ConnectionProps) {
             value={password}
             type="password"
             placeholder="Password"
-            onChange={(e) => {
-              setPassword(e.target.value);
+            onChange={(event) => {
+              setPassword(event.target.value);
             }}
           />
         </Form.Group>

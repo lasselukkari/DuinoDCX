@@ -12,14 +12,13 @@ import {
 } from 'mathjs';
 
 class TransferFunction {
-  frequencyPoints: number[];
   transferFunction: Complex[];
 
-  constructor(frequencyPoints: number[]) {
-    this.frequencyPoints = frequencyPoints;
+  constructor(public frequencyPoints: number[]) {
     this.transferFunction = this.frequencyPoints.map(() => complex(1, 0));
   }
 
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   static generateFrequencyPoints(
     startFrequency: number,
     endFrequency: number,
@@ -85,6 +84,7 @@ class TransferFunction {
     );
   }
 
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   static multiplyVectors(points1: Complex[], points2: Complex[]): Complex[] {
     return points1.map(
       (point, index) => multiply(point, points2[index]) as Complex,
@@ -104,11 +104,13 @@ class TransferFunction {
         (this.frequencyPoints[j + 1] - this.frequencyPoints[j]);
     }
 
-    diff.push(diff.at(-1));
+    // eslint-disable-next-line unicorn/prefer-at
+    diff.push(diff[diff.length - 1] ?? 0);
 
     return diff.map((number) => -1 * number);
   }
 
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   static unwrapPhase(angle: number[]): number[] {
     const angleNew: number[] = [];
     let wrapcount = 0;
@@ -147,11 +149,9 @@ class TransferFunction {
       this.frequencyPoints.map((frequenzy) => {
         const w = 2 * pi * frequenzy;
         const s = complex(0, w);
-        let nom;
-
         const gainFactor = pow(10, abs(gain) / 20) as number;
 
-        nom = isHighShelving
+        const nom = isHighShelving
           ? add(multiply(s, gainFactor), w0)
           : add(s, multiply(w0, gainFactor));
 
@@ -178,16 +178,14 @@ class TransferFunction {
         const w = 2 * pi * frequenzy;
         const s = complex(0, w);
 
-        let temporary1;
-        temporary1 = isHighShelving
+        const temporary1 = isHighShelving
           ? multiply(gainAbs, pow(s, 2))
           : multiply(gainAbs, pow(w0, 2));
 
         const sqrtFactor = sqrt(2 * gainAbs) as number;
         const temporary2 = add(temporary1, multiply(sqrtFactor * w0, s));
 
-        let nom;
-        nom = isHighShelving
+        const nom = isHighShelving
           ? add(temporary2, pow(w0, 2))
           : add(temporary2, pow(s, 2));
 

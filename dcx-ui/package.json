@@ -54,7 +54,9 @@
     "space": true,
     "prettier": true,
     "react": true,
-    "rules": {}
+    "rules": {
+      "@typescript-eslint/naming-convention": "off"
+    }
   },
   "proxy": "http://duinodcx.herokuapp.com",
   "renovate": {

@@ -3,18 +3,11 @@ import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import isEqual from 'lodash.isequal';
-import pc from './parameters.tsx';
+import pc from './parameters/index.tsx';
+import {type Setup} from './dcx2496/parser.ts';
 
 type Props = {
-  readonly setup: {
-    inputABSource: string;
-    stereolinkMode: string;
-    inputSumType: string;
-    inputCGain: string;
-    inputASumGain: number;
-    inputBSumGain: number;
-    inputCSumGain: number;
-  };
+  readonly setup: Setup;
   readonly onChange: (args: any) => void;
 };
 

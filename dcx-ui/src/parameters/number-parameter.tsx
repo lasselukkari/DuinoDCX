@@ -1,12 +1,12 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import FormGroup from 'react-bootstrap/FormGroup';
 import FormLabel from 'react-bootstrap/FormLabel';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Slider from 'rc-slider';
-import {FaPlus, FaMinus} from 'react-icons/fa';
-import './NumberParameter.css';
+import { FaPlus, FaMinus } from 'react-icons/fa';
 import 'rc-slider/assets/index.css';
+import './NumberParameter.css';
 
 type Props = {
   readonly value: number;
@@ -31,6 +31,14 @@ type Props = {
   readonly labelFormatter?: (value: number, unit?: string) => string;
 };
 
+const defaultFormatter = (v: number | undefined, u?: string) => {
+  if (v === undefined || isNaN(v)) {
+    return `--- ${u ?? ''}`;
+  }
+  return `${Math.round(v * 10) / 10} ${u ?? ''}`;
+};
+const defaultLabelFormatter = (v: number) => v.toString();
+
 export function NumberParameter({
   name,
   unit,
@@ -40,17 +48,20 @@ export function NumberParameter({
   step,
   hasLabel = false,
   param,
-  group,
-  channelId,
-  eq,
+  group = undefined,
+  channelId = undefined,
+  eq = undefined,
   onChange,
-  formatter = (v, u) => `${Math.round(v * 10) / 10} ${u ? u : ''}`,
-  labelFormatter = (v) => v.toString(),
+  formatter = defaultFormatter,
+  labelFormatter = defaultLabelFormatter,
 }: Props) {
   const [value, setValue] = useState(initialValue);
   const [moving, setMoving] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [pendingValue, setPendingValue] = useState<number | undefined>(null);
+
+  const [pendingValue, setPendingValue] = useState<number | undefined>(
+    undefined,
+  );
 
   // Sync state with props if not moving
   useEffect(() => {
@@ -83,25 +94,25 @@ export function NumberParameter({
       setPendingValue(newValue);
       setShowModal(true);
     } else {
-      onChange({param, group, channelId, eq, value: newValue});
+      onChange({ param, group, channelId, eq, value: newValue });
       setMoving(false);
     }
   };
 
   const handleModalConfirm = () => {
-    if (pendingValue !== null) {
-      onChange({param, group, channelId, eq, value: pendingValue});
+    if (pendingValue !== undefined) {
+      onChange({ param, group, channelId, eq, value: pendingValue });
     }
 
     setShowModal(false);
-    setPendingValue(null);
+    setPendingValue(undefined);
     setMoving(false);
   };
 
   const handleModalCancel = () => {
     setValue(initialValue);
     setShowModal(false);
-    setPendingValue(null);
+    setPendingValue(undefined);
     setMoving(false);
   };
 
@@ -110,24 +121,24 @@ export function NumberParameter({
       const newValue = value - step;
       // For buttons, we update immediately (no confirm?) Or same logic?
       // Original code did NOT confirm for buttons: onChange(...) directly.
-      onChange({param, group, channelId, eq, value: newValue});
+      onChange({ param, group, channelId, eq, value: newValue });
     }
   };
 
   const handleAddition = () => {
     if (value + step <= max) {
       const newValue = value + step;
-      onChange({param, group, channelId, eq, value: newValue});
+      onChange({ param, group, channelId, eq, value: newValue });
     }
   };
 
   const marks = {
     [min.toString()]: {
-      style: {marginTop: '3px'},
+      style: { marginTop: '3px' },
       label: labelFormatter(min, unit),
     },
     [max.toString()]: {
-      style: {marginTop: '3px'},
+      style: { marginTop: '3px' },
       label: labelFormatter(max, unit),
     },
   };
@@ -139,17 +150,16 @@ export function NumberParameter({
   };
 
   return (
-    <FormGroup>
+    <FormGroup style={{ marginBottom: '25px' }}>
       {hasLabel ? (
-        <FormLabel>
+        <FormLabel style={{ marginBottom: '5px', display: 'block' }}>
           {name}
-          <br />
         </FormLabel>
       ) : null}
 
       <div className="number-param-container">
         <div className="min-number">
-          <Button onClick={handleReduction}>
+          <Button variant="secondary" onClick={handleReduction}>
             <FaMinus />
           </Button>
         </div>
@@ -157,20 +167,23 @@ export function NumberParameter({
           <div className="slider-container">
             <Slider
               value={value}
+              // eslint-disable-next-line @typescript-eslint/no-deprecated
               handleStyle={handleStyle}
               marks={marks}
               max={max}
               min={min}
               step={step}
               onChange={handleOnChange}
+              // eslint-disable-next-line @typescript-eslint/no-deprecated
               onBeforeChange={handleOnBeforeChange}
+              // eslint-disable-next-line @typescript-eslint/no-deprecated
               onAfterChange={handleOnAfterChange}
             />
           </div>
           <div className="current-value">{formatter(value, unit)}</div>
         </div>
         <div className="max-number">
-          <Button onClick={handleAddition}>
+          <Button variant="secondary" onClick={handleAddition}>
             <FaPlus />
           </Button>
         </div>
@@ -180,14 +193,14 @@ export function NumberParameter({
         <Modal.Header closeButton>
           <Modal.Title>Confirm change</Modal.Title>
         </Modal.Header>
-        <Modal.Body style={{textAlign: 'center'}}>
+        <Modal.Body style={{ textAlign: 'center' }}>
           <p>
             You are about to change {name.toLowerCase()} from{' '}
             {formatter(initialValue, unit)} to{' '}
-            {formatter(pendingValue || 0, unit)}.
+            {formatter(pendingValue ?? 0, unit)}.
           </p>
           <p>
-            This is {formatter((pendingValue || 0) - initialValue, unit)}{' '}
+            This is {formatter((pendingValue ?? 0) - initialValue, unit)}{' '}
             increase. Are you sure?
           </p>
         </Modal.Body>

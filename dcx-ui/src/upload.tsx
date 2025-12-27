@@ -1,12 +1,12 @@
-import { compareVersions } from 'compare-versions';
-import React, { useState, useEffect, useCallback } from 'react';
+import {compareVersions} from 'compare-versions';
+import React, {useState, useEffect, useCallback} from 'react';
 import Button from 'react-bootstrap/Button';
 import Dropzone from 'react-dropzone';
 import ProgressBar from 'react-bootstrap/ProgressBar';
 import Spinner from 'react-bootstrap/Spinner';
-import { toast } from 'react-toastify';
+import {toast} from 'react-toastify';
 
-type UploadProps = {};
+type UploadProps = Record<string, never>;
 
 type Version = {
   version: string;
@@ -15,13 +15,13 @@ type Version = {
 
 type Release = {
   tag_name: string;
-  assets: Array<{ name: string; browser_download_url?: string }>;
+  assets: Array<{name: string; browser_download_url?: string}>;
 };
 
 function Upload(_props: UploadProps) {
-  const [version, setVersion] = useState<Version | undefined>(null);
-  const [releases, setReleases] = useState<Release[] | undefined>(null);
-  const [uploading, setUploading] = useState<string | undefined>(null);
+  const [version, setVersion] = useState<Version | undefined>(undefined);
+  const [releases, setReleases] = useState<Release[] | undefined>(undefined);
+  const [uploading, setUploading] = useState<string | undefined>(undefined);
   const [percent, setPercent] = useState(0);
 
   const fetchVersion = useCallback(async () => {
@@ -62,8 +62,8 @@ function Upload(_props: UploadProps) {
   }, []);
 
   useEffect(() => {
-    fetchVersion();
-    fetchReleases();
+    void fetchVersion();
+    void fetchReleases();
   }, [fetchVersion, fetchReleases]);
 
   const handleDrop = (acceptedFiles: File[]) => {
@@ -102,11 +102,12 @@ function Upload(_props: UploadProps) {
 
   const renderStatusMessage = () => {
     switch (uploading) {
+      case undefined:
       case 'active': {
         return (
           <ProgressBar
             animated
-            style={{ height: '20px' }}
+            style={{height: '20px'}}
             variant="info"
             now={percent}
             label={`${percent ? percent.toFixed(2) : 0}%`}
@@ -164,9 +165,17 @@ function Upload(_props: UploadProps) {
     };
   };
 
-  const renderRelease = (release: any) => {
+  const renderRelease = (release: {
+    link?: string;
+    name?: string;
+    isLatest: boolean;
+  }) => {
     if (release.isLatest) {
       return <p>Latest firmware installed</p>;
+    }
+
+    if (!release.link || !release.name) {
+      return null;
     }
 
     return (
@@ -197,7 +206,7 @@ function Upload(_props: UploadProps) {
   return (
     <div>
       <Dropzone multiple={false} onDrop={handleDrop}>
-        {({ getRootProps, getInputProps }) => (
+        {({getRootProps, getInputProps}) => (
           <div
             style={{
               width: '100%',

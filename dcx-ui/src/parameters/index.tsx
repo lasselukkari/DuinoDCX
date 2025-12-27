@@ -1,20 +1,20 @@
 import React from 'react';
-import Parser from '../dcx2496/parser.tsx';
-import {type Command} from '../dcx2496/commands.tsx';
+import Parser from '../dcx2496/parser.ts';
+import { type Command } from '../dcx2496/commands.tsx';
 import BoolParameter from './bool-parameter.tsx';
 import EnumParameter from './enum-parameter.tsx';
 import NumberParameter from './number-parameter.tsx';
 
-const components: Record<string, React.FC<unknown>> = {};
+const components: Record<string, React.FC<any>> = {};
 
 const commandTypes = {
-  SETUP_COMMAND: 0,
-  EQ_COMMAND: 1,
-  IO_COMMAND: 2,
-  OUTPUT_COMMAND: 3,
+  setupCommand: 0,
+  eqCommand: 1,
+  ioCommand: 2,
+  outputCommand: 3,
 };
 
-type ChangeEventArgs = {
+export type ChangeEventArgs = {
   param: string;
   group?: string;
   channelId?: string;
@@ -31,21 +31,23 @@ type ComponentProps = {
   readonly hasLabel?: boolean;
 };
 
+type EnumComponentProps = ComponentProps & {};
+
 const enumComponent = function (command: Command) {
-  const {name, values, unit} = command;
-  const EnumComponent: React.FC<ComponentProps> = ({
+  const { name, values, unit } = command;
+  function EnumComponent({
     value,
-    group,
-    channelId,
+    group = 'inputs',
+    channelId = '0',
     eq,
     onChange,
-    hasLabel,
-  }) => {
+    hasLabel = false,
+  }: EnumComponentProps) {
     return (
       <EnumParameter
         name={name}
         unit={unit}
-        value={value}
+        value={value as string}
         param={Parser.camelize(name)}
         group={group}
         channelId={channelId}
@@ -55,36 +57,30 @@ const enumComponent = function (command: Command) {
         onChange={onChange}
       />
     );
-  };
+  }
 
   return EnumComponent;
 };
 
 const boolComponent = function (command: Command) {
-  const {name} = command;
-  const BoolComponent: React.FC<{
-    readonly isTrue: boolean;
-    readonly group?: string;
-    readonly channelId?: string;
-    readonly eq?: string;
-    readonly isInverted?: boolean;
-    readonly onChange: (args: ChangeEventArgs) => void;
-    readonly hasLabel?: boolean;
-    readonly label?: string;
-  }> = ({
-    isTrue,
+  const { name } = command;
+  function BoolComponent({
+    value,
     group,
     channelId,
     eq,
-    isInverted,
+    isInverted = false,
     onChange,
-    hasLabel,
+    hasLabel = false,
     label,
-  }) => {
+  }: ComponentProps & {
+    readonly isInverted?: boolean;
+    readonly label?: string;
+  }) {
     return (
       <BoolParameter
         name={name}
-        isTrue={isTrue}
+        isTrue={Boolean(value)}
         param={Parser.camelize(name)}
         group={group}
         channelId={channelId}
@@ -95,39 +91,37 @@ const boolComponent = function (command: Command) {
         onChange={onChange}
       />
     );
-  };
+  }
 
   return BoolComponent;
 };
 
 const numberComponent = function (command: Command) {
-  const {name, unit, min, max, step} = command;
-  const NumberComponent: React.FC<
-    ComponentProps & {
-      readonly formatter?: (value: number, unit?: string) => string;
-      readonly labelFormatter?: (value: number, unit?: string) => string;
-    }
-  > = ({
+  const { name, unit, min, max, step } = command;
+  function NumberComponent({
     value,
     group,
     channelId,
     eq,
     onChange,
     formatter,
-    hasLabel,
+    hasLabel = false,
     labelFormatter,
-  }) => {
+  }: ComponentProps & {
+    readonly formatter?: (value: number, unit?: string) => string;
+    readonly labelFormatter?: (value: number, unit?: string) => string;
+  }) {
     return (
       <NumberParameter
         name={name}
-        unit={unit || ''}
-        value={value}
+        unit={unit ?? ''}
+        value={value as number}
         param={Parser.camelize(name)}
         group={group}
         channelId={channelId}
-        min={min || 0}
-        max={max || 100}
-        step={step || 1}
+        min={min ?? 0}
+        max={max ?? 100}
+        step={step ?? 1}
         eq={eq}
         hasLabel={hasLabel}
         formatter={formatter}
@@ -135,7 +129,7 @@ const numberComponent = function (command: Command) {
         onChange={onChange}
       />
     );
-  };
+  }
 
   return NumberComponent;
 };
@@ -156,7 +150,8 @@ const createComponent = (command: Command) => {
   return (_props: unknown) => null;
 };
 
-const squeeze = (word: string) => word.replaceAll(/\s/g, '');
+// eslint-disable-next-line unicorn/prefer-string-replace-all
+const squeeze = (word: string) => word.replace(/\s/g, '');
 
 for (const command of Parser.commands.setupCommands) {
   components[squeeze(command.name)] = createComponent(command);
@@ -200,16 +195,16 @@ const parameters = {
   IsEQOn: components.IsEQOn,
   EQNumber: components.EQNumber,
   EQIndex: components.EQIndex,
-  DynamiceqAttack: components.DynamiceqAttack,
-  DynamiceqRelease: components.DynamiceqRelease,
-  DynamiceqRatio: components.DynamiceqRatio,
-  DynamiceqThreshold: components.DynamiceqThreshold,
-  isDynamiceqOn: components.IsDynamiceqOn,
-  DynamiceqFrequency: components.DynamiceqFrequency,
-  DynamiceqQ: components.DynamiceqQ,
-  DynamiceqGain: components.DynamiceqGain,
-  DynamiceqType: components.DynamiceqType,
-  DynamiceqShelving: components.DynamiceqShelving,
+  DynamicEQAttack: components.DynamicEQAttack,
+  DynamicEQRelease: components.DynamicEQRelease,
+  DynamicEQRatio: components.DynamicEQRatio,
+  DynamicEQThreshold: components.DynamicEQThreshold,
+  IsDynamicEQOn: components.IsDynamicEQOn,
+  DynamicEQFrequency: components.DynamicEQFrequency,
+  DynamicEQQ: components.DynamicEQQ,
+  DynamicEQGain: components.DynamicEQGain,
+  DynamicEQType: components.DynamicEQType,
+  DynamicEQShelving: components.DynamicEQShelving,
 
   // 9 for each io
   EQFrequency: components.EQFrequency,

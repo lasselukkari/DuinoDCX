@@ -1,34 +1,53 @@
 .number-param-container {
-  display: table;
+  display: flex;
+  align-items: center;
   width: 100%;
-  margin-bottom: -10px;
+  margin-top: 4px;
+  min-height: 44px;
+  /* Matches button height */
 }
 
-.min-number, .slider, .max-number {
-  display: table-cell;
+.min-number,
+.max-number {
+  flex: 0 0 auto;
+}
+
+.min-number .btn,
+.max-number .btn {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background-color: #3e444c;
+  border-color: #3e444c;
+}
+
+.min-number .btn:hover,
+.max-number .btn:hover {
+  background-color: #4e5d6c;
+  border-color: #4e5d6c;
+}
+
+.slider {
+  flex: 1 1 auto;
   text-align: center;
-}
-
-.min-number, .max-number {
-  width: 34px;
-  vertical-align: top;
+  padding: 0 10px;
 }
 
 .slider-container {
-  margin: 12px 24px 0;
+  margin: 12px 10px 0;
 }
 
 .current-value {
- font-size: 12px;
+  font-size: 11px;
   color: #aaa;
-  margin-top: 7px;
-  background: none;
-  border: none;
-  padding: 0;
-  outline: inherit;
+  margin-top: 2px;
+  line-height: 1;
 }
 
-.react-numeric-input{
+.react-numeric-input {
   display: block !important;
 }
 
@@ -41,7 +60,8 @@
   color: #272b30;
   background-color: #ffffff;
   background-image: none;
-  border: 1px solid #000000 !important;;
+  border: 1px solid #000000 !important;
+  ;
   border-radius: 4px 0 0 4px !important;
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
   transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;

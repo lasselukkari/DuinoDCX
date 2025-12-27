@@ -2,7 +2,7 @@ import React from 'react';
 import Spinner from 'react-bootstrap/Spinner';
 import Outputs from './outputs.tsx';
 import Inputs from './inputs.tsx';
-import {type State} from './dcx2496/parser.tsx';
+import { type State } from './dcx2496/parser.tsx';
 
 type Props = {
   readonly isBlocking: boolean;
@@ -11,7 +11,21 @@ type Props = {
   readonly onChange: (args: any) => void;
 };
 
-function Device({isBlocking, device, onChange, page}: Props) {
+function Device({ isBlocking, device, onChange, page }: Props) {
+  const [showWarning, setShowWarning] = React.useState(false);
+
+  React.useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (!device?.isReady) {
+      timer = setTimeout(() => {
+        setShowWarning(true);
+      }, 5000);
+    } else {
+      setShowWarning(false);
+    }
+    return () => clearTimeout(timer);
+  }, [device?.isReady]);
+
   const displayIfPage = (name: string, exected: string) => ({
     display: name === exected ? 'block' : 'none',
   });
@@ -29,7 +43,12 @@ function Device({isBlocking, device, onChange, page}: Props) {
         }}
       >
         <Spinner animation="border" variant="primary" />
-        <h5 className="text-center mt-3">Searching…</h5>
+        <h5 className="text-center mt-3">Synchronizing…</h5>
+        {showWarning && (
+          <p className="text-muted mt-2" style={{ maxWidth: '300px' }}>
+            Still searching? Check RS232 cabling and Device ID.
+          </p>
+        )}
       </div>
     );
   }

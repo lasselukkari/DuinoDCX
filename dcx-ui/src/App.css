@@ -38,7 +38,7 @@ body {
   margin-top: 20px;
 }
 
-.line-scale > div {
+.line-scale>div {
   width: 30px;
   height: 144px;
   border-radius: 10px;
@@ -61,7 +61,7 @@ body {
   width: 25%;
 }
 
-.end-button > .nav-item {
+.end-button>.nav-item {
   width: 100%;
   text-align: center;
 }
@@ -70,12 +70,12 @@ body {
   width: 50%;
 }
 
-.middle-buttons > .nav-item {
+.middle-buttons>.nav-item {
   width: 50%;
   text-align: center;
 }
 
-.middle-buttons > .nav-item  > a {
+.middle-buttons>.nav-item>a {
   font-weight: bold;
 }
 
@@ -101,7 +101,7 @@ body {
   filter: none;
 }
 
-.end-button > li.open > a {
+.end-button>li.open>a {
   color: #62c462 !important;
 }
 
@@ -118,16 +118,16 @@ body {
   height: 48px;
 }
 
-.no-caret > .dropdown-toggle::after {
+.no-caret>.dropdown-toggle::after {
   display: none;
 }
 
-.right-0  .dropdown-menu{
+.right-0 .dropdown-menu {
   right: 0;
   left: auto;
 }
 
-.icon-menu{
+.icon-menu {
   width: 50px;
   text-align: center;
 }
@@ -151,8 +151,7 @@ body {
 }
 
 .wide-nav {
-  margin-right: -15px !important;
-  margin-left: -15px !important;
+  /* Removed negative margins that caused horizontal overflow */
 }
 
 .control-menu {
@@ -160,6 +159,6 @@ body {
   justify-content: center;
 }
 
-.control-menu  > .nav-item{
+.control-menu>.nav-item {
   margin: 2px;
 }
