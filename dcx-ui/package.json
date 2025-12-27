@@ -41,12 +41,14 @@
     "typescript": "^5.9.3",
     "vite": "^7.3.0",
     "vite-plugin-node-polyfills": "^0.24.0",
+    "vitest": "^4.0.16",
     "xo": "^1.2.3"
   },
   "scripts": {
     "start": "vite",
     "build": "vite build",
     "serve": "vite preview",
+    "test": "vitest",
     "lint": "xo",
     "lint:fix": "xo --fix"
   },

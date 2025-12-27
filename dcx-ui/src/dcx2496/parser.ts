@@ -158,6 +158,147 @@ class Parser {
     return (number & (1 << index)) !== 0;
   }
 
+  /**
+   * Decode MIDI 7-bit encoded data.
+   *
+   * The DCX2496 encodes data in 8-byte groups:
+   * - Bytes 0-6: Data with MSB stripped (7 bits each)
+   * - Byte 7: Contains the MSBs of bytes 0-6
+   *
+   * This decodes back to the original 7 bytes per group.
+   *
+   * @param encoded The 8-byte-per-group encoded data
+   * @returns Decoded bytes (7 bytes for every 8 input bytes)
+   */
+  static decode7to8(encoded: Uint8Array): Uint8Array {
+    if (encoded.length % 8 !== 0) {
+      console.warn('Encoded data length not divisible by 8');
+    }
+
+    const numGroups = Math.floor(encoded.length / 8);
+    const decoded = new Uint8Array(numGroups * 7);
+
+    for (let group = 0; group < numGroups; group++) {
+      const srcOffset = group * 8;
+      const dstOffset = group * 7;
+      const highBits = encoded[srcOffset + 7];
+
+      for (let i = 0; i < 7; i++) {
+        // Restore MSB from highBits byte
+        const msb = ((highBits >> i) & 1) << 7;
+        decoded[dstOffset + i] = encoded[srcOffset + i] | msb;
+      }
+    }
+
+    return decoded;
+  }
+
+  /**
+   * Encode data to MIDI 7-bit format.
+   *
+   * @param raw The raw bytes to encode
+   * @returns Encoded data (8 bytes for every 7 input bytes)
+   */
+  static encode7to8(raw: Uint8Array): Uint8Array {
+    const numGroups = Math.ceil(raw.length / 7);
+    const encoded = new Uint8Array(numGroups * 8);
+
+    for (let group = 0; group < numGroups; group++) {
+      const srcOffset = group * 7;
+      const dstOffset = group * 8;
+      let highBits = 0;
+
+      for (let i = 0; i < 7; i++) {
+        const srcIndex = srcOffset + i;
+        const byte = srcIndex < raw.length ? raw[srcIndex] : 0;
+        encoded[dstOffset + i] = byte & 0x7f; // Strip MSB
+        highBits |= ((byte >> 7) & 1) << i; // Collect MSB
+      }
+
+      encoded[dstOffset + 7] = highBits;
+    }
+
+    return encoded;
+  }
+
+  static hexToBytes(hex: string): Uint8Array {
+    // Remove colons or spaces if present
+    const cleanHex = hex.replace(/[:\s]/g, '');
+    const bytes = new Uint8Array(cleanHex.length / 2);
+    for (let i = 0; i < bytes.length; i++) {
+      bytes[i] = parseInt(cleanHex.substr(i * 2, 2), 16);
+    }
+    return bytes;
+  }
+
+  /**
+   * MIDI message header size (bytes before the 7+1 encoded payload).
+   * Structure: 0xF0, vendor[3], deviceId, 0x0E, command, ...metadata..., data
+   */
+  static readonly DUMP_HEADER_SIZE = 13;
+
+  /**
+   * Parse a DUMP_RESPONSE message from the device.
+   * Each dump part arrives as a separate MIDI message via SSE.
+   *
+   * Message structure:
+   * - Bytes 0-12: MIDI header (vendor, device ID, command, etc.)
+   * - Byte 12: Part number (0 or 1)
+   * - Bytes 13 to N-1: 7+1 encoded payload
+   * - Byte N: 0xF7 terminator
+   *
+   * @param message Raw DUMP_RESPONSE bytes
+   * @returns Part number and decoded values
+   */
+  static parseDumpResponse(message: Uint8Array): {
+    part: number;
+    values: Uint8Array;
+  } {
+    const PART_BYTE = 12;
+    const TERMINATOR = 0xf7;
+
+    // Extract part number from header
+    const part = message[PART_BYTE];
+
+    // Find terminator (should be last byte)
+    let endIndex = message.length - 1;
+    if (message[endIndex] === TERMINATOR) {
+      // Skip terminator
+    } else {
+      // No terminator found, use full length
+      endIndex = message.length;
+    }
+
+    // Extract encoded payload (after header, before terminator)
+    const encodedPayload = message.slice(Parser.DUMP_HEADER_SIZE, endIndex);
+
+    // Decode the 7+1 encoded data
+    const values = Parser.decode7to8(encodedPayload);
+
+    return { part, values };
+  }
+
+  /**
+   * Convert encoded byte position to decoded index.
+   * Used to map existing syncResponse indices to decoded array indices.
+   *
+   * @param encodedPos Position in the raw MIDI message (including header)
+   * @returns Index in the decoded values array, or -1 if it's a flag byte
+   */
+  static encodedToDecodedIndex(encodedPos: number): number {
+    // Subtract header to get position in encoded payload
+    const payloadPos = encodedPos - Parser.DUMP_HEADER_SIZE;
+    if (payloadPos < 0) return -1;
+
+    const group = Math.floor(payloadPos / 8);
+    const posInGroup = payloadPos % 8;
+
+    // Position 7 is the flag byte, not data
+    if (posInGroup === 7) return -1;
+
+    return group * 7 + posInGroup;
+  }
+
   static toPaddedHex(number: number, length: number): string {
     let hex = number.toString(16);
 
@@ -355,6 +496,166 @@ class Parser {
     const valueHigh = Parser.toPaddedHex(Math.floor(data / 128), 2);
 
     return `${hexTarget}${hexParameter}${valueHigh}${valueLow}`;
+  }
+
+  /**
+   * Parse a DIRECT_COMMAND message (from device button press or UI action).
+   * Format: [header 0-6][count][channel,param,hi,lo]×N[terminator]
+   *
+   * @param buffer Raw DIRECT_COMMAND bytes
+   * @returns Array of delta updates to apply to local state
+   */
+  static parseDirectCommand(buffer: Uint8Array): Array<{
+    group: 'setup' | 'inputs' | 'outputs';
+    channelId?: string;
+    eq?: number;
+    property: string;
+    value: number | boolean | string;
+    rawValue: number;
+  }> {
+    const PARAM_COUNT_BYTE = 7;
+    const count = buffer[PARAM_COUNT_BYTE];
+    const deltas: Array<{
+      group: 'setup' | 'inputs' | 'outputs';
+      channelId?: string;
+      eq?: number;
+      property: string;
+      value: number | boolean | string;
+      rawValue: number;
+    }> = [];
+
+    for (let i = 0; i < count; i++) {
+      const offset = 8 + 4 * i;
+      const channel = buffer[offset]; // 0=setup, 1-4=inputs, 5-10=outputs
+      const param = buffer[offset + 1];
+      const hi = buffer[offset + 2];
+      const lo = buffer[offset + 3];
+      const rawValue = lo + hi * 128;
+
+      const delta = Parser.mapChannelParamToProperty(channel, param, rawValue);
+      if (delta) {
+        deltas.push(delta);
+      }
+    }
+
+    return deltas;
+  }
+
+  /**
+   * Map channel/param to property name and convert raw value.
+   */
+  static mapChannelParamToProperty(
+    channel: number,
+    param: number,
+    rawValue: number,
+  ): {
+    group: 'setup' | 'inputs' | 'outputs';
+    channelId?: string;
+    eq?: number;
+    property: string;
+    value: number | boolean | string;
+    rawValue: number;
+  } | undefined {
+    if (channel === 0) {
+      // Setup command
+      const setupIndex = param <= 11 ? param - 2 : param - 10;
+      const command = commands.setupCommands[setupIndex];
+      if (!command) return undefined;
+
+      return {
+        group: 'setup',
+        property: Parser.camelize(command.name),
+        value: Parser.reverseCommandData(command, rawValue),
+        rawValue,
+      };
+    } else if (channel >= 1 && channel <= 4) {
+      // Input command
+      const channelId = constants.INPUTS[channel - 1];
+      return Parser.parseInputOutputParam(
+        'inputs',
+        channelId,
+        param,
+        rawValue,
+      );
+    } else if (channel >= 5 && channel <= 10) {
+      // Output command
+      const channelId = constants.OUTPUTS[channel - 5];
+      return Parser.parseInputOutputParam(
+        'outputs',
+        channelId,
+        param,
+        rawValue,
+      );
+    }
+
+    return undefined;
+  }
+
+  /**
+   * Parse input/output parameter.
+   */
+  static parseInputOutputParam(
+    group: 'inputs' | 'outputs',
+    channelId: string,
+    param: number,
+    rawValue: number,
+  ): {
+    group: 'inputs' | 'outputs';
+    channelId: string;
+    eq?: number;
+    property: string;
+    value: number | boolean | string;
+    rawValue: number;
+  } | undefined {
+    // Input/output commands: param 2-18 map to inputOutputCommands[0-16]
+    if (param >= 2 && param <= 18) {
+      const commandIndex = param - 2;
+      const command = commands.inputOutputCommands[commandIndex];
+      if (!command) return undefined;
+
+      return {
+        group,
+        channelId,
+        property: Parser.camelize(command.name),
+        value: Parser.reverseCommandData(command, rawValue),
+        rawValue,
+      };
+    }
+
+    // EQ commands: params 19-63 (9 EQs × 5 params each)
+    if (param >= 19 && param <= 63) {
+      const eqOffset = param - 19;
+      const eqNumber = Math.floor(eqOffset / 5) + 1;
+      const eqParamIndex = eqOffset % 5;
+      const command = commands.eqCommands[eqParamIndex];
+      if (!command) return undefined;
+
+      return {
+        group,
+        channelId,
+        eq: eqNumber,
+        property: Parser.camelize(command.name),
+        value: Parser.reverseCommandData(command, rawValue),
+        rawValue,
+      };
+    }
+
+    // Output-only commands: params 64+
+    if (group === 'outputs' && param >= 64) {
+      const commandIndex = param - 64;
+      const command = commands.outputCommands[commandIndex];
+      if (!command) return undefined;
+
+      return {
+        group,
+        channelId,
+        property: Parser.camelize(command.name),
+        value: Parser.reverseCommandData(command, rawValue),
+        rawValue,
+      };
+    }
+
+    return undefined;
   }
 }
 

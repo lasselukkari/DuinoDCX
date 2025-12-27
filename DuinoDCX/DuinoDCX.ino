@@ -275,7 +275,12 @@ void processWebServer() {
   WiFiClient client = httpServer.available();
 
   if (client.connected()) {
-    app.process(&client);
+    App::ProcessResult result = app.process(&client);
+
+    // If this was an SSE request, store the client for later
+    if (result.responseOpen) {
+      storeSseClient(client);
+    }
   }
 }
 

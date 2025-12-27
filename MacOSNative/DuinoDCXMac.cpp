@@ -37,6 +37,70 @@ Router apiRouter;
 char authBuffer[256];
 unsigned long requestStart;
 
+// SSE client sockets (store raw FDs)
+#define MAX_SSE_CLIENTS 4
+int sseClientSockets[MAX_SSE_CLIENTS] = {-1, -1, -1, -1};
+
+// SSE client management for macOS
+void storeSseClientSocket(int socket) {
+  for (int i = 0; i < MAX_SSE_CLIENTS; i++) {
+    if (sseClientSockets[i] < 0) {
+      sseClientSockets[i] = socket;
+      std::cout << "SSE client connected (slot " << i << ", socket " << socket
+                << ")" << std::endl;
+      break;
+    }
+  }
+}
+
+int countSseClients() {
+  int count = 0;
+  for (int i = 0; i < MAX_SSE_CLIENTS; i++) {
+    if (sseClientSockets[i] >= 0)
+      count++;
+  }
+  return count;
+}
+
+void sendToSseClients(const uint8_t *data, size_t length) {
+  for (int i = 0; i < MAX_SSE_CLIENTS; i++) {
+    int sock = sseClientSockets[i];
+    if (sock >= 0) {
+      // Build SSE message: "data: <hex>\n\n"
+      // Build SSE message: "data: <hex>\n\n"
+      std::string message;
+      message.reserve(length * 2 + 8);
+      message += "data: ";
+
+      const char hexChars[] = "0123456789ABCDEF";
+      for (size_t j = 0; j < length; j++) {
+        message += hexChars[(data[j] >> 4) & 0xF];
+        message += hexChars[data[j] & 0xF];
+      }
+      message += "\n\n";
+
+      // Send chunked (transfer encoding is chunked)
+      char chunkHeader[16];
+      snprintf(chunkHeader, sizeof(chunkHeader), "%zx\r\n", message.size());
+
+      ssize_t sent = send(sock, chunkHeader, strlen(chunkHeader), MSG_NOSIGNAL);
+      if (sent > 0) {
+        sent = send(sock, message.c_str(), message.size(), MSG_NOSIGNAL);
+      }
+      if (sent > 0) {
+        sent = send(sock, "\r\n", 2, MSG_NOSIGNAL);
+      }
+
+      if (sent <= 0) {
+        // Client disconnected
+        std::cout << "SSE client disconnected (slot " << i << ")" << std::endl;
+        close(sock);
+        sseClientSockets[i] = -1;
+      }
+    }
+  }
+}
+
 // Signal handling
 volatile bool shouldExit = false;
 
@@ -150,7 +214,17 @@ void processWebServer() {
   MacOSClient client = httpServer.available();
 
   if (client.connected()) {
-    app.process(&client);
+    // Get socket FD before processing (we need it for SSE)
+    int socketFd = client.getSocket();
+
+    App::ProcessResult result = app.process(&client);
+
+    // If this was an SSE request, store socket and don't close
+    if (result.responseOpen) {
+      storeSseClientSocket(socketFd);
+      // Don't stop - let it stay open
+      return;
+    }
     client.stop();
   }
 }

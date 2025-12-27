@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
-/* global describe, it, expect */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
+import { describe, it, expect } from 'vitest';
 import TransferFunction from './transfer-function.ts';
 
 describe('generateFrequencyPoints', () => {

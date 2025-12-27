@@ -18,7 +18,7 @@
 #endif
 
 #ifndef RESYNC_INTEVAL
-#define RESYNC_INTEVAL 5000
+#define RESYNC_INTEVAL 600000
 #endif
 
 #define SEARCH_RESPONSE_LENGTH 26
@@ -86,6 +86,7 @@ public:
   void writeDevices(Response *res);
   void setSelected(int deviceId);
   int getSelected();
+  void syncSelectedDevice();
 
 private:
   size_t write(const uint8_t *buffer, size_t size);
