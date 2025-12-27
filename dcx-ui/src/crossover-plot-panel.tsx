@@ -1,0 +1,41 @@
+import React, {useState} from 'react';
+import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
+import isEqual from 'lodash.isequal';
+import CrossoverPlot from './plots/crossover-plot.tsx';
+import {type Channel} from './dcx2496/parser.ts';
+
+type Props = {
+  readonly channels: Record<string, Channel>;
+};
+
+function CrossoverPlotPanel({channels}: Props) {
+  const [isGainApplied, setIsGainApplied] = useState(false);
+
+  const handleToggleGain = () => {
+    setIsGainApplied(!isGainApplied);
+  };
+
+  return (
+    <Card>
+      <Card.Header>
+        Crossover Frequency Response
+        <Button
+          size="sm"
+          className="header-button"
+          variant={isGainApplied ? 'success' : 'dark'}
+          onClick={handleToggleGain}
+        >
+          Apply Gain
+        </Button>
+      </Card.Header>
+      <Card.Body>
+        <CrossoverPlot channels={channels} isGainApplied={isGainApplied} />
+      </Card.Body>
+    </Card>
+  );
+}
+
+export default React.memo(CrossoverPlotPanel, (previousProps, nextProps) => {
+  return isEqual(previousProps.channels, nextProps.channels);
+});
