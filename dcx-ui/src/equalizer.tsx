@@ -1,8 +1,7 @@
-import React, { PureComponent } from 'react';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-import pc, { type ChangeEventArgs } from './parameters/index.tsx';
+import pc from './parameters/index.tsx';
 
 type EqualizerProps = {
   readonly eQType: string;
@@ -10,86 +9,75 @@ type EqualizerProps = {
   readonly eQQ: number | string;
   readonly eQShelving: string;
   readonly eQGain: number | string;
-  readonly id: string | number;
-  readonly onChange: (args: ChangeEventArgs) => void;
+  readonly id: string;
   readonly group: string;
-  readonly channelId: string | number;
+  readonly channelId: string;
 };
 
-class Equalizer extends PureComponent<EqualizerProps> {
-  render() {
-    const {
-      eQType,
-      eQFrequency,
-      eQQ,
-      eQShelving,
-      eQGain,
-      id,
-      onChange,
-      group,
-      channelId,
-    } = this.props;
-
-    return (
-      <Card>
-        <Card.Header>{`Equalizer ${id}`}</Card.Header>
-        <Card.Body>
-          <Row>
-            <Col xs={12} sm={4}>
-              <pc.EQType
+function Equalizer({
+  eQType,
+  eQFrequency,
+  eQQ,
+  eQShelving,
+  eQGain,
+  id,
+  group,
+  channelId,
+}: EqualizerProps) {
+  return (
+    <Card>
+      <Card.Header>{`Equalizer ${id}`}</Card.Header>
+      <Card.Body>
+        <Row>
+          <Col xs={12} sm={4}>
+            <pc.EQType
+              hasLabel
+              value={eQType}
+              eq={id}
+              group={group}
+              channelId={channelId}
+            />
+          </Col>
+          <Col xs={12} sm={4}>
+            <pc.EQFrequency
+              hasLabel
+              value={eQFrequency}
+              eq={id}
+              group={group}
+              channelId={channelId}
+            />
+          </Col>
+          <Col xs={12} sm={4}>
+            {eQType === 'Bandpass' && (
+              <pc.EQQ
                 hasLabel
-                value={eQType}
-                eq={id as string}
+                value={eQQ}
+                eq={id}
                 group={group}
                 channelId={channelId}
-                onChange={onChange}
               />
-            </Col>
-            <Col xs={12} sm={4}>
-              <pc.EQFrequency
+            )}
+            {eQType !== 'Bandpass' && (
+              <pc.EQShelving
                 hasLabel
-                value={eQFrequency}
-                eq={id as string}
+                value={eQShelving}
+                eq={id}
                 group={group}
                 channelId={channelId}
-                onChange={onChange}
               />
-            </Col>
-            <Col xs={12} sm={4}>
-              {eQType === 'Bandpass' && (
-                <pc.EQQ
-                  hasLabel
-                  value={eQQ}
-                  eq={id as string}
-                  group={group}
-                  channelId={channelId}
-                  onChange={onChange}
-                />
-              )}
-              {eQType !== 'Bandpass' && (
-                <pc.EQShelving
-                  hasLabel
-                  value={eQShelving}
-                  eq={id as string}
-                  group={group}
-                  channelId={channelId}
-                  onChange={onChange}
-                />
-              )}
-            </Col>
-          </Row>
-          <pc.EQGain
-            hasLabel
-            value={eQGain}
-            eq={id as string}
-            group={group}
-            channelId={channelId as string}
-            onChange={onChange}
-          />
-        </Card.Body>
-      </Card>
-    );
-  }
+            )}
+          </Col>
+        </Row>
+        <pc.EQGain
+          hasLabel
+          value={eQGain}
+          eq={id}
+          group={group}
+          channelId={channelId}
+        />
+      </Card.Body>
+    </Card>
+  );
 }
 
 export default Equalizer;

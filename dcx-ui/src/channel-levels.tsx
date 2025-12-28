@@ -2,17 +2,16 @@ import {FaRandom, FaVolumeMute, FaVolumeUp} from 'react-icons/fa';
 import React, {useState} from 'react';
 import Button from 'react-bootstrap/Button';
 import ChannelControls from './channel-controls.tsx';
-import {type State} from './dcx2496/parser.tsx';
 import './ChannelLevels.css';
+import {useSendCommand} from './hooks/use-send-command.ts';
+import {useDeviceState} from './device-state-context.tsx';
 
 const inputChannels = ['A', 'B', 'C', 'Sum'];
 const outputChannels = ['1', '2', '3', '4', '5', '6'];
 
 type Props = {
-  readonly device: State;
   readonly inputs: Array<{isLimited: boolean; level: number}>;
   readonly outputs: Array<{isLimited: boolean; level: number}>;
-  readonly onChange: (args: any) => void;
 };
 
 type SelectionItem = {
@@ -27,7 +26,10 @@ type SelectionState = {
   outputs: SelectionItem[];
 };
 
-function ChannelLevels({device, inputs, outputs, onChange}: Props) {
+function ChannelLevels({inputs, outputs}: Props) {
+  const {device} = useDeviceState();
+  const sendCommand = useSendCommand();
+
   const [selected, setSelected] = useState<SelectionState>({
     inputs: inputChannels.map((channelId) => ({
       name: channelId,
@@ -36,7 +38,7 @@ function ChannelLevels({device, inputs, outputs, onChange}: Props) {
       channelId,
     })),
     outputs: outputChannels.map((channelId) => ({
-      name: device.outputs?.[channelId]?.channelName
+      name: device?.outputs?.[channelId]?.channelName
         ? (device.outputs[channelId].channelName
             .match(/\b\w/g)
             ?.join('')
@@ -68,7 +70,7 @@ function ChannelLevels({device, inputs, outputs, onChange}: Props) {
 
     const commands = [...inputsCmd, ...outputsCmd];
 
-    onChange(commands);
+    void sendCommand(commands);
   };
 
   const handleToggleChange = ({
@@ -102,7 +104,7 @@ function ChannelLevels({device, inputs, outputs, onChange}: Props) {
       }),
     );
 
-    onChange(commands);
+    void sendCommand(commands);
   };
 
   const isAnyUnmuted =
@@ -136,7 +138,6 @@ function ChannelLevels({device, inputs, outputs, onChange}: Props) {
               name={name}
               isSelected={isSelected}
               index={index}
-              onChange={onChange}
               onToggleChange={handleToggleChange}
             />
           );
@@ -163,7 +164,6 @@ function ChannelLevels({device, inputs, outputs, onChange}: Props) {
               name={name}
               isSelected={isSelected}
               index={index}
-              onChange={onChange}
               onToggleChange={handleToggleChange}
             />
           );

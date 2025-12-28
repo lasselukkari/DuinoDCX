@@ -1,9 +1,9 @@
-import React, { useMemo } from 'react';
+import React, {useMemo} from 'react';
 import isEqual from 'lodash.isequal';
-import { LineChart, Line, XAxis, YAxis, Tooltip } from 'recharts';
-import { useWindowSize } from '../hooks/use-window-size.ts';
-import { useBreakpoint } from '../hooks/use-breakpoint.ts';
-import { type Channel } from '../dcx2496/parser.tsx';
+import {LineChart, Line, XAxis, YAxis, Tooltip} from 'recharts';
+import {useWindowSize} from '../hooks/use-window-size.ts';
+import {useBreakpoint} from '../hooks/use-breakpoint.ts';
+import {type Channel} from '../dcx2496/parser.tsx';
 import TransferFunction from './transfer-function.ts';
 import PlotTooltip from './plot-tooltip.tsx';
 
@@ -27,7 +27,7 @@ function plotData(channels: Record<string, Channel>, isGainApplied: boolean) {
   const values = Object.keys(channels).map((key) => {
     const tf = new TransferFunction(frequencyPoints);
 
-    const { eqs } = channels[key];
+    const {eqs} = channels[key];
     if (eqs) {
       for (const eqsKey of Object.keys(eqs)) {
         const eq = eqs[Number(eqsKey)];
@@ -66,7 +66,7 @@ function plotData(channels: Record<string, Channel>, isGainApplied: boolean) {
   });
 
   return frequencyPoints.map((hz, index) => {
-    const result: PlotData = { hz };
+    const result: PlotData = {hz};
     for (const value of values) {
       const rounded = Math.round(value.data[index] * 100) / 100;
       result[value.channel] = isGainApplied
@@ -78,8 +78,8 @@ function plotData(channels: Record<string, Channel>, isGainApplied: boolean) {
   });
 }
 
-function EqualizerPlot({ channels, isGainApplied = false }: Props) {
-  const { width: windowWidth } = useWindowSize();
+function EqualizerPlot({channels, isGainApplied = false}: Props) {
+  const {width: windowWidth} = useWindowSize();
   const currentBreakpoint = useBreakpoint();
 
   const data = useMemo(
@@ -131,7 +131,7 @@ function EqualizerPlot({ channels, isGainApplied = false }: Props) {
       data={data}
       width={width}
       height={height}
-      margin={{ top: 20, right: 30, bottom: 5, left: -30 }}
+      margin={{top: 20, right: 30, bottom: 5, left: -30}}
     >
       <XAxis
         dataKey="hz"

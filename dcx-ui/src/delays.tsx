@@ -3,17 +3,16 @@ import Card from 'react-bootstrap/Card';
 import isEqual from 'lodash.isequal';
 import Delay from './delay.tsx';
 import pc from './parameters/index.tsx';
-import {type Channel, type Setup} from './dcx2496/parser.ts';
+import { type Channel, type Setup } from './dcx2496/parser.ts';
 
 type Props = {
   readonly group: string;
-  readonly onChange: (args: any) => void;
   readonly channels: Record<string, Channel>;
   readonly setup: Setup;
 };
 
-function Delays({channels, setup, group, onChange}: Props) {
-  const {airTemperature, isDelayCorrectionOn, delayLink, delayUnits} = setup;
+function Delays({ channels, setup, group }: Props) {
+  const { airTemperature, isDelayCorrectionOn, delayLink, delayUnits } = setup;
 
   return (
     <div>
@@ -21,26 +20,25 @@ function Delays({channels, setup, group, onChange}: Props) {
         <Card>
           <Card.Header>Long Delay Link</Card.Header>
           <Card.Body>
-            <pc.DelayLink isTrue={delayLink} onChange={onChange} />
+            <pc.DelayLink value={delayLink ?? false} />
           </Card.Body>
         </Card>
       )}
 
-      {Object.keys(channels).map((channelId) => {
-        const channel = channels[channelId];
+      {Object.keys(channels).map((id) => {
+        const channel = channels[id];
         return (
           <Delay
-            key={channelId}
+            key={id}
             group={group}
-            channelId={channelId}
+            channelId={id}
             isDelayOn={channel.isDelayOn ?? false}
-            delayUnits={delayUnits}
+            delayUnits={delayUnits ?? 'mm'}
             shortDelay={channel.shortDelay ?? 0}
             longDelay={channel.longDelay ?? 0}
-            airTemperature={airTemperature}
-            isDelayCorrectionOn={isDelayCorrectionOn}
+            airTemperature={airTemperature ?? 20}
+            isDelayCorrectionOn={isDelayCorrectionOn ?? false}
             channelName={channel.channelName ?? ''}
-            onChange={onChange}
           />
         );
       })}
@@ -54,7 +52,7 @@ export default React.memo(Delays, (previousProps, nextProps) => {
     previousProps.setup.airTemperature === nextProps.setup.airTemperature &&
     previousProps.setup.delayLink === nextProps.setup.delayLink &&
     previousProps.setup.isDelayCorrectionOn ===
-      nextProps.setup.isDelayCorrectionOn &&
+    nextProps.setup.isDelayCorrectionOn &&
     previousProps.setup.delayUnits === nextProps.setup.delayUnits
   );
 });

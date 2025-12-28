@@ -1,5 +1,6 @@
-import React, { type ChangeEvent } from 'react';
+import React, {type ChangeEvent} from 'react';
 import Form from 'react-bootstrap/Form';
+import {useSendCommand} from '../hooks/use-send-command.ts';
 
 type Props = {
   readonly value: string;
@@ -7,13 +8,6 @@ type Props = {
   readonly enums: string[];
   readonly param: string;
   readonly name: string;
-  readonly onChange: (args: {
-    param: string;
-    group?: string;
-    channelId?: string;
-    eq?: string;
-    value: string;
-  }) => void;
   readonly group?: string;
   readonly channelId?: string;
   readonly eq?: string;
@@ -30,14 +24,15 @@ export function EnumParameter({
   group,
   channelId,
   eq,
-  onChange,
 }: Props) {
+  const sendCommand = useSendCommand();
+
   const handleValueChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    onChange({ param, group, channelId, eq, value: event.target.value });
+    void sendCommand({param, group, channelId, eq, value: event.target.value});
   };
 
   return (
-    <Form.Group style={{ marginBottom: '15px' }}>
+    <Form.Group style={{marginBottom: '15px'}}>
       {hasLabel ? (
         <Form.Label>
           {name} {unit ? `(${unit})` : null}

@@ -2,7 +2,6 @@ import React from 'react';
 import Card from 'react-bootstrap/Card';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
-import isEqual from 'lodash.isequal';
 import BlockUi from './components/block-ui.tsx';
 import Delays from './delays.tsx';
 import Equalizers from './equalizers.tsx';
@@ -10,23 +9,19 @@ import EqualizerPlotPanel from './equalizer-plot-panel.tsx';
 import DynamicEqualizers from './dynamic-equalizers.tsx';
 import Gains from './gains.tsx';
 import InputRouting from './input-routing.tsx';
-import { type Channel, type Setup } from './dcx2496/parser.ts';
-
-type ChangeEventArgs = {
-  param?: string;
-  group?: string;
-  channelId?: string;
-  value?: boolean | number | string;
-};
+import {useDeviceState} from './device-state-context.tsx';
 
 type Props = {
   readonly isBlocking: boolean;
-  readonly channels: Record<string, Channel>;
-  readonly setup: Setup;
-  readonly onChange: (args: ChangeEventArgs | ChangeEventArgs[]) => void;
 };
 
-function Inputs({ channels, setup, onChange, isBlocking }: Props) {
+function Inputs({isBlocking}: Props) {
+  const {device} = useDeviceState();
+
+  if (!device) return null;
+
+  const {inputs: channels, setup} = device;
+
   return (
     <div>
       <Tabs
@@ -41,47 +36,35 @@ function Inputs({ channels, setup, onChange, isBlocking }: Props) {
             <Card.Header>Gain</Card.Header>
             <Card.Body>
               <BlockUi isBlocking={isBlocking}>
-                <Gains group="inputs" channels={channels} onChange={onChange} />
+                <Gains group="inputs" channels={channels} />
               </BlockUi>
             </Card.Body>
           </Card>
         </Tab>
         <Tab title="EQ" eventKey="eq">
+          <EqualizerPlotPanel channels={channels} group="inputs" />
           <BlockUi isBlocking={isBlocking}>
             <Equalizers
               group="inputs"
               channels={channels}
               isBlocking={isBlocking}
-              onChange={onChange}
             />
           </BlockUi>
         </Tab>
         <Tab eventKey="dynamicEqualizers" title="Dynamic EQ">
           <BlockUi isBlocking={isBlocking}>
-            <DynamicEqualizers
-              group="inputs"
-              channels={channels}
-              onChange={onChange}
-            />
+            <DynamicEqualizers group="inputs" channels={channels} />
           </BlockUi>
-        </Tab>
-        <Tab eventKey="equalizerPlots" title="EQ Plot">
-          <EqualizerPlotPanel channels={channels} group="inputs" />
         </Tab>
         <Tab title="Delay" eventKey="delays">
           <BlockUi isBlocking={isBlocking}>
-            <Delays
-              group="inputs"
-              channels={channels}
-              setup={setup}
-              onChange={onChange}
-            />
+            <Delays group="inputs" channels={channels} setup={setup} />
           </BlockUi>
         </Tab>
 
         <Tab title="Routing" eventKey="routing">
           <BlockUi isBlocking={isBlocking}>
-            <InputRouting setup={setup} onChange={onChange} />
+            <InputRouting setup={setup} />
           </BlockUi>
         </Tab>
       </Tabs>
@@ -90,9 +73,5 @@ function Inputs({ channels, setup, onChange, isBlocking }: Props) {
 }
 
 export default React.memo(Inputs, (previousProps, nextProps) => {
-  return (
-    previousProps.isBlocking === nextProps.isBlocking &&
-    isEqual(previousProps.channels, nextProps.channels) &&
-    isEqual(previousProps.setup, nextProps.setup)
-  );
+  return previousProps.isBlocking === nextProps.isBlocking;
 });

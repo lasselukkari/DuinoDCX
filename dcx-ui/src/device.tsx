@@ -2,29 +2,31 @@ import React from 'react';
 import Spinner from 'react-bootstrap/Spinner';
 import Outputs from './outputs.tsx';
 import Inputs from './inputs.tsx';
-import { type State } from './dcx2496/parser.tsx';
-import { UploadDownload } from './presets/upload-download.tsx';
+import {UploadDownload} from './presets/upload-download.tsx';
+import {useDeviceState} from './device-state-context.tsx';
 
 type Props = {
   readonly isBlocking: boolean;
   readonly page: string;
-  readonly device: State;
-  readonly onChange: (args: any) => void;
 };
 
-function Device({ isBlocking, device, onChange, page }: Props) {
+function Device({isBlocking, page}: Props) {
+  const {device} = useDeviceState();
   const [showWarning, setShowWarning] = React.useState(false);
 
   React.useEffect(() => {
     let timer: NodeJS.Timeout;
-    if (!device?.isReady) {
+    if (device?.isReady) {
+      setShowWarning(false);
+    } else {
       timer = setTimeout(() => {
         setShowWarning(true);
       }, 5000);
-    } else {
-      setShowWarning(false);
     }
-    return () => clearTimeout(timer);
+
+    return () => {
+      clearTimeout(timer);
+    };
   }, [device?.isReady]);
 
   const displayIfPage = (name: string, exected: string) => ({
@@ -45,11 +47,11 @@ function Device({ isBlocking, device, onChange, page }: Props) {
       >
         <Spinner animation="border" variant="primary" />
         <h5 className="text-center mt-3">Synchronizing…</h5>
-        {showWarning && (
-          <p className="text-muted mt-2" style={{ maxWidth: '300px' }}>
+        {showWarning ? (
+          <p className="text-muted mt-2" style={{maxWidth: '300px'}}>
             Still searching? Check RS232 cabling and Device ID.
           </p>
-        )}
+        ) : null}
       </div>
     );
   }
@@ -57,20 +59,10 @@ function Device({ isBlocking, device, onChange, page }: Props) {
   return (
     <div className="container">
       <div style={displayIfPage(page, 'inputs')}>
-        <Inputs
-          channels={device.inputs}
-          setup={device.setup}
-          isBlocking={isBlocking}
-          onChange={onChange}
-        />
+        <Inputs isBlocking={isBlocking} />
       </div>
       <div style={displayIfPage(page, 'outputs')}>
-        <Outputs
-          channels={device.outputs}
-          setup={device.setup}
-          isBlocking={isBlocking}
-          onChange={onChange}
-        />
+        <Outputs isBlocking={isBlocking} />
       </div>
       <div style={displayIfPage(page, 'presets')}>
         <div className="card text-white bg-secondary">

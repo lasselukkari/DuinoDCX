@@ -1,4 +1,4 @@
-import React from 'react';
+import { memo } from 'react';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
@@ -6,16 +6,15 @@ import isEqual from 'lodash.isequal';
 import OutputSources from './output-sources.tsx';
 import ChannelNames from './channel-names.tsx';
 import pc from './parameters/index.tsx';
-import {type Channel, type Setup} from './dcx2496/parser.ts';
+import { type Channel, type Setup } from './dcx2496/parser.ts';
 
 type Props = {
   readonly setup: Setup;
   readonly outputs: Record<string, Channel>;
-  readonly onChange: (args: any) => void;
 };
 
-function OutputRouting({setup, onChange, outputs}: Props) {
-  const {stereolink, muteOutsWhenPowered, outputConfig, crossoverLink} = setup;
+function OutputRouting({ setup, outputs }: Props) {
+  const { stereolink, muteOutsWhenPowered, outputConfig, crossoverLink } = setup;
 
   return (
     <div>
@@ -24,42 +23,31 @@ function OutputRouting({setup, onChange, outputs}: Props) {
         <Card.Body>
           <Row>
             <Col xs={12} sm={4}>
-              <pc.OutputConfig
-                hasLabel
-                value={outputConfig}
-                onChange={onChange}
-              />
+              <pc.OutputConfig hasLabel value={outputConfig ?? 'MONO'} />
             </Col>
             <Col xs={12} sm={4}>
-              <pc.Stereolink hasLabel isTrue={stereolink} onChange={onChange} />
+              <pc.Stereolink hasLabel value={stereolink ?? false} />
             </Col>
             <Col xs={12} sm={4}>
-              <pc.CrossoverLink
-                hasLabel
-                isTrue={crossoverLink}
-                onChange={onChange}
-              />
+              <pc.CrossoverLink hasLabel value={crossoverLink ?? false} />
             </Col>
           </Row>
         </Card.Body>
       </Card>
 
-      <OutputSources group="outputs" channels={outputs} onChange={onChange} />
-      <ChannelNames group="outputs" channels={outputs} onChange={onChange} />
+      <OutputSources group="outputs" channels={outputs} />
+      <ChannelNames group="outputs" channels={outputs} />
       <Card>
         <Card.Header>Mute Outs When Powered</Card.Header>
         <Card.Body>
-          <pc.MuteOutsWhenPowered
-            isTrue={muteOutsWhenPowered}
-            onChange={onChange}
-          />
+          <pc.MuteOutsWhenPowered value={muteOutsWhenPowered ?? false} />
         </Card.Body>
       </Card>
     </div>
   );
 }
 
-export default React.memo(OutputRouting, (previousProps, nextProps) => {
+export default memo(OutputRouting, (previousProps, nextProps) => {
   return (
     isEqual(previousProps.outputs, nextProps.outputs) &&
     isEqual(previousProps.setup, nextProps.setup)

@@ -1,38 +1,34 @@
-import React from 'react';
+import {memo, type ChangeEvent} from 'react';
 import Button from 'react-bootstrap/Button';
 import FormControl from 'react-bootstrap/FormControl';
 import InputGroup from 'react-bootstrap/InputGroup';
+import {useSendCommand} from './hooks/use-send-command.ts';
 
 type Props = {
-  readonly onChange: (args: any) => void;
   readonly delayUnits: string;
   readonly airTemperature: number;
   readonly isDelayCorrectionOn: boolean;
 };
 
-function Temperature({
-  onChange,
-  delayUnits,
-  airTemperature,
-  isDelayCorrectionOn,
-}: Props) {
+function Temperature({delayUnits, airTemperature, isDelayCorrectionOn}: Props) {
+  const sendCommand = useSendCommand();
+
   const handleValueChange = (
-    event: React.ChangeEvent<
+    event: ChangeEvent<
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
     >,
   ) => {
-    // FormControl onChange type for select element
     const {value} = event.target;
     const numericValue = Number(value);
 
     const unlocalizedValue =
       delayUnits === 'mm' ? numericValue : ((numericValue - 32) * 5) / 9;
 
-    onChange({param: 'airTemperature', value: unlocalizedValue});
+    sendCommand({param: 'airTemperature', value: unlocalizedValue});
   };
 
   const handleCorrectionChange = () => {
-    onChange({
+    sendCommand({
       param: 'isDelayCorrectionOn',
       value: !isDelayCorrectionOn,
     });
@@ -66,26 +62,6 @@ function Temperature({
           </option>
         ))}
       </FormControl>
-      {/* InputGroup.Append was deprecated in v5? If v4 still used, fine. User uses 'react-bootstrap'.
-       If using Bootstrap 5, InputGroup.Text or just Button inside InputGroup.
-       Lets stick to original structure but if Append is missing in types, we might need InputGroup.Text or similar.
-       However, if older react-bootstrap, Append exists.
-       Original code used InputGroup.Append.
-       I'll use it but monitor lint errors.
-       Wait, React-Bootstrap v2 (Bootstrap 5) REMOVED InputGroup.Append. 
-       If I upgraded dependencies, I likely broke this.
-       I should check 'package.json' or 'task.md'.
-       Task md says "Update Dependencies".
-       So likely v2.
-       InputGroup in v2: <InputGroup> <Button/> <FormControl/> </InputGroup> directly?
-       Docs say: 
-       <InputGroup>
-         <Button variant="outline-secondary">Button</Button>
-         <Form.Control />
-       </InputGroup>
-       So NO InputGroup.Append.
-       I will remove InputGroup.Append wrapper.
-      */}
       <Button
         variant={isDelayCorrectionOn ? 'success' : 'primary'}
         onClick={handleCorrectionChange}
@@ -96,4 +72,4 @@ function Temperature({
   );
 }
 
-export default React.memo(Temperature);
+export default memo(Temperature);

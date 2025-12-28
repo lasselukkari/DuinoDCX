@@ -13,39 +13,31 @@ WiFiClient sseClients[MAX_SSE_CLIENTS];
 
 char pendingClientId[40] = {0};
 
-void getDevice(Request &req, Response &res) {
-  res.set("Content-Type", "application/binary");
-  deviceManagerPtr->writeDevice(&res);
-}
-
-void getStatus(Request &req, Response &res) {
-  res.set("Content-Type", "application/binary");
-  deviceManagerPtr->writeDeviceStatus(&res);
-}
-
-void selectDevice(Request &req, Response &res) {
-  byte buffer[100];
-
-  if (!req.readBytes(buffer, 100)) {
-    return res.sendStatus(400);
-  }
-
-  int id = atoi((const char *)buffer);
-  deviceManagerPtr->setSelected(id);
-  res.sendStatus(204);
-}
-
-void getState(Request &req, Response &res) {
-  res.set("Content-Type", "application/binary");
-  res.write(deviceManagerPtr->getSelected());
-  deviceManagerPtr->writeDevice(&res);
-  deviceManagerPtr->writeDevices(&res);
-}
+// NOTE: getDevice, getStatus, selectDevice, getState were removed
+// as they relied on internal state buffers that have been refactored out.
+// The UI now relies exclusively on SSE for state updates.
 
 void createDirectCommand(Request &req, Response &res) {
+  // Buffer for reading the command
+  uint8_t buffer[256];
+  int bytesRead = 0;
+
   while (req.left()) {
-    deviceManagerPtr->processOutgoing(&req);
+    // Read a byte
+    int b = req.read();
+    if (b >= 0 && (size_t)bytesRead < sizeof(buffer)) {
+      buffer[bytesRead++] = (uint8_t)b;
+    }
   }
+
+  // Send buffered data to device
+  if (bytesRead > 0) {
+    deviceManagerPtr->write(buffer, bytesRead);
+
+    // Broadcast to all SSE clients to keep them in sync
+    sendToSseClients(buffer, bytesRead, nullptr); // nullptr = broadcast to all
+  }
+
   res.sendStatus(204);
 }
 
@@ -126,12 +118,12 @@ void storeSseClient(WiFiClient &client) {
 #else
 // macOS: functions defined in DuinoDCXMac.cpp
 extern int countSseClients();
-extern void sendToSseClients(const uint8_t *data, size_t length);
+extern void sendToSseClients(const uint8_t *data, size_t length,
+                             const char *targetClientId);
 #endif
 
 void setupApiRoutes(Router &router) {
-  router.get("/state", &getState);
-  router.get("/status", &getStatus);
+  // NOTE: /state and /status routes removed - UI uses SSE exclusively
   router.post("/commands", &createDirectCommand);
   router.post("/sysex", &handleSysex);
   router.get("/events", &sseEventsHandler);

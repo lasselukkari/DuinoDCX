@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Spinner from 'react-bootstrap/Spinner';
-import { toast } from 'react-toastify';
+import {toast} from 'react-toastify';
 
 // Type ConnectionProps = Record<string, never>; // Unused
 // or
@@ -146,7 +146,7 @@ function Connection(_props: ConnectionProps) {
 
       void fetchConnection(); // Safe bet.
     } catch {
-      toast.error('WiFi disconnected', { position: 'bottom-left' });
+      toast.error('WiFi disconnected', {position: 'bottom-left'});
     }
   };
 

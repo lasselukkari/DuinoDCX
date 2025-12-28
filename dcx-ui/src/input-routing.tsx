@@ -1,4 +1,4 @@
-import React from 'react';
+import {memo} from 'react';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
@@ -8,10 +8,9 @@ import {type Setup} from './dcx2496/parser.ts';
 
 type Props = {
   readonly setup: Setup;
-  readonly onChange: (args: any) => void;
 };
 
-function InputRouting({setup, onChange}: Props) {
+function InputRouting({setup}: Props) {
   const {
     inputABSource,
     inputCGain,
@@ -29,21 +28,13 @@ function InputRouting({setup, onChange}: Props) {
         <Card.Body>
           <Row>
             <Col xs={12} sm={4}>
-              <pc.InputABSource
-                hasLabel
-                value={inputABSource}
-                onChange={onChange}
-              />
+              <pc.InputABSource hasLabel value={inputABSource} />
             </Col>
             <Col xs={12} sm={4}>
-              <pc.InputCGain hasLabel value={inputCGain} onChange={onChange} />
+              <pc.InputCGain hasLabel value={inputCGain} />
             </Col>
             <Col xs={12} sm={4}>
-              <pc.StereolinkMode
-                hasLabel
-                value={stereolinkMode}
-                onChange={onChange}
-              />
+              <pc.StereolinkMode hasLabel value={stereolinkMode} />
             </Col>
           </Row>
         </Card.Body>
@@ -51,28 +42,16 @@ function InputRouting({setup, onChange}: Props) {
       <Card>
         <Card.Header>Sum Setup</Card.Header>
         <Card.Body>
-          <pc.InputSumType hasLabel value={inputSumType} onChange={onChange} />
-          <pc.InputASumGain
-            hasLabel
-            value={inputASumGain}
-            onChange={onChange}
-          />
-          <pc.InputBSumGain
-            hasLabel
-            value={inputBSumGain}
-            onChange={onChange}
-          />
-          <pc.InputCSumGain
-            hasLabel
-            value={inputCSumGain}
-            onChange={onChange}
-          />
+          <pc.InputSumType hasLabel value={inputSumType} />
+          <pc.InputASumGain hasLabel value={inputASumGain} />
+          <pc.InputBSumGain hasLabel value={inputBSumGain} />
+          <pc.InputCSumGain hasLabel value={inputCSumGain} />
         </Card.Body>
       </Card>
     </div>
   );
 }
 
-export default React.memo(InputRouting, (previousProps, nextProps) => {
+export default memo(InputRouting, (previousProps, nextProps) => {
   return isEqual(previousProps.setup, nextProps.setup);
 });

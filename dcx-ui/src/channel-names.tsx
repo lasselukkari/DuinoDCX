@@ -6,20 +6,12 @@ import isEqual from 'lodash.isequal';
 import ChannelName from './channel-name.tsx';
 import {type Channel} from './dcx2496/parser.ts';
 
-type ChangeEventArgs = {
-  param?: string;
-  group?: string;
-  channelId?: string;
-  value?: string;
-};
-
 type Props = {
-  readonly onChange: (args: ChangeEventArgs) => void;
   readonly group: string;
   readonly channels: Record<string, Channel>;
 };
 
-function ChannelNames({channels, group, onChange}: Props) {
+function ChannelNames({channels, group}: Props) {
   const channelIds = useMemo(() => Object.keys(channels), [channels]);
 
   return (
@@ -34,8 +26,7 @@ function ChannelNames({channels, group, onChange}: Props) {
                   key={channelId}
                   group={group}
                   channelId={channelId}
-                  channelName={channels[channelId].channelName}
-                  onChange={onChange}
+                  channelName={channels[channelId].channelName ?? ''}
                 />
               </Col>
             );

@@ -1,9 +1,9 @@
-import React, { useMemo } from 'react';
+import React, {useMemo} from 'react';
 import isEqual from 'lodash.isequal';
-import { AreaChart, Area, XAxis, YAxis, Tooltip } from 'recharts';
-import { useWindowSize } from '../hooks/use-window-size.ts';
-import { useBreakpoint } from '../hooks/use-breakpoint.ts';
-import { type Channel } from '../dcx2496/parser.tsx';
+import {AreaChart, Area, XAxis, YAxis, Tooltip} from 'recharts';
+import {useWindowSize} from '../hooks/use-window-size.ts';
+import {useBreakpoint} from '../hooks/use-breakpoint.ts';
+import {type Channel} from '../dcx2496/parser.tsx';
 import TransferFunction from './transfer-function.ts';
 import PlotTooltip from './plot-tooltip.tsx';
 
@@ -48,7 +48,7 @@ function createPlotData(
   });
 
   return frequencyPoints.map((hz, index) => {
-    const result: PlotData = { hz };
+    const result: PlotData = {hz};
 
     for (const value of values) {
       const rounded = Math.round(value.data[index] * 100) / 100;
@@ -61,8 +61,8 @@ function createPlotData(
   });
 }
 
-function CrossoverPlot({ channels, isGainApplied }: Props) {
-  const { width: windowWidth } = useWindowSize();
+function CrossoverPlot({channels, isGainApplied}: Props) {
+  const {width: windowWidth} = useWindowSize();
   const currentBreakpoint = useBreakpoint();
 
   const data = useMemo(
@@ -114,7 +114,7 @@ function CrossoverPlot({ channels, isGainApplied }: Props) {
       data={data}
       width={width}
       height={height}
-      margin={{ top: 20, right: 10, bottom: 5, left: -30 }}
+      margin={{top: 20, right: 10, bottom: 5, left: -30}}
     >
       <XAxis
         dataKey="hz"
@@ -125,7 +125,7 @@ function CrossoverPlot({ channels, isGainApplied }: Props) {
         type="number"
         domain={[-20, isGainApplied ? 'auto' : 5]}
       />
-      <Tooltip content={<PlotTooltip filter={({ value }) => value > -20} />} />
+      <Tooltip content={<PlotTooltip filter={({value}) => value > -20} />} />
       {Object.keys(channels).map((channelId, index) => (
         <Area
           key={channelId}

@@ -2,18 +2,12 @@ import React from 'react';
 import FormGroup from 'react-bootstrap/FormGroup';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import {useSendCommand} from '../hooks/use-send-command.ts';
 
 type Props = {
   readonly isTrue: boolean;
   readonly param: string;
   readonly name: string;
-  readonly onChange: (args: {
-    param: string;
-    group?: string;
-    channelId?: string;
-    eq?: string;
-    value: boolean;
-  }) => void; // Value is !isTrue so boolean
   readonly isInverted?: boolean;
   readonly group?: string;
   readonly channelId?: string;
@@ -32,24 +26,25 @@ export function BoolParameter({
   group,
   channelId,
   eq,
-  onChange,
 }: Props) {
+  const sendCommand = useSendCommand();
   const onColor = isInverted ? 'danger' : 'success';
 
   const handleClick = () => {
-    onChange({ param, group, channelId, eq, value: !isTrue });
+    void sendCommand({param, group, channelId, eq, value: !isTrue});
   };
 
   return (
-    <FormGroup style={{ marginBottom: '15px' }}>
+    <FormGroup style={{marginBottom: '15px'}}>
       {(label ?? hasLabel) ? (
-        <Form.Label style={{ marginBottom: '5px', display: 'block' }}>{label ?? name}</Form.Label>
+        <Form.Label style={{marginBottom: '5px', display: 'block'}}>
+          {label ?? name}
+        </Form.Label>
       ) : null}
 
       <Button
         className="w-100"
         variant={isTrue ? onColor : 'primary'}
-        active={isTrue}
         onClick={handleClick}
       >
         {isTrue ? 'On' : 'Off'}

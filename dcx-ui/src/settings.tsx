@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import FormControl from 'react-bootstrap/FormControl';
 import Row from 'react-bootstrap/Row';
 import Spinner from 'react-bootstrap/Spinner';
-import { toast } from 'react-toastify';
+import {toast} from 'react-toastify';
 
 function Settings() {
   const [username, setUsername] = useState('');
@@ -17,7 +17,7 @@ function Settings() {
   const [autoDisableAp, setAutoDisableAp] = useState('0');
   const [loadingDone, setLoadingDone] = useState(false);
 
-  const toastOptions = { position: 'bottom-left' as const };
+  const toastOptions = {position: 'bottom-left' as const};
 
   useEffect(() => {
     void fetchSettings();
@@ -40,7 +40,7 @@ function Settings() {
         flowControl: string;
         autoDisableAp: string;
       };
-      const { apSsid, apPassword, auth, mdnsHost, flowControl, autoDisableAp } =
+      const {apSsid, apPassword, auth, mdnsHost, flowControl, autoDisableAp} =
         data;
 
       // eslint-disable-next-line no-restricted-globals

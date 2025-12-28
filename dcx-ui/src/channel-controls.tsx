@@ -1,14 +1,7 @@
-import React from 'react';
+import {memo} from 'react';
 import ChannelLevel from './channel-level.tsx';
 import MuteButton from './mute-button.tsx';
 import SelectButton from './select-button.tsx';
-
-type ChangeEventArgs = {
-  param?: string;
-  group?: string;
-  channelId?: string;
-  value?: boolean | number | string;
-};
 
 type ToggleChangeEventArgs = {
   group: 'inputs' | 'outputs';
@@ -28,18 +21,15 @@ type Props = {
   readonly isMuted: boolean;
   readonly isOutput: boolean;
   readonly isToggled?: boolean;
-  readonly onChange: (args: ChangeEventArgs) => void;
   readonly onToggleChange: (args: ToggleChangeEventArgs) => void;
 };
 
 function ChannelControls({
   isLimited,
   level,
-  onChange,
   channelId,
   isOutput,
   isMuted,
-  isToggled = false,
   onToggleChange,
   group,
   name,
@@ -55,18 +45,16 @@ function ChannelControls({
         name={name}
         isSelected={isSelected}
         index={index}
-        onChange={onToggleChange} // SelectButton uses onChange to trigger onToggleChange behavior from parent
+        onToggle={onToggleChange}
       />
       <MuteButton
         key={'mute-' + channelId}
         channelId={channelId}
         isMuted={isMuted}
         isOutput={isOutput}
-        onChange={onChange}
       />
       <ChannelLevel
         key={'level-' + channelId}
-        // Removed invalid props: channelId, isMuted, onChange
         isOutput={isOutput}
         isLimited={isLimited}
         level={level}
@@ -75,4 +63,4 @@ function ChannelControls({
   );
 }
 
-export default React.memo(ChannelControls);
+export default memo(ChannelControls);

@@ -1,4 +1,4 @@
-import React from 'react';
+import {memo} from 'react';
 import {FaGlobe} from 'react-icons/fa';
 import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
@@ -13,10 +13,9 @@ type Props = {
     delayUnits: string;
   };
   readonly isXs: boolean;
-  readonly onChange: (args: any) => void;
 };
 
-function Localization({onChange, setup, isXs}: Props) {
+function Localization({setup, isXs}: Props) {
   const {airTemperature, isDelayCorrectionOn, delayUnits} = setup;
 
   return (
@@ -31,17 +30,16 @@ function Localization({onChange, setup, isXs}: Props) {
             airTemperature={airTemperature}
             isDelayCorrectionOn={isDelayCorrectionOn}
             delayUnits={delayUnits}
-            onChange={onChange}
           />
 
-          <DelayUnits delayUnits={delayUnits} onChange={onChange} />
+          <DelayUnits delayUnits={delayUnits} />
         </div>
       </NavDropdown>
     </Nav>
   );
 }
 
-export default React.memo(Localization, (previousProps, nextProps) => {
+export default memo(Localization, (previousProps, nextProps) => {
   return (
     isEqual(previousProps.setup, nextProps.setup) &&
     previousProps.isXs === nextProps.isXs

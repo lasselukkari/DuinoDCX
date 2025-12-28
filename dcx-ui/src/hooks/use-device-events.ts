@@ -1,114 +1,91 @@
-import { useEffect, useRef } from 'react';
+import {useEffect} from 'react';
 import constants from '../dcx2496/constants';
-import Parser from '../dcx2496/parser';
+import {useDeviceConnection} from '../device-connection-context';
 
-interface UseDeviceEventsProps {
-    onSearchResponse?: (data: Uint8Array) => void;
-    onPingResponse?: (data: Uint8Array) => void;
-    onDumpResponse?: (data: Uint8Array) => void;
-    onDirectCommand?: (data: Uint8Array) => void;
-    onAckResponse?: (data: Uint8Array) => void;
-    onOtherResponse?: (data: Uint8Array) => void;
+type UseDeviceEventsProps = {
+  onSearchResponse?: (data: Uint8Array) => void;
+  onPingResponse?: (data: Uint8Array) => void;
+  onDumpResponse?: (data: Uint8Array) => void;
+  onPageDumpResponse?: (data: Uint8Array) => void; // For backup page dumps
+  onDirectCommand?: (data: Uint8Array) => void;
+  onAckResponse?: (data: Uint8Array) => void;
+  onOtherResponse?: (data: Uint8Array) => void;
+};
+
+/**
+ * Checks if a message is a page dump response (for backup).
+ * Page dump format: F0 00 20 32 <DevID> 0E 10 00 01 00 0C 00 <Slot> ...
+ * The distinguishing bytes are at indices 7-11: 00 01 00 0C 00
+ * NOTE: 0x0C (12) is the correct value per captured traffic, not 0x0D (13)
+ */
+function isPageDumpResponse(data: Uint8Array): boolean {
+  if (data.length < 13) return false;
+  return (
+    data[7] === 0x00 &&
+    data[8] === 0x01 &&
+    data[9] === 0x00 &&
+    data[10] === 0x0c &&
+    data[11] === 0x00
+  );
 }
 
 export function useDeviceEvents({
+  onSearchResponse,
+  onPingResponse,
+  onDumpResponse,
+  onPageDumpResponse,
+  onDirectCommand,
+  onAckResponse,
+  onOtherResponse,
+}: UseDeviceEventsProps) {
+  const {clientId, addListener, removeListener} = useDeviceConnection();
+
+  useEffect(() => {
+    // Wrapper for page dump responses - filters dump responses for page dumps
+    const pageDumpHandler = onPageDumpResponse
+      ? (data: Uint8Array) => {
+          if (isPageDumpResponse(data)) {
+            onPageDumpResponse(data);
+          }
+        }
+      : undefined;
+
+    // Register listeners
+    if (onSearchResponse)
+      addListener(constants.SEARCH_RESPONSE, onSearchResponse);
+    if (onPingResponse) addListener(constants.PING_RESPONSE, onPingResponse);
+    if (onDumpResponse) addListener(constants.DUMP_RESPONSE, onDumpResponse);
+    if (pageDumpHandler) addListener(constants.DUMP_RESPONSE, pageDumpHandler);
+    if (onDirectCommand) addListener(constants.DIRECT_COMMAND, onDirectCommand);
+    if (onAckResponse) addListener(0x52, onAckResponse);
+    if (onOtherResponse) addListener(0x50, onOtherResponse);
+
+    return () => {
+      // Unregister listeners
+      if (onSearchResponse)
+        removeListener(constants.SEARCH_RESPONSE, onSearchResponse);
+      if (onPingResponse)
+        removeListener(constants.PING_RESPONSE, onPingResponse);
+      if (onDumpResponse)
+        removeListener(constants.DUMP_RESPONSE, onDumpResponse);
+      if (pageDumpHandler)
+        removeListener(constants.DUMP_RESPONSE, pageDumpHandler);
+      if (onDirectCommand)
+        removeListener(constants.DIRECT_COMMAND, onDirectCommand);
+      if (onAckResponse) removeListener(0x52, onAckResponse);
+      if (onOtherResponse) removeListener(0x50, onOtherResponse);
+    };
+  }, [
+    addListener,
+    removeListener,
     onSearchResponse,
     onPingResponse,
     onDumpResponse,
+    onPageDumpResponse,
     onDirectCommand,
     onAckResponse,
     onOtherResponse,
-}: UseDeviceEventsProps) {
-    const eventSourceRef = useRef<EventSource | null>(null);
+  ]);
 
-    // Use refs for callbacks to avoid re-connecting when they change
-    const callbacksRef = useRef({
-        onSearchResponse,
-        onPingResponse,
-        onDumpResponse,
-        onDirectCommand,
-        onAckResponse,
-        onOtherResponse,
-    });
-
-    // Generate or retrieve a persistent client ID
-    const clientIdRef = useRef<string>('');
-    if (!clientIdRef.current) {
-        // Simple random ID generation
-        clientIdRef.current = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-    }
-
-    useEffect(() => {
-        callbacksRef.current = {
-            onSearchResponse,
-            onPingResponse,
-            onDumpResponse,
-            onDirectCommand,
-            onAckResponse,
-            onOtherResponse,
-        };
-    }, [onSearchResponse, onPingResponse, onDumpResponse, onDirectCommand, onAckResponse, onOtherResponse]);
-
-    useEffect(() => {
-        const eventSource = new EventSource(`/api/events?clientId=${clientIdRef.current}`);
-        eventSourceRef.current = eventSource;
-
-        // ... (rest of the event source logic is same)
-        eventSource.onopen = () => {
-            console.log('SSE connection opened', clientIdRef.current);
-        };
-
-        eventSource.onmessage = (event) => {
-            if (!event.data) return;
-
-            try {
-                const data = Parser.hexToBytes(event.data);
-
-                // Ensure data is long enough to have a command byte
-                if (data.length <= constants.COMMAND_BYTE) return;
-
-                const command = data[constants.COMMAND_BYTE];
-
-                switch (command) {
-                    case constants.SEARCH_RESPONSE:
-                        callbacksRef.current.onSearchResponse?.(data);
-                        break;
-                    case constants.PING_RESPONSE:
-                        callbacksRef.current.onPingResponse?.(data);
-                        break;
-                    case constants.DUMP_RESPONSE:
-                        callbacksRef.current.onDumpResponse?.(data);
-                        break;
-                    case constants.DIRECT_COMMAND:
-                        callbacksRef.current.onDirectCommand?.(data);
-                        break;
-                    case 0x52: // ACK Command (used in restore handshake)
-                        callbacksRef.current.onAckResponse?.(data);
-                        break;
-                    case 0x50: // Request Command (used in restore handshake)
-                        // Use onOtherResponse or a dedicated handler if we added one
-                        callbacksRef.current.onOtherResponse?.(data);
-                        break;
-                    default:
-                        // Allow a generic fallback if needed, or just log
-                        console.warn('Unknown SSE command:', command);
-                        callbacksRef.current.onOtherResponse?.(data);
-                }
-            } catch (error) {
-                console.error('Error processing SSE message:', error);
-            }
-        };
-
-        eventSource.onerror = (error) => {
-            console.error('SSE connection error:', error);
-            // EventSource will automatically reconnect
-        };
-
-        return () => {
-            eventSource.close();
-            eventSourceRef.current = null;
-        };
-    }, []);
-
-    return clientIdRef.current;
+  return clientId;
 }

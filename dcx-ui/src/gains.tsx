@@ -7,11 +7,10 @@ import {type Channel} from './dcx2496/parser.ts';
 
 type Props = {
   readonly group: string;
-  readonly onChange: (args: any) => void;
   readonly channels: Record<string, Channel>;
 };
 
-function Gains({channels, group, onChange}: Props) {
+function Gains({channels, group}: Props) {
   return (
     <Row className="show-grid">
       {Object.keys(channels).map((channelId) => {
@@ -24,7 +23,6 @@ function Gains({channels, group, onChange}: Props) {
               channelId={channelId}
               channelName={channelName}
               gain={gain}
-              onChange={onChange}
             />
           </Col>
         );

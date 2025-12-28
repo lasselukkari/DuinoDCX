@@ -76,8 +76,8 @@ export type State = {
 };
 
 export type Status = {
-  inputs: Array<{ name: string; level: number; isLimited: boolean }>;
-  outputs: Array<{ name: string; level: number; isLimited: boolean }>;
+  inputs: Array<{name: string; level: number; isLimited: boolean}>;
+  outputs: Array<{name: string; level: number; isLimited: boolean}>;
   free: number;
 };
 
@@ -103,7 +103,7 @@ class Parser {
     command: commands.Command,
     value: number,
   ): number | boolean | string {
-    const { type, min = 0, step = 1, values } = command;
+    const {type, min = 0, step = 1, values} = command;
 
     if (type === 'bool') {
       return value !== 0;
@@ -124,7 +124,7 @@ class Parser {
     command: commands.Command,
     parameter: number | boolean | string,
   ): number {
-    const { type, min = 0, step = 1, values } = command;
+    const {type, min = 0, step = 1, values} = command;
 
     if (type === 'bool') {
       return parameter ? 1 : 0;
@@ -143,7 +143,7 @@ class Parser {
 
   static hexStringToByte(string: string): Uint8Array {
     const a = [];
-    for (let i = 0, { length } = string; i < length; i += 2) {
+    for (let i = 0, {length} = string; i < length; i += 2) {
       a.push(Number.parseInt(string.slice(i, i + 2), 16));
     }
 
@@ -175,10 +175,10 @@ class Parser {
       console.warn('Encoded data length not divisible by 8');
     }
 
-    const numGroups = Math.floor(encoded.length / 8);
-    const decoded = new Uint8Array(numGroups * 7);
+    const numberGroups = Math.floor(encoded.length / 8);
+    const decoded = new Uint8Array(numberGroups * 7);
 
-    for (let group = 0; group < numGroups; group++) {
+    for (let group = 0; group < numberGroups; group++) {
       const srcOffset = group * 8;
       const dstOffset = group * 7;
       const highBits = encoded[srcOffset + 7];
@@ -200,10 +200,10 @@ class Parser {
    * @returns Encoded data (8 bytes for every 7 input bytes)
    */
   static encode7to8(raw: Uint8Array): Uint8Array {
-    const numGroups = Math.ceil(raw.length / 7);
-    const encoded = new Uint8Array(numGroups * 8);
+    const numberGroups = Math.ceil(raw.length / 7);
+    const encoded = new Uint8Array(numberGroups * 8);
 
-    for (let group = 0; group < numGroups; group++) {
+    for (let group = 0; group < numberGroups; group++) {
       const srcOffset = group * 7;
       const dstOffset = group * 8;
       let highBits = 0;
@@ -223,11 +223,12 @@ class Parser {
 
   static hexToBytes(hex: string): Uint8Array {
     // Remove colons or spaces if present
-    const cleanHex = hex.replace(/[:\s]/g, '');
+    const cleanHex = hex.replaceAll(/[:\s]/g, '');
     const bytes = new Uint8Array(cleanHex.length / 2);
     for (let i = 0; i < bytes.length; i++) {
-      bytes[i] = parseInt(cleanHex.substr(i * 2, 2), 16);
+      bytes[i] = Number.parseInt(cleanHex.substr(i * 2, 2), 16);
     }
+
     return bytes;
   }
 
@@ -275,7 +276,7 @@ class Parser {
     // Decode the 7+1 encoded data
     const values = Parser.decode7to8(encodedPayload);
 
-    return { part, values };
+    return {part, values};
   }
 
   /**
@@ -311,7 +312,7 @@ class Parser {
 
   static getValue(
     parts: Uint8Array[],
-    { bits6, bit7, bits8 }: commands.SyncResponse,
+    {bits6, bit7, bits8}: commands.SyncResponse,
   ): number {
     if (!bits6) return 0;
 
@@ -355,12 +356,12 @@ class Parser {
   }
 
   static parseDevice(parts: Uint8Array[]): State {
-    const state: State = { setup: {}, inputs: {}, outputs: {} };
+    const state: State = {setup: {}, inputs: {}, outputs: {}};
 
     for (const [index, channelId] of constants.CHANNELS.entries()) {
       const group = index < 4 ? 'inputs' : 'outputs';
       state[group][channelId] = {
-        eqs: { 1: {}, 2: {}, 3: {}, 4: {}, 5: {}, 6: {}, 7: {}, 8: {}, 9: {} },
+        eqs: {1: {}, 2: {}, 3: {}, 4: {}, 5: {}, 6: {}, 7: {}, 8: {}, 9: {}},
       };
     }
 
@@ -428,7 +429,7 @@ class Parser {
       const level = Parser.clearBit(data, 5);
       const isLimited = Parser.isBitSet(data, 5);
 
-      return { name, level, isLimited };
+      return {name, level, isLimited};
     });
 
     const outputs = constants.OUTPUTS.map((name, index) => {
@@ -436,12 +437,12 @@ class Parser {
       const level = Parser.clearBit(data, 5);
       const isLimited = Parser.isBitSet(data, 5);
 
-      return { name, level, isLimited };
+      return {name, level, isLimited};
     });
 
     const free = buffer[21];
 
-    return { inputs, outputs, free };
+    return {inputs, outputs, free};
   }
 
   static parseState(state: ArrayBuffer): State {
@@ -453,7 +454,7 @@ class Parser {
     const device = Parser.parseDevice([part0Buffer, part1buffer]);
     const devices = Parser.parseDevices(devicesBuffer);
 
-    device.isReady = devices.some(({ id }) => id === selected);
+    device.isReady = devices.some(({id}) => id === selected);
 
     return {
       selected,
@@ -527,12 +528,16 @@ class Parser {
     for (let i = 0; i < count; i++) {
       const offset = 8 + 4 * i;
       const channel = buffer[offset]; // 0=setup, 1-4=inputs, 5-10=outputs
-      const param = buffer[offset + 1];
+      const parameter = buffer[offset + 1];
       const hi = buffer[offset + 2];
       const lo = buffer[offset + 3];
       const rawValue = lo + hi * 128;
 
-      const delta = Parser.mapChannelParamToProperty(channel, param, rawValue);
+      const delta = Parser.mapChannelParamToProperty(
+        channel,
+        parameter,
+        rawValue,
+      );
       if (delta) {
         deltas.push(delta);
       }
@@ -546,19 +551,21 @@ class Parser {
    */
   static mapChannelParamToProperty(
     channel: number,
-    param: number,
+    parameter: number,
     rawValue: number,
-  ): {
-    group: 'setup' | 'inputs' | 'outputs';
-    channelId?: string;
-    eq?: number;
-    property: string;
-    value: number | boolean | string;
-    rawValue: number;
-  } | undefined {
+  ):
+    | {
+        group: 'setup' | 'inputs' | 'outputs';
+        channelId?: string;
+        eq?: number;
+        property: string;
+        value: number | boolean | string;
+        rawValue: number;
+      }
+    | undefined {
     if (channel === 0) {
       // Setup command
-      const setupIndex = param <= 11 ? param - 2 : param - 10;
+      const setupIndex = parameter <= 11 ? parameter - 2 : parameter - 10;
       const command = commands.setupCommands[setupIndex];
       if (!command) return undefined;
 
@@ -568,22 +575,26 @@ class Parser {
         value: Parser.reverseCommandData(command, rawValue),
         rawValue,
       };
-    } else if (channel >= 1 && channel <= 4) {
+    }
+
+    if (channel >= 1 && channel <= 4) {
       // Input command
       const channelId = constants.INPUTS[channel - 1];
       return Parser.parseInputOutputParam(
         'inputs',
         channelId,
-        param,
+        parameter,
         rawValue,
       );
-    } else if (channel >= 5 && channel <= 10) {
+    }
+
+    if (channel >= 5 && channel <= 10) {
       // Output command
       const channelId = constants.OUTPUTS[channel - 5];
       return Parser.parseInputOutputParam(
         'outputs',
         channelId,
-        param,
+        parameter,
         rawValue,
       );
     }
@@ -597,19 +608,21 @@ class Parser {
   static parseInputOutputParam(
     group: 'inputs' | 'outputs',
     channelId: string,
-    param: number,
+    parameter: number,
     rawValue: number,
-  ): {
-    group: 'inputs' | 'outputs';
-    channelId: string;
-    eq?: number;
-    property: string;
-    value: number | boolean | string;
-    rawValue: number;
-  } | undefined {
+  ):
+    | {
+        group: 'inputs' | 'outputs';
+        channelId: string;
+        eq?: number;
+        property: string;
+        value: number | boolean | string;
+        rawValue: number;
+      }
+    | undefined {
     // Input/output commands: param 2-18 map to inputOutputCommands[0-16]
-    if (param >= 2 && param <= 18) {
-      const commandIndex = param - 2;
+    if (parameter >= 2 && parameter <= 18) {
+      const commandIndex = parameter - 2;
       const command = commands.inputOutputCommands[commandIndex];
       if (!command) return undefined;
 
@@ -623,11 +636,11 @@ class Parser {
     }
 
     // EQ commands: params 19-63 (9 EQs × 5 params each)
-    if (param >= 19 && param <= 63) {
-      const eqOffset = param - 19;
+    if (parameter >= 19 && parameter <= 63) {
+      const eqOffset = parameter - 19;
       const eqNumber = Math.floor(eqOffset / 5) + 1;
-      const eqParamIndex = eqOffset % 5;
-      const command = commands.eqCommands[eqParamIndex];
+      const eqParameterIndex = eqOffset % 5;
+      const command = commands.eqCommands[eqParameterIndex];
       if (!command) return undefined;
 
       return {
@@ -641,8 +654,8 @@ class Parser {
     }
 
     // Output-only commands: params 64+
-    if (group === 'outputs' && param >= 64) {
-      const commandIndex = param - 64;
+    if (group === 'outputs' && parameter >= 64) {
+      const commandIndex = parameter - 64;
       const command = commands.outputCommands[commandIndex];
       if (!command) return undefined;
 
@@ -662,7 +675,7 @@ class Parser {
 for (const [index, command] of commands.setupCommands.entries()) {
   const camelName = Parser.camelize(command.name);
 
-  Parser[camelName] = function (device: State, { value }: { value: number }) {
+  Parser[camelName] = function (device: State, {value}: {value: number}) {
     const data = Parser.getCommandData(command, value);
     const commandNumber = index + (index > 9 ? 10 : 2);
     device.setup[camelName] = value;
@@ -680,7 +693,7 @@ for (const [index, command] of commands.inputOutputCommands.entries()) {
       group,
       channelId,
       value,
-    }: { group: 'inputs' | 'outputs'; channelId: string; value: number },
+    }: {group: 'inputs' | 'outputs'; channelId: string; value: number},
   ) {
     const channelNumber =
       group === 'inputs'
@@ -729,7 +742,7 @@ for (const [index, command] of commands.outputCommands.entries()) {
 
   Parser[camelName] = function (
     device: State,
-    { channelId, value }: { channelId: string; value: number },
+    {channelId, value}: {channelId: string; value: number},
   ) {
     const data = Parser.getCommandData(command, value);
     const output = constants.OUTPUTS.indexOf(channelId) + 5;

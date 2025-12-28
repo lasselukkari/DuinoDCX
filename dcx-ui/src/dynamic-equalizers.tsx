@@ -3,22 +3,14 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import isEqual from 'lodash.isequal';
 import DynamicEqualizer from './dynamic-equalizer.tsx';
-import { type Channel } from './dcx2496/parser.ts';
-
-type ChangeEventArgs = {
-  param: string;
-  group?: string;
-  channelId?: string;
-  value: boolean | number | string;
-};
+import {type Channel} from './dcx2496/parser.ts';
 
 type Props = {
   readonly group: string;
-  readonly onChange: (args: ChangeEventArgs) => void;
   readonly channels: Record<string, Channel>;
 };
 
-function DynamicEqualizers({ channels, group, onChange }: Props) {
+function DynamicEqualizers({channels, group}: Props) {
   return (
     <Row className="show-grid">
       {Object.keys(channels).map((channelId) => {
@@ -30,17 +22,16 @@ function DynamicEqualizers({ channels, group, onChange }: Props) {
               group={group}
               channelId={channelId}
               channelName={channel.channelName}
-              isDynamicEQOn={channel.isDynamicEQOn as boolean}
-              dynamicEQType={channel.dynamicEQType as string}
-              dynamicEQFrequency={channel.dynamicEQFrequency as number}
-              dynamicEQGain={channel.dynamicEQGain as number}
-              dynamicEQQ={channel.dynamicEQQ as number}
-              dynamicEQShelving={channel.dynamicEQShelving as string}
-              dynamicEQAttack={channel.dynamicEQAttack as string}
-              dynamicEQRelease={channel.dynamicEQRelease as string}
-              dynamicEQRatio={channel.dynamicEQRatio as string}
-              dynamicEQThreshold={channel.dynamicEQThreshold as number}
-              onChange={onChange}
+              isDynamicEQOn={Boolean(channel.isDynamicEQOn)}
+              dynamicEQType={channel.dynamicEQType!}
+              dynamicEQFrequency={channel.dynamicEQFrequency!}
+              dynamicEQGain={channel.dynamicEQGain!}
+              dynamicEQQ={channel.dynamicEQQ!}
+              dynamicEQShelving={channel.dynamicEQShelving!}
+              dynamicEQAttack={channel.dynamicEQAttack!}
+              dynamicEQRelease={channel.dynamicEQRelease!}
+              dynamicEQRatio={channel.dynamicEQRatio!}
+              dynamicEQThreshold={channel.dynamicEQThreshold!}
             />
           </Col>
         );

@@ -1,17 +1,17 @@
-import React from 'react';
 import Button from 'react-bootstrap/Button';
 import {FaVolumeMute, FaVolumeUp} from 'react-icons/fa';
+import {useSendCommand} from './hooks/use-send-command.ts';
 
 type Props = {
   readonly isMuted: boolean;
   readonly channelId: string;
-  readonly onChange: (args: any) => void;
   readonly isOutput: boolean;
 };
 
-function MuteButton({isMuted, channelId, onChange, isOutput}: Props) {
+function MuteButton({isMuted, channelId, isOutput}: Props) {
+  const sendCommand = useSendCommand();
   const handleClick = () => {
-    onChange({
+    sendCommand({
       param: 'mute',
       group: isOutput ? 'outputs' : 'inputs',
       channelId,
@@ -39,4 +39,4 @@ function MuteButton({isMuted, channelId, onChange, isOutput}: Props) {
   );
 }
 
-export default React.memo(MuteButton);
+export default MuteButton;

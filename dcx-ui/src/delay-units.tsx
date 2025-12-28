@@ -1,26 +1,24 @@
-import React, {useState} from 'react';
+import {memo} from 'react';
 import ToggleButton from 'react-bootstrap/ToggleButton';
 import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup';
+import {useSendCommand} from './hooks/use-send-command.ts';
 
 type Props = {
   readonly delayUnits: string;
-  readonly onChange: (args: any) => void;
 };
 
-function DelayUnits({delayUnits: initialDelayUnits, onChange}: Props) {
-  const [delayUnits, setDelayUnits] = useState(initialDelayUnits);
+function DelayUnits({delayUnits}: Props) {
+  const sendCommand = useSendCommand();
 
   const handleDelayUnitChange = (value: string) => {
-    // ToggleButtonGroup onChange returns value (string/number/array) directly.
-    setDelayUnits(value);
-    onChange({param: 'delayUnits', value});
+    sendCommand({param: 'delayUnits', value});
   };
 
   return (
     <ToggleButtonGroup
       type="radio"
       name="delay-units"
-      value={delayUnits} // Controlled component
+      value={delayUnits}
       style={{padding: '10px 0', width: '100%'}}
       onChange={handleDelayUnitChange}
     >
@@ -44,4 +42,4 @@ function DelayUnits({delayUnits: initialDelayUnits, onChange}: Props) {
   );
 }
 
-export default React.memo(DelayUnits);
+export default memo(DelayUnits);

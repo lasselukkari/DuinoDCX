@@ -1,8 +1,8 @@
-import React from 'react';
+import {memo} from 'react';
 import Button from 'react-bootstrap/Button';
 
 type Props = {
-  readonly onChange: (args: any) => void;
+  readonly onToggle: (args: any) => void;
   readonly group: string;
   readonly channelId: string;
   readonly name: string;
@@ -11,7 +11,7 @@ type Props = {
 };
 
 function SelectButton({
-  onChange,
+  onToggle,
   group,
   channelId,
   name,
@@ -32,7 +32,7 @@ function SelectButton({
       variant={isSelected ? 'info' : 'primary'}
       style={muteStyle}
       onClick={() => {
-        onChange({group, channelId, isSelected, index});
+        onToggle({group, channelId, isSelected, index});
       }}
     >
       {name}
@@ -40,4 +40,4 @@ function SelectButton({
   );
 }
 
-export default React.memo(SelectButton);
+export default memo(SelectButton);

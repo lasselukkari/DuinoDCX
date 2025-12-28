@@ -5,7 +5,19 @@ import BoolParameter from './bool-parameter.tsx';
 import EnumParameter from './enum-parameter.tsx';
 import NumberParameter from './number-parameter.tsx';
 
-const components: Record<string, React.FC<any>> = {};
+export type ParameterComponentProps = {
+  readonly value: boolean | number | string;
+  readonly group?: string;
+  readonly channelId?: string;
+  readonly eq?: string;
+  readonly hasLabel?: boolean;
+  readonly isInverted?: boolean;
+  readonly label?: string;
+  readonly formatter?: (value: number, unit?: string) => string;
+  readonly labelFormatter?: (value: number, unit?: string) => string;
+};
+
+const components: Record<string, React.FC<ParameterComponentProps>> = {};
 
 const commandTypes = {
   setupCommand: 0,
@@ -22,14 +34,7 @@ export type ChangeEventArgs = {
   value: boolean | number | string;
 };
 
-type ComponentProps = {
-  readonly value: boolean | number | string;
-  readonly group?: string;
-  readonly channelId?: string;
-  readonly eq?: string;
-  readonly onChange: (args: ChangeEventArgs) => void;
-  readonly hasLabel?: boolean;
-};
+type ComponentProps = ParameterComponentProps;
 
 type EnumComponentProps = ComponentProps & {};
 
@@ -40,7 +45,6 @@ const enumComponent = function (command: Command) {
     group = 'inputs',
     channelId = '0',
     eq,
-    onChange,
     hasLabel = false,
   }: EnumComponentProps) {
     return (
@@ -54,7 +58,6 @@ const enumComponent = function (command: Command) {
         eq={eq}
         enums={values ? [...values] : []}
         hasLabel={hasLabel}
-        onChange={onChange}
       />
     );
   }
@@ -70,7 +73,6 @@ const boolComponent = function (command: Command) {
     channelId,
     eq,
     isInverted = false,
-    onChange,
     hasLabel = false,
     label,
   }: ComponentProps & {
@@ -88,7 +90,6 @@ const boolComponent = function (command: Command) {
         isInverted={isInverted}
         hasLabel={hasLabel}
         label={label}
-        onChange={onChange}
       />
     );
   }
@@ -103,7 +104,6 @@ const numberComponent = function (command: Command) {
     group,
     channelId,
     eq,
-    onChange,
     formatter,
     hasLabel = false,
     labelFormatter,
@@ -126,7 +126,6 @@ const numberComponent = function (command: Command) {
         hasLabel={hasLabel}
         formatter={formatter}
         labelFormatter={labelFormatter}
-        onChange={onChange}
       />
     );
   }

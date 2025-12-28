@@ -5,20 +5,12 @@ import isEqual from 'lodash.isequal';
 import Crossover from './crossover.tsx';
 import {type Channel} from './dcx2496/parser.ts';
 
-type ChangeEventArgs = {
-  param: string;
-  group?: string;
-  channelId?: string;
-  value: boolean | number | string;
-};
-
 type Props = {
   readonly group: string;
   readonly channels: Record<string, Channel>;
-  readonly onChange: (args: ChangeEventArgs) => void;
 };
 
-function Crossovers({channels, onChange, group}: Props) {
+function Crossovers({channels, group}: Props) {
   return (
     <div>
       <Row className="show-grid">
@@ -40,7 +32,6 @@ function Crossovers({channels, onChange, group}: Props) {
                 lowpassFilter={lowpassFilter}
                 lowpassFrequency={lowpassFrequency}
                 channelName={channelName}
-                onChange={onChange}
               />
             </Col>
           );

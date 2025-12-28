@@ -1,4 +1,3 @@
-import React from 'react';
 import FormLabel from 'react-bootstrap/FormLabel';
 import pc from './parameters/index.tsx';
 
@@ -6,23 +5,17 @@ type Props = {
   readonly group: string;
   readonly channelId: string;
   readonly channelName: string;
-  readonly onChange: (args: any) => void;
 };
 
-function ChannelName({channelName, channelId, onChange, group}: Props) {
+function ChannelName({channelName, channelId, group}: Props) {
   return (
     <div>
       <FormLabel>
         {channelName ? channelId + '. ' + channelName : channelId}
       </FormLabel>
-      <pc.ChannelName
-        value={channelName}
-        group={group}
-        channelId={channelId}
-        onChange={onChange}
-      />
+      <pc.ChannelName value={channelName} group={group} channelId={channelId} />
     </div>
   );
 }
 
-export default React.memo(ChannelName);
+export default ChannelName;

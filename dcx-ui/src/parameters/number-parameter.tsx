@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import FormGroup from 'react-bootstrap/FormGroup';
 import FormLabel from 'react-bootstrap/FormLabel';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Slider from 'rc-slider';
-import { FaPlus, FaMinus } from 'react-icons/fa';
+import {FaPlus, FaMinus} from 'react-icons/fa';
 import 'rc-slider/assets/index.css';
 import './NumberParameter.css';
+import {useSendCommand} from '../hooks/use-send-command.ts';
 
 type Props = {
   readonly value: number;
@@ -16,13 +17,6 @@ type Props = {
   readonly step: number;
   readonly param: string;
   readonly name: string;
-  readonly onChange: (args: {
-    param: string;
-    group?: string;
-    channelId?: string;
-    eq?: string;
-    value: number;
-  }) => void;
   readonly formatter?: (value: number, unit?: string) => string;
   readonly group?: string;
   readonly channelId?: string;
@@ -35,8 +29,10 @@ const defaultFormatter = (v: number | undefined, u?: string) => {
   if (v === undefined || isNaN(v)) {
     return `--- ${u ?? ''}`;
   }
+
   return `${Math.round(v * 10) / 10} ${u ?? ''}`;
 };
+
 const defaultLabelFormatter = (v: number) => v.toString();
 
 export function NumberParameter({
@@ -51,10 +47,10 @@ export function NumberParameter({
   group = undefined,
   channelId = undefined,
   eq = undefined,
-  onChange,
   formatter = defaultFormatter,
   labelFormatter = defaultLabelFormatter,
 }: Props) {
+  const sendCommand = useSendCommand();
   const [value, setValue] = useState(initialValue);
   const [moving, setMoving] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -94,14 +90,14 @@ export function NumberParameter({
       setPendingValue(newValue);
       setShowModal(true);
     } else {
-      onChange({ param, group, channelId, eq, value: newValue });
+      sendCommand({param, group, channelId, eq, value: newValue});
       setMoving(false);
     }
   };
 
   const handleModalConfirm = () => {
     if (pendingValue !== undefined) {
-      onChange({ param, group, channelId, eq, value: pendingValue });
+      sendCommand({param, group, channelId, eq, value: pendingValue});
     }
 
     setShowModal(false);
@@ -119,26 +115,24 @@ export function NumberParameter({
   const handleReduction = () => {
     if (value - step >= min) {
       const newValue = value - step;
-      // For buttons, we update immediately (no confirm?) Or same logic?
-      // Original code did NOT confirm for buttons: onChange(...) directly.
-      onChange({ param, group, channelId, eq, value: newValue });
+      sendCommand({param, group, channelId, eq, value: newValue});
     }
   };
 
   const handleAddition = () => {
     if (value + step <= max) {
       const newValue = value + step;
-      onChange({ param, group, channelId, eq, value: newValue });
+      sendCommand({param, group, channelId, eq, value: newValue});
     }
   };
 
   const marks = {
     [min.toString()]: {
-      style: { marginTop: '3px' },
+      style: {marginTop: '3px'},
       label: labelFormatter(min, unit),
     },
     [max.toString()]: {
-      style: { marginTop: '3px' },
+      style: {marginTop: '3px'},
       label: labelFormatter(max, unit),
     },
   };
@@ -150,9 +144,9 @@ export function NumberParameter({
   };
 
   return (
-    <FormGroup style={{ marginBottom: '25px' }}>
+    <FormGroup style={{marginBottom: '25px'}}>
       {hasLabel ? (
-        <FormLabel style={{ marginBottom: '5px', display: 'block' }}>
+        <FormLabel style={{marginBottom: '5px', display: 'block'}}>
           {name}
         </FormLabel>
       ) : null}
@@ -193,7 +187,7 @@ export function NumberParameter({
         <Modal.Header closeButton>
           <Modal.Title>Confirm change</Modal.Title>
         </Modal.Header>
-        <Modal.Body style={{ textAlign: 'center' }}>
+        <Modal.Body style={{textAlign: 'center'}}>
           <p>
             You are about to change {name.toLowerCase()} from{' '}
             {formatter(initialValue, unit)} to{' '}

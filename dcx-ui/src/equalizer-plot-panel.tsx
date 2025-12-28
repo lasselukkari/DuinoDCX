@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import isEqual from 'lodash.isequal';
 import EqualizerPlot from './plots/equalizer-plot.tsx';
-import { type Channel } from './dcx2496/parser.ts';
+import {type Channel} from './dcx2496/parser.ts';
 
 type Props = {
   readonly channels: Record<string, Channel>;
   readonly group: string;
 };
 
-function EqualizerPlotPanel({ channels, group }: Props) {
+function EqualizerPlotPanel({channels, group}: Props) {
   const [isGainApplied, setIsGainApplied] = useState(false);
 
   const handleToggleGain = () => {
