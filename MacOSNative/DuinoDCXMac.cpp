@@ -37,17 +37,29 @@ Router apiRouter;
 char authBuffer[256];
 unsigned long requestStart;
 
-// SSE client sockets (store raw FDs)
+// SSE client sockets
+struct SseClient {
+  int socket;
+  char clientId[40];
+};
+
 #define MAX_SSE_CLIENTS 4
-int sseClientSockets[MAX_SSE_CLIENTS] = {-1, -1, -1, -1};
+SseClient sseClients[MAX_SSE_CLIENTS] = {
+    {-1, ""}, {-1, ""}, {-1, ""}, {-1, ""}};
 
 // SSE client management for macOS
-void storeSseClientSocket(int socket) {
+void storeSseClientSocket(int socket, const char *clientId) {
   for (int i = 0; i < MAX_SSE_CLIENTS; i++) {
-    if (sseClientSockets[i] < 0) {
-      sseClientSockets[i] = socket;
+    if (sseClients[i].socket < 0) {
+      sseClients[i].socket = socket;
+      if (clientId && strlen(clientId) > 0) {
+        strncpy(sseClients[i].clientId, clientId, 39);
+        sseClients[i].clientId[39] = '\0';
+      } else {
+        sseClients[i].clientId[0] = '\0';
+      }
       std::cout << "SSE client connected (slot " << i << ", socket " << socket
-                << ")" << std::endl;
+                << ", id " << sseClients[i].clientId << ")" << std::endl;
       break;
     }
   }
@@ -56,17 +68,26 @@ void storeSseClientSocket(int socket) {
 int countSseClients() {
   int count = 0;
   for (int i = 0; i < MAX_SSE_CLIENTS; i++) {
-    if (sseClientSockets[i] >= 0)
+    if (sseClients[i].socket >= 0)
       count++;
   }
   return count;
 }
 
-void sendToSseClients(const uint8_t *data, size_t length) {
+void sendToSseClients(const uint8_t *data, size_t length,
+                      const char *targetClientId) {
   for (int i = 0; i < MAX_SSE_CLIENTS; i++) {
-    int sock = sseClientSockets[i];
+    int sock = sseClients[i].socket;
     if (sock >= 0) {
-      // Build SSE message: "data: <hex>\n\n"
+      // If targetClientId is specified, check for match
+      if (targetClientId && targetClientId[0] != '\0') {
+        // If stored ID is empty, should we skip? Let's assume yes.
+        // If stored ID doesn't match target, skip.
+        if (strcmp(sseClients[i].clientId, targetClientId) != 0) {
+          continue;
+        }
+      }
+
       // Build SSE message: "data: <hex>\n\n"
       std::string message;
       message.reserve(length * 2 + 8);
@@ -95,7 +116,8 @@ void sendToSseClients(const uint8_t *data, size_t length) {
         // Client disconnected
         std::cout << "SSE client disconnected (slot " << i << ")" << std::endl;
         close(sock);
-        sseClientSockets[i] = -1;
+        sseClients[i].socket = -1;
+        sseClients[i].clientId[0] = '\0';
       }
     }
   }
@@ -221,7 +243,7 @@ void processWebServer() {
 
     // If this was an SSE request, store socket and don't close
     if (result.responseOpen) {
-      storeSseClientSocket(socketFd);
+      storeSseClientSocket(socketFd, pendingClientId);
       // Don't stop - let it stay open
       return;
     }

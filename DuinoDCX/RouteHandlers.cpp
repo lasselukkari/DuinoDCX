@@ -11,6 +11,8 @@ WiFiClient sseClients[MAX_SSE_CLIENTS];
 // The main loop will handle client storage
 #endif
 
+char pendingClientId[40] = {0};
+
 void getDevice(Request &req, Response &res) {
   res.set("Content-Type", "application/binary");
   deviceManagerPtr->writeDevice(&res);
@@ -50,11 +52,32 @@ void createDirectCommand(Request &req, Response &res) {
 void refresh(Request &req, Response &res) {
   (void)req;
   deviceManagerPtr->syncSelectedDevice();
+  deviceManagerPtr->syncSelectedDevice();
   res.sendStatus(200);
+}
+
+void handleSysex(Request &req, Response &res) {
+  char *clientId = req.get("X-Client-Id");
+  deviceManagerPtr->setActiveClient(clientId);
+
+  while (req.left()) {
+    deviceManagerPtr->processOutgoing(&req);
+  }
+  res.sendStatus(204);
 }
 
 void sseEventsHandler(Request &req, Response &res) {
   (void)req;
+
+  // Extract client ID from query string if present
+  // e.g. /api/events?clientId=xxxxx
+  if (!req.query("clientId", pendingClientId, 39)) {
+    pendingClientId[0] = '\0';
+  } else {
+    // Ensure null termination (req.query likely does it but good to be safe)
+    pendingClientId[39] = '\0';
+  }
+
   res.status(200);
   res.set("Content-Type", "text/event-stream");
   res.set("Cache-Control", "no-cache");
@@ -109,8 +132,8 @@ extern void sendToSseClients(const uint8_t *data, size_t length);
 void setupApiRoutes(Router &router) {
   router.get("/state", &getState);
   router.get("/status", &getStatus);
-  router.put("/selected", &selectDevice);
   router.post("/commands", &createDirectCommand);
+  router.post("/sysex", &handleSysex);
   router.get("/events", &sseEventsHandler);
   router.post("/refresh", &refresh);
 }

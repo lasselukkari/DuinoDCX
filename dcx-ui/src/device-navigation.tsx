@@ -106,6 +106,11 @@ function DeviceNavigation({
             Outputs
           </Nav.Link>
         </Nav.Item>
+        <Nav.Item>
+          <Nav.Link active={page === 'presets'} eventKey="presets">
+            Presets
+          </Nav.Link>
+        </Nav.Item>
       </Nav>
       <Nav activeKey="isBlocking" className="end-button">
         <Nav.Item onClick={onBlockingChange}>

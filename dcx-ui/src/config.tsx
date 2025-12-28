@@ -1,6 +1,6 @@
-import React, {PureComponent} from 'react';
+import React, { PureComponent } from 'react';
 import Button from 'react-bootstrap/Button';
-import {FaCog} from 'react-icons/fa';
+import { FaCog } from 'react-icons/fa';
 import Modal from 'react-bootstrap/Modal';
 import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
@@ -18,12 +18,12 @@ class Config extends PureComponent<ConfigProps> {
   } = {};
 
   handleShowModal = (showModal: string | false) => {
-    this.setState({showModal});
+    this.setState({ showModal });
   };
 
   render() {
-    const {isXs} = this.props;
-    const {showModal} = this.state;
+    const { isXs } = this.props;
+    const { showModal } = this.state;
 
     return (
       <Nav>
@@ -57,6 +57,7 @@ class Config extends PureComponent<ConfigProps> {
           >
             Firmware Update
           </NavDropdown.Item>
+
         </NavDropdown>
         <Modal
           show={showModal === 'connection'}
@@ -124,6 +125,7 @@ class Config extends PureComponent<ConfigProps> {
             </Button>
           </Modal.Footer>
         </Modal>
+
       </Nav>
     );
   }

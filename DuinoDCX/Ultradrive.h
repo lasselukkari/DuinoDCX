@@ -30,6 +30,8 @@
 #define PING_RESPONSE 4
 #define DUMP_RESPONSE 16
 #define DIRECT_COMMAND 32
+#define REQUEST_COMMAND 80
+#define ACK_COMMAND 82
 
 #define ID_BYTE 4
 #define COMMAND_BYTE 6
@@ -48,28 +50,6 @@
 #include <Arduino.h>
 #include <Stream.h>
 
-struct HighByte {
-  int part;
-  int byte;
-};
-
-struct MiddleBit {
-  int part;
-  int byte;
-  int index;
-};
-
-struct LowByte {
-  int part;
-  int byte;
-};
-
-struct DataLocation {
-  LowByte low;
-  MiddleBit middle;
-  HighByte high;
-};
-
 class Ultradrive {
   struct Device {
     unsigned long lastResponse;
@@ -81,15 +61,14 @@ public:
   void enableFlowControl(bool enabled);
   void processIncoming(unsigned long now);
   void processOutgoing(Request *req);
-  void writeDevice(Response *res);
-  void writeDeviceStatus(Response *res);
-  void writeDevices(Response *res);
   void setSelected(int deviceId);
   int getSelected();
   void syncSelectedDevice();
+  void setActiveClient(const char *clientId);
+
+  size_t write(const uint8_t *buffer, size_t size);
 
 private:
-  size_t write(const uint8_t *buffer, size_t size);
   bool requestToSend(int timeout);
   void endSend();
   void search();
@@ -97,11 +76,10 @@ private:
   void ping(int deviceId);
   void dump(int deviceId, int part);
   void readCommands(unsigned long now);
-  void patchBuffer(int low, int high, DataLocation l);
 
+  char activeClientId[40]; // Enough for UUID
   bool invalidateSync;
-  byte dump0[PART_0_LENGTH];
-  byte dump1[PART_1_LENGTH];
+  // dump buffers removed
   byte pingResponse[PING_RESPONSE_LENGTH];
   unsigned long lastResync;
   unsigned long lastPing;
@@ -121,9 +99,7 @@ private:
   byte serialBuffer[PART_0_LENGTH];
   byte serverBuffer[PART_0_LENGTH];
 
-  static DataLocation setupLocations[22];
-  static DataLocation inputLocations[4][62];
-  static DataLocation outputLocations[6][74];
+  // location arrays removed
 
   static byte vendorHeader[5];
 };

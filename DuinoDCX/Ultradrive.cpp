@@ -7,6 +7,15 @@ Ultradrive::Ultradrive(HardwareSerial *serial, int rtsPin, int ctsPin)
 
 void Ultradrive::enableFlowControl(bool enabled) { flowControl = enabled; }
 
+void Ultradrive::setActiveClient(const char *clientId) {
+  if (clientId) {
+    strncpy(activeClientId, clientId, sizeof(activeClientId) - 1);
+    activeClientId[sizeof(activeClientId) - 1] = '\0';
+  } else {
+    activeClientId[0] = '\0';
+  }
+}
+
 void Ultradrive::processIncoming(unsigned long now) {
   while (serial->available() > 0) {
     readCommands(now);
@@ -75,41 +84,10 @@ void Ultradrive::setSelected(int selected) { selectedDevice = selected; }
 int Ultradrive::getSelected() { return selectedDevice; }
 
 void Ultradrive::processOutgoing(Request *req) {
-  if (int bytesRead =
-          req->readBytesUntil(TERMINATOR, serverBuffer, PART_0_LENGTH)) {
-    serverBuffer[bytesRead++] = TERMINATOR;
-
-    if (!memcmp(serverBuffer, vendorHeader, 5)) {
-      int command = serverBuffer[COMMAND_BYTE];
-
-      if (command == DIRECT_COMMAND) {
-        invalidateSync = true;
-        int count = serverBuffer[PARAM_COUNT_BYTE];
-
-        for (int i = 0; i < count; i++) {
-          int offset = (4 * i);
-          int channel = serverBuffer[CHANNEL_BYTE + offset];
-          int param = serverBuffer[PARAM_BYTE + offset];
-          int valueHigh = serverBuffer[VALUE_HI_BYTE + offset];
-          int valueLow = serverBuffer[VALUE_LOW_BYTE + offset];
-
-          if (!channel) {
-            patchBuffer(valueLow, valueHigh,
-                        setupLocations[param - (param <= 11 ? 2 : 10)]);
-          } else if (channel <= 4) {
-            patchBuffer(valueLow, valueHigh,
-                        inputLocations[channel - 1][param - 2]);
-          } else if (channel <= 10) {
-            patchBuffer(valueLow, valueHigh,
-                        outputLocations[channel - 5][param - 2]);
-          }
-        }
-
-        write(serverBuffer, bytesRead);
-
-        // Broadcast the command to all SSE clients so other UIs stay in sync
-        sendToSseClients(serverBuffer, bytesRead);
-      }
+  while (req->left()) {
+    int bytesRead = req->readBytes(serverBuffer, PART_0_LENGTH);
+    if (bytesRead > 0) {
+      write(serverBuffer, bytesRead);
     }
   }
 }
@@ -196,7 +174,9 @@ void Ultradrive::readCommands(unsigned long now) {
     readingCommand = false;
     byte vendorHeader[] = {0xF0, 0x00, 0x20, 0x32, 0x00};
 
-    if (memcmp(serialBuffer, vendorHeader, 5) != 0) {
+    // Check first 4 bytes only: F0 00 20 32
+    // The 5th byte is Device ID, which can vary.
+    if (memcmp(serialBuffer, vendorHeader, 4) != 0) {
       return;
     }
 
@@ -281,6 +261,16 @@ void Ultradrive::readCommands(unsigned long now) {
       }
       // Broadcast DIRECT_COMMAND to SSE clients
       sendToSseClients(serialBuffer, serialRead);
+      break;
+    }
+    case ACK_COMMAND:
+    case REQUEST_COMMAND: {
+      // These are flow control messages for restore/dump operations
+      // We must broadcast them to SSE clients so the UI can proceed
+      Serial.print(now);
+      Serial.print(": Received flow control: ");
+      Serial.println(command);
+      sendToSseClients(serialBuffer, serialRead, activeClientId);
       break;
     }
     default: {

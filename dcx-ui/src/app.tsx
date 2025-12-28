@@ -194,22 +194,6 @@ function App() {
     }
   };
 
-  // Initial fetch for state to get quick start (optional, but good for UX)
-  // Actually, SSE should send initial state if backend implementation supports it?
-  // Our backend sends "getState" logic which includes full dump.
-  // But wait, SSE only broadcasts *changes* or *updates* from serial port.
-  // Docs say: "Modify the backend to send received MIDI messages ... to all connected SSE clients."
-  // When a user connects, do they get the current state?
-  // The SSE connection just streams what comes from serial.
-  // If the device isn't talking, we get nothing.
-  // We should trigger a state fetch or "Get State" on mount so the backend requests it from device, 
-  // and then the response is broadcast to SSE.
-
-  // Initial state is handled by SSE connection trigger on backend
-  React.useEffect(() => {
-    // No explicit fetch needed
-  }, []);
-
   return (
     <div>
       {device && inputs && outputs ? (

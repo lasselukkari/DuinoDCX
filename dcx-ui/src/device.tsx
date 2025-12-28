@@ -3,6 +3,7 @@ import Spinner from 'react-bootstrap/Spinner';
 import Outputs from './outputs.tsx';
 import Inputs from './inputs.tsx';
 import { type State } from './dcx2496/parser.tsx';
+import { UploadDownload } from './presets/upload-download.tsx';
 
 type Props = {
   readonly isBlocking: boolean;
@@ -70,6 +71,13 @@ function Device({ isBlocking, device, onChange, page }: Props) {
           isBlocking={isBlocking}
           onChange={onChange}
         />
+      </div>
+      <div style={displayIfPage(page, 'presets')}>
+        <div className="card text-white bg-secondary">
+          <div className="card-body">
+            <UploadDownload />
+          </div>
+        </div>
       </div>
     </div>
   );
