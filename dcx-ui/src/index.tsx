@@ -1,16 +1,13 @@
-import {createRoot} from 'react-dom/client';
-import App from './app.tsx';
-import {DeviceConnectionProvider} from './device-connection-context';
-import {DeviceStateProvider} from './device-state-context.tsx';
+import { createRoot } from 'react-dom/client';
+import App from './app.js';
+import { DcxConnectionProvider } from './connection/connection-context.js';
 
 const container = document.querySelector('#root');
 if (container) {
   const root = createRoot(container);
   root.render(
-    <DeviceConnectionProvider>
-      <DeviceStateProvider>
-        <App />
-      </DeviceStateProvider>
-    </DeviceConnectionProvider>,
+    <DcxConnectionProvider>
+      <App />
+    </DcxConnectionProvider>,
   );
 }

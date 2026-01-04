@@ -74,7 +74,10 @@ function DeviceNavigation({
           <ChannelLevels inputs={inputs} outputs={outputs} />
         </NavDropdown>
       </Nav>
-      <Nav className="middle-buttons" onSelect={onPageChange as any}>
+      <Nav
+        className="middle-buttons"
+        onSelect={onPageChange as (eventKey: string | undefined) => void}
+      >
         <Nav.Item>
           <Nav.Link active={page === 'inputs'} eventKey="inputs">
             Inputs

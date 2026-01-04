@@ -1,77 +1,42 @@
-import React, {useState, useRef} from 'react';
+import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import ProgressBar from 'react-bootstrap/ProgressBar';
-import {toast} from 'react-toastify';
-import {RestoreProcess} from '../dcx2496/restore-process';
-import {BackupProcess} from '../dcx2496/backup-process';
-import {useDeviceEvents} from '../hooks/use-device-events';
+import { toast } from 'react-toastify';
+import { useDcxBackup, useDcxRestore } from 'dcx-parser';
+import { useDcxConnection } from '../connection/connection-context.js';
 
 type Props = {
   readonly deviceId?: number;
 };
 
-export function UploadDownload({deviceId = 0}: Props) {
-  const [isRestoring, setIsRestoring] = useState(false);
-  const [isBackingUp, setIsBackingUp] = useState(false);
-  const [progress, setProgress] = useState(0);
-  const [status, setStatus] = useState('');
-  const restoreProcessRef = useRef<RestoreProcess | undefined>(null);
-  const backupProcessRef = useRef<BackupProcess | undefined>(null);
+export function UploadDownload({ deviceId = 0 }: Props) {
+  const { connection } = useDcxConnection();
 
-  const clientId = useDeviceEvents({
-    onAckResponse(data) {
-      restoreProcessRef.current?.handleIncomingSysex(data);
-    },
-    onOtherResponse(data) {
-      restoreProcessRef.current?.handleIncomingSysex(data);
-    },
-    onSearchResponse(data) {
-      restoreProcessRef.current?.handleIncomingSysex(data);
-    },
-    onPageDumpResponse(data) {
-      // Route page dump responses to backup process
-      backupProcessRef.current?.handleIncomingSysex(data);
-    },
-    onPingResponse: undefined,
-    onDirectCommand: undefined,
-  });
+  // Use new dcx-parser hooks
+  const backup = useDcxBackup(connection);
+  const restore = useDcxRestore(connection);
 
-  const sendSysex = async (data: Uint8Array) => {
+  const handleBackup = async () => {
+    if (backup.status !== 'idle' || restore.status !== 'idle') return;
+
     try {
-      await fetch('/api/sysex', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/octet-stream',
-          'X-Client-Id': clientId,
-        },
-        body: data as unknown as BodyInit,
-      });
-    } catch (error) {
-      console.error('Failed to send SysEx', error);
-      toast.error('Failed to send data to device');
-      restoreProcessRef.current?.cancel();
-      backupProcessRef.current?.cancel();
+      backup.start();
+
+      // Wait for completion (hook manages the download process)
+      // The hook will update status and progress automatically
+    } catch (error: unknown) {
+      console.error('Backup failed', error);
+      const message = error instanceof Error ? error.message : String(error);
+      toast.error(`Backup Failed: ${message}`);
     }
   };
 
-  const handleBackup = async () => {
-    if (isBackingUp || isRestoring) return;
-
-    try {
-      const process = new BackupProcess(deviceId);
-      backupProcessRef.current = process;
-
-      setIsBackingUp(true);
-      setProgress(0);
-      setStatus('Starting backup...');
-
-      const dcxFile = await process.start(sendSysex, (curr, total, stat) => {
-        setProgress(Math.round((curr / total) * 100));
-        setStatus(stat);
+  // Download the backup when it's ready
+  React.useEffect(() => {
+    if (backup.status === 'completed' && backup.dcxData) {
+      const blob = new Blob([backup.dcxData], {
+        type: 'application/octet-stream',
       });
-
-      // Trigger download
-      const blob = new Blob([dcxFile], {type: 'application/octet-stream'});
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
@@ -82,24 +47,18 @@ export function UploadDownload({deviceId = 0}: Props) {
       URL.revokeObjectURL(url);
 
       toast.success('Backup downloaded successfully!');
-    } catch (error: unknown) {
-      console.error('Backup failed', error);
-      const message = error instanceof Error ? error.message : String(error);
-      toast.error(`Backup Failed: ${message}`);
-    } finally {
-      setIsBackingUp(false);
-      setProgress(0);
-      setStatus('');
-      backupProcessRef.current = null;
+      backup.reset();
     }
-  };
+  }, [backup.status, backup.dcxData, backup]);
 
-  const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+  const handleFileSelect = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const file = event.target.files?.[0];
     if (!file) return;
 
     // Reset UI
-    e.target.value = ''; // Allow re-selecting same file
+    event.target.value = ''; // Allow re-selecting same file
 
     if (
       !globalThis.confirm(
@@ -111,29 +70,34 @@ export function UploadDownload({deviceId = 0}: Props) {
 
     try {
       const buffer = await file.arrayBuffer();
-      const process = new RestoreProcess(buffer);
-      restoreProcessRef.current = process;
+      const dcxData = new Uint8Array(buffer);
 
-      setIsRestoring(true);
-      setProgress(0);
-      setStatus('Starting...');
-
-      await process.start(sendSysex, (curr, total, stat) => {
-        setProgress(Math.round((curr / total) * 100));
-        setStatus(stat);
-      });
-
-      toast.success('Restore Completed Successfully!');
-    } catch (error: any) {
+      restore.start(dcxData);
+    } catch (error: unknown) {
       console.error(error);
-      toast.error(`Restore Failed: ${error.message}`);
-    } finally {
-      setIsRestoring(false);
-      setProgress(0);
-      setStatus('');
-      restoreProcessRef.current = null;
+      const message = error instanceof Error ? error.message : String(error);
+      toast.error(`Restore Failed: ${message}`);
     }
   };
+
+  // Show success toast when restore completes
+  React.useEffect(() => {
+    if (restore.status === 'completed') {
+      toast.success('Restore Completed Successfully!');
+      restore.reset();
+    } else if (restore.status === 'error' && restore.error) {
+      toast.error(`Restore Failed: ${restore.error}`);
+    }
+  }, [restore.status, restore.error, restore]);
+
+  const isBackingUp = backup.status === 'downloading';
+  const isRestoring = restore.status === 'initializing' || restore.status === 'transferring';
+  const progress = isBackingUp ? backup.progress * 100 : isRestoring ? restore.progress * 100 : 0;
+  const status = isBackingUp
+    ? `Downloading page ${Math.floor(backup.progress * 12)}/12...`
+    : isRestoring
+      ? `Uploading... ${Math.floor(restore.progress * 100)}%`
+      : '';
 
   return (
     <div className="d-flex flex-column gap-3">
@@ -155,7 +119,10 @@ export function UploadDownload({deviceId = 0}: Props) {
           <Button
             variant="danger"
             disabled={isRestoring || isBackingUp}
-            onClick={() => document.querySelector('#dcx-upload')?.click()}
+            onClick={() => {
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+              document.querySelector('#dcx-upload')?.click();
+            }}
           >
             {isRestoring ? 'Restoring...' : 'Restore .dcx File'}
           </Button>
@@ -163,7 +130,7 @@ export function UploadDownload({deviceId = 0}: Props) {
             id="dcx-upload"
             type="file"
             accept=".dcx"
-            style={{display: 'none'}}
+            style={{ display: 'none' }}
             onChange={handleFileSelect}
           />
         </div>
@@ -173,7 +140,7 @@ export function UploadDownload({deviceId = 0}: Props) {
         <div className="mt-2">
           <div className="d-flex justify-content-between mb-1">
             <span className="small text-muted">{status}</span>
-            <span className="small text-muted">{progress}%</span>
+            <span className="small text-muted">{Math.round(progress)}%</span>
           </div>
           <ProgressBar
             animated={progress < 100}
@@ -181,7 +148,7 @@ export function UploadDownload({deviceId = 0}: Props) {
             variant={
               progress === 100 ? 'success' : isBackingUp ? 'info' : 'danger'
             }
-            style={{height: '10px'}}
+            style={{ height: '10px' }}
           />
         </div>
       ) : null}

@@ -1,4 +1,4 @@
-import {calculateChecksum} from './checksum';
+import {calculateChecksum} from './checksum.js';
 
 const SYSEX_START = 0xf0;
 const SYSEX_END = 0xf7;
@@ -101,4 +101,82 @@ export function buildHeaderPacket(payload: Uint8Array): Uint8Array {
 export function buildPage0Packet(data: Uint8Array): Uint8Array {
   // Page 0 is usually 1000 bytes padded.
   return buildDataPacket(0x0c, 0, data, 1000);
+}
+
+/**
+ * Builds a Recall Preset command (0x52).
+ * Format: F0 00 20 32 <DevID> 0E 52 <Slot-1> F7
+ */
+export function recallPreset(slot: number): Uint8Array {
+  const packet = new Uint8Array([
+    ...VENDOR_ID,
+    0x00, // Device ID (00)
+    MODEL_ID,
+    0x52, // CMD_RECALL
+    slot - 1,
+  ]);
+
+  return wrapSysex(packet);
+}
+
+/**
+ * Builds a Store Preset command (0x53).
+ * Format: F0 00 20 32 <DevID> 0E 53 <Slot-1> F7
+ */
+export function storePreset(slot: number): Uint8Array {
+  const packet = new Uint8Array([
+    ...VENDOR_ID,
+    0x00, // Device ID (00)
+    MODEL_ID,
+    0x53, // CMD_STORE
+    slot - 1,
+  ]);
+
+  return wrapSysex(packet);
+}
+
+/**
+ * Builds a Request Preset Dump command (0x50).
+ * Format: F0 00 20 32 <DevID> 0E 50 00 00 <Slot-1> F7
+ */
+export function requestPreset(slot: number): Uint8Array {
+  const packet = new Uint8Array([
+    ...VENDOR_ID,
+    0x00, // Device ID (00)
+    MODEL_ID,
+    0x50, // CMD_DUMP
+    0x00,
+    0x00,
+    slot - 1,
+  ]);
+
+  return wrapSysex(packet);
+}
+
+function wrapSysex(body: Uint8Array): Uint8Array {
+  const packet = new Uint8Array(body.length + 2);
+  packet[0] = SYSEX_START;
+  packet.set(body, 1);
+  packet[packet.length - 1] = SYSEX_END;
+  return packet;
+}
+
+/**
+ * Builds a requests for a specific memory page (for Backup/Sync).
+ * Format: F0 00 20 32 <DevID> 0E 50 00 00 <Page> F7
+ */
+export function buildPageDumpRequest(
+  deviceId: number,
+  page: number,
+): Uint8Array {
+  const packet = new Uint8Array([
+    ...VENDOR_ID,
+    deviceId,
+    MODEL_ID,
+    0x50, // CMD_DUMP
+    0x00,
+    0x00,
+    page,
+  ]);
+  return wrapSysex(packet);
 }

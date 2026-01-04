@@ -1,18 +1,19 @@
 import {memo} from 'react';
 import Navbar from 'react-bootstrap/Navbar';
-import Localization from './localization.tsx';
-import DeviceSelect from './device-select.tsx';
-import Config from './config.tsx';
-import {useBreakpoint} from './hooks/use-breakpoint.ts';
-import {useDeviceState} from './device-state-context.tsx';
+import Localization from './localization.js';
+import DeviceSelect from './device-select.js';
+import Config from './config.js';
+import {useBreakpoint} from './hooks/use-breakpoint.js';
+import {useDeviceState} from './device-state-context.js';
 
 type ConfigNavigationProps = {
+  // eslint-disable-next-line react/require-default-props
   readonly free?: number;
   readonly onSelectDevice: (device: number) => void;
 };
 
 const ConfigNavigation = memo(
-  ({free = undefined, onSelectDevice}: ConfigNavigationProps) => {
+  ({free = 0, onSelectDevice}: ConfigNavigationProps) => {
     const {device, devices, selected} = useDeviceState();
     const breakpoint = useBreakpoint();
     const isXs = breakpoint === 'xs';
@@ -24,7 +25,7 @@ const ConfigNavigation = memo(
         variant="dark"
         className="justify-content-end p-0"
       >
-        {devices.length > 0 && free ? (
+        {devices.length > 0 && free !== undefined ? (
           <DeviceSelect
             devices={devices}
             selected={selected ?? 0}
@@ -43,9 +44,8 @@ const ConfigNavigation = memo(
       </Navbar>
     );
   },
-  (previousProps, nextProps) => {
-    return previousProps.free === nextProps.free;
-  },
 );
+
+ConfigNavigation.displayName = 'ConfigNavigation';
 
 export default ConfigNavigation;

@@ -1,7 +1,7 @@
 import {memo} from 'react';
 import ToggleButton from 'react-bootstrap/ToggleButton';
 import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup';
-import {useSendCommand} from './hooks/use-send-command.ts';
+import {useSendCommand} from './hooks/use-send-command.js';
 
 type Props = {
   readonly delayUnits: string;
@@ -11,7 +11,7 @@ function DelayUnits({delayUnits}: Props) {
   const sendCommand = useSendCommand();
 
   const handleDelayUnitChange = (value: string) => {
-    sendCommand({param: 'delayUnits', value});
+    void sendCommand({param: 'delayUnits', value});
   };
 
   return (

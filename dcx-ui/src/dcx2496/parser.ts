@@ -1,6 +1,6 @@
-/* eslint-disable no-bitwise, @typescript-eslint/no-extraneous-class */
-import constants from './constants.ts';
-import * as commands from './commands.ts';
+/* eslint-disable @typescript-eslint/no-extraneous-class */
+import constants from './constants.js';
+import * as commands from './commands.js';
 
 export type Device = {
   id: number;
@@ -8,13 +8,13 @@ export type Device = {
   name: string;
 };
 
-export type EQ = {
+export type Equalizer = {
   [key: string]: unknown;
-  eQType?: string;
-  eQFrequency?: number;
-  eQGain?: number;
-  eQQ?: number;
-  eQShelving?: string;
+  equalizerType?: string;
+  equalizerFrequency?: number;
+  equalizerGain?: number;
+  equalizerQ?: number;
+  equalizerShelving?: string;
 };
 
 export type Channel = {
@@ -27,19 +27,19 @@ export type Channel = {
   isDelayOn?: boolean;
   longDelay?: number;
   shortDelay?: number;
-  isEQOn?: boolean;
-  eQNumber?: number;
-  // Dynamic EQ properties
-  isDynamicEQOn?: boolean;
-  dynamicEQType?: string;
-  dynamicEQFrequency?: number;
-  dynamicEQGain?: number;
-  dynamicEQQ?: number;
-  dynamicEQShelving?: string;
-  dynamicEQAttack?: string;
-  dynamicEQRelease?: string;
-  dynamicEQRatio?: string;
-  dynamicEQThreshold?: number;
+  isEqualizerOn?: boolean;
+  equalizerNumber?: number;
+  // Dynamic Equalizer properties
+  isDynamicEqualizerOn?: boolean;
+  dynamicEqualizerType?: string;
+  dynamicEqualizerFrequency?: number;
+  dynamicEqualizerGain?: number;
+  dynamicEqualizerQ?: number;
+  dynamicEqualizerShelving?: string;
+  dynamicEqualizerAttack?: string;
+  dynamicEqualizerRelease?: string;
+  dynamicEqualizerRatio?: string;
+  dynamicEqualizerThreshold?: number;
   // Crossover properties
   highpassFilter?: string;
   highpassFrequency?: number;
@@ -54,8 +54,8 @@ export type Channel = {
   phase?: number;
   // Output properties
   source?: string;
-  // EQ banks
-  eqs: Record<string, EQ>;
+  // Equalizer banks
+  equalizers: Record<string, Equalizer>;
 };
 
 export type Setup = {
@@ -82,8 +82,149 @@ export type Status = {
 };
 
 class Parser {
+  /**
+   * MIDI message header size (bytes before the 7+1 encoded payload).
+   * Structure: 0xF0, vendor[3], deviceId, 0x0E, command, ...metadata..., data
+   */
+  static get DUMP_HEADER_SIZE() {
+    return 13;
+  }
+
   static [key: string]: any;
   static commands: typeof commands;
+
+  /**
+   * Check if a message is a preset dump (Slot 1-60).
+   * Logic:
+   * - Must be a DUMP_RESPONSE (CMD 0x10, implied by caller context usually, but we check structure)
+   * - Header check: F0 00 20 32 <ID> 0E 10 00 01 00 0C 00 <PART> ...
+   * - If bytes 7-11 are 00 01 00 0C 00, it's a page dump.
+   * - Byte 12 is the PART/SLOT.
+   */
+  static isPresetDump(message: Uint8Array): boolean {
+    if (message.length < 20) return false;
+    // Check for Page Dump signature: 00 01 00 0C 00 at index 7
+    return (
+      message[7] === 0x00 &&
+      message[8] === 0x01 &&
+      message[9] === 0x00 &&
+      message[10] === 0x0c &&
+      message[11] === 0x00
+    );
+  }
+
+  /**
+   * Extract preset name from decoded data.
+   * Scans a specific window where names are usually found.
+   */
+  static extractPresetName(decodedData: Uint8Array): string {
+    const checkSignature = (offset: number, sig: string) => {
+      if (decodedData.length < offset + sig.length) return false;
+      for (let i = 0; i < sig.length; i++) {
+        if (decodedData[offset + i] !== sig.charCodeAt(i)) return false;
+      }
+
+      return true;
+    };
+
+    // 1. Check for XSNP (Software/User) -> Offset 83
+    if (checkSignature(7, 'XSNP')) {
+      const NAME_OFFSET = 83;
+      if (decodedData.length < NAME_OFFSET + 8) return '<Error>';
+      let name = '';
+      for (let i = 0; i < 8; i++) {
+        const code = decodedData[NAME_OFFSET + i];
+        if (code >= 32 && code <= 126) name += String.fromCharCode(code);
+      }
+
+      return name.trim() || '<Empty>';
+    }
+
+    // 2. Check for XPCR (Card/EditBuffer?) -> Offset 79
+    if (checkSignature(7, 'XPCR')) {
+      const NAME_OFFSET = 79;
+      if (decodedData.length < NAME_OFFSET + 8) return '<Error>';
+      let name = '';
+      for (let i = 0; i < 8; i++) {
+        const code = decodedData[NAME_OFFSET + i];
+        if (code >= 32 && code <= 126) name += String.fromCharCode(code);
+      }
+
+      return name.trim() || '<Empty>';
+    }
+
+    // 3. Fallback: Dynamic Search
+    // Filter out known internal tags to avoid false positives
+    const IGNORED_TAGS = new Set(['XPCR', 'XPRB', 'XCUR', 'XPAF', 'XPCS']);
+
+    let currentString = '';
+    const scanLimit = Math.min(decodedData.length, 120);
+
+    for (let i = 0; i < scanLimit; i++) {
+      const charCode = decodedData[i];
+      if (charCode >= 32 && charCode <= 126) {
+        currentString += String.fromCharCode(charCode);
+      } else {
+        if (currentString.length > 2) {
+          const candidate = currentString.trim();
+          if (!IGNORED_TAGS.has(candidate)) {
+            return candidate.slice(0, 8);
+          }
+        }
+
+        currentString = '';
+      }
+    }
+
+    if (currentString.length > 2) {
+      const candidate = currentString.trim();
+      if (!IGNORED_TAGS.has(candidate)) {
+        return candidate.slice(0, 8);
+      }
+    }
+
+    return '<Empty>';
+  }
+
+  /**
+   * Extract ALL preset names from a memory page dump.
+   * Enforces 5 presets per page (Stride ~176 bytes) to maintain slot alignment.
+   */
+  static extractPresetNames(decodedData: Uint8Array): string[] {
+    const names: string[] = [];
+    const PRESETS_PER_PAGE = 5;
+    // Observed roughly 176 bytes per preset (880 bytes / 5) based on 1000-byte raw pages.
+    // If we assume the payload is packed with 5 slots.
+    const STRIDE = 176;
+
+    for (let slot = 0; slot < PRESETS_PER_PAGE; slot++) {
+      const offset = slot * STRIDE;
+
+      // Safety check for identifying "short" or non-existent pages (e.g. Page 12 response if it existed but was empty?)
+      // But for standard pages 0-11, we expect full length.
+      if (offset + 100 > decodedData.length) {
+        // If we run out of data before the 5th slot, we fill with Empty?
+        // User reports 60 slots. So we must produce 5 names per page for Pages 0-11.
+        // If data is missing (e.g., end of file), we define it as Empty.
+        names.push('<Empty>');
+        continue;
+      }
+
+      // Slice the chunk for this slot
+      const chunk = decodedData.slice(offset, offset + STRIDE);
+      const name = Parser.extractPresetName(chunk);
+
+      // If extractPresetName returns <Error> or <Empty>, we normalize to <Empty>
+      // but strictly it should be aligned.
+      if (name === '<Error>') {
+        names.push('<Empty>');
+      } else {
+        names.push(name);
+      }
+    }
+
+    return names;
+  }
 
   static camelize(string: string): string {
     // eslint-disable-next-line unicorn/prefer-string-replace-all
@@ -226,17 +367,11 @@ class Parser {
     const cleanHex = hex.replaceAll(/[:\s]/g, '');
     const bytes = new Uint8Array(cleanHex.length / 2);
     for (let i = 0; i < bytes.length; i++) {
-      bytes[i] = Number.parseInt(cleanHex.substr(i * 2, 2), 16);
+      bytes[i] = Number.parseInt(cleanHex.slice(i * 2, i * 2 + 2), 16);
     }
 
     return bytes;
   }
-
-  /**
-   * MIDI message header size (bytes before the 7+1 encoded payload).
-   * Structure: 0xF0, vendor[3], deviceId, 0x0E, command, ...metadata..., data
-   */
-  static readonly DUMP_HEADER_SIZE = 13;
 
   /**
    * Parse a DUMP_RESPONSE message from the device.
@@ -361,7 +496,17 @@ class Parser {
     for (const [index, channelId] of constants.CHANNELS.entries()) {
       const group = index < 4 ? 'inputs' : 'outputs';
       state[group][channelId] = {
-        eqs: {1: {}, 2: {}, 3: {}, 4: {}, 5: {}, 6: {}, 7: {}, 8: {}, 9: {}},
+        equalizers: {
+          1: {},
+          2: {},
+          3: {},
+          4: {},
+          5: {},
+          6: {},
+          7: {},
+          8: {},
+          9: {},
+        },
       };
     }
 
@@ -411,7 +556,7 @@ class Parser {
           const syncResponse = command.syncResponses[ioIndex * 9 + eqIndex];
           const value = Parser.getValue(parts, syncResponse);
 
-          state[group][channelId].eqs[eq][parameterName] =
+          state[group][channelId].equalizers[eq][parameterName] =
             Parser.reverseCommandData(command, value);
         }
       }
@@ -635,7 +780,7 @@ class Parser {
       };
     }
 
-    // EQ commands: params 19-63 (9 EQs × 5 params each)
+    // Equalizer commands: params 19-63 (9 EQs × 5 params each)
     if (parameter >= 19 && parameter <= 63) {
       const eqOffset = parameter - 19;
       const eqNumber = Math.floor(eqOffset / 5) + 1;
@@ -731,7 +876,7 @@ for (const [index, command] of commands.eqCommands.entries()) {
 
     const commandNumber = index + (eq - 1) * 5 + 19;
     const data = Parser.getCommandData(command, value);
-    device[group][channelId].eqs[eq][camelName] = value;
+    device[group][channelId].equalizers[eq][camelName] = value;
 
     return Parser.serialize(channelNumber, commandNumber, data);
   };

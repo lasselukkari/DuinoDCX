@@ -42,7 +42,8 @@
     "vite": "^7.3.0",
     "vite-plugin-node-polyfills": "^0.24.0",
     "vitest": "^4.0.16",
-    "xo": "^1.2.3"
+    "xo": "^1.2.3",
+    "dcx-parser": "file:./packages/dcx-parser"
   },
   "scripts": {
     "start": "vite",
@@ -57,7 +58,10 @@
     "prettier": true,
     "react": true,
     "rules": {
-      "@typescript-eslint/naming-convention": "off"
+      "@typescript-eslint/naming-convention": "off",
+      "react/react-in-jsx-scope": "off",
+      "no-bitwise": "off",
+      "no-alert": "off"
     }
   },
   "proxy": "http://duinodcx.herokuapp.com",

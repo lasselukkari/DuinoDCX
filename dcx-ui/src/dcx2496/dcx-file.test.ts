@@ -5,7 +5,7 @@ import {
   parseDcxFile,
   createRestoreHeader,
   createDcxFile,
-} from './dcx-file';
+} from './dcx-file.js';
 
 describe('DCX File Utils', () => {
   it('encodes 8-bit to 7-bit correctly', () => {

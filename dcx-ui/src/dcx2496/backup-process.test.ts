@@ -3,8 +3,8 @@ import {
   buildPageDumpRequest,
   parseDumpResponse,
   stitchPagesToFile,
-} from './backup-process';
-import {decode7to8} from './dcx-file';
+} from './backup-process.js';
+import {decode7to8} from './dcx-file.js';
 
 describe('backup-process', () => {
   describe('buildPageDumpRequest', () => {

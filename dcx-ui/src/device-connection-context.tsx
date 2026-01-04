@@ -1,12 +1,13 @@
-import React, {
+import {
   createContext,
   useContext,
   useEffect,
   useRef,
+  useMemo,
   type ReactNode,
 } from 'react';
-import constants from './dcx2496/constants';
-import Parser from './dcx2496/parser';
+import constants from './dcx2496/constants.js';
+import Parser from 'dcx-parser';
 
 type EventHandler = (data: Uint8Array) => void;
 
@@ -18,7 +19,7 @@ type DeviceConnectionContextValue = {
 
 const DeviceConnectionContext = createContext<
   DeviceConnectionContextValue | undefined
->(null);
+>(undefined);
 
 export const useDeviceConnection = () => {
   const context = useContext(DeviceConnectionContext);
@@ -37,7 +38,7 @@ export function DeviceConnectionProvider({
   readonly children: ReactNode;
 }) {
   const clientIdRef = useRef<string>('');
-  const eventSourceRef = useRef<EventSource | undefined>(null);
+  const eventSourceRef = useRef<EventSource | undefined>(undefined);
   const listenersRef = useRef<Record<number, Set<EventHandler>>>({});
 
   // Generate persistent Client ID
@@ -46,9 +47,7 @@ export function DeviceConnectionProvider({
     Math.random().toString(36).slice(2, 15);
 
   const addListener = (command: number, handler: EventHandler) => {
-    if (!listenersRef.current[command]) {
-      listenersRef.current[command] = new Set();
-    }
+    listenersRef.current[command] ||= new Set();
 
     listenersRef.current[command].add(handler);
   };
@@ -69,11 +68,13 @@ export function DeviceConnectionProvider({
       console.log('SSE Singleton Connected', clientIdRef.current);
     });
 
-    eventSource.onmessage = (event) => {
-      if (!event.data) return;
+    const messageHandler = (event: MessageEvent) => {
+      const rawData = event.data as string | undefined;
+      if (!rawData) return;
+      if (typeof rawData !== 'string') return;
 
       try {
-        const data = Parser.hexToBytes(event.data);
+        const data = Parser.hexToBytes(rawData);
         if (data.length <= constants.COMMAND_BYTE) return;
 
         const command = data[constants.COMMAND_BYTE];
@@ -94,22 +95,30 @@ export function DeviceConnectionProvider({
       }
     };
 
-    eventSource.onerror = (error) => {
+    const errorHandler = (error: Event) => {
       console.error('SSE Singleton Error:', error);
     };
 
+    eventSource.addEventListener('message', messageHandler);
+    eventSource.addEventListener('error', errorHandler);
+
     return () => {
       console.log('Closing SSE Singleton');
+      eventSource.removeEventListener('message', messageHandler);
+      eventSource.removeEventListener('error', errorHandler);
       eventSource.close();
-      eventSourceRef.current = null;
+      eventSourceRef.current = undefined;
     };
   }, []);
 
-  const value = {
-    clientId: clientIdRef.current,
-    addListener,
-    removeListener,
-  };
+  const value = useMemo(
+    () => ({
+      clientId: clientIdRef.current,
+      addListener,
+      removeListener,
+    }),
+    [],
+  );
 
   return (
     <DeviceConnectionContext.Provider value={value}>

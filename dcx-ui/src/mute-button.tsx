@@ -1,6 +1,6 @@
 import Button from 'react-bootstrap/Button';
 import {FaVolumeMute, FaVolumeUp} from 'react-icons/fa';
-import {useSendCommand} from './hooks/use-send-command.ts';
+import {useSendCommand} from './hooks/use-send-command.js';
 
 type Props = {
   readonly isMuted: boolean;
@@ -11,7 +11,7 @@ type Props = {
 function MuteButton({isMuted, channelId, isOutput}: Props) {
   const sendCommand = useSendCommand();
   const handleClick = () => {
-    sendCommand({
+    void sendCommand({
       param: 'mute',
       group: isOutput ? 'outputs' : 'inputs',
       channelId,

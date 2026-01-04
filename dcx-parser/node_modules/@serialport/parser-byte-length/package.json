@@ -1,0 +1,25 @@
+{
+  "name": "@serialport/parser-byte-length",
+  "version": "13.0.0",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc --build tsconfig-build.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/serialport/node-serialport.git"
+  },
+  "funding": "https://opencollective.com/serialport/donate",
+  "devDependencies": {
+    "typescript": "5.2.2"
+  },
+  "gitHead": "701ffd844f0950164da4dda4dca57e94891177a9"
+}

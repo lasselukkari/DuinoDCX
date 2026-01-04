@@ -1,0 +1,16 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.asyncWrite = exports.asyncRead = exports.asyncUpdate = exports.asyncSet = exports.asyncOpen = exports.asyncList = exports.asyncGetBaudRate = exports.asyncGet = exports.asyncFlush = exports.asyncDrain = exports.asyncClose = void 0;
+const util_1 = require("util");
+const serialport_bindings_1 = require("./serialport-bindings");
+exports.asyncClose = serialport_bindings_1.binding.close ? (0, util_1.promisify)(serialport_bindings_1.binding.close) : async () => { throw new Error('"binding.close" Method not implemented'); };
+exports.asyncDrain = serialport_bindings_1.binding.drain ? (0, util_1.promisify)(serialport_bindings_1.binding.drain) : async () => { throw new Error('"binding.drain" Method not implemented'); };
+exports.asyncFlush = serialport_bindings_1.binding.flush ? (0, util_1.promisify)(serialport_bindings_1.binding.flush) : async () => { throw new Error('"binding.flush" Method not implemented'); };
+exports.asyncGet = serialport_bindings_1.binding.get ? (0, util_1.promisify)(serialport_bindings_1.binding.get) : async () => { throw new Error('"binding.get" Method not implemented'); };
+exports.asyncGetBaudRate = serialport_bindings_1.binding.getBaudRate ? (0, util_1.promisify)(serialport_bindings_1.binding.getBaudRate) : async () => { throw new Error('"binding.getBaudRate" Method not implemented'); };
+exports.asyncList = serialport_bindings_1.binding.list ? (0, util_1.promisify)(serialport_bindings_1.binding.list) : async () => { throw new Error('"binding.list" Method not implemented'); };
+exports.asyncOpen = serialport_bindings_1.binding.open ? (0, util_1.promisify)(serialport_bindings_1.binding.open) : async () => { throw new Error('"binding.open" Method not implemented'); };
+exports.asyncSet = serialport_bindings_1.binding.set ? (0, util_1.promisify)(serialport_bindings_1.binding.set) : async () => { throw new Error('"binding.set" Method not implemented'); };
+exports.asyncUpdate = serialport_bindings_1.binding.update ? (0, util_1.promisify)(serialport_bindings_1.binding.update) : async () => { throw new Error('"binding.update" Method not implemented'); };
+exports.asyncRead = serialport_bindings_1.binding.read ? (0, util_1.promisify)(serialport_bindings_1.binding.read) : async () => { throw new Error('"binding.read" Method not implemented'); };
+exports.asyncWrite = serialport_bindings_1.binding.write ? (0, util_1.promisify)(serialport_bindings_1.binding.write) : async () => { throw new Error('"binding.write" Method not implemented'); };

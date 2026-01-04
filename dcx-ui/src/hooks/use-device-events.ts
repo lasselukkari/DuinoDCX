@@ -1,6 +1,6 @@
 import {useEffect} from 'react';
-import constants from '../dcx2496/constants';
-import {useDeviceConnection} from '../device-connection-context';
+import constants from '../dcx2496/constants.js';
+import {useDeviceConnection} from '../device-connection-context.js';
 
 type UseDeviceEventsProps = {
   onSearchResponse?: (data: Uint8Array) => void;

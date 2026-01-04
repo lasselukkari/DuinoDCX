@@ -1,0 +1,62 @@
+{
+	"name": "eslint-formatter-pretty",
+	"version": "6.0.1",
+	"description": "Pretty ESLint formatter",
+	"license": "MIT",
+	"repository": "sindresorhus/eslint-formatter-pretty",
+	"funding": "https://github.com/sponsors/sindresorhus",
+	"author": {
+		"name": "Sindre Sorhus",
+		"email": "sindresorhus@gmail.com",
+		"url": "https://sindresorhus.com"
+	},
+	"type": "module",
+	"exports": {
+		"types": "./index.d.ts",
+		"default": "./index.js"
+	},
+	"sideEffects": false,
+	"engines": {
+		"node": ">=18"
+	},
+	"scripts": {
+		"test": "xo && ava && tsd"
+	},
+	"files": [
+		"index.js",
+		"index.d.ts"
+	],
+	"keywords": [
+		"eslint",
+		"eslint-formatter",
+		"formatter",
+		"reporter",
+		"lint",
+		"validate"
+	],
+	"dependencies": {
+		"@types/eslint": "^8.44.6",
+		"ansi-escapes": "^6.2.0",
+		"chalk": "^5.3.0",
+		"eslint-rule-docs": "^1.1.235",
+		"log-symbols": "^6.0.0",
+		"plur": "^5.1.0",
+		"string-width": "^7.0.0",
+		"supports-hyperlinks": "^3.0.0"
+	},
+	"devDependencies": {
+		"ava": "^5.3.1",
+		"strip-ansi": "^7.1.0",
+		"tsd": "^0.29.0",
+		"typescript": "^5.2.2",
+		"xo": "^0.56.0"
+	},
+	"ava": {
+		"serial": true
+	},
+	"xo": {
+		"rules": {
+			"import/no-extraneous-dependencies": "off"
+		}
+	}
+}

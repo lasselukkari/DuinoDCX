@@ -41,7 +41,7 @@ function Inputs({isBlocking}: Props) {
             </Card.Body>
           </Card>
         </Tab>
-        <Tab title="EQ" eventKey="eq">
+        <Tab title="Equalizer" eventKey="eq">
           <EqualizerPlotPanel channels={channels} group="inputs" />
           <BlockUi isBlocking={isBlocking}>
             <Equalizers
@@ -51,7 +51,7 @@ function Inputs({isBlocking}: Props) {
             />
           </BlockUi>
         </Tab>
-        <Tab eventKey="dynamicEqualizers" title="Dynamic EQ">
+        <Tab eventKey="dynamicEqualizers" title="Dynamic Equalizer">
           <BlockUi isBlocking={isBlocking}>
             <DynamicEqualizers group="inputs" channels={channels} />
           </BlockUi>

@@ -1,0 +1,51 @@
+Closing COM port.
+Looking for COM ports ..
+Searching for DCX2496.
+Connected thru COM port 1
+Connected to DCX2496         
+Connected to DCX2496         
+Sync Pc -> DCX2496..
+  Sending ...
+Waiting for DCX finished
+Sync Pc -> DCX2496..
+  Sending ...
+Waiting for DCX finished
+Ok..
+Sync DCX2496 -> PC ..
+  Receiving file
+Sync DCX2496 -> PC ..
+  Receiving file
+Connected thru COM port 1
+Closing COM port.
+Looking for COM ports ..
+Searching for DCX2496.
+Connected thru COM port 1
+Connected to DCX2496         
+Connected to DCX2496         
+Sync Pc -> DCX2496..
+  Sending ...
+Waiting for DCX finished
+Sync Pc -> DCX2496..
+  Sending ...
+Waiting for DCX finished
+Ok..
+Sync DCX2496 -> PC ..
+  Receiving file
+Sync DCX2496 -> PC ..
+  Receiving file
+Connected thru COM port 1
+Looking for COM ports ..
+Looking for COM ports ..
+Closing COM port.
+Looking for COM ports ..
+Searching for DCX2496.
+Connected thru COM port 1
+Connected to DCX2496         
+Connected to DCX2496         
+Sync Pc -> DCX2496..
+  Sending ...
+Waiting for DCX finished
+Sync Pc -> DCX2496..
+  Sending ...
+Waiting for DCX finished
+Ok..

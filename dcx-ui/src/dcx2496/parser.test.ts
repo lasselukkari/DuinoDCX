@@ -115,7 +115,7 @@ describe('parseDirectCommand', () => {
     expect(deltas[0].value).toBe(25);
   });
 
-  it('parses EQ command correctly', () => {
+  it('parses Equalizer command correctly', () => {
     // EQ1 Q for input A (channel 1, param 20)
     // param 19 = EQ1 freq, 20 = EQ1 Q, 21 = EQ1 gain, 22 = EQ1 type, 23 = EQ1 shelving
     const buffer = new Uint8Array([
@@ -139,7 +139,7 @@ describe('parseDirectCommand', () => {
     expect(deltas[0].group).toBe('inputs');
     expect(deltas[0].channelId).toBe('A');
     expect(deltas[0].eq).toBe(1);
-    expect(deltas[0].property).toBe('eQQ');
+    expect(deltas[0].property).toBe('equalizerQ');
   });
 
   it('parses output-only command correctly', () => {

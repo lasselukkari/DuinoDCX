@@ -3,8 +3,8 @@ import {
   buildDataPacket,
   buildSyncCommand,
   buildPage0Packet,
-} from './sysex-builder';
-import {calculateChecksum} from './checksum';
+} from './sysex-builder.js';
+import {calculateChecksum} from './checksum.js';
 
 describe('SysEx Builder', () => {
   it('builds a sync command with correct structure', () => {

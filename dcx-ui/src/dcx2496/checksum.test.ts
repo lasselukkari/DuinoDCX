@@ -1,5 +1,5 @@
 import {describe, it, expect} from 'vitest';
-import {verifyChecksum, calculateChecksum} from './checksum';
+import {verifyChecksum, calculateChecksum} from './checksum.js';
 
 describe('DCX2496 Checksum', () => {
   it('verifies REAL Header Packet from log (Type 0x01)', () => {

@@ -9,7 +9,7 @@
  * 5. Stitch together and align to XSNP signature
  */
 
-import {decode7to8} from './dcx-file';
+import {decode7to8} from './dcx-file.js';
 
 // Response command for dump
 const RSP_DUMP = 0x10;
@@ -72,12 +72,12 @@ export function parseDumpResponse(message: Uint8Array):
   | undefined {
   // Minimum valid response length for page dump
   if (message.length < 20) {
-    return null;
+    return undefined;
   }
 
   // Verify it's a dump response (command byte at index 6)
   if (message[6] !== RSP_DUMP) {
-    return null;
+    return undefined;
   }
 
   // Check for page dump header signature: 00 01 00 0C 00 at bytes 7-11
@@ -91,7 +91,7 @@ export function parseDumpResponse(message: Uint8Array):
     message[11] !== 0x00
   ) {
     // This is likely an edit buffer response (sync), not a page dump
-    return null;
+    return undefined;
   }
 
   // Page/slot number is at index 12
@@ -100,7 +100,7 @@ export function parseDumpResponse(message: Uint8Array):
   // Payload is after header, before terminator
   const terminatorIndex = message.length - 1;
   if (message[terminatorIndex] !== 0xf7) {
-    return null;
+    return undefined;
   }
 
   // Extract encoded payload (skip header, exclude terminator)
@@ -153,7 +153,7 @@ export class BackupProcess {
   private active = false;
   private resolvePromise?: (data: Uint8Array) => void;
   private rejectPromise?: (reason: Error) => void;
-  private nextStep: ((data: Uint8Array) => void) | undefined = null;
+  private nextStep: ((data: Uint8Array) => void) | undefined = undefined;
   private readonly deviceId: number;
 
   constructor(deviceId = 0) {
@@ -177,10 +177,14 @@ export class BackupProcess {
       this.resolvePromise = resolve;
       this.rejectPromise = reject;
 
-      this.runBackupSequence(sendSysex, onProgress).catch((error) => {
-        this.cleanup();
-        reject(error);
-      });
+      void (async () => {
+        try {
+          await this.runBackupSequence(sendSysex, onProgress);
+        } catch (error: unknown) {
+          this.cleanup();
+          reject(error instanceof Error ? error : new Error(String(error)));
+        }
+      })();
     });
   }
 
@@ -205,7 +209,7 @@ export class BackupProcess {
 
   private cleanup(): void {
     this.active = false;
-    this.nextStep = null;
+    this.nextStep = undefined;
   }
 
   private async runBackupSequence(
@@ -225,9 +229,11 @@ export class BackupProcess {
 
       // Send page dump request
       const request = buildPageDumpRequest(this.deviceId, page);
+      // eslint-disable-next-line no-await-in-loop
       await sendSysex(request);
 
       // Wait for response
+      // eslint-disable-next-line no-await-in-loop
       const response = await this.waitForDumpResponse(page);
 
       if (!response) {
@@ -241,6 +247,7 @@ export class BackupProcess {
       decodedPages.push(decoded);
 
       // Small delay between pages
+      // eslint-disable-next-line no-await-in-loop
       await this.delay(50);
     }
 
@@ -261,17 +268,17 @@ export class BackupProcess {
   }
 
   private async waitForDumpResponse(
-    expectedPage: number,
+    _expectedPage: number,
   ): Promise<ReturnType<typeof parseDumpResponse>> {
     return new Promise((resolve) => {
       const timeout = setTimeout(() => {
-        this.nextStep = null;
-        resolve(null);
+        this.nextStep = undefined;
+        resolve(undefined);
       }, PAGE_TIMEOUT_MS);
 
       this.nextStep = (data: Uint8Array) => {
         clearTimeout(timeout);
-        this.nextStep = null;
+        this.nextStep = undefined;
 
         const parsed = parseDumpResponse(data);
 
@@ -282,7 +289,7 @@ export class BackupProcess {
           // Not a dump response, keep waiting
           this.nextStep = (data2: Uint8Array) => {
             clearTimeout(timeout);
-            this.nextStep = null;
+            this.nextStep = undefined;
             resolve(parseDumpResponse(data2));
           };
         }
@@ -291,6 +298,8 @@ export class BackupProcess {
   }
 
   private async delay(ms: number): Promise<void> {
-    return new Promise((resolve) => setTimeout(resolve, ms));
+    return new Promise((resolve) => {
+      setTimeout(resolve, ms);
+    });
   }
 }

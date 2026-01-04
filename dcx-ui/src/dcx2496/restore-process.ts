@@ -1,10 +1,9 @@
 import {
   buildSyncCommand,
   buildHeaderPacket,
-  buildPage0Packet,
   buildDataPacket,
-} from './sysex-builder';
-import {parseDcxFile} from './dcx-file';
+} from './sysex-builder.js';
+import {parseDcxFile} from './dcx-file.js';
 // Constants
 const CMD_ACK = 0x52;
 const CMD_REQUEST = 0x50;
@@ -22,11 +21,20 @@ export class RestoreProcess {
   private rejectPromise?: (reason: any) => void;
   private readonly headerPayload: Uint8Array;
   private readonly encodedFull: Uint8Array; // Includes 7-byte size header + encoded data
+  private nextStep: ((data: Uint8Array) => void) | undefined = undefined;
 
   constructor(fileBuffer: ArrayBuffer) {
     const {headerPayload, encodedFull} = parseDcxFile(fileBuffer);
     this.headerPayload = headerPayload;
     this.encodedFull = encodedFull;
+  }
+
+  public cancel() {
+    this.active = false;
+    this.cleanup();
+    if (this.rejectPromise) {
+      this.rejectPromise(new Error('Cancelled'));
+    }
   }
 
   public async start(
@@ -40,17 +48,19 @@ export class RestoreProcess {
       this.resolvePromise = resolve;
       this.rejectPromise = reject;
 
-      this.runRestoreSequence(sendSysex, onProgress).catch((error) => {
-        this.cleanup();
-        reject(error);
-      });
+      void (async () => {
+        try {
+          await this.runRestoreSequence(sendSysex, onProgress);
+        } catch (error: unknown) {
+          this.cleanup();
+          reject(error instanceof Error ? error : new Error(String(error)));
+        }
+      })();
     });
   }
 
   // Changing approach: The class manages state, but is driven by external events for simplicity in React.
   // Or better: Use an EventTarget or simple callback register.
-
-  private nextStep: ((data: Uint8Array) => void) | undefined = null;
 
   public handleIncomingSysex(data: Uint8Array) {
     if (this.nextStep) {
@@ -84,9 +94,6 @@ export class RestoreProcess {
     // This takes the FIRST 1000 bytes of encodedFull
     const chunk0 = this.encodedFull.slice(0, 1000);
     // Note: Checksum window for Page 0 is special (file dependent? No, Page 0 is usually 1000)
-    // Wait, parseDcxFile logic for checksum window needs to be here?
-    // Let's assume standard window 1000 for Page 0 unless it's the last page.
-    const page0Pkt = buildPage0Packet(chunk0); // Helper needs to handle checksum window logic?
     // Actually, we should probably implement the checksum window logic here or in builder.
     // Let's use the builder's default for now, assuming standard full pages.
 
@@ -107,6 +114,7 @@ export class RestoreProcess {
     onProgress(20, 100, 'Starting Transfer Loop...');
 
     while (true) {
+      // eslint-disable-next-line no-await-in-loop
       const request = await this.waitForResponse(CMD_REQUEST, 10_000);
       if (!request) throw new Error('Timeout waiting for request');
 
@@ -140,8 +148,6 @@ export class RestoreProcess {
         // So if we pass 391 bytes, it checksums 391 bytes.
         // We just need to make sure we don't PAD it if it's last page.
 
-        const responseLength = isLast ? chunk.length : 1000;
-
         // If chunk is < 1000 and NOT last (which shouldn't happen with math), pad.
         // If chunk is < 1000 and IS last, send as is.
 
@@ -151,6 +157,7 @@ export class RestoreProcess {
         // "Last page uses actual data length (no padding)"
 
         const pkt = buildDataPacket(0x0c, page, chunk);
+        // eslint-disable-next-line no-await-in-loop
         await this.delay(200); // Small pacing delay
         sendSysex(pkt);
 
@@ -170,14 +177,14 @@ export class RestoreProcess {
   ): Promise<Uint8Array | undefined> {
     return new Promise((resolve) => {
       const timer = setTimeout(() => {
-        this.nextStep = null;
-        resolve(null);
+        this.nextStep = undefined;
+        resolve(undefined);
       }, timeout);
 
       this.nextStep = (data) => {
         if (data.length > 6 && data[6] === cmdId) {
           clearTimeout(timer);
-          this.nextStep = null;
+          this.nextStep = undefined;
           resolve(data);
         }
       };
@@ -185,17 +192,13 @@ export class RestoreProcess {
   }
 
   private async delay(ms: number) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  }
-
-  public cancel() {
-    this.active = false;
-    this.cleanup();
-    this.rejectPromise?.(new Error('Cancelled'));
+    return new Promise((resolve) => {
+      setTimeout(resolve, ms);
+    });
   }
 
   private cleanup() {
     this.active = false;
-    this.nextStep = null;
+    this.nextStep = undefined;
   }
 }

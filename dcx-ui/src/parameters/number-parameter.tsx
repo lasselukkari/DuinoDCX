@@ -6,8 +6,8 @@ import Modal from 'react-bootstrap/Modal';
 import Slider from 'rc-slider';
 import {FaPlus, FaMinus} from 'react-icons/fa';
 import 'rc-slider/assets/index.css';
+import {useSendCommand} from '../hooks/use-send-command.js';
 import './NumberParameter.css';
-import {useSendCommand} from '../hooks/use-send-command.ts';
 
 type Props = {
   readonly value: number;
@@ -26,7 +26,7 @@ type Props = {
 };
 
 const defaultFormatter = (v: number | undefined, u?: string) => {
-  if (v === undefined || isNaN(v)) {
+  if (v === undefined || Number.isNaN(v)) {
     return `--- ${u ?? ''}`;
   }
 
@@ -90,14 +90,14 @@ export function NumberParameter({
       setPendingValue(newValue);
       setShowModal(true);
     } else {
-      sendCommand({param, group, channelId, eq, value: newValue});
+      void sendCommand({param, group, channelId, eq, value: newValue});
       setMoving(false);
     }
   };
 
   const handleModalConfirm = () => {
     if (pendingValue !== undefined) {
-      sendCommand({param, group, channelId, eq, value: pendingValue});
+      void sendCommand({param, group, channelId, eq, value: pendingValue});
     }
 
     setShowModal(false);
@@ -115,14 +115,14 @@ export function NumberParameter({
   const handleReduction = () => {
     if (value - step >= min) {
       const newValue = value - step;
-      sendCommand({param, group, channelId, eq, value: newValue});
+      void sendCommand({param, group, channelId, eq, value: newValue});
     }
   };
 
   const handleAddition = () => {
     if (value + step <= max) {
       const newValue = value + step;
-      sendCommand({param, group, channelId, eq, value: newValue});
+      void sendCommand({param, group, channelId, eq, value: newValue});
     }
   };
 

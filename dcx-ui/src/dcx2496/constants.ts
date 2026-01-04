@@ -618,6 +618,7 @@ const crossoverFilters = [
   'but48',
   'lr48',
 ];
+
 const outputSources = ['A', 'B', 'C', 'Sum'];
 const attackTimes = [
   '1',
@@ -731,7 +732,7 @@ const attackTimes = [
   '195',
   '200',
 ];
-const eqRatios = [
+const equalizerRatios = [
   '1.1:1',
   '1.2:1',
   '1.4:1',
@@ -754,7 +755,7 @@ const inputAbSources = ['Analog', 'AES/EBU'];
 const INPUT_C_GAINS = ['Line', 'Mic'];
 const OUTPUT_CONFIGS = ['mono', 'lmhlmh', 'llmmhh', 'lhlhlh'];
 const STEREO_LINK_MODES = ['Off', 'A+B', 'A+B+C', 'A+B+C+Sum'];
-const EQ_Q_VALUES = [
+const EQUALIZER_Q_VALUES = [
   '0.1',
   '0.125',
   '0.15',
@@ -797,8 +798,8 @@ const EQ_Q_VALUES = [
   '8.9',
   '10',
 ];
-const EQ_TYPES = ['Low Shelv', 'Bandpass', 'High Shelv'];
-const EQ_SHELVING_SLOPES = ['6dB', '12dB'];
+const EQUALIZER_TYPES = ['Low Shelv', 'Bandpass', 'High Shelv'];
+const EQUALIZER_SHELVING_SLOPES = ['6dB', '12dB'];
 const DELAY_UNITS = ['mm', 'inch'];
 const POLARITIES = ['Normal', 'Inverted'];
 const INPUTS = ['A', 'B', 'C', 'Sum'];
@@ -824,14 +825,14 @@ export default {
   outputSources,
   inputAbSources,
   attackTimes,
-  eqRatios,
+  equalizerRatios,
   inputSumTypes,
   INPUT_C_GAINS,
   OUTPUT_CONFIGS,
   STEREO_LINK_MODES,
-  EQ_Q_VALUES,
-  EQ_TYPES,
-  EQ_SHELVING_SLOPES,
+  EQUALIZER_Q_VALUES,
+  EQUALIZER_TYPES,
+  EQUALIZER_SHELVING_SLOPES,
   DELAY_UNITS,
   POLARITIES,
   INPUTS,

@@ -1,41 +1,24 @@
-import {useCallback} from 'react';
-import {toast} from 'react-toastify';
-import cloneDeep from 'lodash.clonedeep';
-import Parser from '../dcx2496/parser.ts';
-import {useDeviceState} from '../device-state-context.tsx';
+import { useCallback } from 'react';
+import { toast } from 'react-toastify';
+import { buildParamChangeCommand, type ParameterTarget } from 'dcx-parser';
+import { useDcxConnection } from '../connection/connection-context.js';
 
 /**
  * Hook to provide a sendCommand function that components can use to
- * update device parameters without prop drilling onChange.
+ * update device parameters.
+ * 
+ * Now uses buildParamChangeCommand from dcx-parser instead of manual serialization.
  */
 export const useSendCommand = () => {
-  const {device, selected} = useDeviceState();
+  const { connection } = useDcxConnection();
 
   const sendCommand = useCallback(
-    async (commands: unknown) => {
-      if (selected === undefined || !device) {
-        console.warn('Cannot send command: device or selected ID missing');
-        return;
-      }
-
-      // Serialize the command using CLONED device state to avoid mutation
-      const data = Parser.serializeCommands(
-        selected,
-        cloneDeep(device),
-        commands,
-      );
-
+    async (target: ParameterTarget, value: number | boolean | string) => {
       try {
-        const blob = new Blob([data as any]);
-
-        await fetch(`/api/commands`, {
-          method: 'POST',
-          credentials: 'same-origin',
-          headers: {'Content-Type': 'application/binary'},
-          body: blob,
-        });
+        const command = buildParamChangeCommand(target, value);
+        await connection.send(command);
         // State update will happen when backend echoes the command back via SSE
-        // and App.tsx processes it via onDirectCommand
+        // and useDcxState processes it
       } catch (error) {
         console.error('Failed to send command:', error);
         toast.error(`Failed to update settings.`, {
@@ -45,7 +28,7 @@ export const useSendCommand = () => {
         });
       }
     },
-    [device, selected],
+    [connection],
   );
 
   return sendCommand;

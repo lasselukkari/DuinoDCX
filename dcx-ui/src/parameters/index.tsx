@@ -1,9 +1,9 @@
 import React from 'react';
-import Parser from '../dcx2496/parser.ts';
-import { type Command } from '../dcx2496/commands.tsx';
-import BoolParameter from './bool-parameter.tsx';
-import EnumParameter from './enum-parameter.tsx';
-import NumberParameter from './number-parameter.tsx';
+import Parser from 'dcx-parser';
+import {type Command} from '../dcx2496/commands.js';
+import BoolParameter from './bool-parameter.js';
+import EnumParameter from './enum-parameter.js';
+import NumberParameter from './number-parameter.js';
 
 export type ParameterComponentProps = {
   readonly value: boolean | number | string;
@@ -11,10 +11,6 @@ export type ParameterComponentProps = {
   readonly channelId?: string;
   readonly eq?: string;
   readonly hasLabel?: boolean;
-  readonly isInverted?: boolean;
-  readonly label?: string;
-  readonly formatter?: (value: number, unit?: string) => string;
-  readonly labelFormatter?: (value: number, unit?: string) => string;
 };
 
 const components: Record<string, React.FC<ParameterComponentProps>> = {};
@@ -39,7 +35,7 @@ type ComponentProps = ParameterComponentProps;
 type EnumComponentProps = ComponentProps & {};
 
 const enumComponent = function (command: Command) {
-  const { name, values, unit } = command;
+  const {name, values, unit} = command;
   function EnumComponent({
     value,
     group = 'inputs',
@@ -66,7 +62,7 @@ const enumComponent = function (command: Command) {
 };
 
 const boolComponent = function (command: Command) {
-  const { name } = command;
+  const {name} = command;
   function BoolComponent({
     value,
     group,
@@ -98,7 +94,7 @@ const boolComponent = function (command: Command) {
 };
 
 const numberComponent = function (command: Command) {
-  const { name, unit, min, max, step } = command;
+  const {name, unit, min, max, step} = command;
   function NumberComponent({
     value,
     group,
@@ -191,26 +187,26 @@ const parameters = {
   Mute: components.Mute,
   IsDelayOn: components.IsDelayOn,
   LongDelay: components.LongDelay,
-  IsEQOn: components.IsEQOn,
-  EQNumber: components.EQNumber,
-  EQIndex: components.EQIndex,
-  DynamicEQAttack: components.DynamicEQAttack,
-  DynamicEQRelease: components.DynamicEQRelease,
-  DynamicEQRatio: components.DynamicEQRatio,
-  DynamicEQThreshold: components.DynamicEQThreshold,
-  IsDynamicEQOn: components.IsDynamicEQOn,
-  DynamicEQFrequency: components.DynamicEQFrequency,
-  DynamicEQQ: components.DynamicEQQ,
-  DynamicEQGain: components.DynamicEQGain,
-  DynamicEQType: components.DynamicEQType,
-  DynamicEQShelving: components.DynamicEQShelving,
+  IsEqualizerOn: components.IsEqualizerOn,
+  EqualizerNumber: components.EqualizerNumber,
+  EqualizerIndex: components.EqualizerIndex,
+  DynamicEqualizerAttack: components.DynamicEqualizerAttack,
+  DynamicEqualizerRelease: components.DynamicEqualizerRelease,
+  DynamicEqualizerRatio: components.DynamicEqualizerRatio,
+  DynamicEqualizerThreshold: components.DynamicEqualizerThreshold,
+  IsDynamicEqualizerOn: components.IsDynamicEqualizerOn,
+  DynamicEqualizerFrequency: components.DynamicEqualizerFrequency,
+  DynamicEqualizerQ: components.DynamicEqualizerQ,
+  DynamicEqualizerGain: components.DynamicEqualizerGain,
+  DynamicEqualizerType: components.DynamicEqualizerType,
+  DynamicEqualizerShelving: components.DynamicEqualizerShelving,
 
   // 9 for each io
-  EQFrequency: components.EQFrequency,
-  EQQ: components.EQQ,
-  EQGain: components.EQGain,
-  EQType: components.EQType,
-  EQShelving: components.EQShelving,
+  EqualizerFrequency: components.EqualizerFrequency,
+  EqualizerQ: components.EqualizerQ,
+  EqualizerGain: components.EqualizerGain,
+  EqualizerType: components.EqualizerType,
+  EqualizerShelving: components.EqualizerShelving,
 
   // Out components
   ChannelName: components.ChannelName,

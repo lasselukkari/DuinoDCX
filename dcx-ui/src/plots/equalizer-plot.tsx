@@ -1,11 +1,11 @@
 import React, {useMemo} from 'react';
 import isEqual from 'lodash.isequal';
 import {LineChart, Line, XAxis, YAxis, Tooltip} from 'recharts';
-import {useWindowSize} from '../hooks/use-window-size.ts';
-import {useBreakpoint} from '../hooks/use-breakpoint.ts';
-import {type Channel} from '../dcx2496/parser.tsx';
-import TransferFunction from './transfer-function.ts';
-import PlotTooltip from './plot-tooltip.tsx';
+import {useWindowSize} from '../hooks/use-window-size.js';
+import {useBreakpoint} from '../hooks/use-breakpoint.js';
+import type { type Channel } from 'dcx-parser';
+import TransferFunction from './transfer-function.js';
+import PlotTooltip from './plot-tooltip.js';
 
 const frequencyPoints = TransferFunction.generateFrequencyPoints(
   10,
@@ -26,41 +26,46 @@ type PlotData = {
 function plotData(channels: Record<string, Channel>, isGainApplied: boolean) {
   const values = Object.keys(channels).map((key) => {
     const tf = new TransferFunction(frequencyPoints);
+    const channel = channels[key];
+    const {equalizers} = channel;
 
-    const {eqs} = channels[key];
-    if (eqs) {
-      for (const eqsKey of Object.keys(eqs)) {
-        const eq = eqs[Number(eqsKey)];
-        if (channels[key].isEQOn === true && eq && eq.eQGain !== 0) {
-          if (eq.eQType === 'Bandpass') {
-            tf.parametricEQ(eq.eQFrequency ?? 0, eq.eQGain ?? 0, eq.eQQ ?? 0);
-          } else {
-            // eslint-disable-next-line max-depth
-            if (eq.eQShelving === '6dB') {
-              tf.firstOrderShelving(
-                eq.eQFrequency ?? 0,
-                eq.eQGain ?? 0,
-                eq.eQType === 'High Shelv',
-              );
-            }
+    if (channel.isEqualizerOn && equalizers) {
+      for (const eqsKey of Object.keys(equalizers)) {
+        const eq = equalizers[Number(eqsKey)];
+        if (!eq || eq.equalizerGain === 0) {
+          continue;
+        }
 
-            if (eq.eQShelving === '12dB') {
-              tf.secondOrderShelving(
-                eq.eQFrequency ?? 0,
-                eq.eQGain ?? 0,
-                eq.eQType === 'High Shelv',
-              );
-            }
-          }
+        if (eq.equalizerType === 'Bandpass') {
+          tf.parametricEQ(
+            eq.equalizerFrequency ?? 0,
+            eq.equalizerGain ?? 0,
+            eq.equalizerQ ?? 0,
+          );
+          continue;
+        }
+
+        if (eq.equalizerShelving === '6dB') {
+          tf.firstOrderShelving(
+            eq.equalizerFrequency ?? 0,
+            eq.equalizerGain ?? 0,
+            eq.equalizerType === 'High Shelv',
+          );
+        } else if (eq.equalizerShelving === '12dB') {
+          tf.secondOrderShelving(
+            eq.equalizerFrequency ?? 0,
+            eq.equalizerGain ?? 0,
+            eq.equalizerType === 'High Shelv',
+          );
         }
       }
     }
 
     return {
-      gain: channels[key].gain,
+      gain: channel.gain,
       data: tf.getMagnitude(),
-      channel: channels[key].channelName
-        ? `${key}. ${channels[key].channelName}`
+      channel: channel.channelName
+        ? `${key}. ${channel.channelName}`
         : `Input ${key}`,
     };
   });
@@ -79,7 +84,7 @@ function plotData(channels: Record<string, Channel>, isGainApplied: boolean) {
 }
 
 function EqualizerPlot({channels, isGainApplied = false}: Props) {
-  const {width: windowWidth} = useWindowSize();
+  useWindowSize();
   const currentBreakpoint = useBreakpoint();
 
   const data = useMemo(
@@ -99,7 +104,7 @@ function EqualizerPlot({channels, isGainApplied = false}: Props) {
     '#18BC9C',
   ];
 
-  let width;
+  let width = 1080;
 
   switch (currentBreakpoint) {
     case 'xs':

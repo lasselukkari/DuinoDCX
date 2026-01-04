@@ -5,32 +5,32 @@ import pc from './parameters/index.tsx';
 
 type DynamicEqualizerProps = {
   readonly channelName?: string;
-  readonly isDynamicEQOn: boolean;
-  readonly dynamicEQType: string;
-  readonly dynamicEQFrequency: number | string;
-  readonly dynamicEQGain: number | string;
-  readonly dynamicEQQ: number | string;
-  readonly dynamicEQShelving: string;
-  readonly dynamicEQAttack: number | string;
-  readonly dynamicEQRelease: number | string;
-  readonly dynamicEQRatio: number | string;
-  readonly dynamicEQThreshold: number | string;
+  readonly isDynamicEqualizerOn: boolean;
+  readonly dynamicEqualizerType: string;
+  readonly dynamicEqualizerFrequency: number | string;
+  readonly dynamicEqualizerGain: number | string;
+  readonly dynamicEqualizerQ: number | string;
+  readonly dynamicEqualizerShelving: string;
+  readonly dynamicEqualizerAttack: number | string;
+  readonly dynamicEqualizerRelease: number | string;
+  readonly dynamicEqualizerRatio: number | string;
+  readonly dynamicEqualizerThreshold: number | string;
   readonly group: string;
   readonly channelId: string;
 };
 
 function DynamicEqualizer({
   channelName,
-  isDynamicEQOn,
-  dynamicEQType,
-  dynamicEQFrequency,
-  dynamicEQGain,
-  dynamicEQQ,
-  dynamicEQShelving,
-  dynamicEQAttack,
-  dynamicEQRelease,
-  dynamicEQRatio,
-  dynamicEQThreshold,
+  isDynamicEqualizerOn,
+  dynamicEqualizerType,
+  dynamicEqualizerFrequency,
+  dynamicEqualizerGain,
+  dynamicEqualizerQ,
+  dynamicEqualizerShelving,
+  dynamicEqualizerAttack,
+  dynamicEqualizerRelease,
+  dynamicEqualizerRatio,
+  dynamicEqualizerThreshold,
   group,
   channelId,
 }: DynamicEqualizerProps) {
@@ -40,52 +40,24 @@ function DynamicEqualizer({
         {channelName ? `${channelId} . ${channelName}` : `Channel ${channelId}`}
       </Card.Header>
       <Card.Body>
-        <pc.IsDynamicEQOn
-          value={isDynamicEQOn}
+        <pc.IsDynamicEqualizerOn
+          value={isDynamicEqualizerOn}
           group={group}
           channelId={channelId}
         />
         <Row>
           <Col md={12} lg={6}>
-            <pc.DynamicEQType
+            <pc.DynamicEqualizerType
               hasLabel
-              value={dynamicEQType}
+              value={dynamicEqualizerType}
               group={group}
               channelId={channelId}
             />
           </Col>
           <Col md={12} lg={6}>
-            <pc.DynamicEQFrequency
+            <pc.DynamicEqualizerFrequency
               hasLabel
-              value={dynamicEQFrequency}
-              group={group}
-              channelId={channelId}
-            />
-          </Col>
-        </Row>
-        <Row>
-          <Col md={12} lg={6}>
-            {dynamicEQType === 'Bandpass' && (
-              <pc.DynamicEQQ
-                hasLabel
-                value={dynamicEQQ}
-                group={group}
-                channelId={channelId}
-              />
-            )}
-            {dynamicEQType !== 'Bandpass' && (
-              <pc.DynamicEQShelving
-                hasLabel
-                value={dynamicEQShelving}
-                group={group}
-                channelId={channelId}
-              />
-            )}
-          </Col>
-          <Col md={12} lg={6}>
-            <pc.DynamicEQAttack
-              hasLabel
-              value={dynamicEQAttack}
+              value={dynamicEqualizerFrequency}
               group={group}
               channelId={channelId}
             />
@@ -93,31 +65,59 @@ function DynamicEqualizer({
         </Row>
         <Row>
           <Col md={12} lg={6}>
-            <pc.DynamicEQRelease
-              hasLabel
-              value={dynamicEQRelease}
-              group={group}
-              channelId={channelId}
-            />
+            {dynamicEqualizerType === 'Bandpass' && (
+              <pc.DynamicEqualizerQ
+                hasLabel
+                value={dynamicEqualizerQ}
+                group={group}
+                channelId={channelId}
+              />
+            )}
+            {dynamicEqualizerType !== 'Bandpass' && (
+              <pc.DynamicEqualizerShelving
+                hasLabel
+                value={dynamicEqualizerShelving}
+                group={group}
+                channelId={channelId}
+              />
+            )}
           </Col>
           <Col md={12} lg={6}>
-            <pc.DynamicEQRatio
+            <pc.DynamicEqualizerAttack
               hasLabel
-              value={dynamicEQRatio}
+              value={dynamicEqualizerAttack}
               group={group}
               channelId={channelId}
             />
           </Col>
         </Row>
-        <pc.DynamicEQGain
+        <Row>
+          <Col md={12} lg={6}>
+            <pc.DynamicEqualizerRelease
+              hasLabel
+              value={dynamicEqualizerRelease}
+              group={group}
+              channelId={channelId}
+            />
+          </Col>
+          <Col md={12} lg={6}>
+            <pc.DynamicEqualizerRatio
+              hasLabel
+              value={dynamicEqualizerRatio}
+              group={group}
+              channelId={channelId}
+            />
+          </Col>
+        </Row>
+        <pc.DynamicEqualizerGain
           hasLabel
-          value={dynamicEQGain}
+          value={dynamicEqualizerGain}
           group={group}
           channelId={channelId}
         />
-        <pc.DynamicEQThreshold
+        <pc.DynamicEqualizerThreshold
           hasLabel
-          value={dynamicEQThreshold}
+          value={dynamicEqualizerThreshold}
           group={group}
           channelId={channelId}
         />

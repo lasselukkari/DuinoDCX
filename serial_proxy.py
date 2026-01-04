@@ -150,8 +150,9 @@ def main():
                             app_buffer = app_buffer[idx:]
                             
                             interpretation = format_sysex(msg)
-                            # Suppress PINGs for clean log
-                            if "PING" not in interpretation:
+                            # Suppress PINGs and other periodic noise for clean log
+                            is_noise = any(x in interpretation for x in ["PING", "SEARCH", "PRESET_COUNT"])
+                            if not is_noise:
                                 log(format_hex(msg, "APP->DEV"))
                                 if interpretation:
                                     log(interpretation)
@@ -173,8 +174,9 @@ def main():
                         msg = bytes(device_buffer[:idx])
                         device_buffer = device_buffer[idx:]
                         interpretation = format_sysex(msg)
-                        # Suppress PINGs for clean log
-                        if "PING" not in interpretation:
+                        # Suppress PINGs and other periodic noise for clean log
+                        is_noise = any(x in interpretation for x in ["PING", "SEARCH", "PRESET_COUNT"])
+                        if not is_noise:
                             log(format_hex(msg, "DEV->APP"))
                             if interpretation:
                                 log(interpretation)

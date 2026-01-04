@@ -2,7 +2,7 @@ import {memo, type ChangeEvent} from 'react';
 import Button from 'react-bootstrap/Button';
 import FormControl from 'react-bootstrap/FormControl';
 import InputGroup from 'react-bootstrap/InputGroup';
-import {useSendCommand} from './hooks/use-send-command.ts';
+import {useSendCommand} from './hooks/use-send-command.js';
 
 type Props = {
   readonly delayUnits: string;
@@ -24,11 +24,11 @@ function Temperature({delayUnits, airTemperature, isDelayCorrectionOn}: Props) {
     const unlocalizedValue =
       delayUnits === 'mm' ? numericValue : ((numericValue - 32) * 5) / 9;
 
-    sendCommand({param: 'airTemperature', value: unlocalizedValue});
+    void sendCommand({param: 'airTemperature', value: unlocalizedValue});
   };
 
   const handleCorrectionChange = () => {
-    sendCommand({
+    void sendCommand({
       param: 'isDelayCorrectionOn',
       value: !isDelayCorrectionOn,
     });

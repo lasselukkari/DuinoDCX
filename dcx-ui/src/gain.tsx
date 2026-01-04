@@ -8,12 +8,12 @@ type GainProps = {
   readonly channelId: number | string;
 };
 
-function Gain({ channelName, gain, group, channelId }: GainProps) {
+function Gain({channelName, gain, group, channelId}: GainProps) {
   return (
     <div>
       <FormLabel
         className="form-header"
-        style={{ marginBottom: '5px', display: 'block' }}
+        style={{marginBottom: '5px', display: 'block'}}
       >
         {`Channel ${channelName}`}
       </FormLabel>

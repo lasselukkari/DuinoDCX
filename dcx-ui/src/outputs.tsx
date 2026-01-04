@@ -51,7 +51,7 @@ function Outputs({isBlocking}: Props) {
             <Crossovers group="outputs" channels={channels} />
           </BlockUi>
         </Tab>
-        <Tab title="EQ" eventKey="eqs">
+        <Tab title="Equalizer" eventKey="equalizers">
           <EqualizerPlotPanel channels={channels} group="outputs" />
           <Equalizers
             isBlocking={isBlocking}
@@ -59,7 +59,7 @@ function Outputs({isBlocking}: Props) {
             channels={channels}
           />
         </Tab>
-        <Tab eventKey="dynamicEqualizers" title="Dynamic EQ">
+        <Tab eventKey="dynamicEqualizers" title="Dynamic Equalizer">
           <BlockUi isBlocking={isBlocking}>
             <DynamicEqualizers group="outputs" channels={channels} />
           </BlockUi>

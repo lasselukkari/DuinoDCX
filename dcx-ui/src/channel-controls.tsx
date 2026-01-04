@@ -1,7 +1,7 @@
 import {memo} from 'react';
-import ChannelLevel from './channel-level.tsx';
-import MuteButton from './mute-button.tsx';
-import SelectButton from './select-button.tsx';
+import ChannelLevel from './channel-level.js';
+import MuteButton from './mute-button.js';
+import SelectButton from './select-button.js';
 
 type ToggleChangeEventArgs = {
   group: 'inputs' | 'outputs';
@@ -20,7 +20,6 @@ type Props = {
   readonly level: number;
   readonly isMuted: boolean;
   readonly isOutput: boolean;
-  readonly isToggled?: boolean;
   readonly onToggleChange: (args: ToggleChangeEventArgs) => void;
 };
 

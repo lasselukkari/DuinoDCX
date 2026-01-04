@@ -685,7 +685,7 @@ export const inputOutputCommands: Command[] = [
     step: 5,
   },
   {
-    name: 'Is EQ On',
+    name: 'Is Equalizer On',
     type: 'bool',
     syncResponses: [
       {
@@ -751,7 +751,7 @@ export const inputOutputCommands: Command[] = [
     ],
   },
   {
-    name: 'EQ Number',
+    name: 'Equalizer Number',
     type: 'number',
     syncResponses: [
       {
@@ -820,7 +820,7 @@ export const inputOutputCommands: Command[] = [
     step: 1,
   },
   {
-    name: 'EQ Index',
+    name: 'Equalizer Index',
     type: 'number',
     syncResponses: [
       {
@@ -889,7 +889,7 @@ export const inputOutputCommands: Command[] = [
     step: 1,
   },
   {
-    name: 'Dynamic EQ Attack',
+    name: 'Dynamic Equalizer Attack',
     type: 'enum',
     unit: 'ms',
     values: constants.attackTimes,
@@ -957,7 +957,7 @@ export const inputOutputCommands: Command[] = [
     ],
   },
   {
-    name: 'Dynamic EQ Release',
+    name: 'Dynamic Equalizer Release',
     type: 'enum',
     unit: 'ms',
     values: constants.logZeroTo4000Ms,
@@ -1075,9 +1075,9 @@ export const inputOutputCommands: Command[] = [
     ],
   },
   {
-    name: 'Dynamic EQ Ratio',
+    name: 'Dynamic Equalizer Ratio',
     type: 'enum',
-    values: constants.eqRatios,
+    values: constants.equalizerRatios,
     syncResponses: [
       {
         bits6: {
@@ -1142,7 +1142,7 @@ export const inputOutputCommands: Command[] = [
     ],
   },
   {
-    name: 'Dynamic EQ Threshold',
+    name: 'Dynamic Equalizer Threshold',
     type: 'number',
     unit: 'dB',
     syncResponses: [
@@ -1302,7 +1302,7 @@ export const inputOutputCommands: Command[] = [
     step: 0.1,
   },
   {
-    name: 'Is Dynamic EQ On',
+    name: 'Is Dynamic Equalizer On',
     type: 'bool',
     syncResponses: [
       {
@@ -1368,7 +1368,7 @@ export const inputOutputCommands: Command[] = [
     ],
   },
   {
-    name: 'Dynamic EQ Frequency',
+    name: 'Dynamic Equalizer Frequency',
     type: 'enum',
     unit: 'Hz',
     values: constants.logFrequencyScale,
@@ -1526,9 +1526,9 @@ export const inputOutputCommands: Command[] = [
     ],
   },
   {
-    name: 'Dynamic EQ Q',
+    name: 'Dynamic Equalizer Q',
     type: 'enum',
-    values: constants.EQ_Q_VALUES,
+    values: constants.EQUALIZER_Q_VALUES,
     syncResponses: [
       {
         bits6: {
@@ -1593,7 +1593,7 @@ export const inputOutputCommands: Command[] = [
     ],
   },
   {
-    name: 'Dynamic EQ Gain',
+    name: 'Dynamic Equalizer Gain',
     type: 'number',
     unit: 'dB',
     syncResponses: [
@@ -1753,9 +1753,9 @@ export const inputOutputCommands: Command[] = [
     step: 0.1,
   },
   {
-    name: 'Dynamic EQ Type',
+    name: 'Dynamic Equalizer Type',
     type: 'enum',
-    values: constants.EQ_TYPES,
+    values: constants.EQUALIZER_TYPES,
     syncResponses: [
       {
         bits6: {
@@ -1820,9 +1820,9 @@ export const inputOutputCommands: Command[] = [
     ],
   },
   {
-    name: 'Dynamic EQ Shelving',
+    name: 'Dynamic Equalizer Shelving',
     type: 'enum',
-    values: constants.EQ_SHELVING_SLOPES,
+    values: constants.EQUALIZER_SHELVING_SLOPES,
     syncResponses: [
       {
         bits6: {
@@ -1890,7 +1890,7 @@ export const inputOutputCommands: Command[] = [
 
 export const eqCommands: Command[] = [
   {
-    name: 'EQ Frequency',
+    name: 'Equalizer Frequency',
     type: 'enum',
     unit: 'Hz',
     values: constants.logFrequencyScale,
@@ -3248,9 +3248,9 @@ export const eqCommands: Command[] = [
     ],
   },
   {
-    name: 'EQ Q',
+    name: 'Equalizer Q',
     type: 'enum',
-    values: constants.EQ_Q_VALUES,
+    values: constants.EQUALIZER_Q_VALUES,
     syncResponses: [
       {
         bits6: {
@@ -3795,7 +3795,7 @@ export const eqCommands: Command[] = [
     ],
   },
   {
-    name: 'EQ Gain',
+    name: 'Equalizer Gain',
     type: 'number',
     unit: 'dB',
     syncResponses: [
@@ -5155,9 +5155,9 @@ export const eqCommands: Command[] = [
     step: 0.1,
   },
   {
-    name: 'EQ Type',
+    name: 'Equalizer Type',
     type: 'enum',
-    values: constants.EQ_TYPES,
+    values: constants.EQUALIZER_TYPES,
     syncResponses: [
       {
         bits6: {
@@ -5702,9 +5702,9 @@ export const eqCommands: Command[] = [
     ],
   },
   {
-    name: 'EQ Shelving',
+    name: 'Equalizer Shelving',
     type: 'enum',
-    values: constants.EQ_SHELVING_SLOPES,
+    values: constants.EQUALIZER_SHELVING_SLOPES,
     syncResponses: [
       {
         bits6: {

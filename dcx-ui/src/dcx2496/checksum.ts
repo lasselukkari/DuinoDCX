@@ -27,6 +27,7 @@ export function verifyChecksum(packet: Uint8Array): boolean {
 
   // Last byte is F7, second to last is Checksum
   const expectedChecksum = packet.at(-2);
+  if (expectedChecksum === undefined) return false;
 
   // Data starts after header (approx 13 bytes usually, but depends on message type)
   // For standard dump packets (Type 0x01 or 0x0C):

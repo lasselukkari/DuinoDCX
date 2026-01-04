@@ -18,12 +18,12 @@ To capture protocol traffic from the original Windows DCX-Remote software:
    pip install pyserial
    ```
 
-### Step 1: Start the Serial Proxy
+### Step 1: Start the Serial Proxy (Unbuffered)
 
 The proxy creates a virtual serial port that logs all traffic:
 
 ```bash
-./venv/bin/python3 serial_proxy.py /dev/cu.usbserial-1430 --log capture.log
+./venv/bin/python3 -u serial_proxy.py /dev/cu.usbserial-1430 --log capture.log > proxy_output.txt 2>&1 &
 ```
 
 Output will show:
@@ -35,7 +35,18 @@ To create a symlink for Wine:
     ln -sf /dev/ttys006 ~/.wine/dosdevices/com1
 ```
 
-### Step 2: Create Wine COM Port Symlink
+### Step 2: Read the Virtual Port from the Log
+
+```bash
+cat proxy_output.txt
+```
+
+Look for:
+```
+Virtual port created: /dev/ttysXXX
+```
+
+### Step 3: Create Wine COM Port Symlink
 
 In a **new terminal** (keep proxy running):
 
@@ -46,10 +57,10 @@ ln -sf /dev/ttys006 ~/.wine/dosdevices/com1
 
 > ⚠️ The virtual port path (`/dev/ttys006`) varies each time. Check the proxy output.
 
-### Step 3: Launch DCX-Remote in Wine
+### Step 4: Launch DCX-Remote in Wine
 
 ```bash
-wine ./DCX2496_V1_16/DCX2496_V1_16/DCX-Remote.exe
+wine ./DCX2496_V1_16/DCX2496_V1_16/DCX-Remote.exe > wine.out 2>&1 &
 ```
 
 In DCX-Remote:
@@ -60,12 +71,13 @@ In DCX-Remote:
 ### Example Session
 
 ```bash
-# Terminal 1: Start proxy
-./venv/bin/python3 serial_proxy.py /dev/cu.usbserial-1430 --log capture.log
+# Terminal 1: Start proxy (unbuffered, keep running)
+./venv/bin/python3 -u serial_proxy.py /dev/cu.usbserial-1430 --log capture.log > proxy_output.txt 2>&1 &
 
 # Terminal 2: Create symlink (use the path from proxy output)
+cat proxy_output.txt
 ln -sf /dev/ttys006 ~/.wine/dosdevices/com1
-wine ./DCX2496_V1_16/DCX2496_V1_16/DCX-Remote.exe
+wine ./DCX2496_V1_16/DCX2496_V1_16/DCX-Remote.exe > wine.out 2>&1 &
 
 # Perform operations in DCX-Remote (sync, restore, etc.)
 # Press Ctrl+C in Terminal 1 when done

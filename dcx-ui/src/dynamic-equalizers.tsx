@@ -22,16 +22,16 @@ function DynamicEqualizers({channels, group}: Props) {
               group={group}
               channelId={channelId}
               channelName={channel.channelName}
-              isDynamicEQOn={Boolean(channel.isDynamicEQOn)}
-              dynamicEQType={channel.dynamicEQType!}
-              dynamicEQFrequency={channel.dynamicEQFrequency!}
-              dynamicEQGain={channel.dynamicEQGain!}
-              dynamicEQQ={channel.dynamicEQQ!}
-              dynamicEQShelving={channel.dynamicEQShelving!}
-              dynamicEQAttack={channel.dynamicEQAttack!}
-              dynamicEQRelease={channel.dynamicEQRelease!}
-              dynamicEQRatio={channel.dynamicEQRatio!}
-              dynamicEQThreshold={channel.dynamicEQThreshold!}
+              isDynamicEqualizerOn={Boolean(channel.isDynamicEqualizerOn)}
+              dynamicEqualizerType={channel.dynamicEqualizerType!}
+              dynamicEqualizerFrequency={channel.dynamicEqualizerFrequency!}
+              dynamicEqualizerGain={channel.dynamicEqualizerGain!}
+              dynamicEqualizerQ={channel.dynamicEqualizerQ!}
+              dynamicEqualizerShelving={channel.dynamicEqualizerShelving!}
+              dynamicEqualizerAttack={channel.dynamicEqualizerAttack!}
+              dynamicEqualizerRelease={channel.dynamicEqualizerRelease!}
+              dynamicEqualizerRatio={channel.dynamicEqualizerRatio!}
+              dynamicEqualizerThreshold={channel.dynamicEqualizerThreshold!}
             />
           </Col>
         );
