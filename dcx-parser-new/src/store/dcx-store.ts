@@ -70,7 +70,7 @@ export class DcxStore {
     // Create new state immutably
     const newState = this.cloneState(this.state);
     const typedValue = convertValue(def, value);
-    console.log(`[DcxStore] Direct Update: ${def.key} (${channel}:${parameter}) = ${value} -> ${typedValue}`);
+
 
     applyToState(newState, def, typedValue);
 

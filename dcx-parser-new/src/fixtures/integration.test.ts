@@ -313,68 +313,79 @@ describe('State Integration Test', () => {
         }
     });
 
-    it('should parse all setup, input, and output parameters for preset 0', () => {
+    it('should verify equality of inputs and outputs across current state, stored json, first preset, and preset 36', () => {
+        // 1. Load "Current State" (from bin files)
+        const bin0 = fs.readFileSync(path.join(actualFixturesDir, 'current-state-0.bin'));
+        const bin1 = fs.readFileSync(path.join(actualFixturesDir, 'current-state-1.bin'));
+        const msg0 = parseMessage(new Uint8Array(bin0));
+        const msg1 = parseMessage(new Uint8Array(bin1));
+
+        if (!msg0 || msg0.type !== 'editBuffer' || !msg1 || msg1.type !== 'editBuffer') {
+            throw new Error('Failed to parse current-state-*.bin as editBuffer message');
+        }
+
+        const part0Data = msg0.part === 0 ? msg0.data : msg1.data;
+        const part1Data = msg0.part === 1 ? msg0.data : msg1.data;
+        const combined = new Uint8Array(part0Data.length + part1Data.length);
+        combined.set(part0Data);
+        combined.set(part1Data, part0Data.length);
+
+        const currentState = parseEditBuffer(combined);
+        const currentStateNormalized = normalizeForJsonComparison(currentState) as any;
+
+        // 2. Load "Stored JSON"
+        const expectedJson = fs.readFileSync(
+            path.join(actualFixturesDir, 'current-state-browser.json'),
+            'utf-8',
+        );
+        const storedJson = JSON.parse(expectedJson);
+
+        // 3. Load "First Preset" (from preset pages)
+        const presetPages: Uint8Array[] = [];
+        for (let i = 0; i < 12; i++) {
+            const pagePath = path.join(actualFixturesDir, `presets-hex-${i}.bin`);
+            if (fs.existsSync(pagePath)) {
+                presetPages.push(new Uint8Array(fs.readFileSync(pagePath)));
+            }
+        }
+        const firstPreset = parsePreset(presetPages);
+        const firstPresetNormalized = normalizeForJsonComparison(firstPreset) as any;
+
+        // 4. Load "Preset 36" (from factory dump)
         const dcxData = new Uint8Array(fs.readFileSync(
             path.join(actualFixturesDir, 'factory-presets.dcx'),
         ));
-
         const presets = parseDcxPresets(dcxData);
-        const preset0 = presets[0];
-        const state = preset0.state;
+        const preset36 = presets[36];
+        const preset36StateNormalized = normalizeForJsonComparison(preset36.state) as any;
 
-        // Verify setup parameters
-        expect(state.setup.outputConfig).toBeDefined();
-        expect(state.setup.stereolink).toBeDefined();
-        expect(state.setup.crossoverLink).toBeDefined();
-        expect(state.setup.delayLink).toBeDefined();
-        expect(state.setup.airTemperature).toBeDefined();
+        // --- Verify Inputs ---
+        // currrent state = stored json
+        expect(currentState.inputs).toEqual(storedJson.inputs);
+        // currrent state = first preset
+        expect(currentState.inputs).toEqual(firstPreset.inputs);
+        // currrent state = preset 36
+        expect(currentState.inputs).toEqual(preset36.state.inputs);
 
-        // Verify all 4 inputs exist with expected properties
-        for (const inputName of ['A', 'B', 'C', 'Sum']) {
-            const input = state.inputs[inputName as 'A' | 'B' | 'C' | 'Sum'];
-            expect(input).toBeDefined();
-            expect(input.gain).toBeDefined();
-            expect(input.mute).toBeDefined();
-            expect(input.isDelayOn).toBeDefined();
-            expect(input.dynamicEqualizerAttack).toBeDefined();
-            expect(input.dynamicEqualizerRelease).toBeDefined();
-            expect(input.dynamicEqualizerRatio).toBeDefined();
-            expect(input.dynamicEqualizerThreshold).toBeDefined();
-            expect(input.isDynamicEqualizerOn).toBeDefined();
-            // All 9 EQ bands are nested objects
-            for (let band = 1; band <= 9; band++) {
-                const eq = input.equalizers[String(band)];
-                expect(eq).toBeDefined();
-                expect(eq.frequency).toBeDefined();
-                expect(eq.gain).toBeDefined();
-                expect(eq.q).toBeDefined();
-            }
-        }
+        // --- Verify Outputs ---
+        // currrent state = stored json
+        expect(currentState.outputs).toEqual(storedJson.outputs);
+        // currrent state = first preset
+        expect(currentState.outputs).toEqual(firstPreset.outputs);
+        // currrent state = preset 36
+        expect(currentState.outputs).toEqual(preset36.state.outputs);
 
-        // Verify all 6 outputs exist with expected properties
-        for (let i = 1; i <= 6; i++) {
-            const output = state.outputs[String(i)];
-            expect(output).toBeDefined();
-            expect(output.channelName).toBeDefined();
-            expect(output.source).toBeDefined();
-            expect(output.highpassFilter).toBeDefined();
-            expect(output.highpassFrequency).toBeDefined();
-            expect(output.lowpassFilter).toBeDefined();
-            expect(output.lowpassFrequency).toBeDefined();
-            expect(output.gain).toBeDefined();
-            expect(output.mute).toBeDefined();
-            expect(output.polarity).toBeDefined();
-            expect(output.longDelay).toBeDefined();
-            expect(output.shortDelay).toBeDefined();
-            expect(output.isLimiterOn).toBeDefined();
-            // All 9 EQ bands are nested objects
-            for (let band = 1; band <= 9; band++) {
-                const eq = output.equalizers[String(band)];
-                expect(eq).toBeDefined();
-                expect(eq.frequency).toBeDefined();
-                expect(eq.gain).toBeDefined();
-                expect(eq.q).toBeDefined();
-            }
-        }
+        // --- Verify Setup ---
+        // Sync known valid differences
+        // delayLink is distinct in the capture files (true in preset, false in editBuffer)
+        firstPresetNormalized.setup.delayLink = currentStateNormalized.setup.delayLink;
+        preset36StateNormalized.setup.delayLink = currentStateNormalized.setup.delayLink;
+
+        // currrent state = stored json
+        expect(currentStateNormalized.setup).toEqual(storedJson.setup);
+        // currrent state = first preset
+        expect(currentStateNormalized.setup).toEqual(firstPresetNormalized.setup);
+        // currrent state = preset 36
+        expect(currentStateNormalized.setup).toEqual(preset36StateNormalized.setup);
     });
 });

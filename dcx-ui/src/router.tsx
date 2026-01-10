@@ -58,12 +58,6 @@ function RootComponent() {
     }, [connection, device, isLoading, sync]);
 
     useEffect(() => {
-        if (device) {
-            console.log('[DEBUG] Device State Updated:', JSON.stringify(device, null, 2));
-        }
-    }, [device]);
-
-    useEffect(() => {
         if (!connection) return;
 
         const unsubscribe = connection.onMessage((data: Uint8Array) => {
