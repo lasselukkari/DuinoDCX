@@ -200,7 +200,6 @@ export function parseInputChannel(cursor: Cursor): InputChannel {
 }
 
 export function parseOutputChannel(cursor: Cursor): OutputChannel {
-  console.log('Parsing output channel');
   // 1. Basic Prefix (Shared with Input)
   const prefix = parseSequential(cursor, INPUT_CHANNEL_PARAMS);
 

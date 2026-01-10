@@ -22,6 +22,7 @@ export const CMD_STORE = 0x53;
 export const CMD_INIT_SYNC = 0x12;
 export const CMD_WRITE_DATA = 0x10;
 export const CMD_DIRECT = 0x20;
+export const CMD_STATUS = 0x21;
 export const CMD_LISTEN_MODE = 0x3f;
 
 // Response types (received from device)

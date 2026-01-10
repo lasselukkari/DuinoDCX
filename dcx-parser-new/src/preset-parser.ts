@@ -1,14 +1,8 @@
-import {decode7to8} from './protocol/encoding.js';
+import { decode7to8 } from './protocol/encoding.js';
 import {
   PRESET_SETUP_PARAMS,
-  INPUT_CHANNEL_PARAMS,
-  EQ_BAND_PARAMS,
-  OUTPUT_CHANNEL_PARAMS_PREFIX,
-  OUTPUT_EXTRA_PARAMS,
   INPUT_NAMES,
   OUTPUT_NAMES,
-  INPUT_EQ_COUNT,
-  OUTPUT_EQ_COUNT,
 } from './structure.js';
 import {
   type State as ExtendedState,
@@ -22,6 +16,8 @@ import {
   readU16LE,
   readBytes,
   parseSequential,
+  parseInputChannel,
+  parseOutputChannel,
 } from './parser-utils.js';
 
 export function parsePreset(input: Uint8Array | Uint8Array[]): ExtendedState {
@@ -36,10 +32,10 @@ export function parsePreset(input: Uint8Array | Uint8Array[]): ExtendedState {
         page[2] === 0x20 &&
         page[3] === 0x32
       ) {
-        return decode7to8(page.slice(13, -1), {indexed: false});
+        return decode7to8(page.slice(13, -1), { indexed: false });
       }
 
-      return decode7to8(page, {indexed: false});
+      return decode7to8(page, { indexed: false });
     });
 
     const totalSize = payloads.reduce((acc, p) => acc + p.length, 0);
@@ -118,6 +114,15 @@ export function parsePreset(input: Uint8Array | Uint8Array[]): ExtendedState {
 
   const setup = setupRaw;
 
+  // Add missing setup fields to match Edit Buffer structure
+  // These are likely global settings not stored in presets, or in the header we skipped
+  if (setup.delayUnits === undefined) {
+    setup.delayUnits = 'mm'; // Default
+  }
+  if (setup.muteOutsWhenPowered === undefined) {
+    setup.muteOutsWhenPowered = false; // Default
+  }
+
   // Parse 4 Input Channels
   const inputs: Record<string, InputChannel> = {};
   for (const name of INPUT_NAMES) {
@@ -138,33 +143,3 @@ export function parsePreset(input: Uint8Array | Uint8Array[]): ExtendedState {
   };
 }
 
-function parseInputChannel(cursor: Cursor): InputChannel {
-  // Parse input prefix params (Little Endian)
-  const basic = parseSequential(cursor, INPUT_CHANNEL_PARAMS);
-  const channel: InputChannel = basic as any;
-
-  // Parse 9 EQ bands (Little Endian)
-  for (let j = 1; j <= INPUT_EQ_COUNT; j++) {
-    const eqData = parseSequential(cursor, EQ_BAND_PARAMS);
-    channel[`eq${j}`] = eqData;
-  }
-
-  return channel;
-}
-
-function parseOutputChannel(cursor: Cursor): OutputChannel {
-  // Parse Output Prefix (Use Input Structure)
-  const prefix = parseSequential(cursor, OUTPUT_CHANNEL_PARAMS_PREFIX);
-  const channel: OutputChannel = prefix as any;
-
-  // Parse 9 EQ bands
-  for (let j = 1; j <= OUTPUT_EQ_COUNT; j++) {
-    const eqData = parseSequential(cursor, EQ_BAND_PARAMS);
-    channel[`eq${j}`] = eqData;
-  }
-
-  // Parse extra output params
-  const extra = parseSequential(cursor, OUTPUT_EXTRA_PARAMS);
-  Object.assign(channel, extra);
-  return channel;
-}

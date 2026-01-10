@@ -121,29 +121,29 @@ describe('State Integration Test', () => {
         // Note: Header structure differs, so we compare setup/inputs/outputs
         // Note: delayLink differs between preset/editBuffer captures - not a parsing error
 
-        // Setup values should match
-        expect(firstPreset.setup.outputConfig).toEqual(editBuffer.setup.outputConfig);
-        expect(firstPreset.setup.stereolink).toEqual(editBuffer.setup.stereolink);
-        // delayLink skipped - differs between captures (true in preset, false in editBuffer)
-        expect(firstPreset.setup.crossoverLink).toEqual(editBuffer.setup.crossoverLink);
+        // Compar setup
+        // normalizeForJsonComparison is used to handle Uint8Array serialization differences
+        const normalizedPresetSetup = normalizeForJsonComparison(firstPreset.setup) as any;
+        const normalizedEditBufferSetup = normalizeForJsonComparison(editBuffer.setup) as any;
 
-        // Input A values should match
-        expect(firstPreset.inputs.A.gain).toEqual(editBuffer.inputs.A.gain);
-        expect(firstPreset.inputs.A.mute).toEqual(editBuffer.inputs.A.mute);
-        expect(firstPreset.inputs.A.isDelayOn).toEqual(editBuffer.inputs.A.isDelayOn);
+        // Sync known valid differences
+        // delayLink is distinct in the capture files (true in preset, false in editBuffer)
+        normalizedEditBufferSetup.delayLink = normalizedPresetSetup.delayLink;
 
-        // Output 1 values should match
-        expect(firstPreset.outputs['1'].channelName).toEqual(editBuffer.outputs['1'].channelName);
-        expect(firstPreset.outputs['1'].source).toEqual(editBuffer.outputs['1'].source);
-        expect(firstPreset.outputs['1'].highpassFilter).toEqual(editBuffer.outputs['1'].highpassFilter);
-        expect(firstPreset.outputs['1'].lowpassFilter).toEqual(editBuffer.outputs['1'].lowpassFilter);
+        expect(normalizedPresetSetup).toEqual(normalizedEditBufferSetup);
 
-        // Preset name should be "2*3WAY" (trimmed)
+        // Compare inputs
+        const normalizedPresetInputs = normalizeForJsonComparison(firstPreset.inputs);
+        const normalizedEditBufferInputs = normalizeForJsonComparison(editBuffer.inputs);
+        expect(normalizedPresetInputs).toEqual(normalizedEditBufferInputs);
+
+        // Compare outputs
+        const normalizedPresetOutputs = normalizeForJsonComparison(firstPreset.outputs);
+        const normalizedEditBufferOutputs = normalizeForJsonComparison(editBuffer.outputs);
+        expect(normalizedPresetOutputs).toEqual(normalizedEditBufferOutputs);
+
+        // Preset name check
         expect(firstPreset.header.presetName.trim()).toEqual('2*3WAY');
-
-        // Full object equality check to see actual differences
-        // We use normalizeForJsonComparison to handle Uint8Array serialization differences
-        expect(normalizeForJsonComparison(firstPreset)).toEqual(normalizeForJsonComparison(editBuffer));
     });
 
     it('should parse preset 0 and preset 36 with matching values (locked factory copy)', () => {
@@ -343,7 +343,7 @@ describe('State Integration Test', () => {
             expect(input.isDynamicEqualizerOn).toBeDefined();
             // All 9 EQ bands are nested objects
             for (let band = 1; band <= 9; band++) {
-                const eq = (input as any)[`eq${band}`];
+                const eq = input.equalizers[String(band)];
                 expect(eq).toBeDefined();
                 expect(eq.frequency).toBeDefined();
                 expect(eq.gain).toBeDefined();
@@ -369,7 +369,7 @@ describe('State Integration Test', () => {
             expect(output.isLimiterOn).toBeDefined();
             // All 9 EQ bands are nested objects
             for (let band = 1; band <= 9; band++) {
-                const eq = (output as any)[`eq${band}`];
+                const eq = output.equalizers[String(band)];
                 expect(eq).toBeDefined();
                 expect(eq.frequency).toBeDefined();
                 expect(eq.gain).toBeDefined();

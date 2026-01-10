@@ -1,28 +1,41 @@
-import {type Status} from './types/index.js';
+import { type Status } from './types/index.js';
 
-export function parseStatus(_data: Uint8Array): Status {
-  // Basic implementation of Status parsing (Msg Type 0x21)
-  // Assuming standard DCX structure:
-  // Data is usually not 7-bit encoded for Meters? Or is it?
-  // Meters are typically high rate, heavily optimized.
-  // But documentation says "All data ... 7-bit encoded".
+export function parseStatus(data: Uint8Array): Status {
+  const inputs: Array<{ name: string; level: number; isLimited: boolean }> = [];
+  const inputNames = ['A', 'B', 'C'];
 
-  // If input 'data' is the raw payload (after header):
-  // Let's assume standard decoding first.
+  for (let i = 0; i < inputNames.length; i++) {
+    const byteIndex = i + 8;
+    if (byteIndex < data.length) {
+      const value = data[byteIndex];
+      const level = value & ~0x20;
+      const isLimited = (value & 0x20) !== 0;
 
-  // Placeholder implementation to verify type compatibility first.
-  // The exact byte mapping requires reference.
-  // Inputs: A, B, C, Sum (4)
-  // Outputs: 1..6 (6)
-  // Structure:
-  // [InputLevels x4] [OutputLevels x6] [LimiterFlags] [FreeMem]
+      inputs.push({ name: inputNames[i], level, isLimited });
+    }
+  }
 
-  // For now, return empty/safe defaults to allow build to pass.
-  // Real logic needs to be verified against device.
+  const outputs: Array<{ name: string; level: number; isLimited: boolean }> = [];
+
+  for (let i = 0; i < 6; i++) {
+    const byteIndex = i + 11;
+    if (byteIndex < data.length) {
+      const value = data[byteIndex];
+      const level = value & ~0x20;
+      const isLimited = (value & 0x20) !== 0;
+
+      outputs.push({ name: String(i + 1), level, isLimited });
+    }
+  }
+
+  let free = 0;
+  if (21 < data.length) {
+    free = data[21];
+  }
 
   return {
-    inputs: [],
-    outputs: [],
-    free: 100,
+    inputs,
+    outputs,
+    free,
   };
 }
