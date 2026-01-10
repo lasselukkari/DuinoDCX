@@ -6,6 +6,7 @@ export type Command = {
     min?: number;
     max?: number;
     step?: number;
+    paramNumber?: number;
 };
 export declare const setupCommands: Command[];
 export declare const inputOutputCommands: Command[];

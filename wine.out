@@ -303,3 +303,10 @@
 	VK_KHR_external_memory_capabilities v1
 	VK_KHR_get_physical_device_properties2 v2
 wineserver crashed, please enable coredumps (ulimit -c unlimited) and restart.
+00c4:err:hid:handle_DeviceMatchingCallback Ignoring HID device 0x7f8327104280 (vid 05ac, pid 8600): not a joystick or gamepad
+00c4:err:hid:handle_DeviceMatchingCallback Ignoring HID device 0x7f8322708380 (vid 05ac, pid 027e): not a joystick or gamepad
+00c4:err:hid:handle_DeviceMatchingCallback Ignoring HID device 0x7f8323208280 (vid 05ac, pid 027e): not a joystick or gamepad
+00c4:err:hid:handle_DeviceMatchingCallback Ignoring HID device 0x7f8327004470 (vid 05ac, pid 027e): not a joystick or gamepad
+00c4:err:hid:handle_DeviceMatchingCallback Ignoring HID device 0x7f8323404ac0 (vid 05ac, pid 027e): not a joystick or gamepad
+00c4:err:hid:handle_DeviceMatchingCallback Ignoring HID device 0x7f8323504280 (vid 05ac, pid 027e): not a joystick or gamepad
+00c4:err:hid:handle_DeviceMatchingCallback Ignoring HID device 0x7f83227086e0 (vid 05ac, pid 8600): not a joystick or gamepad

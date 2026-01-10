@@ -16,15 +16,15 @@ export type ParameterDefinition = Command & {
   key: string;
   /** Target location in state */
   target:
-    | {kind: 'setup'}
-    | {kind: 'channel'; group: 'inputs' | 'outputs'; id: string}
-    | {
-        kind: 'equalizer';
-        group: 'inputs' | 'outputs';
-        channelId: string;
-        band: number;
-        channelIdProp?: string;
-      };
+  | { kind: 'setup' }
+  | { kind: 'channel'; group: 'inputs' | 'outputs'; id: string }
+  | {
+    kind: 'equalizer';
+    group: 'inputs' | 'outputs';
+    channelId: string;
+    band: number;
+    channelIdProp?: string;
+  };
 };
 
 /** Lookup key for direct command */
@@ -67,14 +67,18 @@ function buildDirectLookup(): Map<DirectKey, ParameterDefinition> {
   // Channel 5-10 = Outputs (1-6)
 
   // 1. Setup Parameters (Channel 0)
-  for (const [i, cmd] of setupCommands.entries()) {
+  for (const cmd of setupCommands) {
+    if (cmd.paramNumber === undefined) {
+      continue;
+    }
+
     // Setup params (2..16)
-    const parameterNumber = i + 2;
+    const parameterNumber = cmd.paramNumber;
 
     const def: ParameterDefinition = {
       ...cmd,
       key: toCamelCase(cmd.name),
-      target: {kind: 'setup'},
+      target: { kind: 'setup' },
     };
     lookup.set(makeDirectKey(0, parameterNumber), def);
   }
@@ -100,13 +104,17 @@ function buildDirectLookup(): Map<DirectKey, ParameterDefinition> {
     }
 
     // Channel params: 2-18 (inputOutputCommands)
-    for (const [i, cmd] of inputOutputCommands.entries()) {
-      const parameterNumber = i + 2;
+    for (const cmd of inputOutputCommands) {
+      if (cmd.paramNumber === undefined) {
+        continue;
+      }
+
+      const parameterNumber = cmd.paramNumber;
 
       const def: ParameterDefinition = {
         ...cmd,
         key: toCamelCase(cmd.name),
-        target: {kind: 'channel', group, id: channelId},
+        target: { kind: 'channel', group, id: channelId },
       };
       lookup.set(makeDirectKey(ch, parameterNumber), def);
     }
@@ -115,8 +123,14 @@ function buildDirectLookup(): Map<DirectKey, ParameterDefinition> {
     // Equalizer params: 19-63 (9 bands × equalizerCommands)
     // equalizerCommands should have 5 items (Freq, Q, Gain, Type, Shelving)
     for (let band = 0; band < EQUALIZER_BANDS; band++) {
-      for (const [i, cmd] of equalizerCommands.entries()) {
-        const parameterNumber = 19 + band * 5 + i;
+      for (const cmd of equalizerCommands) {
+        if (cmd.paramNumber === undefined) {
+          continue;
+        }
+
+        // cmd.paramNumber is 0x13..0x17 (base offset)
+        // paramNumber = base + band * 5
+        const parameterNumber = cmd.paramNumber + band * 5;
 
         const def: ParameterDefinition = {
           ...cmd,
@@ -135,13 +149,17 @@ function buildDirectLookup(): Map<DirectKey, ParameterDefinition> {
 
     // Output-only params: 64+
     if (group === 'outputs') {
-      for (const [i, cmd] of outputCommands.entries()) {
-        const parameterNumber = 64 + i;
+      for (const cmd of outputCommands) {
+        if (cmd.paramNumber === undefined) {
+          continue;
+        }
+
+        const parameterNumber = cmd.paramNumber;
 
         const def: ParameterDefinition = {
           ...cmd,
           key: toCamelCase(cmd.name),
-          target: {kind: 'channel', group: 'outputs', id: channelId},
+          target: { kind: 'channel', group: 'outputs', id: channelId },
         };
         lookup.set(makeDirectKey(ch, parameterNumber), def);
       }
@@ -230,7 +248,7 @@ export function applyToState(
   def: ParameterDefinition,
   value: boolean | string | number,
 ): void {
-  const {target, key} = def;
+  const { target, key } = def;
 
   switch (target.kind) {
     case 'setup': {
@@ -259,7 +277,7 @@ export function applyToState(
         if (channel[eqKey]) {
           channel[eqKey][key] = value;
         } else {
-          channel[eqKey] = {[key]: value};
+          channel[eqKey] = { [key]: value };
         }
       }
 
