@@ -12,39 +12,6 @@
   "files": [
     "dist/"
   ],
-  "devDependencies": {
-    "@types/lodash.clonedeep": "^4.5.9",
-    "@types/lodash.isequal": "^4.5.8",
-    "@types/node": "^25.0.3",
-    "@types/react": "^19.2.7",
-    "@types/react-dom": "^19.2.3",
-    "@vitejs/plugin-react": "^5.1.2",
-    "bootswatch": "^5.3.3",
-    "compare-versions": "^6.1.0",
-    "dcx-parser": "file:../dcx-parser-new",
-    "eslint-config-xo-react": "^0.29.0",
-    "eslint-import-resolver-webpack": "^0.13.8",
-    "eslint-plugin-babel": "^5.3.1",
-    "eslint-plugin-react": "^7.33.2",
-    "lodash.clonedeep": "^4.5.0",
-    "lodash.isequal": "^4.5.0",
-    "mathjs": "^15.1.0",
-    "prettier": "^3.2.5",
-    "rc-slider": "^11.1.9",
-    "rc-tooltip": "^6.1.3",
-    "react": "^19.2.3",
-    "react-bootstrap": "^2.10.1",
-    "react-dom": "^19.2.3",
-    "react-dropzone": "^14.2.3",
-    "react-icons": "^5.0.1",
-    "react-toastify": "^11.0.5",
-    "recharts": "^3.6.0",
-    "typescript": "^5.9.3",
-    "vite": "^7.3.0",
-    "vite-plugin-node-polyfills": "^0.24.0",
-    "vitest": "^4.0.16",
-    "xo": "^1.2.3"
-  },
   "scripts": {
     "start": "vite",
     "type-check": "tsc --noEmit",
@@ -53,6 +20,42 @@
     "test": "vitest",
     "lint": "xo",
     "lint:fix": "xo --fix"
+  },
+  "dependencies": {
+    "@tanstack/react-router": "^1.145.7",
+    "bootswatch": "^5.3.3",
+    "compare-versions": "^6.1.0",
+    "dcx-parser": "file:../dcx-parser",
+    "lodash.clonedeep": "^4.5.0",
+    "lodash.isequal": "^4.5.0",
+    "mathjs": "^15.1.0",
+    "rc-slider": "^11.1.9",
+    "rc-tooltip": "^6.1.3",
+    "react": "^19.2.3",
+    "react-bootstrap": "^2.10.1",
+    "react-dom": "^19.2.3",
+    "react-dropzone": "^14.2.3",
+    "react-icons": "^5.0.1",
+    "react-toastify": "^11.0.5",
+    "recharts": "^3.6.0"
+  },
+  "devDependencies": {
+    "@types/lodash.clonedeep": "^4.5.9",
+    "@types/lodash.isequal": "^4.5.8",
+    "@types/node": "^25.0.3",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.1.2",
+    "eslint-config-xo-react": "^0.29.0",
+    "eslint-import-resolver-webpack": "^0.13.8",
+    "eslint-plugin-babel": "^5.3.1",
+    "eslint-plugin-react": "^7.33.2",
+    "prettier": "^3.2.5",
+    "typescript": "^5.9.3",
+    "vite": "^7.3.0",
+    "vite-plugin-node-polyfills": "^0.24.0",
+    "vitest": "^4.0.16",
+    "xo": "^1.2.3"
   },
   "xo": {
     "space": true,
@@ -66,18 +69,10 @@
     }
   },
   "proxy": "http://localhost:3000/",
-  "renovate": {
-    "extends": [
-      "config:base"
-    ]
-  },
   "browserslist": [
     ">0.2%",
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ],
-  "dependencies": {
-    "@tanstack/react-router": "^1.145.7"
-  }
+  ]
 }

@@ -7,11 +7,11 @@ import ProgressBar from 'react-bootstrap/ProgressBar';
 import Badge from 'react-bootstrap/Badge';
 import { toast } from 'react-toastify';
 import {
-  useDcxBackup,
-  useDcxFile,
   isValidDcxFile,
   type PresetEntry,
 } from 'dcx-parser';
+import { useDcxBackup } from '../hooks/use-dcx-backup.js';
+import { useDcxFile } from '../hooks/use-dcx-file.js';
 import { useDcxConnection } from '../connection/connection-context.js';
 
 function Presets() {

@@ -1,12 +1,8 @@
-# DuinoDCX Developer Guide
-
-This document explains the project structure and how preset/protocol operations work.
-
-## Running DCX-Remote.exe on macOS (Wine + Serial Proxy)
+# Running DCX-Remote.exe on macOS (Wine + Serial Proxy)
 
 To capture protocol traffic from the original Windows DCX-Remote software:
 
-### Prerequisites
+## Prerequisites
 
 1. Install Wine:
    ```bash
@@ -18,7 +14,7 @@ To capture protocol traffic from the original Windows DCX-Remote software:
    pip install pyserial
    ```
 
-### Step 1: Start the Serial Proxy (Unbuffered)
+## Step 1: Start the Serial Proxy (Unbuffered)
 
 The proxy creates a virtual serial port that logs all traffic:
 
@@ -35,7 +31,7 @@ To create a symlink for Wine:
     ln -sf /dev/ttys006 ~/.wine/dosdevices/com1
 ```
 
-### Step 2: Read the Virtual Port from the Log
+## Step 2: Read the Virtual Port from the Log
 
 ```bash
 cat proxy_output.txt
@@ -46,7 +42,7 @@ Look for:
 Virtual port created: /dev/ttysXXX
 ```
 
-### Step 3: Create Wine COM Port Symlink
+## Step 3: Create Wine COM Port Symlink
 
 In a **new terminal** (keep proxy running):
 
@@ -57,7 +53,7 @@ ln -sf /dev/ttys006 ~/.wine/dosdevices/com1
 
 > ⚠️ The virtual port path (`/dev/ttys006`) varies each time. Check the proxy output.
 
-### Step 4: Launch DCX-Remote in Wine
+## Step 4: Launch DCX-Remote in Wine
 
 ```bash
 wine ./DCX2496_V1_16/DCX2496_V1_16/DCX-Remote.exe > wine.out 2>&1 &
@@ -68,7 +64,7 @@ In DCX-Remote:
 2. The device should connect automatically
 3. All traffic is now logged to `capture.log`
 
-### Example Session
+## Example Session
 
 ```bash
 # Terminal 1: Start proxy (unbuffered, keep running)
@@ -83,24 +79,3 @@ wine ./DCX2496_V1_16/DCX2496_V1_16/DCX-Remote.exe > wine.out 2>&1 &
 # Press Ctrl+C in Terminal 1 when done
 ```
 
----
-
-## Useful Files
-
-| File | Purpose |
-|------|---------|
-| `serial_proxy.py` | Virtual serial port proxy with logging |
-| `new_restore.log` | Reference capture of successful restore operation |
-| `test_checksum.py` | Validates checksum algorithm against captured packets |
-| `protocol_findings.md` | Complete protocol documentation |
-| `checksum.md` | Detailed checksum reverse engineering notes |
-| `preset_manager.py` | Python interface for preset operations |
-
----
-
-## SysEx Protocol Summary
-
-See `protocol_findings.md` for complete documentation including:
-- Command structure and IDs
-- Checksum calculation (non-standard algorithm)
-- Write protocol for restoring .dcx files

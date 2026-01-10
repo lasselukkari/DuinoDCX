@@ -2,7 +2,8 @@ import React from 'react';
 import Button from 'react-bootstrap/Button';
 import ProgressBar from 'react-bootstrap/ProgressBar';
 import { toast } from 'react-toastify';
-import { useDcxBackup, useDcxRestore } from 'dcx-parser';
+import { useDcxBackup } from '../hooks/use-dcx-backup.js';
+import { useDcxRestore } from '../hooks/use-dcx-restore.js';
 import { useDcxConnection } from '../connection/connection-context.js';
 
 type Props = {

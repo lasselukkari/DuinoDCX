@@ -4,6 +4,7 @@
 #   build     - Build UI and generate StaticFiles.h
 #   restart   - Rebuild backend and restart server
 #   full      - Full rebuild (UI + backend) and restart
+#   wine      - Start Serial Proxy and DCX-Remote in Wine
 #   help      - Show this help
 
 set -e
@@ -76,6 +77,108 @@ start_server() {
     fi
 }
 
+
+# Run Wine with Serial Proxy
+
+# Run Wine with Serial Proxy
+
+# Run Wine with Serial Proxy
+run_wine() {
+    # Disable monitor mode to suppress "Terminated" messages
+    set +m
+    
+    log_info "Starting Serial Proxy and Wine..."
+    
+    # Check for venv
+    if [ ! -d "$PROJECT_ROOT/venv" ]; then
+        log_error "Python venv not found at $PROJECT_ROOT/venv"
+        log_info "Please set it up first (see README.md)"
+        exit 1
+    fi
+
+    # Cleanup previous instances
+    pkill -f serial_proxy.py || true
+    pkill -f "DCX-Remote.exe" || true
+
+    # Define cleanup function
+    cleanup() {
+        log_info "Shutting down..."
+        trap - SIGINT SIGTERM EXIT # Disable trap to prevent recursion
+        
+        if [ -n "$PROXY_PID" ]; then
+            log_info "Killing Serial Proxy (PID: $PROXY_PID)..."
+            kill $PROXY_PID 2>/dev/null || true
+        fi
+        
+        if [ -n "$WINE_PID" ]; then
+             log_info "Killing Wine (PID: $WINE_PID)..."
+             kill $WINE_PID 2>/dev/null || true
+        fi
+        
+        # Fallback force kill
+        pkill -P $$ || true
+        pkill -f serial_proxy.py || true
+        pkill -f "DCX-Remote.exe" || true
+    }
+    
+    # Set trap for cleanup on exit or interrupt
+    trap cleanup EXIT INT TERM
+
+    # Start Proxy
+    log_info "Starting serial_proxy.py..."
+    PROXY_LOG="$PROJECT_ROOT/proxy_init.log"
+    rm -f "$PROXY_LOG"
+    
+    cd "$PROJECT_ROOT"
+    ./venv/bin/python3 -u serial_proxy.py "$SERIAL_PORT" --log capture.log > "$PROXY_LOG" 2>&1 &
+    PROXY_PID=$!
+
+    # Wait for virtual port
+    log_info "Waiting for virtual port..."
+    start_time=$(date +%s)
+    VIRTUAL_PORT=""
+    
+    while [ -z "$VIRTUAL_PORT" ]; do
+        if [ ! -d "/proc/$PROXY_PID" ] && ! kill -0 $PROXY_PID 2>/dev/null; then
+            log_error "Serial proxy died unexpectedly:"
+            cat "$PROXY_LOG"
+            exit 1
+        fi
+        
+        # Check timeout (10s)
+        current_time=$(date +%s)
+        if [ $((current_time - start_time)) -gt 10 ]; then
+             log_error "Timeout waiting for virtual port."
+             cat "$PROXY_LOG"
+             exit 1
+        fi
+
+        # Try to grep the port
+        if grep -q "Virtual port created:" "$PROXY_LOG"; then
+            VIRTUAL_PORT=$(grep "Virtual port created:" "$PROXY_LOG" | awk '{print $NF}')
+        fi
+        sleep 0.5
+    done
+    
+    log_success "Virtual port detected: $VIRTUAL_PORT"
+
+    # Create Symlink
+    mkdir -p ~/.wine/dosdevices
+    ln -sf "$VIRTUAL_PORT" ~/.wine/dosdevices/com1
+    log_success "Linked $VIRTUAL_PORT to ~/.wine/dosdevices/com1"
+
+    # Start Wine (Backgrounded)
+    log_info "Launching DCX-Remote.exe..."
+    log_info "Press Ctrl+C to stop everything."
+    wine "$PROJECT_ROOT/DCX2496_V1_16/DCX2496_V1_16/DCX-Remote.exe" > "$PROJECT_ROOT/wine.out" 2>&1 &
+    WINE_PID=$!
+    
+    # Wait for Wine process
+    wait $WINE_PID
+    
+    log_success "DCX-Remote exited."
+}
+
 # Show usage
 show_help() {
     echo "DuinoDCX Development Script"
@@ -86,6 +189,7 @@ show_help() {
     echo "  build     Build UI and generate StaticFiles.h"
     echo "  restart   Rebuild backend and restart server (no UI rebuild)"
     echo "  full      Full rebuild (UI + backend) and restart server"
+    echo "  wine      Start Serial Proxy and DCX-Remote in Wine"
     echo "  help      Show this help"
     echo ""
     echo "Environment:"
@@ -94,6 +198,7 @@ show_help() {
     echo "Examples:"
     echo "  ./dev.sh full                    # Full rebuild and start"
     echo "  ./dev.sh restart                 # Quick backend rebuild"
+    echo "  ./dev.sh wine                    # Run DCX-Remote via Wine"
     echo "  DCX_SERIAL_PORT=/dev/cu.usbserial-ABC ./dev.sh full"
 }
 
@@ -112,6 +217,9 @@ case "${1:-help}" in
         stop_server
         build_backend
         start_server
+        ;;
+    wine)
+        run_wine
         ;;
     help|--help|-h)
         show_help

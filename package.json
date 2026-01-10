@@ -4,6 +4,7 @@
   "version": "0.0.39",
   "author": "Lasse Lukkari <lasse.lukkari@gmai.com>",
   "contributors": [
+    "Lasse Lukkari",
     "Ilkka Huhtakallio"
   ],
   "repository": "github:lasselukkari/DuinoDCX",
@@ -13,9 +14,7 @@
   },
   "dependencies": {},
   "scripts": {
-    "build": "npm run build --prefix dcx-ui && awot-static",
-    "flash": "awot-command-line",
-    "upload": "awot-static && awot-command-line"
+    "build": "npm run build --prefix dcx-ui && awot-static"
   },
   "awot-static": {
     "sources": "./dcx-ui/dist",
@@ -24,22 +23,6 @@
     "exclude": [
       "*.map",
       "service-worker.js"
-    ]
-  },
-  "awot-command-line": {
-    "sketch": "DuinoDCX/DuinoDCX.ino",
-    "idePath": "/Applications/Arduino.app/Contents/MacOS/arduino",
-    "port": "/dev/cu.Repleo-PL2303-00002014",
-    "board": {
-      "package": "esp32",
-      "arch": "esp32",
-      "board": "esp32"
-    },
-    "action": "upload"
-  },
-  "renovate": {
-    "extends": [
-      "config:base"
     ]
   }
 }

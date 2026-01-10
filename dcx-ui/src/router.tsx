@@ -8,7 +8,8 @@ import {
 } from '@tanstack/react-router';
 import { useState, useEffect, createContext, useContext, useMemo } from 'react';
 import { ToastContainer } from 'react-toastify';
-import { useDcxState, parseMessage, parseStatus, State } from 'dcx-parser';
+import { parseMessage, parseStatus, State } from 'dcx-parser';
+import { useDcxState } from './hooks/use-dcx-state.js';
 import ConfigNavigation from './config-navigation.js';
 import DeviceNavigation from './device-navigation.js';
 import Inputs from './inputs.js';

@@ -13,7 +13,7 @@ export default defineConfig({
     alias: {
       react: path.resolve(__dirname, 'node_modules/react'),
       'react-dom': path.resolve(__dirname, 'node_modules/react-dom'),
-      'dcx-parser': path.resolve(__dirname, '../dcx-parser-new/src/index.ts'),
+      'dcx-parser': path.resolve(__dirname, '../dcx-parser/src/index.ts'),
     },
   },
   server: {
