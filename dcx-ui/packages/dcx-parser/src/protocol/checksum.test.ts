@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest';
-import { calculateChecksum, verifyChecksum } from './checksum.js';
+import {describe, it, expect} from 'vitest';
+import {calculateChecksum, verifyChecksum} from './checksum.js';
 
 describe('checksum', () => {
   describe('calculateChecksum', () => {
@@ -19,7 +19,7 @@ describe('checksum', () => {
     });
 
     it('should handle empty data', () => {
-      // sum = 0
+      // Sum = 0
       // ~0 & 0x7F = 127
       expect(calculateChecksum(new Uint8Array([]))).toBe(127);
     });
@@ -32,24 +32,34 @@ describe('checksum', () => {
       const data = new Uint8Array([0x01, 0x02, 0x03, 0x00]);
       const checksum = calculateChecksum(data);
 
-      const msg = new Uint8Array([
-        0xf0, 0x00, 0x20, 0x32, 0x00, 0x0e, 0x10, // Header (7)
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00,       // Padding (6) - total 13
+      const message = new Uint8Array([
+        0xf0,
+        0x00,
+        0x20,
+        0x32,
+        0x00,
+        0x0e,
+        0x10, // Header (7)
+        0x00,
+        0x00,
+        0x00,
+        0x00,
+        0x00,
+        0x00, // Padding (6) - total 13
         ...data,
         checksum,
-        0xf7
+        0xf7,
       ]);
 
-      expect(verifyChecksum(msg)).toBe(true);
+      expect(verifyChecksum(message)).toBe(true);
     });
 
     it('should return false for invalid checksum', () => {
-      const msg = new Uint8Array([
-        0xf0, 0x00, 0x20, 0x32, 0x00, 0x0e, 0x10,
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x01, 0x02, 0x03, 0xff, 0xf7
+      const message = new Uint8Array([
+        0xf0, 0x00, 0x20, 0x32, 0x00, 0x0e, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x01, 0x02, 0x03, 0xff, 0xf7,
       ]);
-      expect(verifyChecksum(msg)).toBe(false);
+      expect(verifyChecksum(message)).toBe(false);
     });
 
     it('should return false for too short message', () => {

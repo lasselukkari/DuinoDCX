@@ -1,10 +1,10 @@
-import {compareVersions} from 'compare-versions';
-import React, {useState, useEffect, useCallback} from 'react';
+import { compareVersions } from 'compare-versions';
+import { useState, useEffect, useCallback } from 'react';
 import Button from 'react-bootstrap/Button';
 import Dropzone from 'react-dropzone';
 import ProgressBar from 'react-bootstrap/ProgressBar';
 import Spinner from 'react-bootstrap/Spinner';
-import {toast} from 'react-toastify';
+import { toast } from 'react-toastify';
 
 type UploadProps = Record<string, never>;
 
@@ -15,7 +15,7 @@ type Version = {
 
 type Release = {
   tag_name: string;
-  assets: Array<{name: string; browser_download_url?: string}>;
+  assets: Array<{ name: string; browser_download_url?: string }>;
 };
 
 function Upload(_props: UploadProps) {
@@ -107,7 +107,7 @@ function Upload(_props: UploadProps) {
         return (
           <ProgressBar
             animated
-            style={{height: '20px'}}
+            style={{ height: '20px' }}
             variant="info"
             now={percent}
             label={`${percent ? percent.toFixed(2) : 0}%`}
@@ -206,7 +206,7 @@ function Upload(_props: UploadProps) {
   return (
     <div>
       <Dropzone multiple={false} onDrop={handleDrop}>
-        {({getRootProps, getInputProps}) => (
+        {({ getRootProps, getInputProps }) => (
           <div
             style={{
               width: '100%',

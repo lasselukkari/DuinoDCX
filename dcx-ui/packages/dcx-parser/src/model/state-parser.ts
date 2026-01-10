@@ -7,15 +7,9 @@
  * - Preset data (from .dcx files)
  */
 
-import type { State } from '../types/index.js';
-import {
-  byteLookup,
-  convertValue,
-  applyToState,
-} from './param-lookup.js';
-import {
-  createEmptyState,
-} from './helpers.js';
+import type {State, Status} from '../types/index.js';
+import {byteLookup, convertValue, applyToState} from './param-lookup.js';
+import {createEmptyState} from './helpers.js';
 
 // ============================================================================
 // Types
@@ -87,20 +81,24 @@ function readRawValue(
   return value;
 }
 
-function readString(source: DataSource, index: number, maxLength: number): string {
-  let str = '';
+function readString(
+  source: DataSource,
+  index: number,
+  maxLength: number,
+): string {
+  let string_ = '';
   for (let i = 0; i < maxLength; i++) {
     const charCode = source.readByte(index + i);
     if (charCode === 0) break;
-    str += String.fromCharCode(charCode);
+    string_ += String.fromCharCode(charCode);
   }
-  return str.trim();
+
+  return string_.trim();
 }
 
 // ============================================================================
 // State Initialization
 // ============================================================================
-
 
 // ============================================================================
 // Parsing
@@ -149,4 +147,29 @@ export function parseEditBuffer(part0: Uint8Array, part1: Uint8Array): State {
  */
 export function parsePresetData(data: Uint8Array): State {
   return parseState(fromPreset(data));
+}
+
+/**
+ * Parse status (metering) data from a ping response.
+ */
+export function parseStatus(pingResponse: Uint8Array): Status {
+  const inputs = ['A', 'B', 'C'].map((name, index) => {
+    const data = pingResponse[index + 8];
+    const level = data & 0x1f;
+    const isLimited = (data & 0x20) !== 0;
+
+    return {name, level, isLimited};
+  });
+
+  const outputs = ['1', '2', '3', '4', '5', '6'].map((name, index) => {
+    const data = pingResponse[index + 11];
+    const level = data & 0x1f;
+    const isLimited = (data & 0x20) !== 0;
+
+    return {name, level, isLimited};
+  });
+
+  const free = pingResponse[21];
+
+  return {inputs, outputs, free};
 }

@@ -26,4 +26,4 @@ export declare function calculateChecksum(data: Uint8Array): number;
  * @returns true if checksum is valid
  */
 export declare function verifyChecksum(packet: Uint8Array): boolean;
-//# sourceMappingURL=checksum.d.ts.map
+// # sourceMappingURL=checksum.d.ts.map

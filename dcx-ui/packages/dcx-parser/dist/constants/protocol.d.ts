@@ -27,4 +27,4 @@ export declare const COMMAND_BYTE_INDEX = 6;
 export declare const PART_BYTE_INDEX = 12;
 export declare const PART_0 = 0;
 export declare const PART_1 = 1;
-//# sourceMappingURL=protocol.d.ts.map
+// # sourceMappingURL=protocol.d.ts.map

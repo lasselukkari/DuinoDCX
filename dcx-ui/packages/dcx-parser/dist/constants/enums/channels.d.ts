@@ -1,2 +1,2 @@
 export declare const CHANNELS: string[];
-//# sourceMappingURL=channels.d.ts.map
+// # sourceMappingURL=channels.d.ts.map

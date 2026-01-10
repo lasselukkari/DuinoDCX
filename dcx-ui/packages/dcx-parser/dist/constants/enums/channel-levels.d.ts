@@ -1,2 +1,2 @@
-export declare const CHANNEL_LEVELS: (number | undefined)[];
-//# sourceMappingURL=channel-levels.d.ts.map
+export declare const CHANNEL_LEVELS: number[];
+// # sourceMappingURL=channel-levels.d.ts.map

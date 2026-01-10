@@ -1,16 +1,16 @@
-import {memo} from 'react';
+import { memo } from 'react';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import isEqual from 'lodash.isequal';
-import pc from './parameters/index.tsx';
-import {type Setup} from './dcx2496/parser.ts';
+import { setup as setupParameters } from './parameters/index.tsx';
+import { type Setup } from 'dcx-parser';
 
 type Props = {
   readonly setup: Setup;
 };
 
-function InputRouting({setup}: Props) {
+function InputRouting({ setup }: Props) {
   const {
     inputABSource,
     inputCGain,
@@ -28,13 +28,13 @@ function InputRouting({setup}: Props) {
         <Card.Body>
           <Row>
             <Col xs={12} sm={4}>
-              <pc.InputABSource hasLabel value={inputABSource} />
+              <setupParameters.InputABSource hasLabel value={inputABSource ?? ''} />
             </Col>
             <Col xs={12} sm={4}>
-              <pc.InputCGain hasLabel value={inputCGain} />
+              <setupParameters.InputCGain hasLabel value={inputCGain ?? ''} />
             </Col>
             <Col xs={12} sm={4}>
-              <pc.StereolinkMode hasLabel value={stereolinkMode} />
+              <setupParameters.StereolinkMode hasLabel value={stereolinkMode ?? ''} />
             </Col>
           </Row>
         </Card.Body>
@@ -42,10 +42,10 @@ function InputRouting({setup}: Props) {
       <Card>
         <Card.Header>Sum Setup</Card.Header>
         <Card.Body>
-          <pc.InputSumType hasLabel value={inputSumType} />
-          <pc.InputASumGain hasLabel value={inputASumGain} />
-          <pc.InputBSumGain hasLabel value={inputBSumGain} />
-          <pc.InputCSumGain hasLabel value={inputCSumGain} />
+          <setupParameters.InputSumType hasLabel value={inputSumType ?? ''} />
+          <setupParameters.InputASumGain hasLabel value={inputASumGain ?? 0} />
+          <setupParameters.InputBSumGain hasLabel value={inputBSumGain ?? 0} />
+          <setupParameters.InputCSumGain hasLabel value={inputCSumGain ?? 0} />
         </Card.Body>
       </Card>
     </div>

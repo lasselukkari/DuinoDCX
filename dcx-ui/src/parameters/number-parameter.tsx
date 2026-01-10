@@ -6,6 +6,7 @@ import Modal from 'react-bootstrap/Modal';
 import Slider from 'rc-slider';
 import {FaPlus, FaMinus} from 'react-icons/fa';
 import 'rc-slider/assets/index.css';
+import type {ParameterTarget} from 'dcx-parser';
 import {useSendCommand} from '../hooks/use-send-command.js';
 import './NumberParameter.css';
 
@@ -15,12 +16,9 @@ type Props = {
   readonly min: number;
   readonly max: number;
   readonly step: number;
-  readonly param: string;
   readonly name: string;
+  readonly target: ParameterTarget;
   readonly formatter?: (value: number, unit?: string) => string;
-  readonly group?: string;
-  readonly channelId?: string;
-  readonly eq?: string;
   readonly hasLabel?: boolean;
   readonly labelFormatter?: (value: number, unit?: string) => string;
 };
@@ -42,11 +40,8 @@ export function NumberParameter({
   min,
   max,
   step,
+  target,
   hasLabel = false,
-  param,
-  group = undefined,
-  channelId = undefined,
-  eq = undefined,
   formatter = defaultFormatter,
   labelFormatter = defaultLabelFormatter,
 }: Props) {
@@ -90,14 +85,14 @@ export function NumberParameter({
       setPendingValue(newValue);
       setShowModal(true);
     } else {
-      void sendCommand({param, group, channelId, eq, value: newValue});
+      void sendCommand(target, newValue);
       setMoving(false);
     }
   };
 
   const handleModalConfirm = () => {
     if (pendingValue !== undefined) {
-      void sendCommand({param, group, channelId, eq, value: pendingValue});
+      void sendCommand(target, pendingValue);
     }
 
     setShowModal(false);
@@ -115,14 +110,14 @@ export function NumberParameter({
   const handleReduction = () => {
     if (value - step >= min) {
       const newValue = value - step;
-      void sendCommand({param, group, channelId, eq, value: newValue});
+      void sendCommand(target, newValue);
     }
   };
 
   const handleAddition = () => {
     if (value + step <= max) {
       const newValue = value + step;
-      void sendCommand({param, group, channelId, eq, value: newValue});
+      void sendCommand(target, newValue);
     }
   };
 

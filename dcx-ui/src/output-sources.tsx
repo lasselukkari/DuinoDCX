@@ -1,4 +1,4 @@
-import {memo} from 'react';
+import { memo } from 'react';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
@@ -11,25 +11,23 @@ type ChannelData = {
 
 type OutputSourcesProps = {
   readonly channels: Record<string, ChannelData>;
-  readonly group: string;
 };
 
-function OutputSources({channels, group}: OutputSourcesProps) {
+function OutputSources({ channels }: OutputSourcesProps) {
   return (
     <Card>
       <Card.Header>Output Source</Card.Header>
       <Card.Body>
         <Row>
           {Object.keys(channels).map((channelId) => {
-            const {channelName, source} = channels[channelId];
+            const { channelName, source } = channels[channelId];
             return (
               <Col key={channelId} sm={4} xs={12}>
                 <OutputSource
                   key={channelId}
-                  group={group}
                   channelId={channelId}
                   channelName={channelName}
-                  source={source}
+                  source={String(source ?? '')}
                 />
               </Col>
             );

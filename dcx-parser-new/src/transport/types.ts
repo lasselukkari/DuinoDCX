@@ -11,20 +11,20 @@
 /**
  * Bidirectional connection to a DCX2496 device.
  */
-export interface DcxConnection {
-    /**
-     * Send a SysEx message to the device.
-     */
-    send(data: Uint8Array): Promise<void>;
+export type DcxConnection = {
+  /**
+   * Send a SysEx message to the device.
+   */
+  send(data: Uint8Array): Promise<void>;
 
-    /**
-     * Register a callback for incoming messages.
-     * Returns an unsubscribe function.
-     */
-    onMessage(callback: (data: Uint8Array) => void): () => void;
+  /**
+   * Register a callback for incoming messages.
+   * Returns an unsubscribe function.
+   */
+  onMessage(callback: (data: Uint8Array) => void): () => void;
 
-    /**
-     * Close the connection (optional).
-     */
-    close?(): Promise<void>;
-}
+  /**
+   * Close the connection (optional).
+   */
+  close?(): Promise<void>;
+};

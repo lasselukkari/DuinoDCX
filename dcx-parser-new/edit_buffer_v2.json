@@ -1,0 +1,3040 @@
+{
+  "header": {
+    "xpcrSignature": "XPCR",
+    "xpcrVersion": 1,
+    "xpcrExtension": {
+      "0": 17,
+      "1": 1,
+      "2": 94,
+      "3": 6,
+      "4": 0,
+      "5": 0
+    },
+    "xprbSignature": "XPRB",
+    "xprbVersion": 1,
+    "xprbExtension": {
+      "0": 17,
+      "1": 1,
+      "2": 26,
+      "3": 0,
+      "4": 0,
+      "5": 0
+    },
+    "deviceName": "DCX2496 ",
+    "deviceNamePadding": {
+      "0": 32,
+      "1": 32,
+      "2": 32,
+      "3": 32,
+      "4": 32,
+      "5": 32,
+      "6": 32,
+      "7": 32
+    },
+    "signatureBytes": {
+      "0": 167,
+      "1": 175,
+      "2": 173,
+      "3": 189
+    },
+    "xcurSignature": "XCUR",
+    "xcurVersion": 1,
+    "xcurExtension": {
+      "0": 17,
+      "1": 1,
+      "2": 252,
+      "3": 5,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0,
+      "8": 0,
+      "9": 0,
+      "10": 0,
+      "11": 0
+    },
+    "presetName": "A       ",
+    "presetNamePadding": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 2,
+      "5": 0,
+      "6": 1,
+      "7": 0,
+      "8": 1,
+      "9": 0,
+      "10": 0,
+      "11": 0,
+      "12": 0,
+      "13": 0,
+      "14": 2,
+      "15": 0
+    },
+    "headerReserved": {
+      "0": 0,
+      "1": 0,
+      "2": 1,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 45,
+      "7": 0
+    }
+  },
+  "setup": {
+    "delayUnits": {
+      "raw": 0,
+      "value": "mm"
+    },
+    "muteOutsWhenPowered": {
+      "raw": 0,
+      "value": false
+    },
+    "outputConfig": {
+      "raw": 0,
+      "value": "mono"
+    },
+    "inputSumType": {
+      "raw": 2,
+      "value": "B"
+    },
+    "inputABSource": {
+      "raw": 1,
+      "value": "AES/EBU"
+    },
+    "inputCGain": {
+      "raw": 1,
+      "value": "Mic"
+    },
+    "stereolink": {
+      "raw": 0,
+      "value": false
+    },
+    "stereolinkMode": {
+      "raw": 2,
+      "value": "A+B+C"
+    },
+    "delayLink": {
+      "raw": 0,
+      "value": false
+    },
+    "crossoverLink": {
+      "raw": 1,
+      "value": true
+    },
+    "isDelayCorrectionOn": {
+      "raw": 0,
+      "value": false
+    },
+    "airTemperature": {
+      "raw": 45,
+      "value": 25
+    },
+    "inputASumGain": {
+      "raw": 150,
+      "value": 0
+    },
+    "inputBSumGain": {
+      "raw": 150,
+      "value": 0
+    },
+    "inputCSumGain": {
+      "raw": 150,
+      "value": 0
+    }
+  },
+  "inputs": {
+    "A": {
+      "gain": {
+        "raw": 300,
+        "value": 15
+      },
+      "mute": {
+        "raw": 0,
+        "value": false
+      },
+      "isDelayOn": {
+        "raw": 1,
+        "value": true
+      },
+      "longDelay": {
+        "raw": 20,
+        "value": 20
+      },
+      "isEqualizerOn": {
+        "raw": 0,
+        "value": false
+      },
+      "dynamicEqualizerAttack": {
+        "raw": 30,
+        "value": "31"
+      },
+      "dynamicEqualizerRelease": {
+        "raw": 50,
+        "value": "70"
+      },
+      "dynamicEqualizerRatio": {
+        "raw": 10,
+        "value": "5.0:1"
+      },
+      "dynamicEqualizerThreshold": {
+        "raw": 600,
+        "value": 36
+      },
+      "isDynamicEqualizerOn": {
+        "raw": 0,
+        "value": false
+      },
+      "dynamicEqualizerFrequency": {
+        "raw": 0,
+        "value": "20"
+      },
+      "dynamicEqualizerQ": {
+        "raw": 26,
+        "value": "2.0"
+      },
+      "dynamicEqualizerGain": {
+        "raw": 170,
+        "value": 2
+      },
+      "dynamicEqualizerType": {
+        "raw": 1,
+        "value": "Bandpass"
+      },
+      "dynamicEqualizerShelving": {
+        "raw": 1,
+        "value": "12dB"
+      },
+      "eq1": {
+        "frequency": {
+          "raw": 0,
+          "value": "20"
+        },
+        "q": {
+          "raw": 0,
+          "value": "0.1"
+        },
+        "gain": {
+          "raw": 180,
+          "value": 3
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq2": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq3": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq4": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq5": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq6": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq7": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq8": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq9": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      }
+    },
+    "B": {
+      "gain": {
+        "raw": 300,
+        "value": 15
+      },
+      "mute": {
+        "raw": 1,
+        "value": true
+      },
+      "isDelayOn": {
+        "raw": 1,
+        "value": true
+      },
+      "longDelay": {
+        "raw": 20,
+        "value": 20
+      },
+      "isEqualizerOn": {
+        "raw": 0,
+        "value": false
+      },
+      "dynamicEqualizerAttack": {
+        "raw": 30,
+        "value": "31"
+      },
+      "dynamicEqualizerRelease": {
+        "raw": 50,
+        "value": "70"
+      },
+      "dynamicEqualizerRatio": {
+        "raw": 10,
+        "value": "5.0:1"
+      },
+      "dynamicEqualizerThreshold": {
+        "raw": 600,
+        "value": 36
+      },
+      "isDynamicEqualizerOn": {
+        "raw": 0,
+        "value": false
+      },
+      "dynamicEqualizerFrequency": {
+        "raw": 0,
+        "value": "20"
+      },
+      "dynamicEqualizerQ": {
+        "raw": 26,
+        "value": "2.0"
+      },
+      "dynamicEqualizerGain": {
+        "raw": 170,
+        "value": 2
+      },
+      "dynamicEqualizerType": {
+        "raw": 1,
+        "value": "Bandpass"
+      },
+      "dynamicEqualizerShelving": {
+        "raw": 1,
+        "value": "12dB"
+      },
+      "eq1": {
+        "frequency": {
+          "raw": 0,
+          "value": "20"
+        },
+        "q": {
+          "raw": 0,
+          "value": "0.1"
+        },
+        "gain": {
+          "raw": 180,
+          "value": 3
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq2": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq3": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq4": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq5": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq6": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq7": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq8": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq9": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      }
+    },
+    "C": {
+      "gain": {
+        "raw": 300,
+        "value": 15
+      },
+      "mute": {
+        "raw": 0,
+        "value": false
+      },
+      "isDelayOn": {
+        "raw": 1,
+        "value": true
+      },
+      "longDelay": {
+        "raw": 20,
+        "value": 20
+      },
+      "isEqualizerOn": {
+        "raw": 0,
+        "value": false
+      },
+      "dynamicEqualizerAttack": {
+        "raw": 30,
+        "value": "31"
+      },
+      "dynamicEqualizerRelease": {
+        "raw": 50,
+        "value": "70"
+      },
+      "dynamicEqualizerRatio": {
+        "raw": 10,
+        "value": "5.0:1"
+      },
+      "dynamicEqualizerThreshold": {
+        "raw": 600,
+        "value": 36
+      },
+      "isDynamicEqualizerOn": {
+        "raw": 0,
+        "value": false
+      },
+      "dynamicEqualizerFrequency": {
+        "raw": 0,
+        "value": "20"
+      },
+      "dynamicEqualizerQ": {
+        "raw": 26,
+        "value": "2.0"
+      },
+      "dynamicEqualizerGain": {
+        "raw": 170,
+        "value": 2
+      },
+      "dynamicEqualizerType": {
+        "raw": 1,
+        "value": "Bandpass"
+      },
+      "dynamicEqualizerShelving": {
+        "raw": 1,
+        "value": "12dB"
+      },
+      "eq1": {
+        "frequency": {
+          "raw": 0,
+          "value": "20"
+        },
+        "q": {
+          "raw": 0,
+          "value": "0.1"
+        },
+        "gain": {
+          "raw": 180,
+          "value": 3
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq2": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq3": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq4": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq5": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq6": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq7": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq8": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq9": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      }
+    },
+    "Sum": {
+      "gain": {
+        "raw": 150,
+        "value": 0
+      },
+      "mute": {
+        "raw": 0,
+        "value": false
+      },
+      "isDelayOn": {
+        "raw": 0,
+        "value": false
+      },
+      "longDelay": {
+        "raw": 0,
+        "value": 0
+      },
+      "isEqualizerOn": {
+        "raw": 0,
+        "value": false
+      },
+      "dynamicEqualizerAttack": {
+        "raw": 83,
+        "value": "100"
+      },
+      "dynamicEqualizerRelease": {
+        "raw": 151,
+        "value": "501"
+      },
+      "dynamicEqualizerRatio": {
+        "raw": 5,
+        "value": "2.0:1"
+      },
+      "dynamicEqualizerThreshold": {
+        "raw": 600,
+        "value": 36
+      },
+      "isDynamicEqualizerOn": {
+        "raw": 0,
+        "value": false
+      },
+      "dynamicEqualizerFrequency": {
+        "raw": 180,
+        "value": "1000"
+      },
+      "dynamicEqualizerQ": {
+        "raw": 20,
+        "value": "1.0"
+      },
+      "dynamicEqualizerGain": {
+        "raw": 150,
+        "value": 0
+      },
+      "dynamicEqualizerType": {
+        "raw": 1,
+        "value": "Bandpass"
+      },
+      "dynamicEqualizerShelving": {
+        "raw": 1,
+        "value": "12dB"
+      },
+      "eq1": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq2": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq3": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq4": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq5": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq6": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq7": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq8": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq9": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      }
+    }
+  },
+  "outputs": {
+    "1": {
+      "gain": {
+        "raw": 300,
+        "value": 15
+      },
+      "mute": {
+        "raw": 0,
+        "value": false
+      },
+      "isDelayOn": {
+        "raw": 0,
+        "value": false
+      },
+      "longDelay": {
+        "raw": 10,
+        "value": 10
+      },
+      "isEqualizerOn": {
+        "raw": 1,
+        "value": true
+      },
+      "dynamicEqualizerAttack": {
+        "raw": 83,
+        "value": "100"
+      },
+      "dynamicEqualizerRelease": {
+        "raw": 151,
+        "value": "501"
+      },
+      "dynamicEqualizerRatio": {
+        "raw": 5,
+        "value": "2.0:1"
+      },
+      "dynamicEqualizerThreshold": {
+        "raw": 600,
+        "value": 36
+      },
+      "isDynamicEqualizerOn": {
+        "raw": 0,
+        "value": false
+      },
+      "dynamicEqualizerFrequency": {
+        "raw": 180,
+        "value": "1000"
+      },
+      "dynamicEqualizerQ": {
+        "raw": 20,
+        "value": "1.0"
+      },
+      "dynamicEqualizerGain": {
+        "raw": 150,
+        "value": 0
+      },
+      "dynamicEqualizerType": {
+        "raw": 1,
+        "value": "Bandpass"
+      },
+      "dynamicEqualizerShelving": {
+        "raw": 1,
+        "value": "12dB"
+      },
+      "eq1": {
+        "frequency": {
+          "raw": 0,
+          "value": "20"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 300,
+          "value": 15
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq2": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 300,
+          "value": 15
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq3": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 300,
+          "value": 15
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq4": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 300,
+          "value": 15
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq5": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 300,
+          "value": 15
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq6": {
+        "frequency": {
+          "raw": 181,
+          "value": "1020"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 300,
+          "value": 15
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq7": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 300,
+          "value": 15
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq8": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 300,
+          "value": 15
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq9": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 300,
+          "value": 15
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "channelName": {
+        "raw": 10,
+        "value": "Left Low-mid"
+      },
+      "source": {
+        "raw": 0,
+        "value": "A"
+      },
+      "highpassFilter": {
+        "raw": 0,
+        "value": "off"
+      },
+      "highpassFrequency": {
+        "raw": 64,
+        "value": "80"
+      },
+      "lowpassFilter": {
+        "raw": 0,
+        "value": "off"
+      },
+      "lowpassFrequency": {
+        "raw": 0,
+        "value": "20"
+      },
+      "isLimiterOn": {
+        "raw": 1,
+        "value": true
+      },
+      "limiterThreshold": {
+        "raw": 180,
+        "value": -6
+      },
+      "limiterRelease": {
+        "raw": 70,
+        "value": "93"
+      },
+      "polarity": {
+        "raw": 0,
+        "value": "Normal"
+      },
+      "phase": {
+        "raw": 0,
+        "value": 0
+      },
+      "shortDelay": {
+        "raw": 250,
+        "value": 250
+      }
+    },
+    "2": {
+      "gain": {
+        "raw": 300,
+        "value": 15
+      },
+      "mute": {
+        "raw": 1,
+        "value": true
+      },
+      "isDelayOn": {
+        "raw": 0,
+        "value": false
+      },
+      "longDelay": {
+        "raw": 0,
+        "value": 0
+      },
+      "isEqualizerOn": {
+        "raw": 0,
+        "value": false
+      },
+      "dynamicEqualizerAttack": {
+        "raw": 83,
+        "value": "100"
+      },
+      "dynamicEqualizerRelease": {
+        "raw": 151,
+        "value": "501"
+      },
+      "dynamicEqualizerRatio": {
+        "raw": 5,
+        "value": "2.0:1"
+      },
+      "dynamicEqualizerThreshold": {
+        "raw": 600,
+        "value": 36
+      },
+      "isDynamicEqualizerOn": {
+        "raw": 0,
+        "value": false
+      },
+      "dynamicEqualizerFrequency": {
+        "raw": 180,
+        "value": "1000"
+      },
+      "dynamicEqualizerQ": {
+        "raw": 20,
+        "value": "1.0"
+      },
+      "dynamicEqualizerGain": {
+        "raw": 150,
+        "value": 0
+      },
+      "dynamicEqualizerType": {
+        "raw": 1,
+        "value": "Bandpass"
+      },
+      "dynamicEqualizerShelving": {
+        "raw": 1,
+        "value": "12dB"
+      },
+      "eq1": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq2": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq3": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq4": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq5": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq6": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq7": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq8": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq9": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "channelName": {
+        "raw": 2,
+        "value": "Low"
+      },
+      "source": {
+        "raw": 1,
+        "value": "B"
+      },
+      "highpassFilter": {
+        "raw": 6,
+        "value": "but24"
+      },
+      "highpassFrequency": {
+        "raw": 0,
+        "value": "20"
+      },
+      "lowpassFilter": {
+        "raw": 6,
+        "value": "but24"
+      },
+      "lowpassFrequency": {
+        "raw": 114,
+        "value": "238"
+      },
+      "isLimiterOn": {
+        "raw": 0,
+        "value": false
+      },
+      "limiterThreshold": {
+        "raw": 240,
+        "value": 0
+      },
+      "limiterRelease": {
+        "raw": 141,
+        "value": "407"
+      },
+      "polarity": {
+        "raw": 0,
+        "value": "Normal"
+      },
+      "phase": {
+        "raw": 0,
+        "value": 0
+      },
+      "shortDelay": {
+        "raw": 0,
+        "value": 0
+      }
+    },
+    "3": {
+      "gain": {
+        "raw": 300,
+        "value": 15
+      },
+      "mute": {
+        "raw": 1,
+        "value": true
+      },
+      "isDelayOn": {
+        "raw": 0,
+        "value": false
+      },
+      "longDelay": {
+        "raw": 0,
+        "value": 0
+      },
+      "isEqualizerOn": {
+        "raw": 0,
+        "value": false
+      },
+      "dynamicEqualizerAttack": {
+        "raw": 83,
+        "value": "100"
+      },
+      "dynamicEqualizerRelease": {
+        "raw": 151,
+        "value": "501"
+      },
+      "dynamicEqualizerRatio": {
+        "raw": 5,
+        "value": "2.0:1"
+      },
+      "dynamicEqualizerThreshold": {
+        "raw": 600,
+        "value": 36
+      },
+      "isDynamicEqualizerOn": {
+        "raw": 0,
+        "value": false
+      },
+      "dynamicEqualizerFrequency": {
+        "raw": 180,
+        "value": "1000"
+      },
+      "dynamicEqualizerQ": {
+        "raw": 20,
+        "value": "1.0"
+      },
+      "dynamicEqualizerGain": {
+        "raw": 150,
+        "value": 0
+      },
+      "dynamicEqualizerType": {
+        "raw": 1,
+        "value": "Bandpass"
+      },
+      "dynamicEqualizerShelving": {
+        "raw": 1,
+        "value": "12dB"
+      },
+      "eq1": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq2": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq3": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq4": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq5": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq6": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq7": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq8": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq9": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "channelName": {
+        "raw": 3,
+        "value": "Low-mid"
+      },
+      "source": {
+        "raw": 0,
+        "value": "A"
+      },
+      "highpassFilter": {
+        "raw": 6,
+        "value": "but24"
+      },
+      "highpassFrequency": {
+        "raw": 114,
+        "value": "238"
+      },
+      "lowpassFilter": {
+        "raw": 6,
+        "value": "but24"
+      },
+      "lowpassFrequency": {
+        "raw": 166,
+        "value": "738"
+      },
+      "isLimiterOn": {
+        "raw": 0,
+        "value": false
+      },
+      "limiterThreshold": {
+        "raw": 240,
+        "value": 0
+      },
+      "limiterRelease": {
+        "raw": 141,
+        "value": "407"
+      },
+      "polarity": {
+        "raw": 0,
+        "value": "Normal"
+      },
+      "phase": {
+        "raw": 0,
+        "value": 0
+      },
+      "shortDelay": {
+        "raw": 0,
+        "value": 0
+      }
+    },
+    "4": {
+      "gain": {
+        "raw": 300,
+        "value": 15
+      },
+      "mute": {
+        "raw": 1,
+        "value": true
+      },
+      "isDelayOn": {
+        "raw": 0,
+        "value": false
+      },
+      "longDelay": {
+        "raw": 0,
+        "value": 0
+      },
+      "isEqualizerOn": {
+        "raw": 0,
+        "value": false
+      },
+      "dynamicEqualizerAttack": {
+        "raw": 83,
+        "value": "100"
+      },
+      "dynamicEqualizerRelease": {
+        "raw": 151,
+        "value": "501"
+      },
+      "dynamicEqualizerRatio": {
+        "raw": 5,
+        "value": "2.0:1"
+      },
+      "dynamicEqualizerThreshold": {
+        "raw": 600,
+        "value": 36
+      },
+      "isDynamicEqualizerOn": {
+        "raw": 0,
+        "value": false
+      },
+      "dynamicEqualizerFrequency": {
+        "raw": 180,
+        "value": "1000"
+      },
+      "dynamicEqualizerQ": {
+        "raw": 20,
+        "value": "1.0"
+      },
+      "dynamicEqualizerGain": {
+        "raw": 150,
+        "value": 0
+      },
+      "dynamicEqualizerType": {
+        "raw": 1,
+        "value": "Bandpass"
+      },
+      "dynamicEqualizerShelving": {
+        "raw": 1,
+        "value": "12dB"
+      },
+      "eq1": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq2": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq3": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq4": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq5": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq6": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq7": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq8": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq9": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "channelName": {
+        "raw": 4,
+        "value": "Mid"
+      },
+      "source": {
+        "raw": 0,
+        "value": "A"
+      },
+      "highpassFilter": {
+        "raw": 6,
+        "value": "but24"
+      },
+      "highpassFrequency": {
+        "raw": 166,
+        "value": "738"
+      },
+      "lowpassFilter": {
+        "raw": 6,
+        "value": "but24"
+      },
+      "lowpassFrequency": {
+        "raw": 216,
+        "value": "2160"
+      },
+      "isLimiterOn": {
+        "raw": 0,
+        "value": false
+      },
+      "limiterThreshold": {
+        "raw": 240,
+        "value": 0
+      },
+      "limiterRelease": {
+        "raw": 141,
+        "value": "407"
+      },
+      "polarity": {
+        "raw": 0,
+        "value": "Normal"
+      },
+      "phase": {
+        "raw": 0,
+        "value": 0
+      },
+      "shortDelay": {
+        "raw": 0,
+        "value": 0
+      }
+    },
+    "5": {
+      "gain": {
+        "raw": 300,
+        "value": 15
+      },
+      "mute": {
+        "raw": 1,
+        "value": true
+      },
+      "isDelayOn": {
+        "raw": 0,
+        "value": false
+      },
+      "longDelay": {
+        "raw": 0,
+        "value": 0
+      },
+      "isEqualizerOn": {
+        "raw": 0,
+        "value": false
+      },
+      "dynamicEqualizerAttack": {
+        "raw": 83,
+        "value": "100"
+      },
+      "dynamicEqualizerRelease": {
+        "raw": 151,
+        "value": "501"
+      },
+      "dynamicEqualizerRatio": {
+        "raw": 5,
+        "value": "2.0:1"
+      },
+      "dynamicEqualizerThreshold": {
+        "raw": 600,
+        "value": 36
+      },
+      "isDynamicEqualizerOn": {
+        "raw": 0,
+        "value": false
+      },
+      "dynamicEqualizerFrequency": {
+        "raw": 180,
+        "value": "1000"
+      },
+      "dynamicEqualizerQ": {
+        "raw": 20,
+        "value": "1.0"
+      },
+      "dynamicEqualizerGain": {
+        "raw": 150,
+        "value": 0
+      },
+      "dynamicEqualizerType": {
+        "raw": 1,
+        "value": "Bandpass"
+      },
+      "dynamicEqualizerShelving": {
+        "raw": 1,
+        "value": "12dB"
+      },
+      "eq1": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq2": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq3": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq4": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq5": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq6": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq7": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq8": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq9": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "channelName": {
+        "raw": 5,
+        "value": "Hi-mid"
+      },
+      "source": {
+        "raw": 0,
+        "value": "A"
+      },
+      "highpassFilter": {
+        "raw": 6,
+        "value": "but24"
+      },
+      "highpassFrequency": {
+        "raw": 216,
+        "value": "2160"
+      },
+      "lowpassFilter": {
+        "raw": 6,
+        "value": "but24"
+      },
+      "lowpassFrequency": {
+        "raw": 264,
+        "value": "6030"
+      },
+      "isLimiterOn": {
+        "raw": 0,
+        "value": false
+      },
+      "limiterThreshold": {
+        "raw": 240,
+        "value": 0
+      },
+      "limiterRelease": {
+        "raw": 141,
+        "value": "407"
+      },
+      "polarity": {
+        "raw": 0,
+        "value": "Normal"
+      },
+      "phase": {
+        "raw": 0,
+        "value": 0
+      },
+      "shortDelay": {
+        "raw": 0,
+        "value": 0
+      }
+    },
+    "6": {
+      "gain": {
+        "raw": 300,
+        "value": 15
+      },
+      "mute": {
+        "raw": 1,
+        "value": true
+      },
+      "isDelayOn": {
+        "raw": 0,
+        "value": false
+      },
+      "longDelay": {
+        "raw": 0,
+        "value": 0
+      },
+      "isEqualizerOn": {
+        "raw": 0,
+        "value": false
+      },
+      "dynamicEqualizerAttack": {
+        "raw": 83,
+        "value": "100"
+      },
+      "dynamicEqualizerRelease": {
+        "raw": 151,
+        "value": "501"
+      },
+      "dynamicEqualizerRatio": {
+        "raw": 5,
+        "value": "2.0:1"
+      },
+      "dynamicEqualizerThreshold": {
+        "raw": 600,
+        "value": 36
+      },
+      "isDynamicEqualizerOn": {
+        "raw": 0,
+        "value": false
+      },
+      "dynamicEqualizerFrequency": {
+        "raw": 180,
+        "value": "1000"
+      },
+      "dynamicEqualizerQ": {
+        "raw": 20,
+        "value": "1.0"
+      },
+      "dynamicEqualizerGain": {
+        "raw": 150,
+        "value": 0
+      },
+      "dynamicEqualizerType": {
+        "raw": 1,
+        "value": "Bandpass"
+      },
+      "dynamicEqualizerShelving": {
+        "raw": 1,
+        "value": "12dB"
+      },
+      "eq1": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq2": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq3": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq4": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq5": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq6": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq7": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq8": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "eq9": {
+        "frequency": {
+          "raw": 180,
+          "value": "1000"
+        },
+        "q": {
+          "raw": 20,
+          "value": "1.0"
+        },
+        "gain": {
+          "raw": 150,
+          "value": 0
+        },
+        "type": {
+          "raw": 1,
+          "value": "Bandpass"
+        },
+        "shelving": {
+          "raw": 1,
+          "value": "12dB"
+        }
+      },
+      "channelName": {
+        "raw": 6,
+        "value": "Hi"
+      },
+      "source": {
+        "raw": 0,
+        "value": "A"
+      },
+      "highpassFilter": {
+        "raw": 6,
+        "value": "but24"
+      },
+      "highpassFrequency": {
+        "raw": 264,
+        "value": "6030"
+      },
+      "lowpassFilter": {
+        "raw": 0,
+        "value": "off"
+      },
+      "lowpassFrequency": {
+        "raw": 319,
+        "value": "19600"
+      },
+      "isLimiterOn": {
+        "raw": 0,
+        "value": false
+      },
+      "limiterThreshold": {
+        "raw": 240,
+        "value": 0
+      },
+      "limiterRelease": {
+        "raw": 141,
+        "value": "407"
+      },
+      "polarity": {
+        "raw": 0,
+        "value": "Normal"
+      },
+      "phase": {
+        "raw": 0,
+        "value": 0
+      },
+      "shortDelay": {
+        "raw": 0,
+        "value": 0
+      }
+    }
+  }
+}

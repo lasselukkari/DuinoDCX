@@ -1,13 +1,22 @@
 import { createRoot } from 'react-dom/client';
-import App from './app.js';
-import { DcxConnectionProvider } from './connection/connection-context.js';
+import { RouterProvider } from '@tanstack/react-router';
+import {
+  DcxConnectionProvider,
+  useDcxConnection,
+} from './connection/connection-context.js';
+import { router } from './router.js';
+
+function AppWrapper() {
+  const { connection } = useDcxConnection();
+  return <RouterProvider router={router} context={{ connection }} />;
+}
 
 const container = document.querySelector('#root');
 if (container) {
   const root = createRoot(container);
   root.render(
     <DcxConnectionProvider>
-      <App />
+      <AppWrapper />
     </DcxConnectionProvider>,
   );
 }

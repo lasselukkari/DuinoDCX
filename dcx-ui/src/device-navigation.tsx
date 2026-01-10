@@ -1,51 +1,43 @@
-import {FaEdit, FaLock, FaSignal} from 'react-icons/fa';
-import React, {useState} from 'react';
+import { FaEdit, FaLock, FaSignal } from 'react-icons/fa';
+import React, { useState } from 'react';
 import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Navbar from 'react-bootstrap/Navbar';
 import isEqual from 'lodash.isequal';
+import { State } from 'dcx-parser';
+import { Link, useLocation } from '@tanstack/react-router';
 import ChannelLevels from './channel-levels.tsx';
-import {useBreakpoint} from './hooks/use-breakpoint.ts';
-import {useDeviceState} from './device-state-context.tsx';
-
-type ChannelLevel = {
-  readonly isLimited: boolean;
-  readonly level: number;
-};
+import { useBreakpoint } from './hooks/use-breakpoint.ts';
 
 type Props = {
-  readonly page: string;
+  readonly device?: State;
   readonly isBlocking: boolean;
-  readonly inputs: ChannelLevel[];
-  readonly outputs: ChannelLevel[];
-  readonly onPageChange: (
-    eventKey: string | undefined,
-    event: React.SyntheticEvent<unknown>,
-  ) => void;
+  readonly inputs: any[];
+  readonly outputs: any[];
   readonly onBlockingChange: () => void;
 };
 
 function DeviceNavigation({
+  device: _device,
   isBlocking,
-  page,
   inputs,
   outputs,
-  onPageChange,
   onBlockingChange,
 }: Props) {
-  const {device} = useDeviceState();
   const [showLevels, setShowLevels] = useState(false);
   const currentBreakpoint = useBreakpoint();
-
-  if (!device || !device.isReady || !inputs || !outputs) {
-    return null;
-  }
+  const location = useLocation();
+  const page = location.pathname.startsWith('/outputs')
+    ? 'outputs'
+    : location.pathname.startsWith('/presets')
+      ? 'presets'
+      : 'inputs';
 
   // Let's verify standard NavDropdown behavior. usually you want to close.
   // Maybe "rootClose" logic was inverse?
   // I'll implement exactly as is.
 
-  const handleToggle = (_nextShow: boolean, meta: {source?: string}) => {
+  const handleToggle = (_nextShow: boolean, meta: { source?: string }) => {
     if (meta.source === 'rootClose') {
       setShowLevels(true);
     } else {
@@ -71,25 +63,26 @@ function DeviceNavigation({
           drop={isXs ? 'up' : 'down'}
           onToggle={handleToggle}
         >
-          <ChannelLevels inputs={inputs} outputs={outputs} />
+          <ChannelLevels
+            device={_device}
+            inputs={inputs}
+            outputs={outputs}
+          />
         </NavDropdown>
       </Nav>
-      <Nav
-        className="middle-buttons"
-        onSelect={onPageChange as (eventKey: string | undefined) => void}
-      >
+      <Nav className="middle-buttons">
         <Nav.Item>
-          <Nav.Link active={page === 'inputs'} eventKey="inputs">
+          <Nav.Link as={Link} to="/inputs" active={page === 'inputs'}>
             Inputs
           </Nav.Link>
         </Nav.Item>
         <Nav.Item>
-          <Nav.Link active={page === 'outputs'} eventKey="outputs">
+          <Nav.Link as={Link} to="/outputs" active={page === 'outputs'}>
             Outputs
           </Nav.Link>
         </Nav.Item>
         <Nav.Item>
-          <Nav.Link active={page === 'presets'} eventKey="presets">
+          <Nav.Link as={Link} to="/presets" active={page === 'presets'}>
             Presets
           </Nav.Link>
         </Nav.Item>
@@ -99,9 +92,9 @@ function DeviceNavigation({
           <Nav.Link>
             {' '}
             {isBlocking ? (
-              <FaLock style={{color: '#ee5f5b'}} />
+              <FaLock style={{ color: '#ee5f5b' }} />
             ) : (
-              <FaEdit style={{color: '#62c462'}} />
+              <FaEdit style={{ color: '#62c462' }} />
             )}
           </Nav.Link>
         </Nav.Item>
@@ -115,6 +108,6 @@ export default React.memo(DeviceNavigation, (previousProps, nextProps) => {
     isEqual(previousProps.inputs, nextProps.inputs) &&
     isEqual(previousProps.outputs, nextProps.outputs) &&
     previousProps.isBlocking === nextProps.isBlocking &&
-    previousProps.page === nextProps.page
+    isEqual(previousProps.device, nextProps.device)
   );
 });

@@ -1,16 +1,39 @@
 /**
- * DCX2496 Parser Library
+ * DCX2496 Parser Library (V2)
  *
  * A TypeScript library for parsing and building messages for the
  * Behringer DCX2496 digital speaker management system.
+ *
+ * Unified Architecture: src/structure.ts defines the truth.
  */
 
 // Types
-export type { State, Setup, Channel, Equalizer, Status } from './types/index.js';
-export type { ParameterDefinition, ByteKey, DirectKey } from './model/param-lookup.js';
-export type { DataSource } from './model/state-parser.js';
+import { isOutputChannel } from './types/index.js';
+import {
+  setupCommands,
+  inputOutputCommands,
+  equalizerCommands,
+  outputCommands,
+} from './commands/commands.js';
+import { parseMessage, parseDevices } from './protocol/sysex.js';
+import { parseEditBuffer } from './edit-buffer-parser.js';
+import { parsePreset } from './preset-parser.js';
+import { parseStatus } from './status-parser.js';
+import { getPresetNames } from './dcx-file.js';
+
+export type {
+  State,
+  Setup,
+  InputChannel,
+  OutputChannel,
+  BufferHeader,
+  Equalizer,
+  Channel,
+} from './types/index.js';
+
+export type { ParameterDefinition } from './model/param-lookup.js';
 export type { ParsedMessage } from './protocol/sysex.js';
-export type { DcxFile, PresetSlot } from './dcx-file.js';
+export type { DcxFile, PresetSlot, ParsedPreset, ParsedPreset as PresetEntry } from './dcx-file.js';
 
 // Encoding (7-to-8 bit transformation)
 export { encode8to7, decode7to8 } from './protocol/encoding.js';
@@ -32,31 +55,62 @@ export {
   buildPagePacket,
   buildDirectCommand,
   buildListenModeCommand,
+  buildParamChangeCommand,
 } from './commands/builders.js';
+export type { ParameterTarget } from './commands/builders.js';
+
+export {
+  type Command,
+  setupCommands,
+  inputOutputCommands,
+  equalizerCommands,
+  outputCommands,
+} from './commands/commands.js';
 
 // SysEx message parsing
-export { parseMessage, isValidSysex, extractSysexMessages } from './protocol/sysex.js';
+export {
+  parseMessage,
+  parseDevices,
+  isValidSysex,
+  extractSysexMessages,
+} from './protocol/sysex.js';
 
 // SysEx constants
-export {
-  SYSEX_START,
-  SYSEX_END,
-  VENDOR_ID,
-  MODEL_ID,
-  DEFAULT_DEVICE_ID,
-  CMD_PING,
-  CMD_DUMP_REQUEST,
-  CMD_RECALL,
-  CMD_STORE,
-  CMD_INIT_SYNC,
-  CMD_WRITE_DATA,
-  CMD_DIRECT,
-  CMD_LISTEN_MODE,
-} from './constants/protocol.js';
+export * from './constants/protocol.js';
 
-// DCX file format
+// Parameter lookups & Helpers (Legacy but updated/needed for Builders)
+export {
+  directLookup,
+  getParameterByDirect,
+  convertValue,
+  toRawValue,
+  applyToState,
+} from './model/param-lookup.js';
+
+// OLD HELPERS REMOVED (createEmptyState etc might reference old types)
+// If UI needs them, we must check. 'model/helpers.js' is legacy.
+
+// NEW PARSERS (V2)
+export { parseEditBuffer } from './edit-buffer-parser.js';
+export { parsePreset } from './preset-parser.js';
+
+// Re-export constants
+export * as constants from './constants/index.js';
+
+// Transport layer
+export type { DcxConnection } from './transport/types.js';
+
+// React hooks
+export { useDcxState } from './hooks/use-dcx-state.js';
+export { useDcxBackup } from './hooks/use-dcx-backup.js';
+export { useDcxRestore } from './hooks/use-dcx-restore.js';
+export { useDcxFile } from './hooks/use-dcx-file.js';
+
+export { parseStatus } from './status-parser.js';
+
 export {
   parseDcxFile,
+  parseDcxPresets,
   assemblePagesIntoDcxFile,
   splitDcxFileIntoPages,
   createRestoreHeader,
@@ -66,44 +120,39 @@ export {
   DCX_TERMINATOR,
 } from './dcx-file.js';
 
-// Parameter lookups
-export {
-  byteLookup,
-  directLookup,
-  getParameterByByte,
-  getParameterByDirect,
-  convertValue,
-  toRawValue,
-} from './model/param-lookup.js';
+export function camelize(string_: string): string {
+  return string_
+    .replaceAll(/^\w|[A-Z]|\b\w/g, (word, index) => {
+      return index === 0 ? word.toLowerCase() : word.toUpperCase();
+    })
+    .replaceAll(/\s+/g, '');
+}
 
-// State parsing
-export {
-  parseState,
+// Group commands for default export
+const commands = {
+  setupCommands,
+  inputOutputCommands,
+  eqCommands: equalizerCommands,
+  outputCommands,
+};
+
+import { parseDcxPresets } from './dcx-file.js';
+
+// Default export for Parser (UI expects this)
+const Parser = {
+  camelize,
+  commands,
   parseEditBuffer,
-  parsePresetData,
-  fromParts,
-  fromPreset,
-} from './model/state-parser.js';
+  parsePreset,
+  parseMessage,
+  parseDevices,
+  parseStatus,
+  isOutputChannel,
+  getPresetNames,
+  parseDcxPresets,
+};
 
-// Preset parsing (12-page memory dump / .dcx file to State objects)
-export type { ParsedPreset, MemoryDumpResult } from './file/preset-parser.js';
-export {
-  parseDcxFileToStates,
-  parseMemoryPages,
-  parsePresetWords,
-} from './file/preset-parser.js';
+export default Parser;
+export { dcxStore, DcxStore } from './store/dcx-store.js';
 
-// Re-export constants for advanced usage
-export * as constants from './constants/index.js';
-
-// Transport layer
-export type { DcxConnection } from './transport/types.js';
-
-// React hooks (requires React as peer dependency)
-export { useDcxFile, type PresetEntry } from './hooks/use-dcx-file.js';
-export { useDcxState } from './hooks/use-dcx-state.js';
-export { useDcxBackup, type BackupStatus } from './hooks/use-dcx-backup.js';
-export { useDcxRestore, type RestoreStatus } from './hooks/use-dcx-restore.js';
-
-// High-level parameter commands
-export { buildParamChangeCommand, type ParameterTarget } from './commands/builders.js';
+export { isOutputChannel } from './types/index.js';

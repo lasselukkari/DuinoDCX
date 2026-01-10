@@ -44,14 +44,14 @@ export type ParameterDefinition = {
   wordHighOffset?: number;
   /** Target location in state */
   target:
-  | { kind: 'setup' }
-  | { kind: 'channel'; group: 'inputs' | 'outputs'; id: string }
-  | {
-    kind: 'equalizer';
-    group: 'inputs' | 'outputs';
-    channelId: string;
-    band: number;
-  };
+    | {kind: 'setup'}
+    | {kind: 'channel'; group: 'inputs' | 'outputs'; id: string}
+    | {
+        kind: 'equalizer';
+        group: 'inputs' | 'outputs';
+        channelId: string;
+        band: number;
+      };
 };
 
 /** Lookup key for byte position (absolute index) */
@@ -84,8 +84,6 @@ function toCamelCase(name: string): string {
     .join('');
 }
 
-
-
 function makeDirectKey(channel: number, parameter: number): DirectKey {
   return `${channel}:${parameter}`;
 }
@@ -106,7 +104,7 @@ function buildByteLookup(): Map<ByteKey, ParameterDefinition> {
       min: parameter.min,
       step: parameter.step,
       highByteIndex: parameter.highByteIndex,
-      target: { kind: 'setup' },
+      target: {kind: 'setup'},
     };
     lookup.set(parameter.index, def);
   }
@@ -209,7 +207,7 @@ function buildWordLookup(): Map<number, ParameterDefinition> {
         highByteIndex: parameter.highByteIndex,
         wordOffset: parameter.wordOffset,
         wordHighOffset: parameter.wordHighOffset,
-        target: { kind: 'setup' },
+        target: {kind: 'setup'},
       };
       lookup.set(parameter.wordOffset, def);
     }
@@ -219,7 +217,7 @@ function buildWordLookup(): Map<number, ParameterDefinition> {
   for (const parameter of channelParameters) {
     for (let i = 0; i < parameter.channels.length; i++) {
       const loc = parameter.channels[i];
-      if (!loc || loc.wordOffset === undefined) continue;
+      if (loc?.wordOffset === undefined) continue;
 
       const isInput = i < 4;
       const channelId = CHANNEL_IDS[i];
@@ -247,7 +245,7 @@ function buildWordLookup(): Map<number, ParameterDefinition> {
   for (const parameter of outputOnlyParameters) {
     for (let i = 0; i < parameter.outputs.length; i++) {
       const loc = parameter.outputs[i];
-      if (!loc || loc.wordOffset === undefined) continue;
+      if (loc?.wordOffset === undefined) continue;
 
       const def: ParameterDefinition = {
         key: toCamelCase(parameter.name),
@@ -272,7 +270,7 @@ function buildWordLookup(): Map<number, ParameterDefinition> {
   for (const parameter of equalizerParameters) {
     for (let i = 0; i < parameter.bands.length; i++) {
       const loc = parameter.bands[i];
-      if (!loc || loc.wordOffset === undefined) continue;
+      if (loc?.wordOffset === undefined) continue;
 
       const channelIndex = Math.floor(i / EQUALIZER_BANDS);
       const bandIndex = i % EQUALIZER_BANDS;
@@ -317,7 +315,7 @@ function buildDirectLookup(): Map<DirectKey, ParameterDefinition> {
       values: parameter.values,
       min: parameter.min,
       step: parameter.step,
-      target: { kind: 'setup' },
+      target: {kind: 'setup'},
     };
     lookup.set(makeDirectKey(0, parameterNumber), def);
   }
@@ -339,7 +337,7 @@ function buildDirectLookup(): Map<DirectKey, ParameterDefinition> {
         values: parameter.values,
         min: parameter.min,
         step: parameter.step,
-        target: { kind: 'channel', group, id: channelId },
+        target: {kind: 'channel', group, id: channelId},
       };
       lookup.set(makeDirectKey(ch, parameterNumber), def);
     }
@@ -355,7 +353,12 @@ function buildDirectLookup(): Map<DirectKey, ParameterDefinition> {
           values: parameter.values,
           min: parameter.min,
           step: parameter.step,
-          target: { kind: 'equalizer', group, id: channelId, band: band + 1 } as any,
+          target: {
+            kind: 'equalizer',
+            group,
+            id: channelId,
+            band: band + 1,
+          } as any,
         };
         (def.target as any).channelId = (def.target as any).id;
         lookup.set(makeDirectKey(ch, parameterNumber), def);
@@ -373,7 +376,7 @@ function buildDirectLookup(): Map<DirectKey, ParameterDefinition> {
           values: parameter.values,
           min: parameter.min,
           step: parameter.step,
-          target: { kind: 'channel', group: 'outputs', id: channelId },
+          target: {kind: 'channel', group: 'outputs', id: channelId},
         };
         lookup.set(makeDirectKey(ch, parameterNumber), def);
       }
@@ -478,7 +481,7 @@ export function applyToState(
   def: ParameterDefinition,
   value: boolean | string | number,
 ): void {
-  const { target, key } = def;
+  const {target, key} = def;
 
   switch (target.kind) {
     case 'setup': {
@@ -494,7 +497,7 @@ export function applyToState(
     case 'equalizer': {
       (
         state[target.group][(target as any).channelId].equalizers[
-        String(target.band)
+          String(target.band)
         ] as Record<string, unknown>
       )[key] = value;
       break;

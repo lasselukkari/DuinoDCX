@@ -1,0 +1,936 @@
+{
+  "presetName": "",
+  "setup": {
+    "inputSumType": "Off",
+    "inputABSource": "Analog",
+    "inputCGain": "Line",
+    "outputConfig": "mono",
+    "stereolink": false,
+    "stereolinkMode": "Off",
+    "delayLink": false,
+    "crossoverLink": true,
+    "isDelayCorrectionOn": false,
+    "airTemperature": 20,
+    "delayUnits": "mm",
+    "muteOutsWhenPowered": false,
+    "inputASumGain": 0,
+    "inputBSumGain": 0,
+    "inputCSumGain": 0
+  },
+  "inputs": {
+    "A": {
+      "gain": 0,
+      "mute": false,
+      "isDelayOn": false,
+      "longDelay": 0,
+      "isEqualizerOn": false,
+      "equalizerNumber": 0,
+      "equalizerIndex": 0,
+      "isDynamicEqualizerOn": false,
+      "dynamicEqualizerType": "Bandpass",
+      "dynamicEqualizerFrequency": "1000",
+      "dynamicEqualizerGain": 0,
+      "dynamicEqualizerQ": "2",
+      "dynamicEqualizerShelving": "12dB",
+      "dynamicEqualizerAttack": "83",
+      "dynamicEqualizerRelease": "151",
+      "dynamicEqualizerRatio": "2.0:1",
+      "dynamicEqualizerThreshold": 0,
+      "equalizers": {
+        "1": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "2": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "3": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "4": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "5": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "6": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "7": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "8": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "9": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        }
+      }
+    },
+    "B": {
+      "gain": 0,
+      "mute": false,
+      "isDelayOn": false,
+      "longDelay": 0,
+      "isEqualizerOn": false,
+      "equalizerNumber": 0,
+      "equalizerIndex": 0,
+      "isDynamicEqualizerOn": false,
+      "dynamicEqualizerType": "Bandpass",
+      "dynamicEqualizerFrequency": "1000",
+      "dynamicEqualizerGain": 0,
+      "dynamicEqualizerQ": "2",
+      "dynamicEqualizerShelving": "12dB",
+      "dynamicEqualizerAttack": "83",
+      "dynamicEqualizerRelease": "151",
+      "dynamicEqualizerRatio": "2.0:1",
+      "dynamicEqualizerThreshold": 0,
+      "equalizers": {
+        "1": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "2": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "3": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "4": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "5": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "6": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "7": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "8": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "9": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        }
+      }
+    },
+    "C": {
+      "gain": 0,
+      "mute": false,
+      "isDelayOn": false,
+      "longDelay": 0,
+      "isEqualizerOn": false,
+      "equalizerNumber": 0,
+      "equalizerIndex": 0,
+      "isDynamicEqualizerOn": false,
+      "dynamicEqualizerType": "Bandpass",
+      "dynamicEqualizerFrequency": "1000",
+      "dynamicEqualizerGain": 0,
+      "dynamicEqualizerQ": "2",
+      "dynamicEqualizerShelving": "12dB",
+      "dynamicEqualizerAttack": "83",
+      "dynamicEqualizerRelease": "151",
+      "dynamicEqualizerRatio": "2.0:1",
+      "dynamicEqualizerThreshold": 0,
+      "equalizers": {
+        "1": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "2": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "3": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "4": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "5": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "6": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "7": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "8": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "9": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        }
+      }
+    },
+    "Sum": {
+      "gain": 0,
+      "mute": false,
+      "isDelayOn": false,
+      "longDelay": 0,
+      "isEqualizerOn": false,
+      "equalizerNumber": 0,
+      "equalizerIndex": 0,
+      "isDynamicEqualizerOn": false,
+      "dynamicEqualizerType": "Bandpass",
+      "dynamicEqualizerFrequency": "1000",
+      "dynamicEqualizerGain": 0,
+      "dynamicEqualizerQ": "2",
+      "dynamicEqualizerShelving": "12dB",
+      "dynamicEqualizerAttack": "83",
+      "dynamicEqualizerRelease": "151",
+      "dynamicEqualizerRatio": "2.0:1",
+      "dynamicEqualizerThreshold": 0,
+      "equalizers": {
+        "1": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "2": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "3": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "4": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "5": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "6": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "7": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "8": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "9": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        }
+      }
+    }
+  },
+  "outputs": {
+    "1": {
+      "gain": 0,
+      "mute": true,
+      "isDelayOn": false,
+      "longDelay": 0,
+      "isEqualizerOn": false,
+      "equalizerNumber": 0,
+      "equalizerIndex": 0,
+      "isDynamicEqualizerOn": false,
+      "dynamicEqualizerType": "Bandpass",
+      "dynamicEqualizerFrequency": "1000",
+      "dynamicEqualizerGain": 0,
+      "dynamicEqualizerQ": "2",
+      "dynamicEqualizerShelving": "12dB",
+      "dynamicEqualizerAttack": "83",
+      "dynamicEqualizerRelease": "151",
+      "dynamicEqualizerRatio": "2.0:1",
+      "dynamicEqualizerThreshold": 0,
+      "equalizers": {
+        "1": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "2": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "3": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "4": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "5": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "6": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "7": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "8": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "9": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        }
+      },
+      "channelName": "Subwoofer",
+      "highpassFilter": "but24",
+      "highpassFrequency": "20",
+      "lowpassFilter": "but24",
+      "lowpassFrequency": "80",
+      "isLimiterOn": false,
+      "limiterThreshold": 0,
+      "limiterRelease": "141",
+      "polarity": "Normal",
+      "phase": 0,
+      "source": "A",
+      "shortDelay": 0
+    },
+    "2": {
+      "gain": 0,
+      "mute": true,
+      "isDelayOn": false,
+      "longDelay": 0,
+      "isEqualizerOn": false,
+      "equalizerNumber": 0,
+      "equalizerIndex": 0,
+      "isDynamicEqualizerOn": false,
+      "dynamicEqualizerType": "Bandpass",
+      "dynamicEqualizerFrequency": "1000",
+      "dynamicEqualizerGain": 0,
+      "dynamicEqualizerQ": "2",
+      "dynamicEqualizerShelving": "12dB",
+      "dynamicEqualizerAttack": "83",
+      "dynamicEqualizerRelease": "151",
+      "dynamicEqualizerRatio": "2.0:1",
+      "dynamicEqualizerThreshold": 0,
+      "equalizers": {
+        "1": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "2": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "3": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "4": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "5": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "6": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "7": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "8": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "9": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        }
+      },
+      "channelName": "Low",
+      "highpassFilter": "but24",
+      "highpassFrequency": "80",
+      "lowpassFilter": "but24",
+      "lowpassFrequency": "238",
+      "isLimiterOn": false,
+      "limiterThreshold": 0,
+      "limiterRelease": "141",
+      "polarity": "Normal",
+      "phase": 0,
+      "source": "A",
+      "shortDelay": 0
+    },
+    "3": {
+      "gain": 0,
+      "mute": true,
+      "isDelayOn": false,
+      "longDelay": 0,
+      "isEqualizerOn": false,
+      "equalizerNumber": 0,
+      "equalizerIndex": 0,
+      "isDynamicEqualizerOn": false,
+      "dynamicEqualizerType": "Bandpass",
+      "dynamicEqualizerFrequency": "1000",
+      "dynamicEqualizerGain": 0,
+      "dynamicEqualizerQ": "2",
+      "dynamicEqualizerShelving": "12dB",
+      "dynamicEqualizerAttack": "83",
+      "dynamicEqualizerRelease": "151",
+      "dynamicEqualizerRatio": "2.0:1",
+      "dynamicEqualizerThreshold": 0,
+      "equalizers": {
+        "1": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "2": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "3": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "4": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "5": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "6": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "7": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "8": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "9": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        }
+      },
+      "channelName": "Low-mid",
+      "highpassFilter": "but24",
+      "highpassFrequency": "238",
+      "lowpassFilter": "but24",
+      "lowpassFrequency": "738",
+      "isLimiterOn": false,
+      "limiterThreshold": 0,
+      "limiterRelease": "141",
+      "polarity": "Normal",
+      "phase": 0,
+      "source": "A",
+      "shortDelay": 0
+    },
+    "4": {
+      "gain": 0,
+      "mute": true,
+      "isDelayOn": false,
+      "longDelay": 0,
+      "isEqualizerOn": false,
+      "equalizerNumber": 0,
+      "equalizerIndex": 0,
+      "isDynamicEqualizerOn": false,
+      "dynamicEqualizerType": "Bandpass",
+      "dynamicEqualizerFrequency": "1000",
+      "dynamicEqualizerGain": 0,
+      "dynamicEqualizerQ": "2",
+      "dynamicEqualizerShelving": "12dB",
+      "dynamicEqualizerAttack": "83",
+      "dynamicEqualizerRelease": "151",
+      "dynamicEqualizerRatio": "2.0:1",
+      "dynamicEqualizerThreshold": 0,
+      "equalizers": {
+        "1": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "2": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "3": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "4": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "5": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "6": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "7": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "8": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "9": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        }
+      },
+      "channelName": "Mid",
+      "highpassFilter": "but24",
+      "highpassFrequency": "738",
+      "lowpassFilter": "but24",
+      "lowpassFrequency": "2160",
+      "isLimiterOn": false,
+      "limiterThreshold": 0,
+      "limiterRelease": "141",
+      "polarity": "Normal",
+      "phase": 0,
+      "source": "A",
+      "shortDelay": 0
+    },
+    "5": {
+      "gain": 0,
+      "mute": true,
+      "isDelayOn": false,
+      "longDelay": 0,
+      "isEqualizerOn": false,
+      "equalizerNumber": 0,
+      "equalizerIndex": 0,
+      "isDynamicEqualizerOn": false,
+      "dynamicEqualizerType": "Bandpass",
+      "dynamicEqualizerFrequency": "1000",
+      "dynamicEqualizerGain": 0,
+      "dynamicEqualizerQ": "2",
+      "dynamicEqualizerShelving": "12dB",
+      "dynamicEqualizerAttack": "83",
+      "dynamicEqualizerRelease": "151",
+      "dynamicEqualizerRatio": "2.0:1",
+      "dynamicEqualizerThreshold": 0,
+      "equalizers": {
+        "1": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "2": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "3": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "4": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "5": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "6": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "7": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "8": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "9": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        }
+      },
+      "channelName": "Hi-mid",
+      "highpassFilter": "but24",
+      "highpassFrequency": "2160",
+      "lowpassFilter": "but24",
+      "lowpassFrequency": "6030",
+      "isLimiterOn": false,
+      "limiterThreshold": 0,
+      "limiterRelease": "141",
+      "polarity": "Normal",
+      "phase": 0,
+      "source": "A",
+      "shortDelay": 0
+    },
+    "6": {
+      "gain": 0,
+      "mute": true,
+      "isDelayOn": false,
+      "longDelay": 0,
+      "isEqualizerOn": false,
+      "equalizerNumber": 0,
+      "equalizerIndex": 0,
+      "isDynamicEqualizerOn": false,
+      "dynamicEqualizerType": "Bandpass",
+      "dynamicEqualizerFrequency": "1000",
+      "dynamicEqualizerGain": 0,
+      "dynamicEqualizerQ": "2",
+      "dynamicEqualizerShelving": "12dB",
+      "dynamicEqualizerAttack": "83",
+      "dynamicEqualizerRelease": "151",
+      "dynamicEqualizerRatio": "2.0:1",
+      "dynamicEqualizerThreshold": 0,
+      "equalizers": {
+        "1": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "2": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "3": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "4": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "5": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "6": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "7": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "8": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        },
+        "9": {
+          "equalizerType": "Bandpass",
+          "equalizerFrequency": "1000",
+          "equalizerGain": 0,
+          "equalizerQ": "2",
+          "equalizerShelving": "12dB"
+        }
+      },
+      "channelName": "Hi",
+      "highpassFilter": "but24",
+      "highpassFrequency": "6030",
+      "lowpassFilter": "off",
+      "lowpassFrequency": "19600",
+      "isLimiterOn": false,
+      "limiterThreshold": 0,
+      "limiterRelease": "141",
+      "polarity": "Normal",
+      "phase": 0,
+      "source": "A",
+      "shortDelay": 0
+    }
+  }
+}

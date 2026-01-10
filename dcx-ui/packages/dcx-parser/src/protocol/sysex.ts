@@ -12,9 +12,6 @@
  * - Parameter value mapping (parameter-mappings.ts)
  */
 
-import { verifyChecksum } from './checksum.js';
-import { decode7to8 } from './encoding.js';
-
 import {
   SYSEX_START,
   SYSEX_END,
@@ -27,11 +24,12 @@ import {
   CMD_DIRECT,
   HEADER_SIZE,
 } from '../constants/protocol.js';
+import {verifyChecksum} from './checksum.js';
+import {decode7to8} from './encoding.js';
 
 // ============================================================================
 // Message Building
 // ============================================================================
-
 
 // ============================================================================
 // Message Parsing
@@ -39,18 +37,18 @@ import {
 
 /** Result of parsing a SysEx message */
 export type ParsedMessage =
-  | { type: 'ping'; deviceId: number }
-  | { type: 'search'; deviceId: number; version: number; name: string }
-  | { type: 'pageDump'; deviceId: number; page: number; data: Uint8Array }
-  | { type: 'editBuffer'; deviceId: number; part: number; data: Uint8Array }
-  | { type: 'ack'; deviceId: number; payload: Uint8Array }
-  | { type: 'pageRequest'; deviceId: number; page: number; requestType: number }
+  | {type: 'ping'; deviceId: number}
+  | {type: 'search'; deviceId: number; version: number; name: string}
+  | {type: 'pageDump'; deviceId: number; page: number; data: Uint8Array}
+  | {type: 'editBuffer'; deviceId: number; part: number; data: Uint8Array}
+  | {type: 'ack'; deviceId: number; payload: Uint8Array}
+  | {type: 'pageRequest'; deviceId: number; page: number; requestType: number}
   | {
-    type: 'direct';
-    deviceId: number;
-    parameters: Array<{ channel: number; param: number; value: number }>;
-  }
-  | { type: 'unknown'; deviceId: number; command: number; data: Uint8Array };
+      type: 'direct';
+      deviceId: number;
+      parameters: Array<{channel: number; param: number; value: number}>;
+    }
+  | {type: 'unknown'; deviceId: number; command: number; data: Uint8Array};
 
 /**
  * Parse a complete SysEx message from the device.
@@ -207,7 +205,7 @@ function parseDirectCommand(
   deviceId: number,
 ): ParsedMessage {
   const count = message[7];
-  const parameters: Array<{ channel: number; param: number; value: number }> = [];
+  const parameters: Array<{channel: number; param: number; value: number}> = [];
 
   for (let i = 0; i < count; i++) {
     const offset = 8 + i * 4;
@@ -264,5 +262,5 @@ export function extractSysexMessages(buffer: Uint8Array): {
   // Return remaining bytes (incomplete message)
   const remaining = start >= 0 ? buffer.slice(start) : new Uint8Array(0);
 
-  return { messages, remaining };
+  return {messages, remaining};
 }

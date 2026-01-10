@@ -2,16 +2,14 @@ import React from 'react';
 import FormGroup from 'react-bootstrap/FormGroup';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import type {ParameterTarget} from 'dcx-parser';
 import {useSendCommand} from '../hooks/use-send-command.ts';
 
 type Props = {
   readonly isTrue: boolean;
-  readonly param: string;
   readonly name: string;
+  readonly target: ParameterTarget;
   readonly isInverted?: boolean;
-  readonly group?: string;
-  readonly channelId?: string;
-  readonly eq?: string;
   readonly label?: string;
   readonly hasLabel?: boolean;
 };
@@ -19,19 +17,16 @@ type Props = {
 export function BoolParameter({
   name,
   isTrue,
+  target,
   isInverted = false,
   hasLabel = false,
   label,
-  param,
-  group,
-  channelId,
-  eq,
 }: Props) {
   const sendCommand = useSendCommand();
   const onColor = isInverted ? 'danger' : 'success';
 
   const handleClick = () => {
-    void sendCommand({param, group, channelId, eq, value: !isTrue});
+    void sendCommand(target, !isTrue);
   };
 
   return (

@@ -2,17 +2,17 @@ import React from 'react';
 import Card from 'react-bootstrap/Card';
 import isEqual from 'lodash.isequal';
 import Delay from './delay.tsx';
-import pc from './parameters/index.tsx';
-import {type Channel, type Setup} from './dcx2496/parser.ts';
+import { setup as setupParameters } from './parameters/index.tsx';
+import { type Channel, type Setup, isOutputChannel } from 'dcx-parser';
 
 type Props = {
-  readonly group: string;
+  readonly group: 'inputs' | 'outputs';
   readonly channels: Record<string, Channel>;
   readonly setup: Setup;
 };
 
-function Delays({channels, setup, group}: Props) {
-  const {airTemperature, isDelayCorrectionOn, delayLink, delayUnits} = setup;
+function Delays({ channels, setup, group }: Props) {
+  const { airTemperature, isDelayCorrectionOn, delayLink, delayUnits } = setup;
 
   return (
     <div>
@@ -20,7 +20,7 @@ function Delays({channels, setup, group}: Props) {
         <Card>
           <Card.Header>Long Delay Link</Card.Header>
           <Card.Body>
-            <pc.DelayLink value={delayLink ?? false} />
+            <setupParameters.DelayLink value={delayLink ?? false} />
           </Card.Body>
         </Card>
       )}
@@ -34,11 +34,11 @@ function Delays({channels, setup, group}: Props) {
             channelId={id}
             isDelayOn={channel.isDelayOn ?? false}
             delayUnits={delayUnits ?? 'mm'}
-            shortDelay={channel.shortDelay ?? 0}
+            shortDelay={isOutputChannel(channel) ? channel.shortDelay : 0}
             longDelay={channel.longDelay ?? 0}
             airTemperature={airTemperature ?? 20}
             isDelayCorrectionOn={isDelayCorrectionOn ?? false}
-            channelName={channel.channelName ?? ''}
+            channelName={isOutputChannel(channel) ? channel.channelName : ''}
           />
         );
       })}
@@ -52,7 +52,7 @@ export default React.memo(Delays, (previousProps, nextProps) => {
     previousProps.setup.airTemperature === nextProps.setup.airTemperature &&
     previousProps.setup.delayLink === nextProps.setup.delayLink &&
     previousProps.setup.isDelayCorrectionOn ===
-      nextProps.setup.isDelayCorrectionOn &&
+    nextProps.setup.isDelayCorrectionOn &&
     previousProps.setup.delayUnits === nextProps.setup.delayUnits
   );
 });

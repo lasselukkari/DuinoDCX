@@ -1,17 +1,18 @@
-import {FaRandom, FaVolumeMute, FaVolumeUp} from 'react-icons/fa';
-import React, {useState} from 'react';
+import { FaRandom, FaVolumeMute, FaVolumeUp } from 'react-icons/fa';
+import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
+import type { State } from 'dcx-parser';
 import ChannelControls from './channel-controls.tsx';
 import './ChannelLevels.css';
-import {useSendCommand} from './hooks/use-send-command.ts';
-import {useDeviceState} from './device-state-context.tsx';
+import { useSendCommand, type BatchCommand } from './hooks/use-send-command.ts';
 
 const inputChannels = ['A', 'B', 'C', 'Sum'];
 const outputChannels = ['1', '2', '3', '4', '5', '6'];
 
 type Props = {
-  readonly inputs: Array<{isLimited: boolean; level: number}>;
-  readonly outputs: Array<{isLimited: boolean; level: number}>;
+  readonly device?: State;
+  readonly inputs: Array<{ isLimited: boolean; level: number }>;
+  readonly outputs: Array<{ isLimited: boolean; level: number }>;
 };
 
 type SelectionItem = {
@@ -26,11 +27,10 @@ type SelectionState = {
   outputs: SelectionItem[];
 };
 
-function ChannelLevels({inputs, outputs}: Props) {
-  const {device} = useDeviceState();
+function ChannelLevels({ device, inputs, outputs }: Props) {
   const sendCommand = useSendCommand();
 
-  const [selected, setSelected] = useState<SelectionState>({
+  const [selected, setSelected] = useState<SelectionState>(() => ({
     inputs: inputChannels.map((channelId) => ({
       name: channelId,
       isSelected: false,
@@ -40,36 +40,41 @@ function ChannelLevels({inputs, outputs}: Props) {
     outputs: outputChannels.map((channelId) => ({
       name: device?.outputs?.[channelId]?.channelName
         ? (device.outputs[channelId].channelName
-            .match(/\b\w/g)
-            ?.join('')
-            .toUpperCase() ?? channelId)
+          .match(/\b\w/g)
+          ?.join('')
+          .toUpperCase() ?? channelId)
         : channelId,
       isSelected: false,
       group: 'outputs',
       channelId,
     })),
-  });
+  }));
 
-  if (!device || !device.isReady || !inputs || !outputs) {
+  if (!device || !inputs || !outputs) {
     return null;
   }
 
   const handleMuteAll = (value: boolean) => {
-    const inputsCmd = inputChannels.map((channelId) => ({
-      param: 'mute',
-      group: 'inputs',
-      channelId,
+    const inputsCmd: BatchCommand[] = inputChannels.map((channelId) => ({
+      target: {
+        kind: 'channel' as const,
+        group: 'inputs' as const,
+        id: channelId,
+        key: 'mute',
+      },
       value,
     }));
-    const outputsCmd = outputChannels.map((channelId) => ({
-      param: 'mute',
-      group: 'outputs',
-      channelId,
+    const outputsCmd: BatchCommand[] = outputChannels.map((channelId) => ({
+      target: {
+        kind: 'channel' as const,
+        group: 'outputs' as const,
+        id: channelId,
+        key: 'mute',
+      },
       value,
     }));
 
     const commands = [...inputsCmd, ...outputsCmd];
-
     void sendCommand(commands);
   };
 
@@ -84,26 +89,36 @@ function ChannelLevels({inputs, outputs}: Props) {
   }) => {
     setSelected((previous) => {
       const nextGroup = [...previous[group]];
-      nextGroup[index] = {...nextGroup[index], isSelected: !isSelected};
-      return {...previous, [group]: nextGroup};
+      nextGroup[index] = { ...nextGroup[index], isSelected: !isSelected };
+      return { ...previous, [group]: nextGroup };
     });
   };
 
   const handleToggle = () => {
-    const inputCommands = selected.inputs.filter((input) => input.isSelected);
-    const outputCommands = selected.outputs.filter(
-      (output) => output.isSelected,
-    );
+    const inputCommands: BatchCommand[] = selected.inputs
+      .filter((input) => input.isSelected)
+      .map(({ group, channelId }) => ({
+        target: {
+          kind: 'channel' as const,
+          group,
+          id: channelId,
+          key: 'mute',
+        },
+        value: !device.inputs[channelId].mute,
+      }));
+    const outputCommands: BatchCommand[] = selected.outputs
+      .filter((output) => output.isSelected)
+      .map(({ group, channelId }) => ({
+        target: {
+          kind: 'channel' as const,
+          group,
+          id: channelId,
+          key: 'mute',
+        },
+        value: !device.outputs[channelId].mute,
+      }));
 
-    const commands = [...inputCommands, ...outputCommands].map(
-      ({group, channelId}) => ({
-        param: 'mute',
-        group,
-        channelId,
-        value: !device[group][channelId].mute,
-      }),
-    );
-
+    const commands = [...inputCommands, ...outputCommands];
     void sendCommand(commands);
   };
 
@@ -119,12 +134,12 @@ function ChannelLevels({inputs, outputs}: Props) {
     <div className="channels-container">
       <div className="channel-group">
         {inputChannels.map((channelId, index) => {
-          const {isLimited, level} = inputs[index] ?? {
+          const { isLimited, level } = inputs[index] ?? {
             isLimited: false,
             level: -1,
           };
-          const {mute = false} = device.inputs[channelId];
-          const {group, name, isSelected} = selected.inputs[index];
+          const { mute = false } = device.inputs[channelId];
+          const { group, name, isSelected } = selected.inputs[index];
 
           return (
             <ChannelControls
@@ -145,12 +160,12 @@ function ChannelLevels({inputs, outputs}: Props) {
       </div>
       <div className="channel-group">
         {outputChannels.map((channelId, index) => {
-          const {isLimited, level} = outputs[index] ?? {
+          const { isLimited, level } = outputs[index] ?? {
             isLimited: false,
             level: -1,
           };
-          const {mute = false} = device.outputs[channelId];
-          const {group, name, isSelected} = selected.outputs[index];
+          const { mute = false } = device.outputs[channelId];
+          const { group, name, isSelected } = selected.outputs[index];
 
           return (
             <ChannelControls

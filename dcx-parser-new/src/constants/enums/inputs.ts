@@ -1,1 +1,1 @@
-export const INPUTS = ['A', 'B', 'C', 'Sum'];
+export const inputs = ['A', 'B', 'C', 'Sum'];

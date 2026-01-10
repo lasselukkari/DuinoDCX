@@ -1,1 +1,1 @@
-export const INPUT_C_GAINS = ['Line', 'Mic'];
+export const inputCGains = ['Line', 'Mic'];

@@ -136,6 +136,8 @@ void signalHandler(int sig) {
 // Request handlers (adapted from DuinoDCX.ino)
 // ============================================================================
 
+void handleSpa(Request &req, Response &res) { static_index(req, res); }
+
 void logRequestStart(Request &req, Response &res) {
   (void)res;
   unsigned long now = millis();
@@ -226,6 +228,7 @@ bool setupHttpServer() {
   app.use(&logRequestStart);
   app.use("/api", &apiRouter);
   app.use("/", staticFiles());
+  app.get(handleSpa);
   app.get("/health", &healthCheck);
   app.use(&logRequestEnd);
 

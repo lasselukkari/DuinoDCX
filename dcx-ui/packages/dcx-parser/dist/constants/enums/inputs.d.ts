@@ -1,2 +1,2 @@
 export declare const INPUTS: string[];
-//# sourceMappingURL=inputs.d.ts.map
+// # sourceMappingURL=inputs.d.ts.map

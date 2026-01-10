@@ -2,6 +2,8 @@ import React from 'react';
 import Card from 'react-bootstrap/Card';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
+import { useNavigate, useParams } from '@tanstack/react-router';
+import type { State } from 'dcx-parser';
 import BlockUi from './components/block-ui.tsx';
 import CrossoverPlotPanel from './crossover-plot-panel.tsx';
 import Crossovers from './crossovers.tsx';
@@ -13,24 +15,29 @@ import Gains from './gains.tsx';
 import Limiters from './limiters.tsx';
 import OutputRouting from './output-routing.tsx';
 import Phases from './phases.tsx';
-import {useDeviceState} from './device-state-context.tsx';
 
 type Props = {
+  readonly device: State;
   readonly isBlocking: boolean;
 };
 
-function Outputs({isBlocking}: Props) {
-  const {device} = useDeviceState();
+function Outputs({ device, isBlocking }: Props) {
+  const { outputs: channels, setup } = device;
+  const navigate = useNavigate();
+  const { tab = 'gain' } = useParams({ strict: false }) as any;
 
-  if (!device) return null;
-
-  const {outputs: channels, setup} = device;
+  const handleSelect = (key: string | null) => {
+    if (key) {
+      void navigate({ to: '/outputs/$tab', params: { tab: key } });
+    }
+  };
 
   return (
     <div>
       <Tabs
         unmountOnExit
-        defaultActiveKey="gain"
+        activeKey={tab}
+        onSelect={handleSelect}
         variant="pills"
         id="outputs"
         className="control-menu"
@@ -48,7 +55,7 @@ function Outputs({isBlocking}: Props) {
         <Tab title="Crossover" eventKey="crossover">
           <CrossoverPlotPanel channels={channels} />
           <BlockUi isBlocking={isBlocking}>
-            <Crossovers group="outputs" channels={channels} />
+            <Crossovers channels={channels} />
           </BlockUi>
         </Tab>
         <Tab title="Equalizer" eventKey="equalizers">
@@ -67,12 +74,12 @@ function Outputs({isBlocking}: Props) {
 
         <Tab title="Limiter" eventKey="limiters">
           <BlockUi isBlocking={isBlocking}>
-            <Limiters group="outputs" channels={channels} />
+            <Limiters channels={channels} />
           </BlockUi>
         </Tab>
         <Tab title="Phase" eventKey="phases">
           <BlockUi isBlocking={isBlocking}>
-            <Phases group="outputs" channels={channels} />
+            <Phases channels={channels} />
           </BlockUi>
         </Tab>
         <Tab title="Delay" eventKey="delays">
@@ -90,4 +97,9 @@ function Outputs({isBlocking}: Props) {
   );
 }
 
-export default React.memo(Outputs);
+export default React.memo(Outputs, (previousProps, nextProps) => {
+  return (
+    previousProps.isBlocking === nextProps.isBlocking &&
+    previousProps.device === nextProps.device
+  );
+});

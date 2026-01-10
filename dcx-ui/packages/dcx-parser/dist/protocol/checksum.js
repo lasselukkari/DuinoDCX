@@ -15,12 +15,14 @@
  * @returns The 7-bit checksum value
  */
 export function calculateChecksum(data) {
-    let sum = 0;
-    for (const byte of data) {
-        sum += byte + 1;
-    }
-    return ~sum & 0x7f;
+  let sum = 0;
+  for (const byte of data) {
+    sum += byte + 1;
+  }
+
+  return ~sum & 0x7f;
 }
+
 /**
  * Verify the checksum of a complete SysEx packet.
  *
@@ -32,16 +34,18 @@ export function calculateChecksum(data) {
  * @returns true if checksum is valid
  */
 export function verifyChecksum(packet) {
-    if (packet.length < 15) {
-        return false; // Minimum size check
-    }
-    // Checksum is second-to-last byte (before F7)
-    const expectedChecksum = packet.at(-2);
-    if (expectedChecksum === undefined) {
-        return false;
-    }
-    // Data portion: bytes 13 to (length - 2)
-    const data = packet.slice(13, -2);
-    return calculateChecksum(data) === expectedChecksum;
+  if (packet.length < 15) {
+    return false; // Minimum size check
+  }
+
+  // Checksum is second-to-last byte (before F7)
+  const expectedChecksum = packet.at(-2);
+  if (expectedChecksum === undefined) {
+    return false;
+  }
+
+  // Data portion: bytes 13 to (length - 2)
+  const data = packet.slice(13, -2);
+  return calculateChecksum(data) === expectedChecksum;
 }
-//# sourceMappingURL=checksum.js.map
+// # sourceMappingURL=checksum.js.map

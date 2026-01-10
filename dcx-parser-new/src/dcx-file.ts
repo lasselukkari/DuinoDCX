@@ -15,8 +15,8 @@
  * - Terminator: 4-byte sequence
  */
 
-// Encoding functions available but not currently used
-// import { decode7to8, encode8to7 } from './encoding.js';
+import { parsePreset } from './preset-parser.js';
+import type { State } from './types/index.js';
 
 // ============================================================================
 // Constants
@@ -89,6 +89,11 @@ export type DcxFile = {
   rawData: Uint8Array;
 };
 
+/** Preset parsed with full State */
+export type ParsedPreset = PresetSlot & {
+  state: State;
+};
+
 // ============================================================================
 // Parsing
 // ============================================================================
@@ -125,6 +130,132 @@ export function parseDcxFile(data: Uint8Array): DcxFile {
 }
 
 /**
+ * Parse all 60 presets from a DCX file.
+ * Handles full format (Preset 1) and compact delta format (Presets 2-60).
+ */
+export function parseDcxPresets(data: Uint8Array): ParsedPreset[] {
+  const dcxFile = parseDcxFile(data);
+  const results: ParsedPreset[] = [];
+
+  // Save the original preset 1 data (to reset between each compact preset)
+  const preset1Data = data.slice(PRESET_1_OFFSET, PRESET_1_OFFSET + FULL_PRESET_BYTES);
+
+  // Working buffer: Starts as a clone of the original file
+  const currentBuffer = new Uint8Array(data);
+
+  for (const slot of dcxFile.slots) {
+    if (slot.slot === 1) {
+      // Preset 1 is already in currentBuffer at PRESET_1_OFFSET
+      try {
+        const state = parsePreset(currentBuffer);
+        if (state.header) {
+          state.header.presetName = slot.name;
+        }
+
+        results.push({ ...slot, state });
+      } catch (error) {
+        console.warn(`Failed to parse Preset 1:`, error);
+        throw error;
+      }
+    } else {
+      if (slot.isEmpty) {
+        results.push({ ...slot, state: createEmptyState() });
+        continue;
+      }
+
+      // Reset the preset 1 area to original data before applying deltas
+      // Each compact preset's deltas are relative to preset 1
+      currentBuffer.set(preset1Data, PRESET_1_OFFSET);
+
+      // Compact Preset: Apply Deltas
+      // Delta Block Format: Loop of [skipLo, skipHi, countLo, countHi, ...values...]
+
+      let deltaPtr = slot.dataOffset;
+      const deltaEnd = slot.dataOffset + slot.dataLength;
+
+      // We apply changes to currentBuffer starting at PRESET_1_OFFSET
+      // We must track logical word offset in the preset
+      let currentWordIndex = 0;
+
+      while (deltaPtr < deltaEnd) {
+        // Read Skip Count (Words) - from original data, not currentBuffer!
+        if (deltaPtr + 4 > deltaEnd) break;
+
+        const skip = data[deltaPtr] + data[deltaPtr + 1] * 256;
+        deltaPtr += 2;
+
+        currentWordIndex += skip;
+        if (currentWordIndex >= FULL_PRESET_WORDS) break;
+
+        // Read Change Count (Words)
+        const count = data[deltaPtr] + data[deltaPtr + 1] * 256;
+        deltaPtr += 2;
+
+        // Apply Changes
+        for (let i = 0; i < count; i++) {
+          if (deltaPtr + 2 > deltaEnd) break;
+          if (currentWordIndex >= FULL_PRESET_WORDS) break;
+
+          const valueLo = data[deltaPtr];
+          const valueHi = data[deltaPtr + 1];
+          deltaPtr += 2;
+
+          // Patch working buffer
+          // Delta word indices are relative to byte 10 (after 8-byte name + 2-byte padding)
+          const byteOffset = PRESET_1_OFFSET + 10 + currentWordIndex * 2;
+          currentBuffer[byteOffset] = valueLo;
+          currentBuffer[byteOffset + 1] = valueHi;
+
+          currentWordIndex++;
+        }
+      }
+
+      // Parse the patched buffer
+      try {
+        const state = parsePreset(currentBuffer);
+        if (state.header) {
+          state.header.presetName = slot.name; // Use name from directory
+        }
+
+        results.push({ ...slot, state });
+      } catch (error) {
+        console.warn(`Failed to parse Preset ${slot.slot}:`, error);
+        // Fallback or empty
+        results.push({ ...slot, state: createEmptyState() });
+      }
+    }
+  }
+
+  return results;
+}
+
+// Helper for Empty State
+function createEmptyState(): State {
+  return {
+    header: {
+      xpcrSignature: 'XPCR',
+      xpcrVersion: 0,
+      xpcrExtension: new Uint8Array(0),
+      xprbSignature: 'XPRB',
+      xprbVersion: 0,
+      xprbExtension: new Uint8Array(0),
+      deviceName: 'DCX2496',
+      deviceNamePadding: new Uint8Array(0),
+      signatureBytes: new Uint8Array(0),
+      xcurSignature: 'XCUR',
+      xcurVersion: 0,
+      xcurExtension: new Uint8Array(0),
+      presetName: '<Empty>',
+      presetNamePadding: new Uint8Array(0),
+      headerReserved: new Uint8Array(0),
+    },
+    setup: {},
+    inputs: {},
+    outputs: {},
+  } as State;
+}
+
+/**
  * Parse all preset slots from a DCX file.
  */
 function parsePresetSlots(
@@ -144,37 +275,80 @@ function parsePresetSlots(
     dataLength: FULL_PRESET_BYTES,
   });
 
-  // Parse slots 2-60 (compact format)
-  // These use variable-length delta encoding
-  let offset = PRESET_1_OFFSET + FULL_PRESET_BYTES;
+  // First, scan entire file for all compact preset entries
+  // Entry format: [ptr_lo, ptr_hi, slotIndex, 0x00, name(8 bytes), 0x00, 0x00]
+  // Total: 14 bytes per entry
+  const compactEntries = new Map<number, { offset: number; name: string }>();
 
-  for (let slotNumber = 2; slotNumber <= NUM_SLOTS; slotNumber++) {
-    if (offset >= data.length - 4) {
-      // No more data, remaining slots are empty
-      slots.push({
-        slot: slotNumber,
-        name: '',
-        isEmpty: true,
-        isLocked: lockFlags[slotNumber - 1],
-        dataOffset: 0,
-        dataLength: 0,
-      });
-      continue;
+  const compactStart = PRESET_1_OFFSET + FULL_PRESET_BYTES;
+  for (let i = compactStart; i < data.length - 14; i++) {
+    // Check for valid entry pattern: byte[3] should be 0x00
+    if (data[i + 3] !== 0x00) continue;
+
+    const slotIdx = data[i + 2];
+    // Slot indices 1-59 map to presets 2-60
+    if (slotIdx < 1 || slotIdx >= NUM_SLOTS) continue;
+
+    // Check entry terminator: bytes 12-13 should be 0x00 0x00
+    // This filters out false positives from UTF-16LE data
+    if (data[i + 12] !== 0x00 || data[i + 13] !== 0x00) continue;
+
+    // Check if name looks valid (bytes 4-11 should be printable or null)
+    // Name must START with alphanumeric character (A-Z, a-z, 0-9)
+    // This filters out UTF-16LE data where high bytes are 00
+    const firstChar = data[i + 4];
+    const isAlphanumeric = (firstChar >= 0x30 && firstChar <= 0x39) || // 0-9
+      (firstChar >= 0x41 && firstChar <= 0x5A) || // A-Z
+      (firstChar >= 0x61 && firstChar <= 0x7A);   // a-z
+    if (!isAlphanumeric) continue;
+
+    let validName = true;
+    for (let j = 5; j < 12; j++) {
+      const c = data[i + j];
+      if (c !== 0 && (c < 32 || c > 126)) {
+        validName = false;
+        break;
+      }
     }
 
-    // Look for slot index marker
-    const found = findSlotEntry(data, offset, slotNumber - 1);
-    if (found) {
-      const name = readCompactPresetName(data, found.nameOffset);
+    if (!validName) continue;
+
+    // Read the name
+    const name = readCompactPresetName(data, i + 4);
+
+    // Only accept if we haven't seen this slot yet
+    if (!compactEntries.has(slotIdx)) {
+      compactEntries.set(slotIdx, { offset: i, name });
+    }
+  }
+
+  // Parse slots 2-60 using the found entries
+  for (let slotNumber = 2; slotNumber <= NUM_SLOTS; slotNumber++) {
+    const slotIdx = slotNumber - 1; // slot 2 = index 1, slot 37 = index 36
+
+    const entry = compactEntries.get(slotIdx);
+    if (entry) {
+      // Read pointer to calculate data offset
+      const ptrLo = data[entry.offset];
+      const ptrHi = data[entry.offset + 1];
+      const ptr = ptrLo + ptrHi * 256;
+
+      // Delta data starts right after the 14-byte directory entry
+      // The ptr field appears to be total entry size or offset to next entry
+      const dataOffset = entry.offset + 14;
+
+      // Calculate data length: ptr - 14 gives the delta data size
+      // (ptr includes the 14-byte directory entry)
+      const dataLength = ptr > 14 ? ptr - 14 : 0;
+
       slots.push({
         slot: slotNumber,
-        name,
-        isEmpty: name.length === 0,
+        name: entry.name,
+        isEmpty: entry.name.length === 0,
         isLocked: lockFlags[slotNumber - 1],
-        dataOffset: found.dataOffset,
-        dataLength: found.dataLength,
+        dataOffset,
+        dataLength,
       });
-      offset = found.nextOffset;
     } else {
       // Slot not found, mark as empty
       slots.push({
@@ -189,89 +363,6 @@ function parsePresetSlots(
   }
 
   return slots;
-}
-
-/**
- * Find the end of a preset data block by scanning for the next entry or terminator.
- */
-function findDataBlockEnd(data: Uint8Array, startOffset: number): number {
-  let offset = startOffset;
-  while (offset < data.length - 4) {
-    if (hasSignature(data, offset, DCX_TERMINATOR)) {
-      break;
-    }
-
-    // Check if this looks like a new entry (slot index in valid range)
-    if (data[offset + 2] < NUM_SLOTS && data[offset + 3] === 0x00) {
-      break;
-    }
-
-    offset++;
-  }
-
-  return offset;
-}
-
-/**
- * Find a compact preset entry by slot index.
- */
-function findSlotEntry(
-  data: Uint8Array,
-  startOffset: number,
-  targetIndex: number,
-):
-  | {
-    nameOffset: number;
-    dataOffset: number;
-    dataLength: number;
-    nextOffset: number;
-  }
-  | undefined {
-  // Compact entries have format:
-  // [ptr_lo, ptr_hi, slotIndex, 0x00, name(8 bytes), 0x00, 0x00]
-  // Total: 14 bytes for directory record
-
-  const ENTRY_SIZE = 14;
-  let offset = startOffset;
-
-  // Search for the slot index
-  while (offset + ENTRY_SIZE <= data.length - 4) {
-    // Check for terminator
-    if (hasSignature(data, offset, DCX_TERMINATOR)) {
-      return undefined;
-    }
-
-    // Read slot index at offset + 2
-    const slotIndex = data[offset + 2];
-
-    if (slotIndex === targetIndex) {
-      // Found it
-      const ptrLo = data[offset];
-      const ptrHi = data[offset + 1];
-      const ptr = ptrLo + ptrHi * 256;
-
-      // Pointer is relative offset to data block
-      const dataOffset = ptr > ENTRY_SIZE ? offset + ptr : 0;
-
-      // Calculate data length (up to next entry or terminator)
-      const nextOffset =
-        dataOffset > 0
-          ? findDataBlockEnd(data, offset + ENTRY_SIZE)
-          : offset + ENTRY_SIZE;
-
-      return {
-        nameOffset: offset + 4,
-        dataOffset,
-        dataLength: dataOffset > 0 ? nextOffset - dataOffset : 0,
-        nextOffset,
-      };
-    }
-
-    // Move to next potential entry
-    offset++;
-  }
-
-  return undefined;
 }
 
 /**
@@ -332,29 +423,12 @@ export function assemblePagesIntoDcxFile(
     offset += page.data.length;
   }
 
-  // CRITICAL: The page dump data is "Indexed" (8->8 bytes). 
-  // We MUST convert it to "Raw" (8->7 bytes) BEFORE searching for signatures.
-  const numBlocks = Math.floor(indexedData.length / 8);
-  const rawData = new Uint8Array(numBlocks * 7 + (indexedData.length % 8));
-  for (let i = 0; i < numBlocks; i++) {
-    const srcStart = i * 8;
-    const dstStart = i * 7;
-    const msbByte = indexedData[srcStart + 7];
-
-    for (let j = 0; j < 7; j++) {
-      let byte = indexedData[srcStart + j];
-      if (msbByte & (1 << j)) {
-        byte |= 0x80;
-      }
-      rawData[dstStart + j] = byte;
-    }
-  }
-  if (indexedData.length % 8 !== 0) {
-    rawData.set(indexedData.slice(numBlocks * 8), numBlocks * 7);
-  }
+  // CRITICAL: The page dump data is ALREADY decoded by parseMessage (via decode7to8).
+  // We do not need to decode it again.
+  const rawData = indexedData;
 
   // Find XSNP signature in the RAW data
-  let xsnpOffset = findSignature(rawData, DCX_SIGNATURE);
+  const xsnpOffset = findSignature(rawData, DCX_SIGNATURE);
   if (xsnpOffset < 0) {
     throw new Error('XSNP signature not found in page data');
   }
@@ -405,12 +479,14 @@ export function splitDcxFileIntoPages(
 
     // Only pad intermediate pages, not the last page
     // The last page should have its actual size
-    const isLastPage = (offset + chunkSize) >= fullData.length;
-    const finalData = isLastPage ? pageData : (() => {
-      const paddedData = new Uint8Array(pageSize);
-      paddedData.set(pageData);
-      return paddedData;
-    })();
+    const isLastPage = offset + chunkSize >= fullData.length;
+    const finalData = isLastPage
+      ? pageData
+      : (() => {
+        const paddedData = new Uint8Array(pageSize);
+        paddedData.set(pageData);
+        return paddedData;
+      })();
 
     pages.push({
       page: pageNumber,

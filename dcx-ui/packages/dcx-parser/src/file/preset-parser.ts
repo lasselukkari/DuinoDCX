@@ -1,10 +1,6 @@
-import type { State } from '../types/index.js';
-import { createEmptyState } from '../model/helpers.js';
-import {
-  wordLookup,
-  convertValue,
-  applyToState,
-} from '../model/param-lookup.js';
+import type {State} from '../types/index.js';
+import {createEmptyState} from '../model/helpers.js';
+import {wordLookup, convertValue, applyToState} from '../model/param-lookup.js';
 
 // ============================================================================
 // Constants
@@ -53,6 +49,7 @@ function parseInputNames(words: number[]): string[] {
         name += String.fromCodePoint(byte);
       }
     }
+
     names.push(name.trim());
   }
 
@@ -133,7 +130,7 @@ export function parseDcxFileToStates(data: Uint8Array): MemoryDumpResult {
       data[0x4e] * 65_536 +
       data[0x4f] * 16_777_216;
     if (magic === 0xaf_b1_ac_a7) {
-      return { presets: [], lockFlags };
+      return {presets: [], lockFlags};
     }
 
     throw new Error(`Invalid terminator magic: 0x${magic.toString(16)}`);
@@ -263,7 +260,7 @@ export function parseDcxFileToStates(data: Uint8Array): MemoryDumpResult {
     currentIndex = nextIndex;
   }
 
-  return { presets, lockFlags };
+  return {presets, lockFlags};
 }
 
 /**
@@ -278,7 +275,7 @@ export function parseMemoryPages(pages: Uint8Array[]): MemoryDumpResult {
   // We need to reconstruct the file format
 
   if (pages.length === 0) {
-    return { presets: [], lockFlags: Array.from({ length: 60 }, () => false) };
+    return {presets: [], lockFlags: Array.from({length: 60}, () => false)};
   }
 
   // The memory pages from the device are essentially the same as
@@ -327,7 +324,7 @@ export function parseMemoryPages(pages: Uint8Array[]): MemoryDumpResult {
     combined[indexOffset + 3] * 16_777_216;
 
   if (firstIndex >= 60) {
-    return { presets: [], lockFlags };
+    return {presets: [], lockFlags};
   }
 
   const presets: ParsedPreset[] = [];
@@ -429,5 +426,5 @@ export function parseMemoryPages(pages: Uint8Array[]): MemoryDumpResult {
     currentIndex = nextIndex;
   }
 
-  return { presets, lockFlags };
+  return {presets, lockFlags};
 }

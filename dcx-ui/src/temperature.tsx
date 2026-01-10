@@ -1,8 +1,8 @@
-import {memo, type ChangeEvent} from 'react';
+import { memo, type ChangeEvent } from 'react';
 import Button from 'react-bootstrap/Button';
 import FormControl from 'react-bootstrap/FormControl';
 import InputGroup from 'react-bootstrap/InputGroup';
-import {useSendCommand} from './hooks/use-send-command.js';
+import { useSendCommand } from './hooks/use-send-command.js';
 
 type Props = {
   readonly delayUnits: string;
@@ -10,7 +10,7 @@ type Props = {
   readonly isDelayCorrectionOn: boolean;
 };
 
-function Temperature({delayUnits, airTemperature, isDelayCorrectionOn}: Props) {
+function Temperature({ delayUnits, airTemperature, isDelayCorrectionOn }: Props) {
   const sendCommand = useSendCommand();
 
   const handleValueChange = (
@@ -18,20 +18,20 @@ function Temperature({delayUnits, airTemperature, isDelayCorrectionOn}: Props) {
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
     >,
   ) => {
-    const {value} = event.target;
+    const { value } = event.target;
     const numericValue = Number(value);
 
     const unlocalizedValue =
       delayUnits === 'mm' ? numericValue : ((numericValue - 32) * 5) / 9;
 
-    void sendCommand({param: 'airTemperature', value: unlocalizedValue});
+    void sendCommand({ kind: 'setup', key: 'airTemperature' }, unlocalizedValue);
   };
 
   const handleCorrectionChange = () => {
-    void sendCommand({
-      param: 'isDelayCorrectionOn',
-      value: !isDelayCorrectionOn,
-    });
+    void sendCommand(
+      { kind: 'setup', key: 'isDelayCorrectionOn' },
+      !isDelayCorrectionOn,
+    );
   };
 
   const toFahrenheit = (value: number) => (value * 9) / 5 + 32;

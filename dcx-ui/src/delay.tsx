@@ -1,16 +1,21 @@
 import Card from 'react-bootstrap/Card';
-import pc from './parameters/index.tsx';
+import {
+  input,
+  output,
+  type InputId,
+  type OutputId,
+} from './parameters/index.tsx';
 
 type DelayProps = {
   readonly isDelayOn: boolean;
-  readonly shortDelay: number | string;
-  readonly longDelay: number | string;
+  readonly shortDelay: number;
+  readonly longDelay: number;
   readonly channelName?: string;
   readonly channelId: string;
   readonly airTemperature: number;
   readonly isDelayCorrectionOn: boolean;
   readonly delayUnits: string; // 'mm', 'inch', etc
-  readonly group: string;
+  readonly group: 'inputs' | 'outputs';
 };
 
 function Delay({
@@ -75,43 +80,61 @@ function Delay({
     return 1;
   };
 
-  const formatter = (value: number, unit: string) =>
+  const formatter = (value: number, unit?: string) =>
     `${round(
-      localizeLength(value) / localizeDividor(delayUnits, unit),
-    )} ${localizeUnit(delayUnits, unit)} / ${round(
+      localizeLength(value) / localizeDividor(delayUnits, unit ?? ''),
+    )} ${localizeUnit(delayUnits, unit ?? '')} / ${round(
       temperatureFactor * value * (unit === 'cm' ? 10 : 1),
     )} ms`;
 
-  const labelFormatter = (value: number, unit: string) =>
-    round(localizeLength(value) / localizeDividor(delayUnits, unit)).toString();
+  const labelFormatter = (value: number, unit?: string) =>
+    round(
+      localizeLength(value) / localizeDividor(delayUnits, unit ?? ''),
+    ).toString();
 
-  return (
-    <Card>
-      <Card.Header>
-        {channelName ? `${channelId} . ${channelName}` : `Channel ${channelId}`}
-      </Card.Header>
-      <Card.Body>
-        <pc.IsDelayOn
-          value={isDelayOn}
-          group={group}
-          channelId={channelId}
-          labelFormatter={labelFormatter}
-        />
-        {group === 'outputs' && (
-          <pc.ShortDelay
+  if (group === 'outputs') {
+    const id = channelId as OutputId;
+    return (
+      <Card>
+        <Card.Header>
+          {channelName
+            ? `${channelId}. ${channelName}`
+            : `Channel ${channelId}`}
+        </Card.Header>
+        <Card.Body>
+          <output.IsDelayOn value={isDelayOn} id={id} />
+          <output.ShortDelay
             hasLabel
             value={shortDelay}
-            group={group}
-            channelId={channelId}
+            id={id}
             formatter={formatter}
             labelFormatter={labelFormatter}
           />
-        )}
-        <pc.LongDelay
+          <output.LongDelay
+            hasLabel
+            value={longDelay}
+            id={id}
+            formatter={formatter}
+            labelFormatter={labelFormatter}
+          />
+        </Card.Body>
+      </Card>
+    );
+  }
+
+  // Inputs
+  const id = channelId as InputId;
+  return (
+    <Card>
+      <Card.Header>
+        {channelName ? `${channelId}. ${channelName}` : `Channel ${channelId}`}
+      </Card.Header>
+      <Card.Body>
+        <input.IsDelayOn value={isDelayOn} id={id} />
+        <input.LongDelay
           hasLabel
           value={longDelay}
-          group={group}
-          channelId={channelId}
+          id={id}
           formatter={formatter}
           labelFormatter={labelFormatter}
         />

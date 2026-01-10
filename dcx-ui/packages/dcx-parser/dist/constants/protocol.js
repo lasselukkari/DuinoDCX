@@ -32,4 +32,4 @@ export const PART_BYTE_INDEX = 12;
 // Convenience constants
 export const PART_0 = 0x00;
 export const PART_1 = 0x01;
-//# sourceMappingURL=protocol.js.map
+// # sourceMappingURL=protocol.js.map

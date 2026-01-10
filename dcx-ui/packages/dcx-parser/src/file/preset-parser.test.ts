@@ -1,10 +1,10 @@
-import { readFileSync, existsSync } from 'node:fs';
-import { execSync } from 'node:child_process';
-import { resolve, dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { describe, it, expect } from 'vitest';
-import { parseDcxFileToStates, parsePresetWords } from './preset-parser.js';
+import {readFileSync, existsSync} from 'node:fs';
+import {execSync} from 'node:child_process';
+import {resolve, dirname} from 'node:path';
+import {fileURLToPath} from 'node:url';
+import {describe, it, expect} from 'vitest';
 import constants from '../constants/index.js';
+import {parseDcxFileToStates, parsePresetWords} from './preset-parser.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const dcxFilePath = resolve(__dirname, '..', 'current.dcx');
@@ -92,7 +92,7 @@ function formatInputChannel(options: InputChannelOptions): string[] {
   } = options;
   const trailStart = sectionStart + 55;
   const bandStart = sectionStart + 10;
-  const equalizerBands = Array.from({ length: 9 }, (_, i) => {
+  const equalizerBands = Array.from({length: 9}, (_, i) => {
     const off = bandStart + i * 5;
     return (
       `  Equalizer Band ${i + 1}: ${lookupFreq(presetWords[off])}, Q=${lookupQ(presetWords[off + 1])}, ` +
@@ -129,7 +129,7 @@ function formatOutputChannel(presetWords: number[], outIdx: number): string[] {
   const sectionStart = 269 + outIdx * 74;
   const settingsStart = sectionStart + 55;
   const bandStart = sectionStart + 10;
-  const equalizerBands = Array.from({ length: 9 }, (_, i) => {
+  const equalizerBands = Array.from({length: 9}, (_, i) => {
     const off = bandStart + i * 5;
     return (
       `  Equalizer Band ${i + 1}: ${lookupFreq(presetWords[off])}, Q=${lookupQ(presetWords[off + 1])}, ` +
@@ -199,7 +199,7 @@ function formatPresetDump(
     }),
   );
 
-  const outputLines = Array.from({ length: 6 }, (_, outIdx) =>
+  const outputLines = Array.from({length: 6}, (_, outIdx) =>
     formatOutputChannel(presetWords, outIdx),
   ).flat();
 
@@ -223,7 +223,7 @@ function formatPresetDump(
  */
 function extractPresetWords(
   data: Uint8Array,
-): Array<{ index: number; name: string; words: number[] }> {
+): Array<{index: number; name: string; words: number[]}> {
   const firstIndex =
     data[0x48] +
     data[0x49] * 256 +
@@ -231,7 +231,7 @@ function extractPresetWords(
     data[0x4b] * 16_777_216;
   if (firstIndex >= 60) return [];
 
-  const presets: Array<{ index: number; name: string; words: number[] }> = [];
+  const presets: Array<{index: number; name: string; words: number[]}> = [];
   const PRESET_SIZE = 758;
 
   let firstName = '';
@@ -248,7 +248,7 @@ function extractPresetWords(
     currentPreset.push(data[offset + i * 2] + data[offset + i * 2 + 1] * 256);
   }
 
-  presets.push({ index: firstIndex, name: firstName, words: [...currentPreset] });
+  presets.push({index: firstIndex, name: firstName, words: [...currentPreset]});
   let currentIndex = firstIndex;
   offset = 0x56 + PRESET_SIZE * 2;
 
@@ -295,7 +295,7 @@ function extractPresetWords(
       srcPos += changeCount;
     }
 
-    presets.push({ index: nextIndex, name, words: [...nextPreset] });
+    presets.push({index: nextIndex, name, words: [...nextPreset]});
     for (let i = 0; i < PRESET_SIZE; i++) currentPreset[i] = nextPreset[i];
     currentIndex = nextIndex;
   }
@@ -388,7 +388,7 @@ if presets:
     idx, name, data = presets[0]
     print(parser.format_preset_dump(data, idx, name))
 "`;
-        const pythonOutput = execSync(pythonCommand, { encoding: 'utf8' });
+        const pythonOutput = execSync(pythonCommand, {encoding: 'utf8'});
 
         const tsLines = tsOutput.split('\n');
         const pyLines = pythonOutput.split('\n');

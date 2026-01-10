@@ -1,2 +1,2 @@
 export declare const inputSumTypes: string[];
-//# sourceMappingURL=input-sum-types.d.ts.map
+// # sourceMappingURL=input-sum-types.d.ts.map

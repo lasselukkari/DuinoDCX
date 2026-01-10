@@ -1,120 +1,142 @@
 /**
  * Hook for downloading device backup.
  *
- * Downloads all 12 memory pages and assembles them into a .dcx file.
+ * Uses the BackupSession state machine to download all 12 memory pages
+ * one at a time, waiting for each response before requesting the next.
  */
 
 import { useState, useCallback, useRef, useEffect } from 'react';
 import type { DcxConnection } from '../transport/types.js';
-import { buildPageDumpRequest } from '../commands/builders.js';
 import { parseMessage } from '../protocol/sysex.js';
-import { assemblePagesIntoDcxFile } from '../dcx-file.js';
+import { BackupSession } from '../transport/backup.js';
 
 export type BackupStatus = 'idle' | 'downloading' | 'completed' | 'error';
-
-const TOTAL_PAGES = 12;
 
 /**
  * Hook for downloading device backup.
  */
-export function useDcxBackup(connection: DcxConnection | null) {
-    const [status, setStatus] = useState<BackupStatus>('idle');
-    const [progress, setProgress] = useState(0);
-    const [dcxData, setDcxData] = useState<Uint8Array | null>(null);
-    const [error, setError] = useState<string | null>(null);
+export function useDcxBackup(connection: DcxConnection | undefined) {
+  const [status, setStatus] = useState<BackupStatus>('idle');
+  const [progress, setProgress] = useState(0);
+  const [dcxData, setDcxData] = useState<Uint8Array | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
-    const pagesRef = useRef<Map<number, Uint8Array>>(new Map());
-    const unsubscribeRef = useRef<(() => void) | null>(null);
+  const sessionRef = useRef<BackupSession | null>(null);
+  const unsubscribeRef = useRef<(() => void) | null>(null);
 
-    /**
-     * Start the backup process.
-     */
-    const start = useCallback(async () => {
-        if (!connection) {
-            setError('No connection');
-            setStatus('error');
-            return;
-        }
+  /**
+   * Process pending messages from the session.
+   * Called after session state changes to send any queued requests.
+   */
+  const flushMessages = useCallback(async () => {
+    const session = sessionRef.current;
+    if (!session || !connection) return;
 
-        // Reset state
-        setStatus('downloading');
-        setProgress(0);
-        setDcxData(null);
-        setError(null);
-        pagesRef.current.clear();
+    let message = session.getNextMessage();
+    while (message) {
+      try {
+        await connection.send(message);
+      } catch (err) {
+        console.error('Failed to send backup request:', err);
+        break;
+      }
+      // Only send one message at a time, let the response trigger the next
+      break;
+    }
+  }, [connection]);
 
-        // Subscribe to messages
-        unsubscribeRef.current = connection.onMessage((data) => {
-            const msg = parseMessage(data);
-            if (msg?.type === 'pageDump') {
-                pagesRef.current.set(msg.page, msg.data);
-                setProgress((pagesRef.current.size / TOTAL_PAGES));
+  /**
+   * Handle incoming messages from the device.
+   */
+  const handleMessage = useCallback((data: Uint8Array) => {
+    const session = sessionRef.current;
+    if (!session) return;
 
-                // Check if all pages received
-                if (pagesRef.current.size === TOTAL_PAGES) {
-                    try {
-                        // Assemble pages into DCX file
-                        const pages: Array<{ page: number; data: Uint8Array }> = [];
-                        for (let i = 0; i < TOTAL_PAGES; i++) {
-                            const pageData = pagesRef.current.get(i);
-                            if (!pageData) throw new Error(`Missing page ${i}`);
-                            pages.push({ page: i, data: pageData });
-                        }
+    const message = parseMessage(data);
+    if (!message) return;
 
-                        const dcx = assemblePagesIntoDcxFile(pages);
-                        setDcxData(dcx);
-                        setStatus('completed');
-                    } catch (err) {
-                        setError(String(err));
-                        setStatus('error');
-                    }
+    // Let the state machine process the response
+    session.processResponse(message);
 
-                    // Cleanup
-                    unsubscribeRef.current?.();
-                    unsubscribeRef.current = null;
-                }
-            }
-        });
+    // Update React state based on session state
+    const sessionStatus = session.getStatus();
+    setProgress(sessionStatus.progress);
 
-        // Request all pages
-        try {
-            for (let page = 0; page < TOTAL_PAGES; page++) {
-                await connection.send(buildPageDumpRequest(page));
-            }
-        } catch (err) {
-            setError(String(err));
-            setStatus('error');
-            unsubscribeRef.current?.();
-            unsubscribeRef.current = null;
-        }
-    }, [connection]);
+    if (session.isComplete()) {
+      setDcxData(session.getDcxData());
+      setStatus('completed');
+      // Cleanup subscription
+      unsubscribeRef.current?.();
+      unsubscribeRef.current = null;
+    } else if (session.isError()) {
+      setError(session.getError());
+      setStatus('error');
+      // Cleanup subscription
+      unsubscribeRef.current?.();
+      unsubscribeRef.current = null;
+    } else {
+      // Send the next queued message (if any)
+      void flushMessages();
+    }
+  }, [flushMessages]);
 
-    /**
-     * Reset to idle state.
-     */
-    const reset = useCallback(() => {
-        unsubscribeRef.current?.();
-        unsubscribeRef.current = null;
-        setStatus('idle');
-        setProgress(0);
-        setDcxData(null);
-        setError(null);
-        pagesRef.current.clear();
-    }, []);
+  /**
+   * Start the backup process.
+   */
+  const start = useCallback(async () => {
+    if (!connection) {
+      setError('No connection');
+      setStatus('error');
+      return;
+    }
 
-    // Cleanup on unmount
-    useEffect(() => {
-        return () => {
-            unsubscribeRef.current?.();
-        };
-    }, []);
+    // Reset state
+    setStatus('downloading');
+    setProgress(0);
+    setDcxData(null);
+    setError(null);
 
-    return {
-        status,
-        progress,
-        dcxData,
-        error,
-        start,
-        reset,
+    // Create new session
+    const session = new BackupSession();
+    sessionRef.current = session;
+
+    // Subscribe to messages BEFORE starting
+    unsubscribeRef.current = connection.onMessage(handleMessage);
+
+    // Start the session (queues first page request)
+    session.start();
+
+    // Send the first message
+    await flushMessages();
+  }, [connection, handleMessage, flushMessages]);
+
+  /**
+   * Reset to idle state.
+   */
+  const reset = useCallback(() => {
+    unsubscribeRef.current?.();
+    unsubscribeRef.current = null;
+    sessionRef.current?.reset();
+    sessionRef.current = null;
+    setStatus('idle');
+    setProgress(0);
+    setDcxData(null);
+    setError(null);
+  }, []);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      unsubscribeRef.current?.();
     };
+  }, []);
+
+  return {
+    status,
+    progress,
+    dcxData,
+    error,
+    start,
+    reset,
+  };
 }

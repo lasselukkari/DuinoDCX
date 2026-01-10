@@ -1,9 +1,13 @@
 Looking for COM ports ..
 Searching for DCX2496.
-Comm Error: command error 0 0 20 32 0
-Closing COM port.
-Searching for DCX2496.
 Connected thru COM port 1
 Connected to DCX2496         
 Connected to DCX2496         
-erase 7
+Sync DCX2496 -> PC ..
+  Receiving file
+Sync DCX2496 -> PC ..
+  Receiving file
+Connected thru COM port 1
+Sync DCX2496 -> PC ..
+  Receiving file
+Connected thru COM port 1

@@ -1,0 +1,100 @@
+Loading Edit Buffer...
+Edit Buffer Decoded Size: 1659
+Loading Preset 00...
+Preset 00 Decoded Size: 875
+[ERROR] Param: delayUnits, Offset: 11, ReadU16 (BE): 256, RawHex: 0x100
+[ERROR] Param: outputConfig, Offset: 15, ReadU16 (BE): 21510, RawHex: 0x5406
+[DEBUG] Starting Input A at offset 121
+[ERROR] Param: dynamicEqualizerQ, Offset: 159, ReadU16 (BE): 180, RawHex: 0xb4
+[ERROR] Param: dynamicEqualizerShelving, Offset: 165, ReadU16 (BE): 180, RawHex: 0xb4
+[ERROR] Param: q, Offset: 169, ReadU16 (BE): 150, RawHex: 0x96
+[ERROR] Param: shelving, Offset: 175, ReadU16 (BE): 180, RawHex: 0xb4
+[ERROR] Param: q, Offset: 179, ReadU16 (BE): 150, RawHex: 0x96
+[ERROR] Param: shelving, Offset: 185, ReadU16 (BE): 180, RawHex: 0xb4
+[ERROR] Param: q, Offset: 189, ReadU16 (BE): 150, RawHex: 0x96
+[ERROR] Param: shelving, Offset: 195, ReadU16 (BE): 180, RawHex: 0xb4
+[ERROR] Param: q, Offset: 199, ReadU16 (BE): 150, RawHex: 0x96
+[ERROR] Param: shelving, Offset: 205, ReadU16 (BE): 180, RawHex: 0xb4
+[ERROR] Param: q, Offset: 209, ReadU16 (BE): 150, RawHex: 0x96
+[ERROR] Param: shelving, Offset: 215, ReadU16 (BE): 180, RawHex: 0xb4
+[ERROR] Param: q, Offset: 219, ReadU16 (BE): 150, RawHex: 0x96
+[ERROR] Param: shelving, Offset: 225, ReadU16 (BE): 180, RawHex: 0xb4
+[ERROR] Param: q, Offset: 229, ReadU16 (BE): 150, RawHex: 0x96
+[ERROR] Param: shelving, Offset: 235, ReadU16 (BE): 180, RawHex: 0xb4
+[ERROR] Param: q, Offset: 239, ReadU16 (BE): 150, RawHex: 0x96
+[ERROR] Param: shelving, Offset: 245, ReadU16 (BE): 300, RawHex: 0x12c
+[DEBUG] Starting Input B at offset 257
+[ERROR] Param: dynamicEqualizerAttack, Offset: 283, ReadU16 (BE): 180, RawHex: 0xb4
+[ERROR] Param: dynamicEqualizerType, Offset: 299, ReadU16 (BE): 180, RawHex: 0xb4
+[ERROR] Param: dynamicEqualizerShelving, Offset: 301, ReadU16 (BE): 20, RawHex: 0x14
+[ERROR] Param: type, Offset: 309, ReadU16 (BE): 180, RawHex: 0xb4
+[ERROR] Param: shelving, Offset: 311, ReadU16 (BE): 20, RawHex: 0x14
+[ERROR] Param: type, Offset: 319, ReadU16 (BE): 180, RawHex: 0xb4
+[ERROR] Param: shelving, Offset: 321, ReadU16 (BE): 20, RawHex: 0x14
+[ERROR] Param: type, Offset: 329, ReadU16 (BE): 180, RawHex: 0xb4
+[ERROR] Param: shelving, Offset: 331, ReadU16 (BE): 20, RawHex: 0x14
+[ERROR] Param: type, Offset: 339, ReadU16 (BE): 180, RawHex: 0xb4
+[ERROR] Param: shelving, Offset: 341, ReadU16 (BE): 20, RawHex: 0x14
+[ERROR] Param: type, Offset: 349, ReadU16 (BE): 180, RawHex: 0xb4
+[ERROR] Param: shelving, Offset: 351, ReadU16 (BE): 20, RawHex: 0x14
+[ERROR] Param: type, Offset: 359, ReadU16 (BE): 180, RawHex: 0xb4
+[ERROR] Param: shelving, Offset: 361, ReadU16 (BE): 20, RawHex: 0x14
+[ERROR] Param: type, Offset: 369, ReadU16 (BE): 300, RawHex: 0x12c
+[ERROR] Param: q, Offset: 385, ReadU16 (BE): 50, RawHex: 0x32
+[ERROR] Param: type, Offset: 389, ReadU16 (BE): 600, RawHex: 0x258
+[DEBUG] Starting Input C at offset 393
+[ERROR] Param: dynamicEqualizerRatio, Offset: 423, ReadU16 (BE): 180, RawHex: 0xb4
+[ERROR] Param: dynamicEqualizerType, Offset: 435, ReadU16 (BE): 20, RawHex: 0x14
+[ERROR] Param: dynamicEqualizerShelving, Offset: 437, ReadU16 (BE): 150, RawHex: 0x96
+[ERROR] Param: type, Offset: 445, ReadU16 (BE): 20, RawHex: 0x14
+[ERROR] Param: shelving, Offset: 447, ReadU16 (BE): 150, RawHex: 0x96
+[ERROR] Param: type, Offset: 455, ReadU16 (BE): 20, RawHex: 0x14
+[ERROR] Param: shelving, Offset: 457, ReadU16 (BE): 150, RawHex: 0x96
+[ERROR] Param: type, Offset: 465, ReadU16 (BE): 20, RawHex: 0x14
+[ERROR] Param: shelving, Offset: 467, ReadU16 (BE): 150, RawHex: 0x96
+[ERROR] Param: type, Offset: 475, ReadU16 (BE): 20, RawHex: 0x14
+[ERROR] Param: shelving, Offset: 477, ReadU16 (BE): 150, RawHex: 0x96
+[ERROR] Param: type, Offset: 485, ReadU16 (BE): 20, RawHex: 0x14
+[ERROR] Param: shelving, Offset: 487, ReadU16 (BE): 150, RawHex: 0x96
+[ERROR] Param: shelving, Offset: 507, ReadU16 (BE): 83, RawHex: 0x53
+[ERROR] Param: shelving, Offset: 517, ReadU16 (BE): 180, RawHex: 0xb4
+[ERROR] Param: q, Offset: 521, ReadU16 (BE): 150, RawHex: 0x96
+[ERROR] Param: shelving, Offset: 527, ReadU16 (BE): 180, RawHex: 0xb4
+[DEBUG] Starting Input Sum at offset 529
+[ERROR] Param: dynamicEqualizerRatio, Offset: 559, ReadU16 (BE): 20, RawHex: 0x14
+[ERROR] Param: dynamicEqualizerQ, Offset: 567, ReadU16 (BE): 180, RawHex: 0xb4
+[ERROR] Param: dynamicEqualizerType, Offset: 571, ReadU16 (BE): 150, RawHex: 0x96
+[ERROR] Param: q, Offset: 577, ReadU16 (BE): 180, RawHex: 0xb4
+[ERROR] Param: type, Offset: 581, ReadU16 (BE): 150, RawHex: 0x96
+[ERROR] Param: q, Offset: 587, ReadU16 (BE): 180, RawHex: 0xb4
+[ERROR] Param: type, Offset: 591, ReadU16 (BE): 150, RawHex: 0x96
+[ERROR] Param: q, Offset: 597, ReadU16 (BE): 180, RawHex: 0xb4
+[ERROR] Param: type, Offset: 601, ReadU16 (BE): 150, RawHex: 0x96
+[ERROR] Param: q, Offset: 607, ReadU16 (BE): 180, RawHex: 0xb4
+[ERROR] Param: type, Offset: 611, ReadU16 (BE): 150, RawHex: 0x96
+[ERROR] Param: q, Offset: 617, ReadU16 (BE): 300, RawHex: 0x12c
+[ERROR] Param: shelving, Offset: 623, ReadU16 (BE): 10, RawHex: 0xa
+[ERROR] Param: type, Offset: 631, ReadU16 (BE): 83, RawHex: 0x53
+[ERROR] Param: shelving, Offset: 633, ReadU16 (BE): 151, RawHex: 0x97
+[ERROR] Param: q, Offset: 637, ReadU16 (BE): 600, RawHex: 0x258
+[ERROR] Param: type, Offset: 641, ReadU16 (BE): 180, RawHex: 0xb4
+[ERROR] Param: shelving, Offset: 643, ReadU16 (BE): 20, RawHex: 0x14
+[ERROR] Param: shelving, Offset: 653, ReadU16 (BE): 20, RawHex: 0x14
+[ERROR] Param: type, Offset: 661, ReadU16 (BE): 180, RawHex: 0xb4
+[ERROR] Param: shelving, Offset: 663, ReadU16 (BE): 20, RawHex: 0x14
+[ERROR] Param: dynamicEqualizerAttack, Offset: 691, ReadU16 (BE): 180, RawHex: 0xb4
+[ERROR] Param: dynamicEqualizerRatio, Offset: 695, ReadU16 (BE): 300, RawHex: 0x12c
+[ERROR] Param: type, Offset: 747, ReadU16 (BE): 64, RawHex: 0x40
+[ERROR] Param: type, Offset: 757, ReadU16 (BE): 70, RawHex: 0x46
+[ERROR] Param: q, Offset: 763, ReadU16 (BE): 250, RawHex: 0xfa
+[ERROR] Param: shelving, Offset: 779, ReadU16 (BE): 83, RawHex: 0x53
+[ERROR] Param: shelving, Offset: 789, ReadU16 (BE): 180, RawHex: 0xb4
+[ERROR] Param: q, Offset: 793, ReadU16 (BE): 150, RawHex: 0x96
+[ERROR] Param: shelving, Offset: 799, ReadU16 (BE): 180, RawHex: 0xb4
+[ERROR] Param: source, Offset: 803, ReadU16 (BE): 150, RawHex: 0x96
+[ERROR] Param: lowpassFilter, Offset: 809, ReadU16 (BE): 180, RawHex: 0xb4
+[ERROR] Param: polarity, Offset: 819, ReadU16 (BE): 180, RawHex: 0xb4
+[ERROR] Param: dynamicEqualizerQ, Offset: 863, ReadU16 (BE): 150, RawHex: 0x96
+[ERROR] Param: dynamicEqualizerShelving, Offset: 869, ReadU16 (BE): 180, RawHex: 0xb4
+[ERROR] Param: q, Offset: 873, ReadU16 (BE): 150, RawHex: 0x96
+Comparison not implemented yet, check JSONs manually first.

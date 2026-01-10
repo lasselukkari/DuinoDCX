@@ -81,7 +81,7 @@ export type State = {
 
 /** Level meter status */
 export type Status = {
-  inputs: Array<{ name: string; level: number; isLimited: boolean }>;
-  outputs: Array<{ name: string; level: number; isLimited: boolean }>;
+  inputs: Array<{name: string; level: number; isLimited: boolean}>;
+  outputs: Array<{name: string; level: number; isLimited: boolean}>;
   free: number;
 };

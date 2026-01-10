@@ -1,12 +1,14 @@
-import { describe, it, expect } from 'vitest';
-import { encode8to7, decode7to8 } from './encoding.js';
+import {describe, it, expect} from 'vitest';
+import {encode8to7, decode7to8} from './encoding.js';
 
 describe('encoding', () => {
   describe('encode8to7', () => {
     it('should encode 8 bytes (7 data + 1 slot) to 8 bytes', () => {
       // Input: 7 data bytes with MSBs set, plus a clean slot byte
-      const input = new Uint8Array([0x81, 0x82, 0x83, 0x84, 0x85, 0x86, 0x87, 0x00]);
-      const encoded = encode8to7(input, { indexed: true });
+      const input = new Uint8Array([
+        0x81, 0x82, 0x83, 0x84, 0x85, 0x86, 0x87, 0x00,
+      ]);
+      const encoded = encode8to7(input, {indexed: true});
 
       expect(encoded.length).toBe(8);
       // Low 7 bits of each byte (MSBs stripped)
@@ -22,8 +24,10 @@ describe('encoding', () => {
     });
 
     it('should handle data with no MSBs set', () => {
-      const input = new Uint8Array([0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x00]);
-      const encoded = encode8to7(input, { indexed: true });
+      const input = new Uint8Array([
+        0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x00,
+      ]);
+      const encoded = encode8to7(input, {indexed: true});
 
       expect(encoded.length).toBe(8);
       expect(encoded[7]).toBe(0x00); // No MSBs
@@ -31,8 +35,10 @@ describe('encoding', () => {
 
     it('should preserve data in the flag slot byte', () => {
       // Input: Data bytes + Data in slot byte
-      const input = new Uint8Array([0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x55]);
-      const encoded = encode8to7(input, { indexed: true });
+      const input = new Uint8Array([
+        0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x55,
+      ]);
+      const encoded = encode8to7(input, {indexed: true});
 
       expect(encoded.length).toBe(8);
       expect(encoded[7]).toBe(0x55); // 0x55 preserved (no MSBs from data)
@@ -40,8 +46,10 @@ describe('encoding', () => {
 
     it('should merge calculated MSBs with data in flag slot', () => {
       // Input: Data bytes with MSBs + Data in slot byte
-      const input = new Uint8Array([0x81, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x01]);
-      const encoded = encode8to7(input, { indexed: true });
+      const input = new Uint8Array([
+        0x81, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x01,
+      ]);
+      const encoded = encode8to7(input, {indexed: true});
 
       expect(encoded.length).toBe(8);
       // Byte 0 MSB is set -> bit 0 of flag byte set (1)
@@ -51,8 +59,10 @@ describe('encoding', () => {
 
       // Try distinct bits
       // bit 0 of flag corresponds to byte 0.
-      const input2 = new Uint8Array([0x81, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x02]);
-      const encoded2 = encode8to7(input2, { indexed: true });
+      const input2 = new Uint8Array([
+        0x81, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x02,
+      ]);
+      const encoded2 = encode8to7(input2, {indexed: true});
       // Byte 0 MSB set -> Flag bit 0 = 1.
       // Slot byte val 2 -> Flag bit 1 = 1.
       // Result: 1 | 2 = 3.
@@ -110,9 +120,9 @@ describe('encoding', () => {
       // If Base flags + Calculated flags collide...
 
       const original = new Uint8Array([
-        0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x00
+        0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x00,
       ]);
-      const encoded = encode8to7(original, { indexed: true });
+      const encoded = encode8to7(original, {indexed: true});
       const decoded = decode7to8(encoded);
 
       expect(decoded).toEqual(original);
@@ -121,9 +131,9 @@ describe('encoding', () => {
     it('should handle MSB preservation', () => {
       // If we have values > 127 in first 7 bytes.
       const original = new Uint8Array([
-        0x81, 0x82, 0x83, 0x84, 0x85, 0x86, 0x87, 0x00
+        0x81, 0x82, 0x83, 0x84, 0x85, 0x86, 0x87, 0x00,
       ]);
-      const encoded = encode8to7(original, { indexed: true });
+      const encoded = encode8to7(original, {indexed: true});
       const decoded = decode7to8(encoded);
 
       // Data bytes should be preserved
@@ -134,9 +144,9 @@ describe('encoding', () => {
 
     it('should add MSBs if flag byte demands it', () => {
       const original = new Uint8Array([
-        0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x55
+        0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x55,
       ]);
-      const encoded = encode8to7(original, { indexed: true });
+      const encoded = encode8to7(original, {indexed: true});
       const decoded = decode7to8(encoded);
 
       // 0x55 = 0101 0101. Bits 0, 2, 4, 6 set.

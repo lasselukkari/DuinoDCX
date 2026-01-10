@@ -221,11 +221,11 @@ function findSlotEntry(
   targetIndex: number,
 ):
   | {
-    nameOffset: number;
-    dataOffset: number;
-    dataLength: number;
-    nextOffset: number;
-  }
+      nameOffset: number;
+      dataOffset: number;
+      dataLength: number;
+      nextOffset: number;
+    }
   | undefined {
   // Compact entries have format:
   // [ptr_lo, ptr_hi, slotIndex, 0x00, name(8 bytes), 0x00, 0x00]
@@ -314,7 +314,7 @@ function readCompactPresetName(data: Uint8Array, offset: number): string {
  * This is used when downloading presets from the device.
  */
 export function assemblePagesIntoDcxFile(
-  pages: Array<{ page: number; data: Uint8Array }>,
+  pages: Array<{page: number; data: Uint8Array}>,
 ): Uint8Array {
   if (pages.length === 0) {
     throw new Error('No pages to assemble');
@@ -332,11 +332,11 @@ export function assemblePagesIntoDcxFile(
     offset += page.data.length;
   }
 
-  // CRITICAL: The page dump data is "Indexed" (8->8 bytes). 
+  // CRITICAL: The page dump data is "Indexed" (8->8 bytes).
   // We MUST convert it to "Raw" (8->7 bytes) BEFORE searching for signatures.
-  const numBlocks = Math.floor(indexedData.length / 8);
-  const rawData = new Uint8Array(numBlocks * 7 + (indexedData.length % 8));
-  for (let i = 0; i < numBlocks; i++) {
+  const numberBlocks = Math.floor(indexedData.length / 8);
+  const rawData = new Uint8Array(numberBlocks * 7 + (indexedData.length % 8));
+  for (let i = 0; i < numberBlocks; i++) {
     const srcStart = i * 8;
     const dstStart = i * 7;
     const msbByte = indexedData[srcStart + 7];
@@ -346,15 +346,17 @@ export function assemblePagesIntoDcxFile(
       if (msbByte & (1 << j)) {
         byte |= 0x80;
       }
+
       rawData[dstStart + j] = byte;
     }
   }
+
   if (indexedData.length % 8 !== 0) {
-    rawData.set(indexedData.slice(numBlocks * 8), numBlocks * 7);
+    rawData.set(indexedData.slice(numberBlocks * 8), numberBlocks * 7);
   }
 
   // Find XSNP signature in the RAW data
-  let xsnpOffset = findSignature(rawData, DCX_SIGNATURE);
+  const xsnpOffset = findSignature(rawData, DCX_SIGNATURE);
   if (xsnpOffset < 0) {
     throw new Error('XSNP signature not found in page data');
   }
@@ -379,8 +381,8 @@ export function assemblePagesIntoDcxFile(
 export function splitDcxFileIntoPages(
   dcxData: Uint8Array,
   pageSize = DECODED_PAGE_SIZE,
-): Array<{ page: number; data: Uint8Array }> {
-  const pages: Array<{ page: number; data: Uint8Array }> = [];
+): Array<{page: number; data: Uint8Array}> {
+  const pages: Array<{page: number; data: Uint8Array}> = [];
 
   // Create the preamble for the first page
   // Format: [LenLo, LenHi, 0, 0, 0, 0, 0] + XSNP data
@@ -405,12 +407,14 @@ export function splitDcxFileIntoPages(
 
     // Only pad intermediate pages, not the last page
     // The last page should have its actual size
-    const isLastPage = (offset + chunkSize) >= fullData.length;
-    const finalData = isLastPage ? pageData : (() => {
-      const paddedData = new Uint8Array(pageSize);
-      paddedData.set(pageData);
-      return paddedData;
-    })();
+    const isLastPage = offset + chunkSize >= fullData.length;
+    const finalData = isLastPage
+      ? pageData
+      : (() => {
+          const paddedData = new Uint8Array(pageSize);
+          paddedData.set(pageData);
+          return paddedData;
+        })();
 
     pages.push({
       page: pageNumber,

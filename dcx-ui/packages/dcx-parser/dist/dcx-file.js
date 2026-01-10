@@ -48,171 +48,189 @@ export const MAX_PAGES = 12;
  * Parse a .dcx file.
  */
 export function parseDcxFile(data) {
-    // Verify signature
-    if (!hasSignature(data, 0, DCX_SIGNATURE)) {
-        throw new Error('Invalid DCX file: missing XSNP signature');
-    }
-    // Read header
-    const version = readUint32LE(data, 4);
-    const dataSize = readUint32LE(data, 8);
-    // Read lock flags
-    const lockFlags = [];
-    for (let i = 0; i < NUM_SLOTS; i++) {
-        lockFlags.push(data[LOCK_FLAGS_OFFSET + i] !== 0);
-    }
-    // Parse preset slots
-    const slots = parsePresetSlots(data, lockFlags);
-    return {
-        version,
-        dataSize,
-        lockFlags,
-        slots,
-        rawData: data,
-    };
+  // Verify signature
+  if (!hasSignature(data, 0, DCX_SIGNATURE)) {
+    throw new Error('Invalid DCX file: missing XSNP signature');
+  }
+
+  // Read header
+  const version = readUint32LE(data, 4);
+  const dataSize = readUint32LE(data, 8);
+  // Read lock flags
+  const lockFlags = [];
+  for (let i = 0; i < NUM_SLOTS; i++) {
+    lockFlags.push(data[LOCK_FLAGS_OFFSET + i] !== 0);
+  }
+
+  // Parse preset slots
+  const slots = parsePresetSlots(data, lockFlags);
+  return {
+    version,
+    dataSize,
+    lockFlags,
+    slots,
+    rawData: data,
+  };
 }
+
 /**
  * Parse all preset slots from a DCX file.
  */
 function parsePresetSlots(data, lockFlags) {
-    const slots = [];
-    // Parse slot 1 (full format at fixed offset)
-    const slot1Name = readPresetName(data, PRESET_1_OFFSET);
-    slots.push({
-        slot: 1,
-        name: slot1Name,
-        isEmpty: slot1Name.length === 0 || slot1Name === '<Empty>',
-        isLocked: lockFlags[0],
-        dataOffset: PRESET_1_OFFSET,
-        dataLength: FULL_PRESET_BYTES,
-    });
-    // Parse slots 2-60 (compact format)
-    // These use variable-length delta encoding
-    let offset = PRESET_1_OFFSET + FULL_PRESET_BYTES;
-    for (let slotNumber = 2; slotNumber <= NUM_SLOTS; slotNumber++) {
-        if (offset >= data.length - 4) {
-            // No more data, remaining slots are empty
-            slots.push({
-                slot: slotNumber,
-                name: '',
-                isEmpty: true,
-                isLocked: lockFlags[slotNumber - 1],
-                dataOffset: 0,
-                dataLength: 0,
-            });
-            continue;
-        }
-        // Look for slot index marker
-        const found = findSlotEntry(data, offset, slotNumber - 1);
-        if (found) {
-            const name = readCompactPresetName(data, found.nameOffset);
-            slots.push({
-                slot: slotNumber,
-                name,
-                isEmpty: name.length === 0,
-                isLocked: lockFlags[slotNumber - 1],
-                dataOffset: found.dataOffset,
-                dataLength: found.dataLength,
-            });
-            offset = found.nextOffset;
-        }
-        else {
-            // Slot not found, mark as empty
-            slots.push({
-                slot: slotNumber,
-                name: '',
-                isEmpty: true,
-                isLocked: lockFlags[slotNumber - 1],
-                dataOffset: 0,
-                dataLength: 0,
-            });
-        }
+  const slots = [];
+  // Parse slot 1 (full format at fixed offset)
+  const slot1Name = readPresetName(data, PRESET_1_OFFSET);
+  slots.push({
+    slot: 1,
+    name: slot1Name,
+    isEmpty: slot1Name.length === 0 || slot1Name === '<Empty>',
+    isLocked: lockFlags[0],
+    dataOffset: PRESET_1_OFFSET,
+    dataLength: FULL_PRESET_BYTES,
+  });
+  // Parse slots 2-60 (compact format)
+  // These use variable-length delta encoding
+  let offset = PRESET_1_OFFSET + FULL_PRESET_BYTES;
+  for (let slotNumber = 2; slotNumber <= NUM_SLOTS; slotNumber++) {
+    if (offset >= data.length - 4) {
+      // No more data, remaining slots are empty
+      slots.push({
+        slot: slotNumber,
+        name: '',
+        isEmpty: true,
+        isLocked: lockFlags[slotNumber - 1],
+        dataOffset: 0,
+        dataLength: 0,
+      });
+      continue;
     }
-    return slots;
+
+    // Look for slot index marker
+    const found = findSlotEntry(data, offset, slotNumber - 1);
+    if (found) {
+      const name = readCompactPresetName(data, found.nameOffset);
+      slots.push({
+        slot: slotNumber,
+        name,
+        isEmpty: name.length === 0,
+        isLocked: lockFlags[slotNumber - 1],
+        dataOffset: found.dataOffset,
+        dataLength: found.dataLength,
+      });
+      offset = found.nextOffset;
+    } else {
+      // Slot not found, mark as empty
+      slots.push({
+        slot: slotNumber,
+        name: '',
+        isEmpty: true,
+        isLocked: lockFlags[slotNumber - 1],
+        dataOffset: 0,
+        dataLength: 0,
+      });
+    }
+  }
+
+  return slots;
 }
+
 /**
  * Find the end of a preset data block by scanning for the next entry or terminator.
  */
 function findDataBlockEnd(data, startOffset) {
-    let offset = startOffset;
-    while (offset < data.length - 4) {
-        if (hasSignature(data, offset, DCX_TERMINATOR)) {
-            break;
-        }
-        // Check if this looks like a new entry (slot index in valid range)
-        if (data[offset + 2] < NUM_SLOTS && data[offset + 3] === 0x00) {
-            break;
-        }
-        offset++;
+  let offset = startOffset;
+  while (offset < data.length - 4) {
+    if (hasSignature(data, offset, DCX_TERMINATOR)) {
+      break;
     }
-    return offset;
+
+    // Check if this looks like a new entry (slot index in valid range)
+    if (data[offset + 2] < NUM_SLOTS && data[offset + 3] === 0x00) {
+      break;
+    }
+
+    offset++;
+  }
+
+  return offset;
 }
+
 /**
  * Find a compact preset entry by slot index.
  */
 function findSlotEntry(data, startOffset, targetIndex) {
-    // Compact entries have format:
-    // [ptr_lo, ptr_hi, slotIndex, 0x00, name(8 bytes), 0x00, 0x00]
-    // Total: 14 bytes for directory record
-    const ENTRY_SIZE = 14;
-    let offset = startOffset;
-    // Search for the slot index
-    while (offset + ENTRY_SIZE <= data.length - 4) {
-        // Check for terminator
-        if (hasSignature(data, offset, DCX_TERMINATOR)) {
-            return undefined;
-        }
-        // Read slot index at offset + 2
-        const slotIndex = data[offset + 2];
-        if (slotIndex === targetIndex) {
-            // Found it
-            const ptrLo = data[offset];
-            const ptrHi = data[offset + 1];
-            const ptr = ptrLo + ptrHi * 256;
-            // Pointer is relative offset to data block
-            const dataOffset = ptr > ENTRY_SIZE ? offset + ptr : 0;
-            // Calculate data length (up to next entry or terminator)
-            const nextOffset = dataOffset > 0
-                ? findDataBlockEnd(data, offset + ENTRY_SIZE)
-                : offset + ENTRY_SIZE;
-            return {
-                nameOffset: offset + 4,
-                dataOffset,
-                dataLength: dataOffset > 0 ? nextOffset - dataOffset : 0,
-                nextOffset,
-            };
-        }
-        // Move to next potential entry
-        offset++;
+  // Compact entries have format:
+  // [ptr_lo, ptr_hi, slotIndex, 0x00, name(8 bytes), 0x00, 0x00]
+  // Total: 14 bytes for directory record
+  const ENTRY_SIZE = 14;
+  let offset = startOffset;
+  // Search for the slot index
+  while (offset + ENTRY_SIZE <= data.length - 4) {
+    // Check for terminator
+    if (hasSignature(data, offset, DCX_TERMINATOR)) {
+      return undefined;
     }
-    return undefined;
+
+    // Read slot index at offset + 2
+    const slotIndex = data[offset + 2];
+    if (slotIndex === targetIndex) {
+      // Found it
+      const ptrLo = data[offset];
+      const ptrHi = data[offset + 1];
+      const ptr = ptrLo + ptrHi * 256;
+      // Pointer is relative offset to data block
+      const dataOffset = ptr > ENTRY_SIZE ? offset + ptr : 0;
+      // Calculate data length (up to next entry or terminator)
+      const nextOffset =
+        dataOffset > 0
+          ? findDataBlockEnd(data, offset + ENTRY_SIZE)
+          : offset + ENTRY_SIZE;
+      return {
+        nameOffset: offset + 4,
+        dataOffset,
+        dataLength: dataOffset > 0 ? nextOffset - dataOffset : 0,
+        nextOffset,
+      };
+    }
+
+    // Move to next potential entry
+    offset++;
+  }
+
+  return undefined;
 }
+
 /**
  * Read a preset name from the full format (slot 1).
  */
 function readPresetName(data, offset) {
-    // Name is at the start of the preset data (8 bytes)
-    let name = '';
-    for (let i = 0; i < 8; i++) {
-        const char = data[offset + i];
-        if (char >= 32 && char <= 126) {
-            name += String.fromCodePoint(char);
-        }
+  // Name is at the start of the preset data (8 bytes)
+  let name = '';
+  for (let i = 0; i < 8; i++) {
+    const char = data[offset + i];
+    if (char >= 32 && char <= 126) {
+      name += String.fromCodePoint(char);
     }
-    return name.trim();
+  }
+
+  return name.trim();
 }
+
 /**
  * Read a preset name from compact format.
  */
 function readCompactPresetName(data, offset) {
-    let name = '';
-    for (let i = 0; i < 8; i++) {
-        const char = data[offset + i];
-        if (char >= 32 && char <= 126) {
-            name += String.fromCodePoint(char);
-        }
+  let name = '';
+  for (let i = 0; i < 8; i++) {
+    const char = data[offset + i];
+    if (char >= 32 && char <= 126) {
+      name += String.fromCodePoint(char);
     }
-    return name.trim();
+  }
+
+  return name.trim();
 }
+
 // ============================================================================
 // Page Assembly
 // ============================================================================
@@ -221,93 +239,105 @@ function readCompactPresetName(data, offset) {
  * This is used when downloading presets from the device.
  */
 export function assemblePagesIntoDcxFile(pages) {
-    if (pages.length === 0) {
-        throw new Error('No pages to assemble');
+  if (pages.length === 0) {
+    throw new Error('No pages to assemble');
+  }
+
+  // Sort pages by number
+  const sortedPages = [...pages].sort((a, b) => a.page - b.page);
+  // Concatenate all pages (they are 1:1 "Indexed" with flag bytes)
+  const totalLength = sortedPages.reduce((sum, p) => sum + p.data.length, 0);
+  const indexedData = new Uint8Array(totalLength);
+  let offset = 0;
+  for (const page of sortedPages) {
+    indexedData.set(page.data, offset);
+    offset += page.data.length;
+  }
+
+  // CRITICAL: The page dump data is "Indexed" (8->8 bytes).
+  // We MUST convert it to "Raw" (8->7 bytes) BEFORE searching for signatures.
+  const numberBlocks = Math.floor(indexedData.length / 8);
+  const rawData = new Uint8Array(numberBlocks * 7 + (indexedData.length % 8));
+  for (let i = 0; i < numberBlocks; i++) {
+    const srcStart = i * 8;
+    const dstStart = i * 7;
+    const msbByte = indexedData[srcStart + 7];
+    for (let j = 0; j < 7; j++) {
+      let byte = indexedData[srcStart + j];
+      if (msbByte & (1 << j)) {
+        byte |= 0x80;
+      }
+
+      rawData[dstStart + j] = byte;
     }
-    // Sort pages by number
-    const sortedPages = [...pages].sort((a, b) => a.page - b.page);
-    // Concatenate all pages (they are 1:1 "Indexed" with flag bytes)
-    const totalLength = sortedPages.reduce((sum, p) => sum + p.data.length, 0);
-    const indexedData = new Uint8Array(totalLength);
-    let offset = 0;
-    for (const page of sortedPages) {
-        indexedData.set(page.data, offset);
-        offset += page.data.length;
-    }
-    // CRITICAL: The page dump data is "Indexed" (8->8 bytes). 
-    // We MUST convert it to "Raw" (8->7 bytes) BEFORE searching for signatures.
-    const numBlocks = Math.floor(indexedData.length / 8);
-    const rawData = new Uint8Array(numBlocks * 7 + (indexedData.length % 8));
-    for (let i = 0; i < numBlocks; i++) {
-        const srcStart = i * 8;
-        const dstStart = i * 7;
-        const msbByte = indexedData[srcStart + 7];
-        for (let j = 0; j < 7; j++) {
-            let byte = indexedData[srcStart + j];
-            if (msbByte & (1 << j)) {
-                byte |= 0x80;
-            }
-            rawData[dstStart + j] = byte;
-        }
-    }
-    if (indexedData.length % 8 !== 0) {
-        rawData.set(indexedData.slice(numBlocks * 8), numBlocks * 7);
-    }
-    // Find XSNP signature in the RAW data
-    let xsnpOffset = findSignature(rawData, DCX_SIGNATURE);
-    if (xsnpOffset < 0) {
-        throw new Error('XSNP signature not found in page data');
-    }
-    // Extract from XSNP onwards
-    let dcxData = rawData.slice(xsnpOffset);
-    // Find terminator and trim
-    const termOffset = findSignature(dcxData, DCX_TERMINATOR);
-    if (termOffset >= 0) {
-        // The .dcx file includes the 4-byte terminator
-        dcxData = dcxData.slice(0, termOffset + DCX_TERMINATOR.length);
-    }
-    return dcxData;
+  }
+
+  if (indexedData.length % 8 !== 0) {
+    rawData.set(indexedData.slice(numberBlocks * 8), numberBlocks * 7);
+  }
+
+  // Find XSNP signature in the RAW data
+  const xsnpOffset = findSignature(rawData, DCX_SIGNATURE);
+  if (xsnpOffset < 0) {
+    throw new Error('XSNP signature not found in page data');
+  }
+
+  // Extract from XSNP onwards
+  let dcxData = rawData.slice(xsnpOffset);
+  // Find terminator and trim
+  const termOffset = findSignature(dcxData, DCX_TERMINATOR);
+  if (termOffset >= 0) {
+    // The .dcx file includes the 4-byte terminator
+    dcxData = dcxData.slice(0, termOffset + DCX_TERMINATOR.length);
+  }
+
+  return dcxData;
 }
+
 /**
  * Split a DCX file into pages for upload.
  * Returns data suitable for building restore packets.
  */
 export function splitDcxFileIntoPages(dcxData, pageSize = DECODED_PAGE_SIZE) {
-    const pages = [];
-    // Create the preamble for the first page
-    // Format: [LenLo, LenHi, 0, 0, 0, 0, 0] + XSNP data
-    const dataSize = dcxData.length;
-    const preamble = new Uint8Array(7);
-    preamble[0] = dataSize & 0xff;
-    preamble[1] = (dataSize >> 8) & 0xff;
-    // Prepend preamble to DCX data
-    const fullData = new Uint8Array(preamble.length + dcxData.length);
-    fullData.set(preamble);
-    fullData.set(dcxData, preamble.length);
-    // Split into pages
-    let offset = 0;
-    let pageNumber = 0;
-    while (offset < fullData.length) {
-        const remaining = fullData.length - offset;
-        const chunkSize = Math.min(remaining, pageSize);
-        const pageData = fullData.slice(offset, offset + chunkSize);
-        // Only pad intermediate pages, not the last page
-        // The last page should have its actual size
-        const isLastPage = (offset + chunkSize) >= fullData.length;
-        const finalData = isLastPage ? pageData : (() => {
-            const paddedData = new Uint8Array(pageSize);
-            paddedData.set(pageData);
-            return paddedData;
+  const pages = [];
+  // Create the preamble for the first page
+  // Format: [LenLo, LenHi, 0, 0, 0, 0, 0] + XSNP data
+  const dataSize = dcxData.length;
+  const preamble = new Uint8Array(7);
+  preamble[0] = dataSize & 0xff;
+  preamble[1] = (dataSize >> 8) & 0xff;
+  // Prepend preamble to DCX data
+  const fullData = new Uint8Array(preamble.length + dcxData.length);
+  fullData.set(preamble);
+  fullData.set(dcxData, preamble.length);
+  // Split into pages
+  let offset = 0;
+  let pageNumber = 0;
+  while (offset < fullData.length) {
+    const remaining = fullData.length - offset;
+    const chunkSize = Math.min(remaining, pageSize);
+    const pageData = fullData.slice(offset, offset + chunkSize);
+    // Only pad intermediate pages, not the last page
+    // The last page should have its actual size
+    const isLastPage = offset + chunkSize >= fullData.length;
+    const finalData = isLastPage
+      ? pageData
+      : (() => {
+          const paddedData = new Uint8Array(pageSize);
+          paddedData.set(pageData);
+          return paddedData;
         })();
-        pages.push({
-            page: pageNumber,
-            data: finalData,
-        });
-        offset += chunkSize;
-        pageNumber++;
-    }
-    return pages;
+    pages.push({
+      page: pageNumber,
+      data: finalData,
+    });
+    offset += chunkSize;
+    pageNumber++;
+  }
+
+  return pages;
 }
+
 // ============================================================================
 // File Creation
 // ============================================================================
@@ -318,22 +348,23 @@ export function splitDcxFileIntoPages(dcxData, pageSize = DECODED_PAGE_SIZE) {
  * Format: [dataSize (4 bytes LE), 0, 0, 0] + first ~90 bytes of DCX data
  */
 export function createRestoreHeader(dcxData, headerDataSize = 91) {
-    const header = new Uint8Array(7 + headerDataSize);
-    // Size in first 4 bytes (little-endian)
-    const size = dcxData.length;
-    header[0] = size & 0xff;
-    header[1] = (size >> 8) & 0xff;
-    header[2] = (size >> 16) & 0xff;
-    header[3] = (size >> 24) & 0xff;
-    // Zeros for bytes 4-6
-    header[4] = 0;
-    header[5] = 0;
-    header[6] = 0;
-    // Copy first portion of DCX data
-    const copyLength = Math.min(headerDataSize, dcxData.length);
-    header.set(dcxData.slice(0, copyLength), 7);
-    return header;
+  const header = new Uint8Array(7 + headerDataSize);
+  // Size in first 4 bytes (little-endian)
+  const size = dcxData.length;
+  header[0] = size & 0xff;
+  header[1] = (size >> 8) & 0xff;
+  header[2] = (size >> 16) & 0xff;
+  header[3] = (size >> 24) & 0xff;
+  // Zeros for bytes 4-6
+  header[4] = 0;
+  header[5] = 0;
+  header[6] = 0;
+  // Copy first portion of DCX data
+  const copyLength = Math.min(headerDataSize, dcxData.length);
+  header.set(dcxData.slice(0, copyLength), 7);
+  return header;
 }
+
 // ============================================================================
 // Utilities
 // ============================================================================
@@ -341,46 +372,50 @@ export function createRestoreHeader(dcxData, headerDataSize = 91) {
  * Check if data has a signature at the given offset.
  */
 function hasSignature(data, offset, signature) {
-    if (offset + signature.length > data.length)
-        return false;
-    for (const [i, element] of signature.entries()) {
-        if (data[offset + i] !== element)
-            return false;
-    }
-    return true;
+  if (offset + signature.length > data.length) return false;
+  for (const [i, element] of signature.entries()) {
+    if (data[offset + i] !== element) return false;
+  }
+
+  return true;
 }
+
 /**
  * Find the first occurrence of a signature in data.
  */
 function findSignature(data, signature) {
-    for (let i = 0; i <= data.length - signature.length; i++) {
-        if (hasSignature(data, i, signature))
-            return i;
-    }
-    return -1;
+  for (let i = 0; i <= data.length - signature.length; i++) {
+    if (hasSignature(data, i, signature)) return i;
+  }
+
+  return -1;
 }
+
 /**
  * Read a 32-bit little-endian unsigned integer.
  */
 function readUint32LE(data, offset) {
-    return ((data[offset] |
-        (data[offset + 1] << 8) |
-        (data[offset + 2] << 16) |
-        (data[offset + 3] << 24)) >>>
-        0);
+  return (
+    (data[offset] |
+      (data[offset + 1] << 8) |
+      (data[offset + 2] << 16) |
+      (data[offset + 3] << 24)) >>>
+    0
+  );
 }
+
 /**
  * Get all preset names from a DCX file.
  */
 export function getPresetNames(dcxFile) {
-    return dcxFile.slots.map((slot) => slot.name || '<Empty>');
+  return dcxFile.slots.map((slot) => slot.name || '<Empty>');
 }
+
 /**
  * Check if a DCX file is valid.
  */
 export function isValidDcxFile(data) {
-    if (data.length < HEADER_SIZE)
-        return false;
-    return hasSignature(data, 0, DCX_SIGNATURE);
+  if (data.length < HEADER_SIZE) return false;
+  return hasSignature(data, 0, DCX_SIGNATURE);
 }
-//# sourceMappingURL=dcx-file.js.map
+// # sourceMappingURL=dcx-file.js.map

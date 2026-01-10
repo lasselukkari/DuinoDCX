@@ -2,16 +2,15 @@ import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import FormLabel from 'react-bootstrap/FormLabel';
 import Row from 'react-bootstrap/Row';
-import pc from './parameters/index.tsx';
+import { output, type OutputId } from './parameters/index.tsx';
 
 type Props = {
   readonly channelName?: string;
   readonly channelId: string;
-  readonly group: string;
   readonly highpassFilter?: string;
-  readonly highpassFrequency?: number;
+  readonly highpassFrequency?: string;
   readonly lowpassFilter?: string;
-  readonly lowpassFrequency?: number;
+  readonly lowpassFrequency?: string;
 };
 
 function Crossover({
@@ -20,9 +19,10 @@ function Crossover({
   lowpassFilter,
   lowpassFrequency,
   channelName,
-  group,
   channelId,
 }: Props) {
+  const id = channelId as OutputId;
+
   return (
     <Card>
       <Card.Header>
@@ -32,35 +32,19 @@ function Crossover({
         <FormLabel>Highpass Filter</FormLabel>
         <Row>
           <Col xs={6}>
-            <pc.HighpassFilter
-              value={highpassFilter ?? 'OFF'}
-              group={group}
-              channelId={channelId}
-            />
+            <output.HighpassFilter value={highpassFilter ?? 'OFF'} id={id} />
           </Col>
           <Col xs={6}>
-            <pc.HighpassFrequency
-              value={highpassFrequency ?? 20}
-              group={group}
-              channelId={channelId}
-            />
+            <output.HighpassFrequency value={highpassFrequency ?? '20'} id={id} />
           </Col>
         </Row>
         <FormLabel>Lowpass Filter</FormLabel>
         <Row>
           <Col xs={6}>
-            <pc.LowpassFilter
-              value={lowpassFilter ?? 'OFF'}
-              group={group}
-              channelId={channelId}
-            />
+            <output.LowpassFilter value={lowpassFilter ?? 'OFF'} id={id} />
           </Col>
           <Col xs={6}>
-            <pc.LowpassFrequency
-              value={lowpassFrequency ?? 20}
-              group={group}
-              channelId={channelId}
-            />
+            <output.LowpassFrequency value={lowpassFrequency ?? '20'} id={id} />
           </Col>
         </Row>
       </Card.Body>

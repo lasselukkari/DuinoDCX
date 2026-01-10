@@ -1,0 +1,208 @@
+{
+  "setup": [
+    {
+      "key": "airTemperature",
+      "value": 25
+    },
+    {
+      "key": "delayUnits",
+      "value": "cm"
+    }
+  ],
+  "inputs": {
+    "A": [
+      {
+        "key": "gain",
+        "value": 3.5
+      },
+      {
+        "key": "mute",
+        "value": false
+      },
+      {
+        "key": "isDelayOn",
+        "value": true
+      },
+      {
+        "key": "longDelay",
+        "value": 100
+      },
+      {
+        "key": "dynamicEqualizerFrequency",
+        "value": "1k"
+      },
+      {
+        "key": "dynamicEqualizerGain",
+        "value": 2
+      },
+      {
+        "key": "dynamicEqualizerQ",
+        "value": "2.0"
+      },
+      {
+        "key": "dynamicEqualizerType",
+        "value": "Bandpass"
+      }
+    ],
+    "B": [
+      {
+        "key": "gain",
+        "value": -2.5
+      },
+      {
+        "key": "mute",
+        "value": true
+      }
+    ],
+    "C": [
+      {
+        "key": "gain",
+        "value": 1
+      }
+    ],
+    "Sum": [
+      {
+        "key": "gain",
+        "value": 0
+      }
+    ]
+  },
+  "outputs": {
+    "1": [
+      {
+        "key": "gain",
+        "value": -3
+      },
+      {
+        "key": "mute",
+        "value": false
+      },
+      {
+        "key": "source",
+        "value": "A"
+      },
+      {
+        "key": "highpassFilter",
+        "value": "Butterworth 12"
+      },
+      {
+        "key": "highpassFrequency",
+        "value": "80"
+      },
+      {
+        "key": "lowpassFilter",
+        "value": "Butterworth 24"
+      },
+      {
+        "key": "lowpassFrequency",
+        "value": "1.2k"
+      },
+      {
+        "key": "polarity",
+        "value": "Normal"
+      },
+      {
+        "key": "phase",
+        "value": 0
+      },
+      {
+        "key": "longDelay",
+        "value": 50
+      },
+      {
+        "key": "shortDelay",
+        "value": 100
+      },
+      {
+        "key": "isLimiterOn",
+        "value": true
+      },
+      {
+        "key": "limiterThreshold",
+        "value": -6
+      }
+    ],
+    "2": [
+      {
+        "key": "gain",
+        "value": -1.5
+      },
+      {
+        "key": "source",
+        "value": "B"
+      }
+    ],
+    "3": [
+      {
+        "key": "gain",
+        "value": 0.5
+      },
+      {
+        "key": "source",
+        "value": "A+B"
+      }
+    ],
+    "4": [
+      {
+        "key": "gain",
+        "value": -4
+      }
+    ],
+    "5": [
+      {
+        "key": "gain",
+        "value": 2
+      }
+    ],
+    "6": [
+      {
+        "key": "gain",
+        "value": -0.5
+      }
+    ]
+  },
+  "equalizers": [
+    {
+      "group": "inputs",
+      "channelId": "A",
+      "band": 1,
+      "key": "equalizerFrequency",
+      "value": "500"
+    },
+    {
+      "group": "inputs",
+      "channelId": "A",
+      "band": 1,
+      "key": "equalizerGain",
+      "value": 3
+    },
+    {
+      "group": "inputs",
+      "channelId": "A",
+      "band": 1,
+      "key": "equalizerQ",
+      "value": "1.5"
+    },
+    {
+      "group": "inputs",
+      "channelId": "A",
+      "band": 1,
+      "key": "equalizerType",
+      "value": "Bandpass"
+    },
+    {
+      "group": "outputs",
+      "channelId": "1",
+      "band": 1,
+      "key": "equalizerFrequency",
+      "value": "2k"
+    },
+    {
+      "group": "outputs",
+      "channelId": "1",
+      "band": 1,
+      "key": "equalizerGain",
+      "value": -2
+    }
+  ]
+}

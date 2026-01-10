@@ -1,0 +1,59 @@
+/**
+ * DCX2496 Parser Library (V2)
+ *
+ * A TypeScript library for parsing and building messages for the
+ * Behringer DCX2496 digital speaker management system.
+ *
+ * Unified Architecture: src/structure.ts defines the truth.
+ */
+import { isOutputChannel } from './types/index.js';
+import { parseMessage, parseDevices } from './protocol/sysex.js';
+import { parseEditBuffer } from './edit-buffer-parser.js';
+import { parsePreset } from './preset-parser.js';
+import { parseStatus } from './status-parser.js';
+import { getPresetNames } from './dcx-file.js';
+export type { State, Setup, InputChannel, OutputChannel, BufferHeader, Equalizer, Channel, } from './types/index.js';
+export type { ParameterDefinition } from './model/param-lookup.js';
+export type { ParsedMessage } from './protocol/sysex.js';
+export type { DcxFile, PresetSlot, ParsedPreset, ParsedPreset as PresetEntry } from './dcx-file.js';
+export { encode8to7, decode7to8 } from './protocol/encoding.js';
+export { calculateChecksum, verifyChecksum } from './protocol/checksum.js';
+export { buildHeader, buildPingCommand, buildPageDumpRequest, buildEditBufferRequest, buildRecallCommand, buildStoreCommand, buildSyncCommand, buildDataPacket, buildHeaderPacket, buildPagePacket, buildDirectCommand, buildListenModeCommand, buildParamChangeCommand, } from './commands/builders.js';
+export type { ParameterTarget } from './commands/builders.js';
+export { type Command, setupCommands, inputOutputCommands, equalizerCommands, outputCommands, } from './commands/commands.js';
+export { parseMessage, parseDevices, isValidSysex, extractSysexMessages, } from './protocol/sysex.js';
+export * from './constants/protocol.js';
+export { directLookup, getParameterByDirect, convertValue, toRawValue, applyToState, } from './model/param-lookup.js';
+export { parseEditBuffer } from './edit-buffer-parser.js';
+export { parsePreset } from './preset-parser.js';
+export * as constants from './constants/index.js';
+export type { DcxConnection } from './transport/types.js';
+export { useDcxState } from './hooks/use-dcx-state.js';
+export { useDcxBackup } from './hooks/use-dcx-backup.js';
+export { useDcxRestore } from './hooks/use-dcx-restore.js';
+export { useDcxFile } from './hooks/use-dcx-file.js';
+export { parseStatus } from './status-parser.js';
+export { parseDcxFile, parseDcxPresets, assemblePagesIntoDcxFile, splitDcxFileIntoPages, createRestoreHeader, getPresetNames, isValidDcxFile, DCX_SIGNATURE, DCX_TERMINATOR, } from './dcx-file.js';
+export declare function camelize(string_: string): string;
+import { parseDcxPresets } from './dcx-file.js';
+declare const Parser: {
+    camelize: typeof camelize;
+    commands: {
+        setupCommands: import("./index.js").Command[];
+        inputOutputCommands: import("./index.js").Command[];
+        eqCommands: import("./index.js").Command[];
+        outputCommands: import("./index.js").Command[];
+    };
+    parseEditBuffer: typeof parseEditBuffer;
+    parsePreset: typeof parsePreset;
+    parseMessage: typeof parseMessage;
+    parseDevices: typeof parseDevices;
+    parseStatus: typeof parseStatus;
+    isOutputChannel: typeof isOutputChannel;
+    getPresetNames: typeof getPresetNames;
+    parseDcxPresets: typeof parseDcxPresets;
+};
+export default Parser;
+export { dcxStore, DcxStore } from './store/dcx-store.js';
+export { isOutputChannel } from './types/index.js';
+//# sourceMappingURL=index.d.ts.map

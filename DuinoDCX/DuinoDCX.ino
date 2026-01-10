@@ -87,6 +87,10 @@ void auth(Request &req, Response &res) {
   }
 }
 
+void handleSpa(Request &req, Response &res) {
+  static_index(req, res);
+}
+
 void update(Request &req, Response &res) {
   int contentLength = req.left();
 
@@ -347,6 +351,7 @@ void setupHttpServer() {
   app.use(&auth);
   app.use("/api", &apiRouter);
   app.use("/", staticFiles());
+  app.get(handleSpa);
   app.use(&logRequestEnd);
 
   httpServer.begin();

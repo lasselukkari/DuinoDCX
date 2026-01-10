@@ -3,14 +3,13 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import isEqual from 'lodash.isequal';
 import Crossover from './crossover.tsx';
-import {type Channel} from './dcx2496/parser.ts';
+import { type OutputChannel } from 'dcx-parser';
 
 type Props = {
-  readonly group: string;
-  readonly channels: Record<string, Channel>;
+  readonly channels: Record<string, OutputChannel>;
 };
 
-function Crossovers({channels, group}: Props) {
+function Crossovers({ channels }: Props) {
   return (
     <div>
       <Row className="show-grid">
@@ -25,7 +24,6 @@ function Crossovers({channels, group}: Props) {
           return (
             <Col key={channelId} xs={12} sm={6} md={4}>
               <Crossover
-                group={group}
                 channelId={channelId}
                 highpassFilter={highpassFilter}
                 highpassFrequency={highpassFrequency}

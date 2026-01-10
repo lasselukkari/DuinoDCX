@@ -1,17 +1,16 @@
-import React, {useMemo} from 'react';
+import React, { useMemo } from 'react';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import isEqual from 'lodash.isequal';
 import ChannelName from './channel-name.tsx';
-import {type Channel} from './dcx2496/parser.ts';
+import { type OutputChannel } from 'dcx-parser';
 
 type Props = {
-  readonly group: string;
-  readonly channels: Record<string, Channel>;
+  readonly channels: Record<string, OutputChannel>;
 };
 
-function ChannelNames({channels, group}: Props) {
+function ChannelNames({ channels }: Props) {
   const channelIds = useMemo(() => Object.keys(channels), [channels]);
 
   return (
@@ -24,7 +23,6 @@ function ChannelNames({channels, group}: Props) {
               <Col key={channelId} xs={12} sm={6} md={4}>
                 <ChannelName
                   key={channelId}
-                  group={group}
                   channelId={channelId}
                   channelName={channels[channelId].channelName ?? ''}
                 />
@@ -38,8 +36,5 @@ function ChannelNames({channels, group}: Props) {
 }
 
 export default React.memo(ChannelNames, (previousProps, nextProps) => {
-  return (
-    isEqual(previousProps.channels, nextProps.channels) &&
-    previousProps.group === nextProps.group
-  );
+  return isEqual(previousProps.channels, nextProps.channels);
 });

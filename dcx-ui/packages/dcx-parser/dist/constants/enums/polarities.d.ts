@@ -1,2 +1,2 @@
 export declare const POLARITIES: string[];
-//# sourceMappingURL=polarities.d.ts.map
+// # sourceMappingURL=polarities.d.ts.map

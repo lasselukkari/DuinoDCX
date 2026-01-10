@@ -1,28 +1,24 @@
 import Card from 'react-bootstrap/Card';
-import pc from './parameters/index.tsx';
+import { output, type OutputId } from './parameters/index.tsx';
 
 type PhaseProps = {
   readonly channelName?: string;
-  readonly polarity: boolean | number | string;
-  readonly phase: boolean | number | string;
+  readonly polarity: string;
+  readonly phase: number;
   readonly channelId: string;
-  readonly group: string;
 };
 
-function Phase({channelName, polarity, phase, channelId, group}: PhaseProps) {
+function Phase({ channelName, polarity, phase, channelId }: PhaseProps) {
+  const id = channelId as OutputId;
+
   return (
     <Card>
       <Card.Header>
-        {channelName ? `${channelId} . ${channelName}` : `Channel ${channelId}`}
+        {channelName ? `${channelId}. ${channelName}` : `Channel ${channelId}`}
       </Card.Header>
       <Card.Body>
-        <pc.Polarity
-          hasLabel
-          value={polarity}
-          group={group}
-          channelId={channelId}
-        />
-        <pc.Phase hasLabel value={phase} group={group} channelId={channelId} />
+        <output.Polarity hasLabel value={polarity} id={id} />
+        <output.Phase hasLabel value={phase} id={id} />
       </Card.Body>
     </Card>
   );

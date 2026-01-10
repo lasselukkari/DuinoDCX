@@ -1,15 +1,15 @@
-import type { State } from '../types/index.js';
+import type {State} from '../types/index.js';
 /** Parsed preset with slot info */
 export type ParsedPreset = {
-    slot: number;
-    name: string;
-    isLocked: boolean;
-    state: State;
+  slot: number;
+  name: string;
+  isLocked: boolean;
+  state: State;
 };
 /** Result of parsing memory pages */
 export type MemoryDumpResult = {
-    presets: ParsedPreset[];
-    lockFlags: boolean[];
+  presets: ParsedPreset[];
+  lockFlags: boolean[];
 };
 /**
  * Parse a full preset from 758 16-bit words.
@@ -22,7 +22,9 @@ export declare function parsePresetWords(words: number[]): State;
  * - First preset is stored in FULL format (758 words)
  * - Subsequent presets are deltas relative to the previous preset
  */
-export declare function parseDcxFileToStates(data: Uint8Array): MemoryDumpResult;
+export declare function parseDcxFileToStates(
+  data: Uint8Array,
+): MemoryDumpResult;
 /**
  * Parse memory pages from device dump into presets.
  *
@@ -30,4 +32,4 @@ export declare function parseDcxFileToStates(data: Uint8Array): MemoryDumpResult
  * @returns Array of parsed presets
  */
 export declare function parseMemoryPages(pages: Uint8Array[]): MemoryDumpResult;
-//# sourceMappingURL=preset-parser.d.ts.map
+// # sourceMappingURL=preset-parser.d.ts.map

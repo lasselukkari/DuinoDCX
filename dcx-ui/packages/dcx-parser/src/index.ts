@@ -6,17 +6,21 @@
  */
 
 // Types
-export type { State, Setup, Channel, Equalizer, Status } from './types/index.js';
-export type { ParameterDefinition, ByteKey, DirectKey } from './model/param-lookup.js';
-export type { DataSource } from './model/state-parser.js';
-export type { ParsedMessage } from './protocol/sysex.js';
-export type { DcxFile, PresetSlot } from './dcx-file.js';
+export type {State, Setup, Channel, Equalizer, Status} from './types/index.js';
+export type {
+  ParameterDefinition,
+  ByteKey,
+  DirectKey,
+} from './model/param-lookup.js';
+export type {DataSource} from './model/state-parser.js';
+export type {ParsedMessage} from './protocol/sysex.js';
+export type {DcxFile, PresetSlot} from './dcx-file.js';
 
 // Encoding (7-to-8 bit transformation)
-export { encode8to7, decode7to8 } from './protocol/encoding.js';
+export {encode8to7, decode7to8} from './protocol/encoding.js';
 
 // Checksum
-export { calculateChecksum, verifyChecksum } from './protocol/checksum.js';
+export {calculateChecksum, verifyChecksum} from './protocol/checksum.js';
 
 // SysEx message building
 export {
@@ -35,7 +39,11 @@ export {
 } from './commands/builders.js';
 
 // SysEx message parsing
-export { parseMessage, isValidSysex, extractSysexMessages } from './protocol/sysex.js';
+export {
+  parseMessage,
+  isValidSysex,
+  extractSysexMessages,
+} from './protocol/sysex.js';
 
 // SysEx constants
 export {
@@ -83,10 +91,11 @@ export {
   parsePresetData,
   fromParts,
   fromPreset,
+  parseStatus,
 } from './model/state-parser.js';
 
 // Preset parsing (12-page memory dump / .dcx file to State objects)
-export type { ParsedPreset, MemoryDumpResult } from './file/preset-parser.js';
+export type {ParsedPreset, MemoryDumpResult} from './file/preset-parser.js';
 export {
   parseDcxFileToStates,
   parseMemoryPages,
@@ -97,13 +106,16 @@ export {
 export * as constants from './constants/index.js';
 
 // Transport layer
-export type { DcxConnection } from './transport/types.js';
+export type {DcxConnection} from './transport/types.js';
 
 // React hooks (requires React as peer dependency)
-export { useDcxFile, type PresetEntry } from './hooks/use-dcx-file.js';
-export { useDcxState } from './hooks/use-dcx-state.js';
-export { useDcxBackup, type BackupStatus } from './hooks/use-dcx-backup.js';
-export { useDcxRestore, type RestoreStatus } from './hooks/use-dcx-restore.js';
+export {useDcxFile, type PresetEntry} from './hooks/use-dcx-file.js';
+export {useDcxState} from './hooks/use-dcx-state.js';
+export {useDcxBackup, type BackupStatus} from './hooks/use-dcx-backup.js';
+export {useDcxRestore, type RestoreStatus} from './hooks/use-dcx-restore.js';
 
 // High-level parameter commands
-export { buildParamChangeCommand, type ParameterTarget } from './commands/builders.js';
+export {
+  buildParamChangeCommand,
+  type ParameterTarget,
+} from './commands/builders.js';

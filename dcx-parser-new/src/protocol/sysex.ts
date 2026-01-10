@@ -12,9 +12,6 @@
  * - Parameter value mapping (parameter-mappings.ts)
  */
 
-import { verifyChecksum } from './checksum.js';
-import { decode7to8 } from './encoding.js';
-
 import {
   SYSEX_START,
   SYSEX_END,
@@ -27,11 +24,12 @@ import {
   CMD_DIRECT,
   HEADER_SIZE,
 } from '../constants/protocol.js';
+import {verifyChecksum} from './checksum.js';
+import {decode7to8} from './encoding.js';
 
 // ============================================================================
 // Message Building
 // ============================================================================
-
 
 // ============================================================================
 // Message Parsing
@@ -39,18 +37,43 @@ import {
 
 /** Result of parsing a SysEx message */
 export type ParsedMessage =
-  | { type: 'ping'; deviceId: number }
-  | { type: 'search'; deviceId: number; version: number; name: string }
-  | { type: 'pageDump'; deviceId: number; page: number; data: Uint8Array }
-  | { type: 'editBuffer'; deviceId: number; part: number; data: Uint8Array }
-  | { type: 'ack'; deviceId: number; payload: Uint8Array }
-  | { type: 'pageRequest'; deviceId: number; page: number; requestType: number }
+  | {type: 'ping'; deviceId: number; command: number}
   | {
-    type: 'direct';
-    deviceId: number;
-    parameters: Array<{ channel: number; param: number; value: number }>;
-  }
-  | { type: 'unknown'; deviceId: number; command: number; data: Uint8Array };
+      type: 'search';
+      deviceId: number;
+      version: number;
+      name: string;
+      command: number;
+    }
+  | {
+      type: 'pageDump';
+      deviceId: number;
+      page: number;
+      data: Uint8Array;
+      command: number;
+    }
+  | {
+      type: 'editBuffer';
+      deviceId: number;
+      part: number;
+      data: Uint8Array;
+      command: number;
+    }
+  | {type: 'ack'; deviceId: number; payload: Uint8Array; command: number}
+  | {
+      type: 'pageRequest';
+      deviceId: number;
+      page: number;
+      requestType: number;
+      command: number;
+    }
+  | {
+      type: 'direct';
+      deviceId: number;
+      parameters: Array<{channel: number; param: number; value: number}>;
+      command: number;
+    }
+  | {type: 'unknown'; deviceId: number; command: number; data: Uint8Array};
 
 /**
  * Parse a complete SysEx message from the device.
@@ -86,6 +109,7 @@ export function parseMessage(message: Uint8Array): ParsedMessage | undefined {
       return {
         type: 'ack',
         deviceId,
+        command,
         payload: message.slice(7, -1),
       };
     }
@@ -107,6 +131,20 @@ export function parseMessage(message: Uint8Array): ParsedMessage | undefined {
       };
     }
   }
+}
+
+/**
+ * Parse devices from a search response.
+ */
+export function parseDevices(
+  message: Uint8Array,
+): Array<{id: number; version: number; name: string}> {
+  const parsed = parseMessage(message);
+  if (parsed?.type === 'search') {
+    return [{id: parsed.deviceId, version: parsed.version, name: parsed.name}];
+  }
+
+  return [];
 }
 
 /**
@@ -133,6 +171,7 @@ function parseSearchResponse(
     deviceId,
     version,
     name: name.trim(),
+    command: message[COMMAND_BYTE_INDEX],
   };
 }
 
@@ -145,15 +184,11 @@ function parseDumpResponse(
 ): ParsedMessage | undefined {
   if (message.length < 15) return undefined;
 
-  // Check for page dump signature: 00 01 00 0C 00 at bytes 7-11
-  const isPageDump =
-    message[7] === 0x00 &&
-    message[8] === 0x01 &&
-    message[9] === 0x00 &&
-    message[10] === 0x0c &&
-    message[11] === 0x00;
+  // Check for bank at byte 7
+  const bank = message[7];
 
-  if (isPageDump) {
+  // Bank 0 = Memory Page Dump (Presets)
+  if (bank === 0x00) {
     // Verify checksum
     if (!verifyChecksum(message)) {
       console.warn('Page dump checksum verification failed');
@@ -161,27 +196,33 @@ function parseDumpResponse(
 
     const page = message[12];
     const encodedData = message.slice(HEADER_SIZE, -2); // Exclude checksum and F7
-    const data = decode7to8(encodedData);
+    const data = decode7to8(encodedData, {indexed: false});
 
     return {
       type: 'pageDump',
       deviceId,
       page,
       data,
+      command: message[COMMAND_BYTE_INDEX],
     };
   }
 
-  // Edit buffer response
-  const part = message[7];
-  const encodedData = message.slice(HEADER_SIZE, -2);
-  const data = decode7to8(encodedData);
+  // Bank 1 = Edit Buffer
+  if (bank === 0x01) {
+    const part = message[12]; // Part number is at the same offset as page
+    const encodedData = message.slice(HEADER_SIZE, -2);
+    const data = decode7to8(encodedData, {indexed: false});
 
-  return {
-    type: 'editBuffer',
-    deviceId,
-    part,
-    data,
-  };
+    return {
+      type: 'editBuffer',
+      deviceId,
+      part,
+      data,
+      command: message[COMMAND_BYTE_INDEX],
+    };
+  }
+
+  return undefined;
 }
 
 /**
@@ -196,6 +237,7 @@ function parsePageRequest(
     deviceId,
     page: message[9],
     requestType: message[7],
+    command: message[COMMAND_BYTE_INDEX],
   };
 }
 
@@ -207,7 +249,7 @@ function parseDirectCommand(
   deviceId: number,
 ): ParsedMessage {
   const count = message[7];
-  const parameters: Array<{ channel: number; param: number; value: number }> = [];
+  const parameters: Array<{channel: number; param: number; value: number}> = [];
 
   for (let i = 0; i < count; i++) {
     const offset = 8 + i * 4;
@@ -224,6 +266,7 @@ function parseDirectCommand(
     type: 'direct',
     deviceId,
     parameters,
+    command: message[COMMAND_BYTE_INDEX],
   };
 }
 
@@ -264,5 +307,5 @@ export function extractSysexMessages(buffer: Uint8Array): {
   // Return remaining bytes (incomplete message)
   const remaining = start >= 0 ? buffer.slice(start) : new Uint8Array(0);
 
-  return { messages, remaining };
+  return {messages, remaining};
 }

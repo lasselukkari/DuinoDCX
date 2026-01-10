@@ -1,1 +1,1 @@
-export const OUTPUT_CONFIGS = ['mono', 'lmhlmh', 'llmmhh', 'lhlhlh'];
+export const outputConfigs = ['mono', 'lmhlmh', 'llmmhh', 'lhlhlh'];

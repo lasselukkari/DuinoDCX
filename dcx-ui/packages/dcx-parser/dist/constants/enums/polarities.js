@@ -1,2 +1,2 @@
 export const POLARITIES = ['Normal', 'Inverted'];
-//# sourceMappingURL=polarities.js.map
+// # sourceMappingURL=polarities.js.map

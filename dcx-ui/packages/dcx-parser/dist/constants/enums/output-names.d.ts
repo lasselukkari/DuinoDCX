@@ -1,2 +1,2 @@
 export declare const outputNames: string[];
-//# sourceMappingURL=output-names.d.ts.map
+// # sourceMappingURL=output-names.d.ts.map

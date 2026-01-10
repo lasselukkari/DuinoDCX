@@ -1,25 +1,19 @@
 import FormLabel from 'react-bootstrap/FormLabel';
-import pc from './parameters/index.tsx';
+import { output, type OutputId } from './parameters/index.tsx';
 
 type OutputSourceProps = {
   readonly channelName?: string;
-  readonly source?: number | string;
+  readonly source: string;
   readonly channelId: string;
-  readonly group: string;
 };
 
-function OutputSource({
-  channelName,
-  source,
-  channelId,
-  group,
-}: OutputSourceProps) {
+function OutputSource({ channelName, source, channelId }: OutputSourceProps) {
   return (
     <div>
       <FormLabel>
         {channelName ? channelId + '. ' + channelName : channelId}
       </FormLabel>
-      <pc.Source value={source} group={group} channelId={channelId} />
+      <output.Source value={source ?? ''} id={channelId as OutputId} />
     </div>
   );
 }

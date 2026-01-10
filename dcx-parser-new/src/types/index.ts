@@ -1,87 +1,122 @@
-/**
- * DCX2496 State Types
- */
+export type Setup = {
+  [key: string]: any;
+  inputSumType?: string;
+  inputABSource?: string;
+  inputCGain?: string;
+  outputConfig?: string;
+  stereolink?: boolean;
+  stereolinkMode?: string;
+  delayLink?: boolean;
+  crossoverLink?: boolean;
+  airTemperature?: number;
+  delayUnits?: string;
+  isDelayCorrectionOn?: boolean;
+  muteOutsWhenPowered?: boolean;
+  inputASumGain?: number;
+  inputBSumGain?: number;
+  inputCSumGain?: number;
+};
 
-/** Equalizer band settings */
 export type Equalizer = {
-  equalizerType: string;
+  [key: string]: any;
+  equalizerType?: string;
   equalizerFrequency: string;
   equalizerGain: number;
   equalizerQ: string;
   equalizerShelving: string;
 };
 
-/** Channel settings (inputs and outputs share common properties) */
-export type Channel = {
-  channelName: string;
+export type EqBand = {
+  frequency: number;
+  q: string;
+  gain: number;
+  type: string;
+  shelving: string;
+};
+
+export type InputChannel = {
+  [key: string]: any;
   gain: number;
   mute: boolean;
   isDelayOn: boolean;
   longDelay: number;
   isEqualizerOn: boolean;
-  equalizerNumber: number;
-  equalizerIndex: number;
-  // Dynamic Equalizer
-  isDynamicEqualizerOn: boolean;
-  dynamicEqualizerType: string;
-  dynamicEqualizerFrequency: string;
-  dynamicEqualizerGain: number;
-  dynamicEqualizerQ: string;
-  dynamicEqualizerShelving: string;
+  channelName: string;
+
+  // Dynamic EQ
   dynamicEqualizerAttack: string;
   dynamicEqualizerRelease: string;
   dynamicEqualizerRatio: string;
   dynamicEqualizerThreshold: number;
-  // Crossover (outputs only, undefined for inputs)
-  highpassFilter?: string;
-  highpassFrequency?: number;
-  lowpassFilter?: string;
-  lowpassFrequency?: number;
-  // Limiter (outputs only)
-  isLimiterOn?: boolean;
-  limiterThreshold?: number;
-  limiterRelease?: string;
-  // Phase (outputs only)
-  polarity?: string;
-  phase?: number;
-  // Source (outputs only)
-  source?: string;
-  // Short delay (outputs only)
-  shortDelay?: number;
-  // Equalizer bands (1-9)
+  isDynamicEqualizerOn: boolean;
+  dynamicEqualizerFrequency: string;
+  dynamicEqualizerQ: string;
+  dynamicEqualizerGain: number;
+  dynamicEqualizerType: string;
+  dynamicEqualizerShelving: string;
+
+  // EQs bank for legacy UI
   equalizers: Record<string, Equalizer>;
 };
 
-/** Global setup settings */
-export type Setup = {
-  inputSumType: string;
-  inputAbSource: string;
-  inputCGain: string;
-  outputConfig: string;
-  stereolink: boolean;
-  stereolinkMode: string;
-  delayLink: boolean;
-  crossoverLink: boolean;
-  isDelayCorrectionOn: boolean;
-  airTemperature: number;
-  delayUnits: string;
-  muteOutsWhenPowered: boolean;
-  inputASumGain: number;
-  inputBSumGain: number;
-  inputCSumGain: number;
-};
+export type OutputChannel = {
+  source: string;
+  highpassFilter: string;
+  highpassFrequency: string;
+  lowpassFilter: string;
+  lowpassFrequency: string;
+  isLimiterOn: boolean;
+  limiterThreshold: number;
+  limiterRelease: string;
+  polarity: string;
+  phase: number;
+  shortDelay: number;
+} & InputChannel;
 
-/** Device state */
-export type State = {
+export type BufferHeader = {
+  // XPCR block
+  xpcrSignature: string;
+  xpcrVersion: number;
+  xpcrExtension: Uint8Array;
+
+  // XPRB block
+  xprbSignature: string;
+  xprbVersion: number;
+  xprbExtension: Uint8Array;
+
+  // Device info
+  deviceName: string;
+  deviceNamePadding: Uint8Array;
+
+  // Signatures
+  signatureBytes: Uint8Array;
+
+  // XCUR block
+  xcurSignature: string;
+  xcurVersion: number;
+  xcurExtension: Uint8Array;
+
+  // Preset info
   presetName: string;
-  setup: Setup;
-  inputs: Record<string, Channel>;
-  outputs: Record<string, Channel>;
+  presetNamePadding: Uint8Array;
+  headerReserved: Uint8Array;
 };
 
-/** Level meter status */
+export type Channel = InputChannel | OutputChannel;
+
+export function isOutputChannel(channel: Channel): channel is OutputChannel {
+  return (channel as OutputChannel).source !== undefined;
+}
+
+export type State = {
+  header: BufferHeader;
+  setup: Setup;
+  inputs: Record<string, InputChannel>;
+  outputs: Record<string, OutputChannel>;
+};
+
 export type Status = {
-  inputs: Array<{ name: string; level: number; isLimited: boolean }>;
-  outputs: Array<{ name: string; level: number; isLimited: boolean }>;
+  inputs: Array<{name: string; level: number; isLimited: boolean}>;
+  outputs: Array<{name: string; level: number; isLimited: boolean}>;
   free: number;
 };

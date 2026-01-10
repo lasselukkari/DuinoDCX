@@ -1,123 +1,84 @@
 /**
- * Hook for managing .dcx file data.
- *
- * Provides access to preset data from either:
- * - A file loaded from the client
- * - Downloaded device backup
+ * Hook for reading .dcx files.
  */
-
-import { useState, useCallback, useMemo } from 'react';
-import type { State } from '../types/index.js';
-import { parseDcxFileToStates, type ParsedPreset } from '../file/preset-parser.js';
+import { useState, useCallback } from 'react';
+import {
+  type ParsedPreset,
+  type DcxFile,
+  parseDcxFile,
+  parseDcxPresets,
+  isValidDcxFile,
+} from '../dcx-file.js';
 
 /**
- * Entry for a single preset slot.
- */
-export type PresetEntry = {
-    slot: number;
-    name: string;
-    isEmpty: boolean;
-    isLocked: boolean;
-    state: State;
-};
-
-/**
- * Hook for managing .dcx file data and accessing presets.
+ * Hook for handling .dcx file parsing
  */
 export function useDcxFile() {
-    const [dcxData, setDcxData] = useState<Uint8Array | null>(null);
-    const [parsedPresets, setParsedPresets] = useState<ParsedPreset[]>([]);
-    const [lockFlags, setLockFlags] = useState<boolean[]>([]);
+  const [file, setFile] = useState<DcxFile | null>(null);
+  const [presets, setPresets] = useState<ParsedPreset[]>([]);
+  const [dcxData, setDcxData] = useState<Uint8Array | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-    /**
-     * Load from a File object (e.g., from file picker).
-     */
-    const loadFromFile = useCallback(async (file: File) => {
-        const buffer = await file.arrayBuffer();
-        const data = new Uint8Array(buffer);
-        loadFromBuffer(data);
-    }, []);
+  /**
+   * Parse a raw .dcx file (Uint8Array)
+   */
+  const loadFromBuffer = useCallback((data: Uint8Array) => {
+    setIsLoading(true);
+    setError(null);
+    setFile(null);
+    setPresets([]);
+    setDcxData(null);
 
-    /**
-     * Load from a Uint8Array (e.g., downloaded from device).
-     */
-    const loadFromBuffer = useCallback((data: Uint8Array) => {
-        try {
-            const result = parseDcxFileToStates(data);
-            setDcxData(data);
-            setParsedPresets(result.presets);
-            setLockFlags(result.lockFlags);
-        } catch (error) {
-            console.error('Failed to parse DCX file:', error);
-            setDcxData(null);
-            setParsedPresets([]);
-            setLockFlags([]);
-        }
-    }, []);
+    try {
+      if (!isValidDcxFile(data)) {
+        throw new Error('Invalid .dcx file signature');
+      }
 
-    /**
-     * Clear current file data.
-     */
-    const clear = useCallback(() => {
-        setDcxData(null);
-        setParsedPresets([]);
-        setLockFlags([]);
-    }, []);
+      // Parse file structure info
+      const parsedFile = parseDcxFile(data);
+      setFile(parsedFile);
 
-    /**
-     * Build the presets array with all 60 slots.
-     * Empty slots have isEmpty: true.
-     */
-    const presets = useMemo<PresetEntry[]>(() => {
-        const result: PresetEntry[] = [];
+      // Parse all presets (handles compact deltas)
+      const parsedPresets = parseDcxPresets(data);
+      setPresets(parsedPresets);
+      setDcxData(data);
+    } catch (error_) {
+      console.error('Failed to parse .dcx file', error_);
+      setError(error_ instanceof Error ? error_.message : String(error_));
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
 
-        // Build a map of parsed presets by slot
-        const presetMap = new Map<number, ParsedPreset>();
-        for (const preset of parsedPresets) {
-            presetMap.set(preset.slot, preset);
-        }
+  /**
+   * Get a specific preset by slot index (0-59)
+   */
+  const getPreset = useCallback(
+    (slot: number) => {
+      return presets[slot];
+    },
+    [presets],
+  );
 
-        // Generate all 60 slots
-        for (let slot = 1; slot <= 60; slot++) {
-            const preset = presetMap.get(slot);
-            if (preset) {
-                result.push({
-                    slot,
-                    name: preset.name,
-                    isEmpty: false,
-                    isLocked: preset.isLocked,
-                    state: preset.state,
-                });
-            } else {
-                result.push({
-                    slot,
-                    name: `<Empty ${slot}>`,
-                    isEmpty: true,
-                    isLocked: lockFlags[slot - 1] ?? false,
-                    state: null as unknown as State, // Empty slots have no state
-                });
-            }
-        }
+  /**
+   * Clear loaded file
+   */
+  const clear = useCallback(() => {
+    setFile(null);
+    setPresets([]);
+    setDcxData(null);
+    setError(null);
+  }, []);
 
-        return result;
-    }, [parsedPresets, lockFlags]);
-
-    /**
-     * Get a single preset by slot number (1-60).
-     */
-    const getPreset = useCallback(
-        (slot: number): PresetEntry | undefined => {
-            return presets.find((p: PresetEntry) => p.slot === slot);
-        },
-        [presets],
-    );
-
-    return {
-        dcxData,
-        presets,
-        loadFromFile,
-        loadFromBuffer,
-        clear,
-        getPreset,
-    };
+  return {
+    file,
+    presets,
+    dcxData,
+    error,
+    isLoading,
+    loadFromBuffer,
+    getPreset,
+    clear,
+  };
 }

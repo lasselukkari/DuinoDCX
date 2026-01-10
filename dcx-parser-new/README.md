@@ -175,7 +175,39 @@ The "Restore" function (uploading a full `.dcx` file from **Computer TO Device**
     *   Computer sends Page 0 (Type 01) unsolicited.
     *   Device requests Page 1 (Type 01).
 
-#### Step 1: Initialization Key Sequence
+## Unified Parser V2 (New Architecture)
+
+The parser uses `src/structure.ts` as the single source of truth for parameter ordering.
+
+### Key Findings (Verified 2026-01-09)
+
+**Edit Buffer Layout:**
+- XPCR signature at absolute offset 7
+- Preset name at absolute offset 79 (8 bytes)
+- Setup parameters follow the pattern in `EDIT_BUFFER_SETUP_PARAMS`
+- Cursor starts at offset 1 for sequential parsing
+
+**Preset (.dcx) Layout:**
+- XSNP signature at absolute offset 7 (decoded data)
+- Preset name at absolute offset 83 (skip 76 bytes from XSNP)
+- Setup parameters follow immediately after name
+- 4-byte offset difference vs edit buffer (83 - 79 = 4)
+
+**Parameter Order (Verified):**
+- `dynamicEqualizerFrequency` comes BEFORE `dynamicEqualizerQ` (order matters!)
+- All parameters in `INPUT_CHANNEL_PARAMS` and `OUTPUT_CHANNEL_PARAMS` verified against device
+
+### Parsers
+- `preset-parser.ts`: Parses `.dcx` files and SysEx Memory Dumps.
+- `edit-buffer-parser.ts`: Parses the real-time Edit Buffer (Msg Type 0x01).
+- `dcx-file.ts`: Parses full `.dcx` files with all 60 preset slots.
+
+### Integration Tests
+- `src/fixtures/integration.test.ts`: Verifies parser output matches captured device state
+- Edit buffer parsing verified against browser-captured JSON
+- Preset 0 vs Preset 36 comparison confirms factory preset duplication
+
+## Installation Key Sequence
 ```
 APP->DEV: F0 00 20 32 20 0E 40 F7  (Identify - Note ID 20?)
 ### 6. Full Memory Restore (Computer -> Device) Protocol
@@ -286,13 +318,19 @@ The `.dcx` file format stores preset data in a binary structure. This is the sam
 | 0x0000 | 4 | `XSNP` signature |
 | 0x0004 | 4 | Version (typically `01 00 00 00`) |
 | 0x0008 | 4 | Data length (little-endian, **variable**) |
-| 0x000C | 0x40 | Reserved (observed zeros in dumps) |
-| 0x004C | variable | Memory pages, each 875 decoded bytes (0-12 pages) |
+| 0x000C | 0x40 | Lock flags (60 bytes, one per slot - 0=unlocked, 1=locked) |
+| 0x004C | 1440 | Preset 1 - Full format (720 words × 2 bytes) |
+| 0x05EC+ | variable | Presets 2-60 - Compact delta format |
+
+**Preset Slot Layout:**
+- **Slots 1-24**: User-editable presets (unlocked by default)
+- **Slots 25-36**: Additional user slots (empty on factory reset)
+- **Slots 37-60**: Factory preset copies (locked, indices 36-59)
 
 **Observed file sizes**:
 - Empty device (no presets): 167 bytes (0 pages)
-- Partial presets: 8,126 bytes (9 pages)  
-- Full presets: 10,576 bytes (12 pages)
+- Factory presets: ~9,698 bytes
+- Full presets: up to ~10,576 bytes (12 pages)
 
 
 #### Full vs. Compact Storage (Crucial Finding)
@@ -450,163 +488,117 @@ Located at offset ~0x05F0 within Preset 1 data:
 
 #### Slot Summary (60 slots)
 
-From TEST.dcx analysis:
-- **Slots 1-24**: Named presets
-- **Slots 25-36**: Empty (no data)
-- **Slots 37-60**: Named presets
+From factory-presets.dcx analysis (verified 2026-01-09):
+- **Slots 1-24**: User-editable presets (copies of factory, unlocked)
+- **Slots 25-36**: Additional user slots (may be empty)
+- **Slots 37-60**: Factory presets (locked, read-only via device)
 
 ---
 
-### 9. Compact Preset Delta Format (Verified 2026-01-03)
+### 9. Compact Preset Delta Format (Verified 2026-01-09)
 
-The "Mono" preset (Slot 21) uses a **Compact Preset** format with delta encoding, which differs from the fixed-offset Full Preset format (Slot 1).
+Presets 2-60 use a compact delta encoding format that stores only the differences from Preset 1.
 
-#### Compact Preset Header
-Each compact preset entry begins with a 14-byte directory record:
+#### Directory Entry Structure (14 bytes)
+
 ```
-Offset 0-1:  Pointer (signed 16-bit) to data block relative to start of record
-Offset 2:    Slot Index (0-59, e.g., 20 for Slot 21)
-Offset 3:    0x00
-Offset 4-11: Name (8 bytes ASCII, space-padded)
-Offset 12-13: 0x00 0x00
+Offset 0-1:   Total Entry Size (ptr) - 16-bit little-endian
+Offset 2:     Slot Index (1-59, maps to Preset 2-60)
+Offset 3:     0x00
+Offset 4-11:  Name (8 bytes ASCII, space-padded)
+Offset 12-13: 0x00 0x00 (entry terminator)
 ```
-- A `Pointer` value <= 14 indicates no data block; the preset uses factory defaults.
-- A `Pointer` > 14 indicates a variable-length data block follows.
 
-#### Delta Data Block
-The data block contains a sequence of modified parameters.
-- **Values are 16-bit words.**
-- **Crossover Parameters**: For Config 1 (Stereo 3-way), Crossover settings (HP/LP Type/Freq) appear as a sequence in the delta block.
-    - Example Verified: `06 00 08 01` -> `0006` (HP Type 6/But24), `0108` (HP Freq Index 264)
-- **Misalignment Risk**: Treating this variable-length block as a fixed-offset structure leads to reading garbage values (e.g., interpreting `0006` as "Source" instead of "HP Type").
+**Key Fields:**
+- **ptr**: Total size of directory entry + delta data. If ptr ≤ 14, no delta data exists (preset uses Preset 1 defaults).
+- **Delta data length**: `ptr - 14` bytes
+- **Delta data location**: Immediately after the 14-byte directory entry (at entry offset + 14)
 
-#### Configuration Defaults
-- **Output Config 1 (Stereo 3-way)**:
-    - Outputs 1, 2, 3: "Low", "Mid", "High" (Left)
-    - Outputs 4, 5, 6: "Low", "Mid", "High" (Right)
-    - **Correction**: Previous assumption of "Full-range" default was incorrect for this mode. Parser must use these defaults when explicit names are not present in the delta block.
+#### Delta Data Format (Skip/Count RLE)
+
+The delta data uses run-length encoding with skip/count pairs:
+
+```
+[skip_lo, skip_hi, count_lo, count_hi, value_1_lo, value_1_hi, ..., value_N_lo, value_N_hi]
+```
+
+**Fields:**
+- **skip**: Number of words to skip (16-bit little-endian)
+- **count**: Number of consecutive words to write (16-bit little-endian)
+- **values**: `count` × 16-bit word values to write
+
+**Terminator:** skip=0, count=0 ends the delta block.
+
+#### Critical: Word Index Offset (+10 bytes)
+
+Delta word indices are relative to **byte 10** of the preset (after 8-byte name + 2-byte padding), NOT byte 0.
+
+```
+Preset 1 Structure:
+├── Bytes 0-7:   Preset Name (8 bytes ASCII)
+├── Bytes 8-9:   Padding (0x00 0x00)
+├── Byte 10:     outputConfig starts here ← Delta word 0
+├── Byte 12:     inputSumType ← Delta word 1
+└── ...etc
+```
+
+**Correct byte offset formula:**
+```
+byteOffset = PRESET_1_OFFSET + 10 + (wordIndex × 2)
+```
+
+#### Delta Application Algorithm
+
+```typescript
+// 1. Start with Preset 1 data as template
+const buffer = preset1Data.slice();
+
+// 2. Apply each delta block
+let wordIndex = 0;
+while (deltaPtr < deltaEnd) {
+  const skip = readU16LE(data, deltaPtr);
+  const count = readU16LE(data, deltaPtr + 2);
+  deltaPtr += 4;
+  
+  if (skip === 0 && count === 0) break; // Terminator
+  
+  wordIndex += skip;
+  
+  for (let i = 0; i < count; i++) {
+    const value = readU16LE(data, deltaPtr);
+    deltaPtr += 2;
+    
+    // Apply at byte offset +10 (after name + padding)
+    const byteOffset = 10 + wordIndex * 2;
+    buffer[byteOffset] = value & 0xFF;
+    buffer[byteOffset + 1] = (value >> 8) & 0xFF;
+    wordIndex++;
+  }
+}
+```
+
+#### Example: MONO Preset Delta
+
+The MONO preset (Slot 21) changes outputConfig from 1 (lmhlmh) to 0 (mono):
+
+```
+Delta data: 00 00 01 00 00 00 03 00 03 00 00 00 ...
+Parsed:
+  skip=0, count=1, value=0  → word 0 = 0 (outputConfig = mono)
+  skip=3, count=3, values=[0,0,0] → words 4-6 updated
+  ...
+```
+
+**Verified Results:**
+- Preset 0 (2*3WAY): outputConfig = lmhlmh ✓
+- Preset 20 (MONO): outputConfig = mono ✓  
+- Preset 36 (2*3WAY locked): outputConfig = lmhlmh ✓
+- Preset 56 (MONO locked): outputConfig = mono ✓
 
 ---
 
 
-### 9. Compact Preset Delta Format (Verified 2026-01-01)
 
-Live device testing with Slot 25 confirmed the compact preset delta format uses **variable-length encoding**.
-
-#### Test Methodology
-
-1. **Store MONO preset to Slot 25** via device front panel
-2. **Dump baseline** - full memory pages to `slot25_baseline.dcx`
-3. **Make single parameter change** on device (e.g., HP freq 21Hz → 22Hz)
-4. **Dump changed state** to `slot25_changed.dcx`
-5. **Binary diff** to find exact byte offset
-
-#### Key Finding: Variable-Length Delta Encoding
-
-The compact format stores **only modified parameters** relative to factory defaults.
-
-**Storage Behavior:**
-| Scenario | Storage | Explanation |
-|----------|---------|-------------|
-| Store factory preset (no changes) | 14-byte entry only | `ptr` is small (≤14), meaning "use factory" |
-| First modification | Entry + delta block | Delta block created with changed values |
-| Additional modifications | Delta block grows | Each param adds ~4-14 bytes |
-
-**Why payload barely changes when storing factory preset:**
-- Factory presets are stored in **ROM at 0x70000+**
-- When ptr ≤ ENTRY_SIZE (14), the device uses ROM defaults
-- No delta data needs to be stored
-
-#### Delta Block Structure (Confirmed via Slot 25)
-
-```
-Offset  Value   Meaning
-------  -----   -------
-+0      255     Block marker (0xFF)
-+2        1     Output number (Output 1)
-+4      160     Gain value (+1dB, where 150=0dB)
-+6       61     Param offset in factory preset data
-+8        6     Delay param ID?
-+10       1     Delay value (1ms)
-+12       0     Padding
-+14       8     HP filter (lr24)
-+16       4     HP freq index (22Hz)
-+18       6     LP filter (but24)
-+20      64     LP freq index (~700Hz)
-```
-
-#### Factory Preset Location (Discovered in ROM)
-
-Factory presets are at **0x70000+** in the 512KB ROM dump:
-- MONO at 0x7184a
-- 3WAY at 0x71f3a
-- LH LH LH at 0x71a96
-- 5.1FRONT at 0x71164
-
-They use the **same 14-byte entry format** (ptr, slot, name, terminator).
-
-#### Crossover Parameters (First in Block)
-
-When crossovers are the **first modified parameters**, they appear at word offset 0 from the data block start:
-
-| Word Offset | Parameter | Example Values |
-|-------------|-----------|----------------|
-| +0 | HP Filter Type | 8 = lr24 |
-| +1 | HP Frequency Index | 4 = 22Hz (index into FREQ_TABLE) |
-| +2 | LP Filter Type | 6 = but24 |
-| +3 | LP Frequency Index | 64 = ~700Hz |
-
-**Test Results:**
-- Changing HP filter type (but24 → lr24): **1 word changed** at offset 0
-- Changing HP frequency (21Hz → 22Hz): **1 word changed** at offset 1
-
-> ⚠️ These offsets are only valid when crossover is the FIRST modification. Adding other parameters (Gain, Delay) inserts data before crossover, shifting the offsets.
-
-#### Entry Size Pattern
-
-Each parameter modification adds ~14 bytes to the data block. This matches the **directory entry size** (14 bytes), suggesting parameters may use a similar `[id, value, metadata]` structure.
-
-#### Filter Type Encoding (Verified)
-
-| Value | Filter |
-|-------|--------|
-| 0 | off |
-| 1 | but6 |
-| 2 | but12 |
-| 3 | bes12 |
-| 4 | lr12 |
-| 5 | but18 |
-| 6 | but24 |
-| 7 | bes24 |
-| 8 | lr24 |
-| 9 | but48 |
-| 10 | lr48 |
-
-#### Frequency Index Table (Partial)
-
-| Index | Frequency |
-|-------|-----------|
-| 0 | 20 Hz |
-| 1 | 21 Hz |
-| 2 | 22 Hz |
-| 3 | 23 Hz |
-| 4 | 24 Hz |
-| ... | ... |
-| 64 | ~700 Hz |
-| 124 | 20000 Hz |
-
-See `dcx-parser/dcx_parser.py` for the complete frequency table (125 entries).
-
-#### Parser Strategy for Variable-Length Format
-
-To parse compact presets correctly:
-
-1. **Find preset entry** using the 14-byte directory structure
-2. **Follow ptr** to get data block start
-3. **Parse entries** until end of block (entry count may be stored in header)
-4. **Apply deltas** to factory preset defaults
-
-The current parser (`dcx_parser.py`) handles the simple case where crossovers are first. Full parsing of all parameters requires decoding the entry format.
 
 ## Implementation Recommendations
 1.  **Device ID**: Use `00` for unicast or `20` for broadcast if you want to reach any connected unit.
@@ -659,7 +651,7 @@ Verified through hex dump analysis of `0x4210b0` logic on `eq.dcx`:
 
 #### EQ Band Data Structure (Verified 2026-01-03)
 - **Stride**: 10 Bytes (5 Words)
-- **Field Order**: `[Freq, Q, Gain, Type, Slope]`
+- **Field Order**: `[Freq, Q, Gain, Type, Slope]` (Verified)
 - **Word Size**: 16-bit Little Endian
 
 | Word Offset | Parameter | Encoding | Notes |
@@ -670,15 +662,35 @@ Verified through hex dump analysis of `0x4210b0` logic on `eq.dcx`:
 | 3 | Filter Type | Index | `0`=Off, `1`=Parametric, `2`=Low Shelf, `3`=High Shelf |
 | 4 | Slope | Index | `0`=6dB, `1`=12dB |
 
-#### Channel EQ Structure (Verified 2026-01-03)
-Both Input and Output channels share the same internal structure:
-- **4-word prefix** at section start
-- **6-word Dynamic EQ** (threshold, switch, freq, Q, gain, filter, slope) - always stored regardless of enabled/disabled
-- **45-word Regular EQ** (9 bands × 5 words) starting at section offset +10
-- **Trailing data** (gain, mute, delay, etc.)
+#### Channel EQ Structure (Verified 2026-01-07)
+**Unified Structure Finding**: 
+Both Input and Output channels share an idential **124-byte** stride structure.
+- **Prefix**: 34 bytes (Contains Basic Params + Dynamic EQ)
+- **EQ Bands**: 9 Bands × 10 bytes = 90 bytes.
+- **Total**: 34 + 90 = 124 bytes.
 
-**Input Channels**: 62 words total, starting at word 21
-**Output Channels**: 74 words total (extra crossover data), starting at word 269
+**Dynamic EQ Mapping (Verified)**:
+Located within the 34-byte prefix (Offsets relative to channel start):
+- **+14**: Attack
+- **+16**: Release
+- **+18**: Ratio
+- **+20**: Threshold
+- **+22**: On/Off Flag (boolean)
+- **+24**: Q-Factor (Inferred)
+- **+26**: Frequency (Index)
+- **+28**: Gain (Raw, 150=0dB)
+- **+30**: Type
+- **+32**: Shelving
+
+**Input Channels**:
+- Input A: Offset 121
+- Input B: Offset 245
+- Input C: Offset 369
+- Sum: Offset 493
+
+**Output Channels**:
+- Same 124-byte structure + Extra Params block follows.
+
 
 ---
 
@@ -726,5 +738,5 @@ Within channel sections, the following word offsets relative to section start ar
 - **Input sections (62 words each)**: Words 0, 1 of 4-word prefix
 - **Output sections (74 words each)**: Words 0, 1 of 4-word prefix; word 6 in settings block; words 11, 17, 18 in trailing data
 
-These unmapped positions contain values that vary by preset type but their exact function is not confirmed. The parser treats them as opaque data preserved during delta encoding
+These unmapped positions contain values that vary by preset type but their exact function is not confirmed. The parser treats them as opaque data preserved during delta encoding.
 

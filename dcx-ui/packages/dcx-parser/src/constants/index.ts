@@ -1,5 +1,4 @@
 import * as protocol from './protocol.js';
-
 import * as logFrequencyScale from './enums/log-frequency-scale.js';
 import * as logZeroTo4000Ms from './enums/log-zero-to-4000-ms.js';
 import * as attackTimes from './enums/attack-times.js';

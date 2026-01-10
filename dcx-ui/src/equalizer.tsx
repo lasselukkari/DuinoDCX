@@ -1,16 +1,16 @@
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-import pc from './parameters/index.tsx';
+import { eq } from './parameters/index.tsx';
 
 type EqualizerProps = {
   readonly equalizerType: string;
-  readonly equalizerFrequency: number | string;
-  readonly equalizerQ: number | string;
+  readonly equalizerFrequency: string;
+  readonly equalizerQ: string;
   readonly equalizerShelving: string;
-  readonly equalizerGain: number | string;
+  readonly equalizerGain: number;
   readonly id: string;
-  readonly group: string;
+  readonly group: 'inputs' | 'outputs';
   readonly channelId: string;
 };
 
@@ -24,56 +24,58 @@ function Equalizer({
   group,
   channelId,
 }: EqualizerProps) {
+  const band = Number(id);
+
   return (
     <Card>
       <Card.Header>{`Equalizer ${id}`}</Card.Header>
       <Card.Body>
         <Row>
           <Col xs={12} sm={4}>
-            <pc.EqualizerType
+            <eq.Type
               hasLabel
               value={equalizerType}
-              eq={id}
               group={group}
               channelId={channelId}
+              band={band}
             />
           </Col>
           <Col xs={12} sm={4}>
-            <pc.EqualizerFrequency
+            <eq.Frequency
               hasLabel
               value={equalizerFrequency}
-              eq={id}
               group={group}
               channelId={channelId}
+              band={band}
             />
           </Col>
           <Col xs={12} sm={4}>
             {equalizerType === 'Bandpass' && (
-              <pc.EqualizerQ
+              <eq.Q
                 hasLabel
                 value={equalizerQ}
-                eq={id}
                 group={group}
                 channelId={channelId}
+                band={band}
               />
             )}
             {equalizerType !== 'Bandpass' && (
-              <pc.EqualizerShelving
+              <eq.Shelving
                 hasLabel
                 value={equalizerShelving}
-                eq={id}
                 group={group}
                 channelId={channelId}
+                band={band}
               />
             )}
           </Col>
         </Row>
-        <pc.EqualizerGain
+        <eq.Gain
           hasLabel
           value={equalizerGain}
-          eq={id}
           group={group}
           channelId={channelId}
+          band={band}
         />
       </Card.Body>
     </Card>

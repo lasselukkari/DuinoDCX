@@ -1,1 +1,1 @@
-export const STEREO_LINK_MODES = ['Off', 'A+B', 'A+B+C', 'A+B+C+Sum'];
+export const stereoLinkModes = ['Off', 'A+B', 'A+B+C', 'A+B+C+Sum'];

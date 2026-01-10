@@ -1,11 +1,11 @@
-import { describe, it, expect } from 'vitest';
+import {describe, it, expect} from 'vitest';
 import {
   getParameterByByte,
   getParameterByDirect,
   convertValue,
   applyToState,
 } from './param-lookup.js';
-import { createEmptyState } from './helpers.js';
+import {createEmptyState} from './helpers.js';
 
 describe('param-lookup', () => {
   describe('getParameterByByte', () => {

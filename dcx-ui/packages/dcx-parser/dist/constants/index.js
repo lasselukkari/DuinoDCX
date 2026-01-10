@@ -20,6 +20,7 @@ import * as outputs from './enums/outputs.js';
 import * as channels from './enums/channels.js';
 import * as channelLevels from './enums/channel-levels.js';
 import * as delayUnits from './enums/delay-units.js';
+
 export * from './protocol.js';
 export * from './enums/log-frequency-scale.js';
 export * from './enums/log-zero-to-4000-ms.js';
@@ -43,27 +44,27 @@ export * from './enums/channels.js';
 export * from './enums/channel-levels.js';
 export * from './enums/delay-units.js';
 export default {
-    ...protocol,
-    ...logFrequencyScale,
-    ...logZeroTo4000Ms,
-    ...attackTimes,
-    ...outputSources,
-    ...inputSumTypes,
-    ...inputAbSources,
-    ...outputConfigs,
-    ...stereoLinkModes,
-    ...equalizerRatios,
-    ...equalizerQValues,
-    ...equalizerTypes,
-    ...equalizerShelvingSlopes,
-    ...crossoverFilters,
-    ...outputNames,
-    ...inputCGains,
-    ...polarities,
-    ...inputs,
-    ...outputs,
-    ...channels,
-    ...channelLevels,
-    ...delayUnits,
+  ...protocol,
+  ...logFrequencyScale,
+  ...logZeroTo4000Ms,
+  ...attackTimes,
+  ...outputSources,
+  ...inputSumTypes,
+  ...inputAbSources,
+  ...outputConfigs,
+  ...stereoLinkModes,
+  ...equalizerRatios,
+  ...equalizerQValues,
+  ...equalizerTypes,
+  ...equalizerShelvingSlopes,
+  ...crossoverFilters,
+  ...outputNames,
+  ...inputCGains,
+  ...polarities,
+  ...inputs,
+  ...outputs,
+  ...channels,
+  ...channelLevels,
+  ...delayUnits,
 };
-//# sourceMappingURL=index.js.map
+// # sourceMappingURL=index.js.map

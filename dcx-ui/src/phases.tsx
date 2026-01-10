@@ -3,23 +3,21 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import isEqual from 'lodash.isequal';
 import Phase from './phase.tsx';
-import {type Channel} from './dcx2496/parser.ts';
+import { type OutputChannel } from 'dcx-parser';
 
 type Props = {
-  readonly channels: Record<string, Channel>;
-  readonly group: string;
+  readonly channels: Record<string, OutputChannel>;
 };
 
-function Phases({channels, group}: Props) {
+function Phases({ channels }: Props) {
   return (
     <Row className="show-grid">
       {Object.keys(channels).map((channelId) => {
-        const {channelName, polarity, phase} = channels[channelId];
+        const { channelName, polarity, phase } = channels[channelId];
         return (
           <Col key={channelId} xs={12} md={6}>
             <Phase
               key={channelId}
-              group={group}
               channelId={channelId}
               channelName={channelName}
               polarity={polarity ?? '0'}

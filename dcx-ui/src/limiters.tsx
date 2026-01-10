@@ -3,25 +3,23 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import isEqual from 'lodash.isequal';
 import Limiter from './limiter.tsx';
-import {type Channel} from './dcx2496/parser.ts';
+import { type OutputChannel } from 'dcx-parser';
 
 type Props = {
-  readonly channels: Record<string, Channel>;
-  readonly group: string;
+  readonly channels: Record<string, OutputChannel>;
 };
 
-function Limiters({channels, group}: Props) {
+function Limiters({ channels }: Props) {
   return (
     <Row className="show-grid">
       {Object.keys(channels).map((channelId) => {
-        const {channelName, isLimiterOn, limiterThreshold, limiterRelease} =
+        const { channelName, isLimiterOn, limiterThreshold, limiterRelease } =
           channels[channelId];
         return (
           <Col key={channelId} xs={12} sm={12} md={6}>
             <Limiter
               key={channelId}
               channelId={channelId}
-              group={group}
               channelName={channelName}
               isLimiterOn={Boolean(isLimiterOn)}
               limiterThreshold={limiterThreshold ?? 0}

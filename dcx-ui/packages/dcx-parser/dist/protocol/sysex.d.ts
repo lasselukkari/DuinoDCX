@@ -12,51 +12,61 @@
  * - Parameter value mapping (parameter-mappings.ts)
  */
 /** Result of parsing a SysEx message */
-export type ParsedMessage = {
-    type: 'ping';
-    deviceId: number;
-} | {
-    type: 'search';
-    deviceId: number;
-    version: number;
-    name: string;
-} | {
-    type: 'pageDump';
-    deviceId: number;
-    page: number;
-    data: Uint8Array;
-} | {
-    type: 'editBuffer';
-    deviceId: number;
-    part: number;
-    data: Uint8Array;
-} | {
-    type: 'ack';
-    deviceId: number;
-    payload: Uint8Array;
-} | {
-    type: 'pageRequest';
-    deviceId: number;
-    page: number;
-    requestType: number;
-} | {
-    type: 'direct';
-    deviceId: number;
-    parameters: Array<{
+export type ParsedMessage =
+  | {
+      type: 'ping';
+      deviceId: number;
+    }
+  | {
+      type: 'search';
+      deviceId: number;
+      version: number;
+      name: string;
+    }
+  | {
+      type: 'pageDump';
+      deviceId: number;
+      page: number;
+      data: Uint8Array;
+    }
+  | {
+      type: 'editBuffer';
+      deviceId: number;
+      part: number;
+      data: Uint8Array;
+    }
+  | {
+      type: 'ack';
+      deviceId: number;
+      payload: Uint8Array;
+    }
+  | {
+      type: 'pageRequest';
+      deviceId: number;
+      page: number;
+      requestType: number;
+    }
+  | {
+      type: 'direct';
+      deviceId: number;
+      parameters: Array<{
         channel: number;
         param: number;
         value: number;
-    }>;
-} | {
-    type: 'unknown';
-    deviceId: number;
-    command: number;
-    data: Uint8Array;
-};
+      }>;
+    }
+  | {
+      type: 'unknown';
+      deviceId: number;
+      command: number;
+      data: Uint8Array;
+    };
 /**
  * Parse a complete SysEx message from the device.
  */
-export declare function parseMessage(message: Uint8Array): ParsedMessage | undefined;
+export declare function parseMessage(
+  message: Uint8Array,
+): ParsedMessage | undefined;
 /**
  * Check if a message is a valid SysEx message.
  */
@@ -66,7 +76,7 @@ export declare function isValidSysex(message: Uint8Array): boolean;
  * Useful for parsing data from a serial port buffer.
  */
 export declare function extractSysexMessages(buffer: Uint8Array): {
-    messages: Uint8Array[];
-    remaining: Uint8Array;
+  messages: Uint8Array[];
+  remaining: Uint8Array;
 };
-//# sourceMappingURL=sysex.d.ts.map
+// # sourceMappingURL=sysex.d.ts.map

@@ -38,31 +38,31 @@ export declare const DECODED_PAGE_SIZE = 875;
 export declare const MAX_PAGES = 12;
 /** Parsed preset slot information */
 export type PresetSlot = {
-    /** Slot number (1-60) */
-    slot: number;
-    /** Preset name (8 chars, trimmed) */
-    name: string;
-    /** Whether slot is empty */
-    isEmpty: boolean;
-    /** Whether slot is locked */
-    isLocked: boolean;
-    /** Raw data offset in file */
-    dataOffset: number;
-    /** Raw data length */
-    dataLength: number;
+  /** Slot number (1-60) */
+  slot: number;
+  /** Preset name (8 chars, trimmed) */
+  name: string;
+  /** Whether slot is empty */
+  isEmpty: boolean;
+  /** Whether slot is locked */
+  isLocked: boolean;
+  /** Raw data offset in file */
+  dataOffset: number;
+  /** Raw data length */
+  dataLength: number;
 };
 /** Parsed DCX file */
 export type DcxFile = {
-    /** File version */
-    version: number;
-    /** Data size (from header) */
-    dataSize: number;
-    /** Lock flags for all 60 slots */
-    lockFlags: boolean[];
-    /** Parsed preset slots */
-    slots: PresetSlot[];
-    /** Raw file data */
-    rawData: Uint8Array;
+  /** File version */
+  version: number;
+  /** Data size (from header) */
+  dataSize: number;
+  /** Lock flags for all 60 slots */
+  lockFlags: boolean[];
+  /** Parsed preset slots */
+  slots: PresetSlot[];
+  /** Raw file data */
+  rawData: Uint8Array;
 };
 /**
  * Parse a .dcx file.
@@ -72,17 +72,22 @@ export declare function parseDcxFile(data: Uint8Array): DcxFile;
  * Assemble decoded page data into a DCX file.
  * This is used when downloading presets from the device.
  */
-export declare function assemblePagesIntoDcxFile(pages: Array<{
+export declare function assemblePagesIntoDcxFile(
+  pages: Array<{
     page: number;
     data: Uint8Array;
-}>): Uint8Array;
+  }>,
+): Uint8Array;
 /**
  * Split a DCX file into pages for upload.
  * Returns data suitable for building restore packets.
  */
-export declare function splitDcxFileIntoPages(dcxData: Uint8Array, pageSize?: number): Array<{
-    page: number;
-    data: Uint8Array;
+export declare function splitDcxFileIntoPages(
+  dcxData: Uint8Array,
+  pageSize?: number,
+): Array<{
+  page: number;
+  data: Uint8Array;
 }>;
 /**
  * Create the restore header data.
@@ -90,7 +95,10 @@ export declare function splitDcxFileIntoPages(dcxData: Uint8Array, pageSize?: nu
  *
  * Format: [dataSize (4 bytes LE), 0, 0, 0] + first ~90 bytes of DCX data
  */
-export declare function createRestoreHeader(dcxData: Uint8Array, headerDataSize?: number): Uint8Array;
+export declare function createRestoreHeader(
+  dcxData: Uint8Array,
+  headerDataSize?: number,
+): Uint8Array;
 /**
  * Get all preset names from a DCX file.
  */
@@ -99,4 +107,4 @@ export declare function getPresetNames(dcxFile: DcxFile): string[];
  * Check if a DCX file is valid.
  */
 export declare function isValidDcxFile(data: Uint8Array): boolean;
-//# sourceMappingURL=dcx-file.d.ts.map
+// # sourceMappingURL=dcx-file.d.ts.map

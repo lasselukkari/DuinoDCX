@@ -1,1 +1,1 @@
-export const POLARITIES = ['Normal', 'Inverted'];
+export const polarities = ['Normal', 'Inverted'];

@@ -1,61 +1,31 @@
-/**
- * Parameter lookup tables for DCX2496.
- *
- * This module provides O(1) lookups for parsing decoded data.
- * The same lookup tables work for:
- * - Edit buffer (two parts)
- * - Preset data (continuous buffer mapped to parts)
- * - Direct commands (channel/param → property)
- *
- * Key design decisions:
- * - Pre-computed Map<string, ParameterDefinition> keyed by "part:index" for byte lookups
- * - Pre-computed Map<string, ParameterDefinition> keyed by "channel:param" for direct commands
- * - All lookups are O(1)
- */
-
 import {
-  setupParameters,
-  channelParameters,
-  outputOnlyParameters,
-  equalizerParameters,
-} from './parameter-mappings.js';
+  setupCommands,
+  inputOutputCommands,
+  outputCommands,
+  equalizerCommands,
+  type Command,
+} from '../commands/commands.js';
 
 // ============================================================================
 // Types
 // ============================================================================
 
-/** Parameter definition for lookups */
-export type ParameterDefinition = {
-  /** Property name (camelCase) */
+/** Parameter definition for lookups (Matched to Command + Target info) */
+export type ParameterDefinition = Command & {
+  /** Target Property Key (camelCase) */
   key: string;
-  /** Value type */
-  type: 'bool' | 'enum' | 'number';
-  /** Enum values if type is 'enum' */
-  values?: readonly string[];
-  /** For numbers: minimum value */
-  min?: number;
-  /** For numbers: step size */
-  step?: number;
-  /** High byte index for 16-bit values (absolute index) */
-  highByteIndex?: number;
-  /** Word offset in preset data (16-bit words) */
-  wordOffset?: number;
-  /** High word offset for 32-bit parameters in preset data */
-  wordHighOffset?: number;
   /** Target location in state */
   target:
-  | { kind: 'setup' }
-  | { kind: 'channel'; group: 'inputs' | 'outputs'; id: string }
-  | {
-    kind: 'equalizer';
-    group: 'inputs' | 'outputs';
-    channelId: string;
-    band: number;
-  };
+    | {kind: 'setup'}
+    | {kind: 'channel'; group: 'inputs' | 'outputs'; id: string}
+    | {
+        kind: 'equalizer';
+        group: 'inputs' | 'outputs';
+        channelId: string;
+        band: number;
+        channelIdProp?: string;
+      };
 };
-
-/** Lookup key for byte position (absolute index) */
-export type ByteKey = number;
 
 /** Lookup key for direct command */
 export type DirectKey = `${number}:${number}`; // "channel:param"
@@ -66,7 +36,6 @@ export type DirectKey = `${number}:${number}`; // "channel:param"
 
 const INPUT_IDS = ['A', 'B', 'C', 'Sum'] as const;
 const OUTPUT_IDS = ['1', '2', '3', '4', '5', '6'] as const;
-const CHANNEL_IDS = [...INPUT_IDS, ...OUTPUT_IDS] as const;
 const EQUALIZER_BANDS = 9;
 
 // ============================================================================
@@ -75,16 +44,10 @@ const EQUALIZER_BANDS = 9;
 
 function toCamelCase(name: string): string {
   return name
-    .split(' ')
-    .map((word, i) =>
-      i === 0
-        ? word.toLowerCase()
-        : word.charAt(0).toUpperCase() + word.slice(1).toLowerCase(),
-    )
-    .join('');
+    .replaceAll(/\s(.)/g, (match) => match.toUpperCase())
+    .replaceAll(/\s/g, '')
+    .replace(/^(.)/, (match) => match.toLowerCase());
 }
-
-
 
 function makeDirectKey(channel: number, parameter: number): DirectKey {
   return `${channel}:${parameter}`;
@@ -94,286 +57,91 @@ function makeDirectKey(channel: number, parameter: number): DirectKey {
 // Build Lookup Tables
 // ============================================================================
 
-function buildByteLookup(): Map<ByteKey, ParameterDefinition> {
-  const lookup = new Map<ByteKey, ParameterDefinition>();
-
-  // Setup parameters
-  for (const parameter of setupParameters) {
-    const def: ParameterDefinition = {
-      key: toCamelCase(parameter.name),
-      type: parameter.type,
-      values: parameter.values,
-      min: parameter.min,
-      step: parameter.step,
-      highByteIndex: parameter.highByteIndex,
-      target: { kind: 'setup' },
-    };
-    lookup.set(parameter.index, def);
-  }
-
-  // Channel parameters (inputs + outputs)
-  for (const parameter of channelParameters) {
-    for (let i = 0; i < parameter.channels.length; i++) {
-      const loc = parameter.channels[i];
-      if (!loc) continue;
-
-      const isInput = i < 4;
-      const channelId = CHANNEL_IDS[i];
-
-      const def: ParameterDefinition = {
-        key: toCamelCase(parameter.name),
-        type: parameter.type,
-        values: parameter.values,
-        min: parameter.min,
-        step: parameter.step,
-        highByteIndex: loc.highByteIndex,
-        target: {
-          kind: 'channel',
-          group: isInput ? 'inputs' : 'outputs',
-          id: channelId,
-        },
-      };
-      lookup.set(loc.index, def);
-    }
-  }
-
-  // Output-only parameters
-  for (const parameter of outputOnlyParameters) {
-    for (let i = 0; i < parameter.outputs.length; i++) {
-      const loc = parameter.outputs[i];
-      if (!loc) continue;
-
-      const def: ParameterDefinition = {
-        key: toCamelCase(parameter.name),
-        type: parameter.type,
-        values: parameter.values,
-        min: parameter.min,
-        step: parameter.step,
-        highByteIndex: loc.highByteIndex,
-        target: {
-          kind: 'channel',
-          group: 'outputs',
-          id: OUTPUT_IDS[i],
-        },
-      };
-      lookup.set(loc.index, def);
-    }
-  }
-
-  // Equalizer parameters
-  for (const parameter of equalizerParameters) {
-    for (let i = 0; i < parameter.bands.length; i++) {
-      const loc = parameter.bands[i];
-      if (!loc) continue;
-
-      const channelIndex = Math.floor(i / EQUALIZER_BANDS);
-      const bandIndex = i % EQUALIZER_BANDS;
-      const isInput = channelIndex < 4;
-
-      const def: ParameterDefinition = {
-        key: toCamelCase(parameter.name),
-        type: parameter.type,
-        values: parameter.values,
-        min: parameter.min,
-        step: parameter.step,
-        highByteIndex: loc.highByteIndex,
-        target: {
-          kind: 'equalizer',
-          group: isInput ? 'inputs' : 'outputs',
-          id: CHANNEL_IDS[channelIndex],
-          band: bandIndex + 1,
-        } as any,
-      };
-      // Temporary hack to avoid fixing all types deeply right now
-      (def.target as any).channelId = (def.target as any).id;
-      lookup.set(loc.index, def);
-    }
-  }
-
-  return lookup;
-}
-
-function buildWordLookup(): Map<number, ParameterDefinition> {
-  const lookup = new Map<number, ParameterDefinition>();
-
-  // Use the same logic as buildByteLookup but map by wordOffset
-  // Setup parameters
-  for (const parameter of setupParameters) {
-    if (parameter.wordOffset !== undefined) {
-      const def: ParameterDefinition = {
-        key: toCamelCase(parameter.name),
-        type: parameter.type,
-        values: parameter.values,
-        min: parameter.min,
-        step: parameter.step,
-        highByteIndex: parameter.highByteIndex,
-        wordOffset: parameter.wordOffset,
-        wordHighOffset: parameter.wordHighOffset,
-        target: { kind: 'setup' },
-      };
-      lookup.set(parameter.wordOffset, def);
-    }
-  }
-
-  // Channel parameters (inputs + outputs)
-  for (const parameter of channelParameters) {
-    for (let i = 0; i < parameter.channels.length; i++) {
-      const loc = parameter.channels[i];
-      if (!loc || loc.wordOffset === undefined) continue;
-
-      const isInput = i < 4;
-      const channelId = CHANNEL_IDS[i];
-
-      const def: ParameterDefinition = {
-        key: toCamelCase(parameter.name),
-        type: parameter.type,
-        values: parameter.values,
-        min: parameter.min,
-        step: parameter.step,
-        highByteIndex: loc.highByteIndex,
-        wordOffset: loc.wordOffset,
-        wordHighOffset: loc.wordHighOffset,
-        target: {
-          kind: 'channel',
-          group: isInput ? 'inputs' : 'outputs',
-          id: channelId,
-        },
-      };
-      lookup.set(loc.wordOffset, def);
-    }
-  }
-
-  // Output-only parameters
-  for (const parameter of outputOnlyParameters) {
-    for (let i = 0; i < parameter.outputs.length; i++) {
-      const loc = parameter.outputs[i];
-      if (!loc || loc.wordOffset === undefined) continue;
-
-      const def: ParameterDefinition = {
-        key: toCamelCase(parameter.name),
-        type: parameter.type,
-        values: parameter.values,
-        min: parameter.min,
-        step: parameter.step,
-        highByteIndex: loc.highByteIndex,
-        wordOffset: loc.wordOffset,
-        wordHighOffset: loc.wordHighOffset,
-        target: {
-          kind: 'channel',
-          group: 'outputs',
-          id: OUTPUT_IDS[i],
-        },
-      };
-      lookup.set(loc.wordOffset, def);
-    }
-  }
-
-  // Equalizer parameters
-  for (const parameter of equalizerParameters) {
-    for (let i = 0; i < parameter.bands.length; i++) {
-      const loc = parameter.bands[i];
-      if (!loc || loc.wordOffset === undefined) continue;
-
-      const channelIndex = Math.floor(i / EQUALIZER_BANDS);
-      const bandIndex = i % EQUALIZER_BANDS;
-      const isInput = channelIndex < 4;
-
-      const def: ParameterDefinition = {
-        key: toCamelCase(parameter.name),
-        type: parameter.type,
-        values: parameter.values,
-        min: parameter.min,
-        step: parameter.step,
-        highByteIndex: loc.highByteIndex,
-        wordOffset: loc.wordOffset,
-        wordHighOffset: loc.wordHighOffset,
-        target: {
-          kind: 'equalizer',
-          group: isInput ? 'inputs' : 'outputs',
-          id: CHANNEL_IDS[channelIndex],
-          band: bandIndex + 1,
-        } as any,
-      };
-      (def.target as any).channelId = (def.target as any).id;
-      lookup.set(loc.wordOffset, def);
-    }
-  }
-
-  return lookup;
-}
-
 function buildDirectLookup(): Map<DirectKey, ParameterDefinition> {
   const lookup = new Map<DirectKey, ParameterDefinition>();
 
+  // Wire protocol channels (Standard DCX2496):
   // Channel 0 = Setup
-  // Setup params: indices 2-11 and 12-17 map to setupCommands
-  for (const [i, parameter] of setupParameters.entries()) {
-    // Setup command numbers: 2-11 for first 10, then 12-17 for rest
-    const parameterNumber = i < 10 ? i + 2 : i + 2;
+  // Channel 1-3 = Inputs (A, B, C)
+  // Channel 4 = Input Sum
+  // Channel 5-10 = Outputs (1-6)
+
+  // 1. Setup Parameters (Channel 0)
+  for (const [i, cmd] of setupCommands.entries()) {
+    // Setup params (2..16)
+    const parameterNumber = i + 2;
 
     const def: ParameterDefinition = {
-      key: toCamelCase(parameter.name),
-      type: parameter.type,
-      values: parameter.values,
-      min: parameter.min,
-      step: parameter.step,
-      target: { kind: 'setup' },
+      ...cmd,
+      key: toCamelCase(cmd.name),
+      target: {kind: 'setup'},
     };
     lookup.set(makeDirectKey(0, parameterNumber), def);
   }
 
-  // Channels 1-4 = Inputs (A, B, C, Sum)
-  // Channels 5-10 = Outputs (1-6)
+  // 2. Channel Parameters (Inputs 1-4, Outputs 5-10)
   for (let ch = 1; ch <= 10; ch++) {
-    const isInput = ch <= 4;
-    const channelId = isInput ? INPUT_IDS[ch - 1] : OUTPUT_IDS[ch - 5];
-    const group = isInput ? 'inputs' : 'outputs';
+    // Determine Group and ID based on Standard Mapping
+    let group: 'inputs' | 'outputs';
+    let channelId: string;
 
-    // Channel params: 2-18
-    for (const [i, parameter] of channelParameters.entries()) {
+    if (ch <= 3) {
+      // 1..3 -> A..C
+      group = 'inputs';
+      channelId = INPUT_IDS[ch - 1]; // Index 0..2 -> A..C
+    } else if (ch === 4) {
+      // 4 -> Sum
+      group = 'inputs';
+      channelId = 'Sum';
+    } else {
+      // 5..10 -> Out 1..6
+      group = 'outputs';
+      channelId = OUTPUT_IDS[ch - 5]; // Index 0..5 -> 1..6
+    }
+
+    // Channel params: 2-18 (inputOutputCommands)
+    for (const [i, cmd] of inputOutputCommands.entries()) {
       const parameterNumber = i + 2;
 
       const def: ParameterDefinition = {
-        key: toCamelCase(parameter.name),
-        type: parameter.type,
-        values: parameter.values,
-        min: parameter.min,
-        step: parameter.step,
-        target: { kind: 'channel', group, id: channelId },
+        ...cmd,
+        key: toCamelCase(cmd.name),
+        target: {kind: 'channel', group, id: channelId},
       };
       lookup.set(makeDirectKey(ch, parameterNumber), def);
     }
 
-    // Equalizer params: 19-63 (9 bands × 5 params)
+    // 3. EQ Parameters (Same channels)
+    // Equalizer params: 19-63 (9 bands × equalizerCommands)
+    // equalizerCommands should have 5 items (Freq, Q, Gain, Type, Shelving)
     for (let band = 0; band < EQUALIZER_BANDS; band++) {
-      for (const [i, parameter] of equalizerParameters.entries()) {
+      for (const [i, cmd] of equalizerCommands.entries()) {
         const parameterNumber = 19 + band * 5 + i;
 
         const def: ParameterDefinition = {
-          key: toCamelCase(parameter.name),
-          type: parameter.type,
-          values: parameter.values,
-          min: parameter.min,
-          step: parameter.step,
-          target: { kind: 'equalizer', group, id: channelId, band: band + 1 } as any,
+          ...cmd,
+          key: toCamelCase(cmd.name),
+          target: {
+            kind: 'equalizer',
+            group,
+            channelId,
+            band: band + 1,
+            channelIdProp: channelId,
+          },
         };
-        (def.target as any).channelId = (def.target as any).id;
         lookup.set(makeDirectKey(ch, parameterNumber), def);
       }
     }
 
     // Output-only params: 64+
-    if (!isInput) {
-      for (const [i, parameter] of outputOnlyParameters.entries()) {
+    if (group === 'outputs') {
+      for (const [i, cmd] of outputCommands.entries()) {
         const parameterNumber = 64 + i;
 
         const def: ParameterDefinition = {
-          key: toCamelCase(parameter.name),
-          type: parameter.type,
-          values: parameter.values,
-          min: parameter.min,
-          step: parameter.step,
-          target: { kind: 'channel', group: 'outputs', id: channelId },
+          ...cmd,
+          key: toCamelCase(cmd.name),
+          target: {kind: 'channel', group: 'outputs', id: channelId},
         };
         lookup.set(makeDirectKey(ch, parameterNumber), def);
       }
@@ -387,14 +155,6 @@ function buildDirectLookup(): Map<DirectKey, ParameterDefinition> {
 // Pre-built Lookup Tables (singleton)
 // ============================================================================
 
-/** O(1) lookup by (part, byteIndex) for parsing dumps */
-export const byteLookup = buildByteLookup();
-
-/**
- * Maps word index in preset data to parameter definition.
- */
-export const wordLookup = buildWordLookup();
-
 /** O(1) lookup by (channel, param) for direct commands */
 export const directLookup = buildDirectLookup();
 
@@ -402,18 +162,6 @@ export const directLookup = buildDirectLookup();
 // Lookup Functions
 // ============================================================================
 
-/**
- * Get parameter definition by byte position (absolute index in combined buffer).
- */
-export function getParameterByByte(
-  index: number,
-): ParameterDefinition | undefined {
-  return byteLookup.get(index);
-}
-
-/**
- * Get parameter definition by direct command address.
- */
 export function getParameterByDirect(
   channel: number,
   parameter: number,
@@ -422,7 +170,8 @@ export function getParameterByDirect(
 }
 
 /**
- * Convert raw value to typed value based on parameter definition.
+ * Convert raw value to actual value using command definition.
+ * This is the old UI's reverseCommandData pattern.
  */
 export function convertValue(
   def: ParameterDefinition,
@@ -439,24 +188,27 @@ export function convertValue(
   if (def.type === 'number') {
     const min = def.min ?? 0;
     const step = def.step ?? 1;
-    return min + step * raw;
+    const value = min + step * raw;
+    return Math.round(value * 100) / 100;
   }
 
   return raw;
 }
 
 /**
- * Convert typed value to raw value for sending to device.
+ * Convert actual value to raw value using command definition.
+ * This is the old UI's getCommandData pattern.
  */
 export function toRawValue(
   def: ParameterDefinition,
   value: boolean | string | number,
 ): number {
   if (def.type === 'bool') {
-    return value ? 1 : 0;
+    return value === true || value === 'true' || value === 1 ? 1 : 0;
   }
 
   if (def.type === 'enum' && def.values) {
+    if (typeof value === 'number') return value;
     const index = def.values.indexOf(value as string);
     return Math.max(index, 0);
   }
@@ -478,25 +230,39 @@ export function applyToState(
   def: ParameterDefinition,
   value: boolean | string | number,
 ): void {
-  const { target, key } = def;
+  const {target, key} = def;
 
   switch (target.kind) {
     case 'setup': {
-      (state.setup as Record<string, unknown>)[key] = value;
+      if (state.setup) {
+        state.setup[key] = value;
+      }
+
       break;
     }
 
     case 'channel': {
-      (state[target.group][target.id] as Record<string, unknown>)[key] = value;
+      const group = state[target.group];
+      if (group?.[target.id]) {
+        group[target.id][key] = value;
+      }
+
       break;
     }
 
     case 'equalizer': {
-      (
-        state[target.group][(target as any).channelId].equalizers[
-        String(target.band)
-        ] as Record<string, unknown>
-      )[key] = value;
+      const group = state[target.group];
+      if (group?.[target.channelId]) {
+        const channel = group[target.channelId];
+        const eqKey = `eq${target.band}`;
+
+        if (channel[eqKey]) {
+          channel[eqKey][key] = value;
+        } else {
+          channel[eqKey] = {[key]: value};
+        }
+      }
+
       break;
     }
   }

@@ -1,1 +1,1 @@
-export const DELAY_UNITS = ['mm', 'inch'];
+export const delayUnits = ['mm', 'inch'];

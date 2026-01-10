@@ -21,6 +21,7 @@
     "@vitejs/plugin-react": "^5.1.2",
     "bootswatch": "^5.3.3",
     "compare-versions": "^6.1.0",
+    "dcx-parser": "file:../dcx-parser-new",
     "eslint-config-xo-react": "^0.29.0",
     "eslint-import-resolver-webpack": "^0.13.8",
     "eslint-plugin-babel": "^5.3.1",
@@ -42,12 +43,12 @@
     "vite": "^7.3.0",
     "vite-plugin-node-polyfills": "^0.24.0",
     "vitest": "^4.0.16",
-    "xo": "^1.2.3",
-    "dcx-parser": "file:./packages/dcx-parser"
+    "xo": "^1.2.3"
   },
   "scripts": {
     "start": "vite",
-    "build": "vite build",
+    "type-check": "tsc --noEmit",
+    "build": "npm run type-check && vite build",
     "serve": "vite preview",
     "test": "vitest",
     "lint": "xo",
@@ -64,7 +65,7 @@
       "no-alert": "off"
     }
   },
-  "proxy": "http://duinodcx.herokuapp.com",
+  "proxy": "http://localhost:3000/",
   "renovate": {
     "extends": [
       "config:base"
@@ -75,5 +76,8 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "dependencies": {
+    "@tanstack/react-router": "^1.145.7"
+  }
 }

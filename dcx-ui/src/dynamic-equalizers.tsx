@@ -3,14 +3,14 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import isEqual from 'lodash.isequal';
 import DynamicEqualizer from './dynamic-equalizer.tsx';
-import {type Channel} from './dcx2496/parser.ts';
+import { type Channel, isOutputChannel } from 'dcx-parser';
 
 type Props = {
-  readonly group: string;
+  readonly group: 'inputs' | 'outputs';
   readonly channels: Record<string, Channel>;
 };
 
-function DynamicEqualizers({channels, group}: Props) {
+function DynamicEqualizers({ channels, group }: Props) {
   return (
     <Row className="show-grid">
       {Object.keys(channels).map((channelId) => {
@@ -21,17 +21,17 @@ function DynamicEqualizers({channels, group}: Props) {
               key={channelId}
               group={group}
               channelId={channelId}
-              channelName={channel.channelName}
+              channelName={isOutputChannel(channel) ? channel.channelName : ''}
               isDynamicEqualizerOn={Boolean(channel.isDynamicEqualizerOn)}
-              dynamicEqualizerType={channel.dynamicEqualizerType!}
-              dynamicEqualizerFrequency={channel.dynamicEqualizerFrequency!}
-              dynamicEqualizerGain={channel.dynamicEqualizerGain!}
-              dynamicEqualizerQ={channel.dynamicEqualizerQ!}
-              dynamicEqualizerShelving={channel.dynamicEqualizerShelving!}
-              dynamicEqualizerAttack={channel.dynamicEqualizerAttack!}
-              dynamicEqualizerRelease={channel.dynamicEqualizerRelease!}
-              dynamicEqualizerRatio={channel.dynamicEqualizerRatio!}
-              dynamicEqualizerThreshold={channel.dynamicEqualizerThreshold!}
+              dynamicEqualizerType={channel.dynamicEqualizerType}
+              dynamicEqualizerFrequency={channel.dynamicEqualizerFrequency}
+              dynamicEqualizerGain={channel.dynamicEqualizerGain}
+              dynamicEqualizerQ={channel.dynamicEqualizerQ}
+              dynamicEqualizerShelving={channel.dynamicEqualizerShelving}
+              dynamicEqualizerAttack={channel.dynamicEqualizerAttack}
+              dynamicEqualizerRelease={channel.dynamicEqualizerRelease}
+              dynamicEqualizerRatio={channel.dynamicEqualizerRatio}
+              dynamicEqualizerThreshold={channel.dynamicEqualizerThreshold}
             />
           </Col>
         );

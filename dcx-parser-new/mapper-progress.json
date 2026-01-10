@@ -1,0 +1,1547 @@
+{
+  "currentChannelIdx": 2,
+  "currentParamId": 30,
+  "findings": [
+    {
+      "channelId": 1,
+      "paramId": 2,
+      "offsets": [
+        77,
+        117
+      ],
+      "previousValues": [
+        0,
+        150
+      ],
+      "newValues": [
+        1,
+        1
+      ],
+      "timestamp": "2026-01-05T11:05:34.856Z"
+    },
+    {
+      "channelId": 1,
+      "paramId": 3,
+      "offsets": [
+        119
+      ],
+      "previousValues": [
+        0
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:05:36.610Z"
+    },
+    {
+      "channelId": 1,
+      "paramId": 4,
+      "offsets": [
+        121
+      ],
+      "previousValues": [
+        0
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:05:38.490Z"
+    },
+    {
+      "channelId": 1,
+      "paramId": 6,
+      "offsets": [
+        125
+      ],
+      "previousValues": [
+        0
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:05:43.107Z"
+    },
+    {
+      "channelId": 1,
+      "paramId": 7,
+      "offsets": [
+        127
+      ],
+      "previousValues": [
+        0
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:05:44.858Z"
+    },
+    {
+      "channelId": 1,
+      "paramId": 9,
+      "offsets": [
+        131
+      ],
+      "previousValues": [
+        83
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:05:48.145Z"
+    },
+    {
+      "channelId": 1,
+      "paramId": 10,
+      "offsets": [
+        133
+      ],
+      "previousValues": [
+        151
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:05:49.894Z"
+    },
+    {
+      "channelId": 1,
+      "paramId": 11,
+      "offsets": [
+        135
+      ],
+      "previousValues": [
+        5
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:05:51.659Z"
+    },
+    {
+      "channelId": 1,
+      "paramId": 12,
+      "offsets": [
+        137,
+        138
+      ],
+      "previousValues": [
+        88,
+        2
+      ],
+      "newValues": [
+        1,
+        0
+      ],
+      "timestamp": "2026-01-05T11:05:53.409Z"
+    },
+    {
+      "channelId": 1,
+      "paramId": 13,
+      "offsets": [
+        139
+      ],
+      "previousValues": [
+        0
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:05:55.161Z"
+    },
+    {
+      "channelId": 1,
+      "paramId": 14,
+      "offsets": [
+        141
+      ],
+      "previousValues": [
+        180
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:05:56.916Z"
+    },
+    {
+      "channelId": 1,
+      "paramId": 15,
+      "offsets": [
+        143
+      ],
+      "previousValues": [
+        20
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:05:58.667Z"
+    },
+    {
+      "channelId": 1,
+      "paramId": 16,
+      "offsets": [
+        145
+      ],
+      "previousValues": [
+        150
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:06:00.421Z"
+    },
+    {
+      "channelId": 1,
+      "paramId": 19,
+      "offsets": [
+        151
+      ],
+      "previousValues": [
+        180
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:06:05.189Z"
+    },
+    {
+      "channelId": 1,
+      "paramId": 20,
+      "offsets": [
+        153
+      ],
+      "previousValues": [
+        20
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:06:06.953Z"
+    },
+    {
+      "channelId": 1,
+      "paramId": 21,
+      "offsets": [
+        155
+      ],
+      "previousValues": [
+        150
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:06:08.844Z"
+    },
+    {
+      "channelId": 1,
+      "paramId": 24,
+      "offsets": [
+        161
+      ],
+      "previousValues": [
+        180
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:06:13.598Z"
+    },
+    {
+      "channelId": 1,
+      "paramId": 25,
+      "offsets": [
+        163
+      ],
+      "previousValues": [
+        20
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:06:15.371Z"
+    },
+    {
+      "channelId": 1,
+      "paramId": 26,
+      "offsets": [
+        165
+      ],
+      "previousValues": [
+        150
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:06:17.127Z"
+    },
+    {
+      "channelId": 1,
+      "paramId": 29,
+      "offsets": [
+        171
+      ],
+      "previousValues": [
+        180
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:06:21.899Z"
+    },
+    {
+      "channelId": 1,
+      "paramId": 30,
+      "offsets": [
+        173
+      ],
+      "previousValues": [
+        20
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:06:23.655Z"
+    },
+    {
+      "channelId": 1,
+      "paramId": 31,
+      "offsets": [
+        175
+      ],
+      "previousValues": [
+        150
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:06:25.407Z"
+    },
+    {
+      "channelId": 1,
+      "paramId": 34,
+      "offsets": [
+        181
+      ],
+      "previousValues": [
+        180
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:06:30.158Z"
+    },
+    {
+      "channelId": 1,
+      "paramId": 35,
+      "offsets": [
+        183
+      ],
+      "previousValues": [
+        20
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:06:31.909Z"
+    },
+    {
+      "channelId": 1,
+      "paramId": 36,
+      "offsets": [
+        185
+      ],
+      "previousValues": [
+        150
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:06:33.662Z"
+    },
+    {
+      "channelId": 1,
+      "paramId": 39,
+      "offsets": [
+        191
+      ],
+      "previousValues": [
+        180
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:06:38.455Z"
+    },
+    {
+      "channelId": 4,
+      "paramId": 40,
+      "offsets": [
+        565
+      ],
+      "previousValues": [
+        20
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:07:02.464Z"
+    },
+    {
+      "channelId": 4,
+      "paramId": 41,
+      "offsets": [
+        567
+      ],
+      "previousValues": [
+        150
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:07:04.389Z"
+    },
+    {
+      "channelId": 4,
+      "paramId": 44,
+      "offsets": [
+        573
+      ],
+      "previousValues": [
+        180
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:07:09.200Z"
+    },
+    {
+      "channelId": 4,
+      "paramId": 45,
+      "offsets": [
+        575
+      ],
+      "previousValues": [
+        20
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:07:10.951Z"
+    },
+    {
+      "channelId": 4,
+      "paramId": 46,
+      "offsets": [
+        577
+      ],
+      "previousValues": [
+        150
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:07:12.703Z"
+    },
+    {
+      "channelId": 4,
+      "paramId": 49,
+      "offsets": [
+        583
+      ],
+      "previousValues": [
+        180
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:07:17.454Z"
+    },
+    {
+      "channelId": 4,
+      "paramId": 50,
+      "offsets": [
+        585
+      ],
+      "previousValues": [
+        20
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:07:19.225Z"
+    },
+    {
+      "channelId": 4,
+      "paramId": 51,
+      "offsets": [
+        587
+      ],
+      "previousValues": [
+        150
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:07:20.978Z"
+    },
+    {
+      "channelId": 4,
+      "paramId": 54,
+      "offsets": [
+        593
+      ],
+      "previousValues": [
+        180
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:07:25.738Z"
+    },
+    {
+      "channelId": 4,
+      "paramId": 55,
+      "offsets": [
+        595
+      ],
+      "previousValues": [
+        20
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:07:27.493Z"
+    },
+    {
+      "channelId": 4,
+      "paramId": 56,
+      "offsets": [
+        597
+      ],
+      "previousValues": [
+        150
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:07:29.246Z"
+    },
+    {
+      "channelId": 4,
+      "paramId": 59,
+      "offsets": [
+        603
+      ],
+      "previousValues": [
+        180
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:07:33.998Z"
+    },
+    {
+      "channelId": 4,
+      "paramId": 60,
+      "offsets": [
+        605
+      ],
+      "previousValues": [
+        20
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:07:35.758Z"
+    },
+    {
+      "channelId": 4,
+      "paramId": 61,
+      "offsets": [
+        607
+      ],
+      "previousValues": [
+        150
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:07:37.531Z"
+    },
+    {
+      "channelId": 5,
+      "paramId": 2,
+      "offsets": [
+        613
+      ],
+      "previousValues": [
+        150
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:08:00.299Z"
+    },
+    {
+      "channelId": 5,
+      "paramId": 4,
+      "offsets": [
+        617
+      ],
+      "previousValues": [
+        0
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:08:03.679Z"
+    },
+    {
+      "channelId": 5,
+      "paramId": 6,
+      "offsets": [
+        621
+      ],
+      "previousValues": [
+        0
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:08:08.298Z"
+    },
+    {
+      "channelId": 5,
+      "paramId": 7,
+      "offsets": [
+        623
+      ],
+      "previousValues": [
+        0
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:08:10.049Z"
+    },
+    {
+      "channelId": 5,
+      "paramId": 9,
+      "offsets": [
+        627
+      ],
+      "previousValues": [
+        83
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:08:13.302Z"
+    },
+    {
+      "channelId": 5,
+      "paramId": 10,
+      "offsets": [
+        629
+      ],
+      "previousValues": [
+        151
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:08:15.056Z"
+    },
+    {
+      "channelId": 5,
+      "paramId": 11,
+      "offsets": [
+        631
+      ],
+      "previousValues": [
+        5
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:08:16.810Z"
+    },
+    {
+      "channelId": 5,
+      "paramId": 12,
+      "offsets": [
+        633,
+        634
+      ],
+      "previousValues": [
+        88,
+        2
+      ],
+      "newValues": [
+        1,
+        0
+      ],
+      "timestamp": "2026-01-05T11:08:18.559Z"
+    },
+    {
+      "channelId": 5,
+      "paramId": 13,
+      "offsets": [
+        635
+      ],
+      "previousValues": [
+        0
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:08:20.315Z"
+    },
+    {
+      "channelId": 5,
+      "paramId": 14,
+      "offsets": [
+        637
+      ],
+      "previousValues": [
+        180
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:08:22.065Z"
+    },
+    {
+      "channelId": 5,
+      "paramId": 15,
+      "offsets": [
+        639
+      ],
+      "previousValues": [
+        20
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:08:23.818Z"
+    },
+    {
+      "channelId": 5,
+      "paramId": 16,
+      "offsets": [
+        641
+      ],
+      "previousValues": [
+        150
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:08:25.568Z"
+    },
+    {
+      "channelId": 5,
+      "paramId": 19,
+      "offsets": [
+        647
+      ],
+      "previousValues": [
+        180
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:08:30.347Z"
+    },
+    {
+      "channelId": 5,
+      "paramId": 20,
+      "offsets": [
+        649
+      ],
+      "previousValues": [
+        20
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:08:32.155Z"
+    },
+    {
+      "channelId": 5,
+      "paramId": 21,
+      "offsets": [
+        651
+      ],
+      "previousValues": [
+        150
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:08:34.035Z"
+    },
+    {
+      "channelId": 5,
+      "paramId": 24,
+      "offsets": [
+        657
+      ],
+      "previousValues": [
+        180
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:08:38.790Z"
+    },
+    {
+      "channelId": 5,
+      "paramId": 25,
+      "offsets": [
+        659
+      ],
+      "previousValues": [
+        20
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:08:40.542Z"
+    },
+    {
+      "channelId": 5,
+      "paramId": 26,
+      "offsets": [
+        661
+      ],
+      "previousValues": [
+        150
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:08:42.322Z"
+    },
+    {
+      "channelId": 5,
+      "paramId": 29,
+      "offsets": [
+        667
+      ],
+      "previousValues": [
+        180
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:08:47.076Z"
+    },
+    {
+      "channelId": 5,
+      "paramId": 30,
+      "offsets": [
+        669
+      ],
+      "previousValues": [
+        20
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:08:48.827Z"
+    },
+    {
+      "channelId": 5,
+      "paramId": 31,
+      "offsets": [
+        671
+      ],
+      "previousValues": [
+        150
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:08:50.576Z"
+    },
+    {
+      "channelId": 5,
+      "paramId": 34,
+      "offsets": [
+        677
+      ],
+      "previousValues": [
+        180
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:08:55.327Z"
+    },
+    {
+      "channelId": 5,
+      "paramId": 35,
+      "offsets": [
+        679
+      ],
+      "previousValues": [
+        20
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:08:57.079Z"
+    },
+    {
+      "channelId": 5,
+      "paramId": 36,
+      "offsets": [
+        681
+      ],
+      "previousValues": [
+        150
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:08:58.829Z"
+    },
+    {
+      "channelId": 5,
+      "paramId": 39,
+      "offsets": [
+        687
+      ],
+      "previousValues": [
+        180
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:09:03.582Z"
+    },
+    {
+      "channelId": 5,
+      "paramId": 40,
+      "offsets": [
+        689
+      ],
+      "previousValues": [
+        20
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:09:05.333Z"
+    },
+    {
+      "channelId": 5,
+      "paramId": 41,
+      "offsets": [
+        691
+      ],
+      "previousValues": [
+        150
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:09:07.085Z"
+    },
+    {
+      "channelId": 5,
+      "paramId": 44,
+      "offsets": [
+        697
+      ],
+      "previousValues": [
+        180
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:09:11.836Z"
+    },
+    {
+      "channelId": 5,
+      "paramId": 45,
+      "offsets": [
+        699
+      ],
+      "previousValues": [
+        20
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:09:13.586Z"
+    },
+    {
+      "channelId": 5,
+      "paramId": 46,
+      "offsets": [
+        701
+      ],
+      "previousValues": [
+        150
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:09:15.336Z"
+    },
+    {
+      "channelId": 5,
+      "paramId": 49,
+      "offsets": [
+        707
+      ],
+      "previousValues": [
+        180
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:09:20.120Z"
+    },
+    {
+      "channelId": 5,
+      "paramId": 50,
+      "offsets": [
+        709
+      ],
+      "previousValues": [
+        20
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:09:21.870Z"
+    },
+    {
+      "channelId": 5,
+      "paramId": 51,
+      "offsets": [
+        711
+      ],
+      "previousValues": [
+        150
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:09:23.623Z"
+    },
+    {
+      "channelId": 5,
+      "paramId": 54,
+      "offsets": [
+        717
+      ],
+      "previousValues": [
+        180
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:09:29.241Z"
+    },
+    {
+      "channelId": 5,
+      "paramId": 55,
+      "offsets": [
+        719
+      ],
+      "previousValues": [
+        20
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:09:30.990Z"
+    },
+    {
+      "channelId": 5,
+      "paramId": 56,
+      "offsets": [
+        721
+      ],
+      "previousValues": [
+        150
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:09:32.743Z"
+    },
+    {
+      "channelId": 5,
+      "paramId": 59,
+      "offsets": [
+        727
+      ],
+      "previousValues": [
+        180
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:09:37.495Z"
+    },
+    {
+      "channelId": 5,
+      "paramId": 60,
+      "offsets": [
+        729
+      ],
+      "previousValues": [
+        20
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:09:39.261Z"
+    },
+    {
+      "channelId": 5,
+      "paramId": 61,
+      "offsets": [
+        731
+      ],
+      "previousValues": [
+        150
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:09:41.016Z"
+    },
+    {
+      "channelId": 5,
+      "paramId": 66,
+      "offsets": [
+        741
+      ],
+      "previousValues": [
+        6
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:09:51.017Z"
+    },
+    {
+      "channelId": 5,
+      "paramId": 67,
+      "offsets": [
+        743
+      ],
+      "previousValues": [
+        0
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:09:52.899Z"
+    },
+    {
+      "channelId": 5,
+      "paramId": 68,
+      "offsets": [
+        745
+      ],
+      "previousValues": [
+        6
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:09:54.811Z"
+    },
+    {
+      "channelId": 5,
+      "paramId": 69,
+      "offsets": [
+        747,
+        891
+      ],
+      "previousValues": [
+        64,
+        64
+      ],
+      "newValues": [
+        1,
+        1
+      ],
+      "timestamp": "2026-01-05T11:09:56.692Z"
+    },
+    {
+      "channelId": 5,
+      "paramId": 70,
+      "offsets": [
+        749
+      ],
+      "previousValues": [
+        0
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:09:58.441Z"
+    },
+    {
+      "channelId": 5,
+      "paramId": 71,
+      "offsets": [
+        751
+      ],
+      "previousValues": [
+        240
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:10:00.194Z"
+    },
+    {
+      "channelId": 5,
+      "paramId": 72,
+      "offsets": [
+        753
+      ],
+      "previousValues": [
+        141
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:10:01.941Z"
+    },
+    {
+      "channelId": 5,
+      "paramId": 73,
+      "offsets": [
+        755
+      ],
+      "previousValues": [
+        0
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:10:03.810Z"
+    },
+    {
+      "channelId": 5,
+      "paramId": 74,
+      "offsets": [
+        757
+      ],
+      "previousValues": [
+        0
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:10:05.558Z"
+    },
+    {
+      "channelId": 5,
+      "paramId": 75,
+      "offsets": [
+        759
+      ],
+      "previousValues": [
+        0
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:10:07.475Z"
+    },
+    {
+      "channelId": 6,
+      "paramId": 2,
+      "offsets": [
+        761
+      ],
+      "previousValues": [
+        150
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:10:09.353Z"
+    },
+    {
+      "channelId": 6,
+      "paramId": 4,
+      "offsets": [
+        765
+      ],
+      "previousValues": [
+        0
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:10:12.731Z"
+    },
+    {
+      "channelId": 6,
+      "paramId": 5,
+      "offsets": [
+        767
+      ],
+      "previousValues": [
+        0
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:10:14.742Z"
+    },
+    {
+      "channelId": 6,
+      "paramId": 6,
+      "offsets": [
+        769
+      ],
+      "previousValues": [
+        0
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:10:16.754Z"
+    },
+    {
+      "channelId": 6,
+      "paramId": 7,
+      "offsets": [
+        771
+      ],
+      "previousValues": [
+        0
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:10:18.506Z"
+    },
+    {
+      "channelId": 6,
+      "paramId": 9,
+      "offsets": [
+        775
+      ],
+      "previousValues": [
+        83
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:10:21.751Z"
+    },
+    {
+      "channelId": 6,
+      "paramId": 10,
+      "offsets": [
+        777
+      ],
+      "previousValues": [
+        151
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:10:23.501Z"
+    },
+    {
+      "channelId": 6,
+      "paramId": 11,
+      "offsets": [
+        779
+      ],
+      "previousValues": [
+        5
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:10:25.248Z"
+    },
+    {
+      "channelId": 6,
+      "paramId": 12,
+      "offsets": [
+        781,
+        782
+      ],
+      "previousValues": [
+        88,
+        2
+      ],
+      "newValues": [
+        1,
+        0
+      ],
+      "timestamp": "2026-01-05T11:10:27.048Z"
+    },
+    {
+      "channelId": 6,
+      "paramId": 13,
+      "offsets": [
+        783
+      ],
+      "previousValues": [
+        0
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:10:28.798Z"
+    },
+    {
+      "channelId": 6,
+      "paramId": 14,
+      "offsets": [
+        785
+      ],
+      "previousValues": [
+        180
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:10:30.547Z"
+    },
+    {
+      "channelId": 6,
+      "paramId": 15,
+      "offsets": [
+        787
+      ],
+      "previousValues": [
+        20
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:10:32.295Z"
+    },
+    {
+      "channelId": 6,
+      "paramId": 16,
+      "offsets": [
+        789
+      ],
+      "previousValues": [
+        150
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:10:34.084Z"
+    },
+    {
+      "channelId": 6,
+      "paramId": 19,
+      "offsets": [
+        795
+      ],
+      "previousValues": [
+        180
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:10:38.944Z"
+    },
+    {
+      "channelId": 6,
+      "paramId": 20,
+      "offsets": [
+        797
+      ],
+      "previousValues": [
+        20
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:10:40.773Z"
+    },
+    {
+      "channelId": 6,
+      "paramId": 21,
+      "offsets": [
+        799
+      ],
+      "previousValues": [
+        150
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:10:42.678Z"
+    },
+    {
+      "channelId": 6,
+      "paramId": 24,
+      "offsets": [
+        805
+      ],
+      "previousValues": [
+        180
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:10:47.497Z"
+    },
+    {
+      "channelId": 6,
+      "paramId": 25,
+      "offsets": [
+        807
+      ],
+      "previousValues": [
+        20
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:10:49.246Z"
+    },
+    {
+      "channelId": 6,
+      "paramId": 26,
+      "offsets": [
+        809
+      ],
+      "previousValues": [
+        150
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:10:50.995Z"
+    },
+    {
+      "channelId": 6,
+      "paramId": 29,
+      "offsets": [
+        815
+      ],
+      "previousValues": [
+        180
+      ],
+      "newValues": [
+        1
+      ],
+      "timestamp": "2026-01-05T11:10:55.767Z"
+    }
+  ]
+}

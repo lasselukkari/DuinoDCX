@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Button from 'react-bootstrap/Button';
 import ProgressBar from 'react-bootstrap/ProgressBar';
 import { toast } from 'react-toastify';
@@ -9,7 +9,7 @@ type Props = {
   readonly deviceId?: number;
 };
 
-export function UploadDownload({ deviceId = 0 }: Props) {
+export function UploadDownload(_props: Props) {
   const { connection } = useDcxConnection();
 
   // Use new dcx-parser hooks
@@ -34,7 +34,7 @@ export function UploadDownload({ deviceId = 0 }: Props) {
   // Download the backup when it's ready
   React.useEffect(() => {
     if (backup.status === 'completed' && backup.dcxData) {
-      const blob = new Blob([backup.dcxData], {
+      const blob = new Blob([backup.dcxData as BlobPart], {
         type: 'application/octet-stream',
       });
       const url = URL.createObjectURL(blob);
@@ -91,8 +91,13 @@ export function UploadDownload({ deviceId = 0 }: Props) {
   }, [restore.status, restore.error, restore]);
 
   const isBackingUp = backup.status === 'downloading';
-  const isRestoring = restore.status === 'initializing' || restore.status === 'transferring';
-  const progress = isBackingUp ? backup.progress * 100 : isRestoring ? restore.progress * 100 : 0;
+  const isRestoring =
+    restore.status === 'initializing' || restore.status === 'transferring';
+  const progress = isBackingUp
+    ? backup.progress * 100
+    : isRestoring
+      ? restore.progress * 100
+      : 0;
   const status = isBackingUp
     ? `Downloading page ${Math.floor(backup.progress * 12)}/12...`
     : isRestoring
@@ -121,7 +126,7 @@ export function UploadDownload({ deviceId = 0 }: Props) {
             disabled={isRestoring || isBackingUp}
             onClick={() => {
               // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-              document.querySelector('#dcx-upload')?.click();
+              document.querySelector<HTMLInputElement>('#dcx-upload')?.click();
             }}
           >
             {isRestoring ? 'Restoring...' : 'Restore .dcx File'}

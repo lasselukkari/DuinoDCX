@@ -1,22 +1,20 @@
-import {memo} from 'react';
-import {FaGlobe} from 'react-icons/fa';
+import { memo } from 'react';
+import { FaGlobe } from 'react-icons/fa';
 import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import isEqual from 'lodash.isequal';
 import Temperature from './temperature.tsx';
 import DelayUnits from './delay-units.tsx';
 
+import { type Setup } from 'dcx-parser';
+
 type Props = {
-  readonly setup: {
-    airTemperature: number;
-    isDelayCorrectionOn: boolean;
-    delayUnits: string;
-  };
+  readonly setup: Setup;
   readonly isXs: boolean;
 };
 
-function Localization({setup, isXs}: Props) {
-  const {airTemperature, isDelayCorrectionOn, delayUnits} = setup;
+function Localization({ setup, isXs }: Props) {
+  const { airTemperature = 20, isDelayCorrectionOn = false, delayUnits = 'mm' } = setup;
 
   return (
     <Nav>

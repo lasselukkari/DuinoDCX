@@ -6,7 +6,7 @@
   float: left;
 }
 
-.channel-levels > .dropdown-menu {
+.channel-levels>.dropdown-menu {
   width: 212px !important;
 }
 
@@ -15,7 +15,7 @@
 }
 
 .led-bar button {
-  pointer-events:none;
+  pointer-events: none;
   margin: 1px;
   cursor: default;
   width: 14px;
@@ -31,13 +31,10 @@
 }
 
 @media (min-width: 576px) {
-  .channel-levels > .dropdown-menu {
-    -webkit-transform: rotate(270deg);
-    -moz-transform: rotate(270deg);
-    -o-transform: rotate(270deg);
-    -ms-transform: rotate(270deg);
+  .navbar-nav .channel-levels>.dropdown-menu {
+    position: absolute;
     transform: rotate(270deg);
-    left: 118px;
+    left: 121px;
     top: -66px;
   }
 

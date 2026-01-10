@@ -4,21 +4,45 @@ import { buildParamChangeCommand, type ParameterTarget } from 'dcx-parser';
 import { useDcxConnection } from '../connection/connection-context.js';
 
 /**
+ * A batch command with target and value bundled together.
+ */
+export type BatchCommand = {
+  target: ParameterTarget;
+  value: number | boolean | string;
+};
+
+/**
  * Hook to provide a sendCommand function that components can use to
  * update device parameters.
- * 
- * Now uses buildParamChangeCommand from dcx-parser instead of manual serialization.
+ *
+ * Overloads:
+ * - sendCommand(target, value) - single parameter change
+ * - sendCommand(batchCommands) - multiple parameter changes
  */
 export const useSendCommand = () => {
   const { connection } = useDcxConnection();
 
   const sendCommand = useCallback(
-    async (target: ParameterTarget, value: number | boolean | string) => {
+    async (
+      targetOrBatch: ParameterTarget | BatchCommand[],
+      value?: number | boolean | string,
+    ) => {
       try {
-        const command = buildParamChangeCommand(target, value);
-        await connection.send(command);
-        // State update will happen when backend echoes the command back via SSE
-        // and useDcxState processes it
+        // Batch mode: array of {target, value} objects
+        if (Array.isArray(targetOrBatch)) {
+          for (const cmd of targetOrBatch) {
+            const command = buildParamChangeCommand(cmd.target, cmd.value);
+            if (command) {
+              await connection.send(command);
+            }
+          }
+        } else {
+          // Single mode: target + value as separate arguments
+          const command = buildParamChangeCommand(targetOrBatch, value!);
+          if (command) {
+            await connection.send(command);
+          }
+        }
       } catch (error) {
         console.error('Failed to send command:', error);
         toast.error(`Failed to update settings.`, {
@@ -33,3 +57,4 @@ export const useSendCommand = () => {
 
   return sendCommand;
 };
+

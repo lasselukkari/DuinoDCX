@@ -6,13 +6,13 @@
  * - Edit buffer (two parts from device)
  * - Preset data (from .dcx files)
  */
-import type { State } from '../types/index.js';
+import type {State} from '../types/index.js';
 /**
  * Data source abstraction for reading bytes.
  * Allows same parsing logic for different data layouts.
  */
 export type DataSource = {
-    readByte(index: number): number;
+  readByte(index: number): number;
 };
 /**
  * Create data source from two edit buffer parts.
@@ -21,7 +21,10 @@ export type DataSource = {
  * Create data source from two edit buffer parts.
  * Combines them into a single buffer.
  */
-export declare function fromParts(part0: Uint8Array, part1: Uint8Array): DataSource;
+export declare function fromParts(
+  part0: Uint8Array,
+  part1: Uint8Array,
+): DataSource;
 /**
  * Create data source from continuous preset buffer.
  * Maps continuous data to the two-part structure.
@@ -38,9 +41,12 @@ export declare function parseState(source: DataSource): State;
 /**
  * Parse state from edit buffer parts.
  */
-export declare function parseEditBuffer(part0: Uint8Array, part1: Uint8Array): State;
+export declare function parseEditBuffer(
+  part0: Uint8Array,
+  part1: Uint8Array,
+): State;
 /**
  * Parse state from preset data.
  */
 export declare function parsePresetData(data: Uint8Array): State;
-//# sourceMappingURL=state-parser.d.ts.map
+// # sourceMappingURL=state-parser.d.ts.map

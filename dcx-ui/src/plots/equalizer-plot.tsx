@@ -1,9 +1,9 @@
-import React, {useMemo} from 'react';
+import React, { useMemo } from 'react';
 import isEqual from 'lodash.isequal';
-import {LineChart, Line, XAxis, YAxis, Tooltip} from 'recharts';
-import {useWindowSize} from '../hooks/use-window-size.js';
-import {useBreakpoint} from '../hooks/use-breakpoint.js';
-import type { type Channel } from 'dcx-parser';
+import { LineChart, Line, XAxis, YAxis, Tooltip } from 'recharts';
+import { type Channel, isOutputChannel } from 'dcx-parser';
+import { useWindowSize } from '../hooks/use-window-size.js';
+import { useBreakpoint } from '../hooks/use-breakpoint.js';
 import TransferFunction from './transfer-function.js';
 import PlotTooltip from './plot-tooltip.js';
 
@@ -27,7 +27,7 @@ function plotData(channels: Record<string, Channel>, isGainApplied: boolean) {
   const values = Object.keys(channels).map((key) => {
     const tf = new TransferFunction(frequencyPoints);
     const channel = channels[key];
-    const {equalizers} = channel;
+    const { equalizers } = channel;
 
     if (channel.isEqualizerOn && equalizers) {
       for (const eqsKey of Object.keys(equalizers)) {
@@ -38,22 +38,22 @@ function plotData(channels: Record<string, Channel>, isGainApplied: boolean) {
 
         if (eq.equalizerType === 'Bandpass') {
           tf.parametricEQ(
-            eq.equalizerFrequency ?? 0,
+            Number.parseFloat(eq.equalizerFrequency) || 0,
             eq.equalizerGain ?? 0,
-            eq.equalizerQ ?? 0,
+            Number.parseFloat(eq.equalizerQ) || 0,
           );
           continue;
         }
 
         if (eq.equalizerShelving === '6dB') {
           tf.firstOrderShelving(
-            eq.equalizerFrequency ?? 0,
+            Number.parseFloat(eq.equalizerFrequency) || 0,
             eq.equalizerGain ?? 0,
             eq.equalizerType === 'High Shelv',
           );
         } else if (eq.equalizerShelving === '12dB') {
           tf.secondOrderShelving(
-            eq.equalizerFrequency ?? 0,
+            Number.parseFloat(eq.equalizerFrequency) || 0,
             eq.equalizerGain ?? 0,
             eq.equalizerType === 'High Shelv',
           );
@@ -64,14 +64,14 @@ function plotData(channels: Record<string, Channel>, isGainApplied: boolean) {
     return {
       gain: channel.gain,
       data: tf.getMagnitude(),
-      channel: channel.channelName
+      channel: isOutputChannel(channel) && channel.channelName
         ? `${key}. ${channel.channelName}`
-        : `Input ${key}`,
+        : `Channel ${key}`,
     };
   });
 
   return frequencyPoints.map((hz, index) => {
-    const result: PlotData = {hz};
+    const result: PlotData = { hz };
     for (const value of values) {
       const rounded = Math.round(value.data[index] * 100) / 100;
       result[value.channel] = isGainApplied
@@ -83,7 +83,7 @@ function plotData(channels: Record<string, Channel>, isGainApplied: boolean) {
   });
 }
 
-function EqualizerPlot({channels, isGainApplied = false}: Props) {
+function EqualizerPlot({ channels, isGainApplied = false }: Props) {
   useWindowSize();
   const currentBreakpoint = useBreakpoint();
 
@@ -136,7 +136,7 @@ function EqualizerPlot({channels, isGainApplied = false}: Props) {
       data={data}
       width={width}
       height={height}
-      margin={{top: 20, right: 30, bottom: 5, left: -30}}
+      margin={{ top: 20, right: 30, bottom: 5, left: -30 }}
     >
       <XAxis
         dataKey="hz"
@@ -153,9 +153,9 @@ function EqualizerPlot({channels, isGainApplied = false}: Props) {
           key={channelId}
           type="monotone"
           dataKey={
-            channels[channelId].channelName
+            isOutputChannel(channels[channelId]) && channels[channelId].channelName
               ? `${channelId}. ${channels[channelId].channelName}`
-              : `Input ${channelId}`
+              : `Channel ${channelId}`
           }
           dot={false}
           strokeWidth={3}
