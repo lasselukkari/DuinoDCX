@@ -2,7 +2,7 @@ import React from 'react';
 import Card from 'react-bootstrap/Card';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
-import { useNavigate, useParams } from '@tanstack/react-router';
+import { useNavigate, useParams, useRouter } from '@tanstack/react-router';
 import type { State } from 'dcx-parser';
 import BlockUi from './components/block-ui.tsx';
 import Delays from './delays.tsx';
@@ -20,11 +20,30 @@ type Props = {
 function Inputs({ device, isBlocking }: Props) {
   const { inputs: channels, setup } = device;
   const navigate = useNavigate();
-  const { tab = 'gain' } = useParams({ strict: false }) as any;
+  const router = useRouter();
+  const params = useParams({ strict: false }) as any;
+
+  let activeTab = params.tab || 'gain';
+  const { pathname } = router.state.location;
+
+  if (pathname.includes('/dynamic-equalizers')) {
+    activeTab = 'dynamic-equalizers';
+  } else if (pathname.includes('/equalizers')) {
+    activeTab = 'equalizers';
+  }
 
   const handleSelect = (key: string | null) => {
     if (key) {
-      void navigate({ to: '/inputs/$tab', params: { tab: key } });
+      if (key === 'equalizers') {
+        void navigate({
+          to: '/inputs/equalizers/$channelId',
+          params: { channelId: 'A' },
+        });
+      } else if (key === 'dynamic-equalizers') {
+        void navigate({ to: '/inputs/dynamic-equalizers' });
+      } else {
+        void navigate({ to: '/inputs/$tab', params: { tab: key } });
+      }
     }
   };
 
@@ -32,7 +51,7 @@ function Inputs({ device, isBlocking }: Props) {
     <div>
       <Tabs
         unmountOnExit
-        activeKey={tab}
+        activeKey={activeTab}
         onSelect={handleSelect}
         variant="pills"
         id="inputs"
@@ -48,7 +67,7 @@ function Inputs({ device, isBlocking }: Props) {
             </Card.Body>
           </Card>
         </Tab>
-        <Tab title="Equalizer" eventKey="eq">
+        <Tab title="Equalizer" eventKey="equalizers">
           <EqualizerPlotPanel channels={channels} group="inputs" />
           <BlockUi isBlocking={isBlocking}>
             <Equalizers
@@ -58,7 +77,7 @@ function Inputs({ device, isBlocking }: Props) {
             />
           </BlockUi>
         </Tab>
-        <Tab eventKey="dynamicEqualizers" title="Dynamic Equalizer">
+        <Tab eventKey="dynamic-equalizers" title="Dynamic Equalizer">
           <BlockUi isBlocking={isBlocking}>
             <DynamicEqualizers group="inputs" channels={channels} />
           </BlockUi>

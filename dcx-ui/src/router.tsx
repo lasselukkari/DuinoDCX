@@ -129,6 +129,18 @@ const inputsIndexRoute = createRoute({
     component: () => <InputsWrapper />,
 });
 
+const inputsEqualizersRoute = createRoute({
+    getParentRoute: () => inputsRoute,
+    path: 'equalizers/$channelId',
+    component: () => <InputsWrapper />,
+});
+
+const inputsDynamicEqualizersRoute = createRoute({
+    getParentRoute: () => inputsRoute,
+    path: 'dynamic-equalizers',
+    component: () => <InputsWrapper />,
+});
+
 const inputsTabRoute = createRoute({
     getParentRoute: () => inputsRoute,
     path: '$tab',
@@ -152,6 +164,18 @@ const outputsIndexRoute = createRoute({
     component: () => <OutputsWrapper />,
 });
 
+const outputsEqualizersRoute = createRoute({
+    getParentRoute: () => outputsRoute,
+    path: 'equalizers/$channelId',
+    component: () => <OutputsWrapper />,
+});
+
+const outputsDynamicEqualizersRoute = createRoute({
+    getParentRoute: () => outputsRoute,
+    path: 'dynamic-equalizers',
+    component: () => <OutputsWrapper />,
+});
+
 const outputsTabRoute = createRoute({
     getParentRoute: () => outputsRoute,
     path: '$tab',
@@ -172,8 +196,18 @@ const presetsRoute = createRoute({
 
 const routeTree = rootRoute.addChildren([
     indexRoute,
-    inputsRoute.addChildren([inputsIndexRoute, inputsTabRoute]),
-    outputsRoute.addChildren([outputsIndexRoute, outputsTabRoute]),
+    inputsRoute.addChildren([
+        inputsIndexRoute,
+        inputsEqualizersRoute,
+        inputsDynamicEqualizersRoute,
+        inputsTabRoute,
+    ]),
+    outputsRoute.addChildren([
+        outputsIndexRoute,
+        outputsEqualizersRoute,
+        outputsDynamicEqualizersRoute,
+        outputsTabRoute,
+    ]),
     presetsRoute,
 ]);
 

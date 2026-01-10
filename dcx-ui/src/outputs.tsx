@@ -2,7 +2,7 @@ import React from 'react';
 import Card from 'react-bootstrap/Card';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
-import { useNavigate, useParams } from '@tanstack/react-router';
+import { useNavigate, useParams, useRouter } from '@tanstack/react-router';
 import type { State } from 'dcx-parser';
 import BlockUi from './components/block-ui.tsx';
 import CrossoverPlotPanel from './crossover-plot-panel.tsx';
@@ -24,11 +24,30 @@ type Props = {
 function Outputs({ device, isBlocking }: Props) {
   const { outputs: channels, setup } = device;
   const navigate = useNavigate();
-  const { tab = 'gain' } = useParams({ strict: false }) as any;
+  const router = useRouter();
+  const params = useParams({ strict: false }) as any;
+
+  let activeTab = params.tab || 'gain';
+  const { pathname } = router.state.location;
+
+  if (pathname.includes('/dynamic-equalizers')) {
+    activeTab = 'dynamic-equalizers';
+  } else if (pathname.includes('/equalizers')) {
+    activeTab = 'equalizers';
+  }
 
   const handleSelect = (key: string | null) => {
     if (key) {
-      void navigate({ to: '/outputs/$tab', params: { tab: key } });
+      if (key === 'equalizers') {
+        void navigate({
+          to: '/outputs/equalizers/$channelId',
+          params: { channelId: '1' },
+        });
+      } else if (key === 'dynamic-equalizers') {
+        void navigate({ to: '/outputs/dynamic-equalizers' });
+      } else {
+        void navigate({ to: '/outputs/$tab', params: { tab: key } });
+      }
     }
   };
 
@@ -36,7 +55,7 @@ function Outputs({ device, isBlocking }: Props) {
     <div>
       <Tabs
         unmountOnExit
-        activeKey={tab}
+        activeKey={activeTab}
         onSelect={handleSelect}
         variant="pills"
         id="outputs"
@@ -66,7 +85,7 @@ function Outputs({ device, isBlocking }: Props) {
             channels={channels}
           />
         </Tab>
-        <Tab eventKey="dynamicEqualizers" title="Dynamic Equalizer">
+        <Tab eventKey="dynamic-equalizers" title="Dynamic Equalizer">
           <BlockUi isBlocking={isBlocking}>
             <DynamicEqualizers group="outputs" channels={channels} />
           </BlockUi>
