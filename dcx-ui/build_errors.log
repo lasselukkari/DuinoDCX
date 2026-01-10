@@ -1,0 +1,39 @@
+
+> dcx-ui@0.0.11 type-check
+> tsc --noEmit
+
+src/channel-levels.tsx(4,28): error TS2307: Cannot find module 'dcx-parser' or its corresponding type declarations.
+src/channel-names.tsx(7,36): error TS2307: Cannot find module 'dcx-parser' or its corresponding type declarations.
+src/config-navigation.tsx(3,28): error TS2307: Cannot find module 'dcx-parser' or its corresponding type declarations.
+src/connection/connection-context.tsx(16,34): error TS2307: Cannot find module 'dcx-parser' or its corresponding type declarations.
+src/connection/sse-connection.ts(9,36): error TS2307: Cannot find module 'dcx-parser' or its corresponding type declarations.
+src/crossover-plot-panel.tsx(6,36): error TS2307: Cannot find module 'dcx-parser' or its corresponding type declarations.
+src/crossovers.tsx(6,36): error TS2307: Cannot find module 'dcx-parser' or its corresponding type declarations.
+src/delays.tsx(6,59): error TS2307: Cannot find module 'dcx-parser' or its corresponding type declarations.
+src/device-navigation.tsx(7,23): error TS2307: Cannot find module 'dcx-parser' or its corresponding type declarations.
+src/dynamic-equalizers.tsx(6,47): error TS2307: Cannot find module 'dcx-parser' or its corresponding type declarations.
+src/equalizer-list.tsx(2,49): error TS2307: Cannot find module 'dcx-parser' or its corresponding type declarations.
+src/equalizer-list.tsx(3,47): error TS2307: Cannot find module 'dcx-parser' or its corresponding type declarations.
+src/equalizer-plot-panel.tsx(6,30): error TS2307: Cannot find module 'dcx-parser' or its corresponding type declarations.
+src/equalizers.tsx(5,47): error TS2307: Cannot find module 'dcx-parser' or its corresponding type declarations.
+src/gains.tsx(6,30): error TS2307: Cannot find module 'dcx-parser' or its corresponding type declarations.
+src/hooks/use-send-command.ts(3,63): error TS2307: Cannot find module 'dcx-parser' or its corresponding type declarations.
+src/input-routing.tsx(7,26): error TS2307: Cannot find module 'dcx-parser' or its corresponding type declarations.
+src/inputs.tsx(6,28): error TS2307: Cannot find module 'dcx-parser' or its corresponding type declarations.
+src/limiters.tsx(6,36): error TS2307: Cannot find module 'dcx-parser' or its corresponding type declarations.
+src/output-routing.tsx(9,48): error TS2307: Cannot find module 'dcx-parser' or its corresponding type declarations.
+src/outputs.tsx(6,28): error TS2307: Cannot find module 'dcx-parser' or its corresponding type declarations.
+src/parameters/bool-parameter.tsx(5,36): error TS2307: Cannot find module 'dcx-parser' or its corresponding type declarations.
+src/parameters/enum-parameter.tsx(3,36): error TS2307: Cannot find module 'dcx-parser' or its corresponding type declarations.
+src/parameters/index.tsx(11,8): error TS2307: Cannot find module 'dcx-parser' or its corresponding type declarations.
+src/parameters/number-parameter.tsx(9,36): error TS2307: Cannot find module 'dcx-parser' or its corresponding type declarations.
+src/phases.tsx(6,36): error TS2307: Cannot find module 'dcx-parser' or its corresponding type declarations.
+src/plots/crossover-plot.tsx(6,36): error TS2307: Cannot find module 'dcx-parser' or its corresponding type declarations.
+src/plots/equalizer-plot.tsx(4,47): error TS2307: Cannot find module 'dcx-parser' or its corresponding type declarations.
+src/presets/index.tsx(14,8): error TS2307: Cannot find module 'dcx-parser' or its corresponding type declarations.
+src/presets/index.tsx(52,25): error TS7006: Parameter 'name' implicitly has an 'any' type.
+src/presets/index.tsx(52,31): error TS7006: Parameter 'i' implicitly has an 'any' type.
+src/presets/index.tsx(67,42): error TS7006: Parameter 'p' implicitly has an 'any' type.
+src/presets/index.tsx(140,36): error TS7006: Parameter 'preset' implicitly has an 'any' type.
+src/presets/upload-download.tsx(5,45): error TS2307: Cannot find module 'dcx-parser' or its corresponding type declarations.
+src/router.tsx(11,63): error TS2307: Cannot find module 'dcx-parser' or its corresponding type declarations.

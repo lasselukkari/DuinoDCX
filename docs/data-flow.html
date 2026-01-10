@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DuinoDCX - How Data Flows From Wire to Screen</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.6;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+      color: #333;
+    }
+    h1, h2, h3 { color: #1a1a1a; }
+    h1 { border-bottom: 2px solid #007bff; padding-bottom: 10px; }
+    h2 { border-bottom: 1px solid #ddd; padding-bottom: 5px; margin-top: 40px; }
+    nav {
+      background: #f8f9fa;
+      padding: 15px 20px;
+      border-radius: 8px;
+      margin-bottom: 30px;
+    }
+    nav h2 { margin-top: 0; border: none; }
+    nav ul { margin: 0; padding-left: 20px; }
+    nav a { color: #007bff; text-decoration: none; }
+    nav a:hover { text-decoration: underline; }
+    .analogy {
+      background: #e7f3ff;
+      border-left: 4px solid #007bff;
+      padding: 15px 20px;
+      margin: 20px 0;
+      border-radius: 0 8px 8px 0;
+    }
+    .analogy strong { color: #0056b3; }
+    code {
+      background: #f4f4f4;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: "Fira Code", Consolas, Monaco, monospace;
+      font-size: 0.9em;
+    }
+    pre {
+      background: #2d2d2d;
+      color: #f8f8f2;
+      padding: 15px 20px;
+      border-radius: 8px;
+      overflow-x: auto;
+    }
+    pre code { background: none; color: inherit; padding: 0; }
+    .layer-box {
+      border: 2px solid #28a745;
+      border-radius: 8px;
+      padding: 15px 20px;
+      margin: 20px 0;
+    }
+    .layer-box h3 { margin-top: 0; color: #28a745; }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 20px 0;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px 12px;
+      text-align: left;
+    }
+    th { background: #f8f9fa; }
+    .arrow {
+      text-align: center;
+      font-size: 2em;
+      color: #666;
+      margin: 10px 0;
+    }
+    .summary-flow {
+      background: #fffbea;
+      border: 2px solid #ffc107;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 30px 0;
+    }
+    .byte-example {
+      font-family: monospace;
+      background: #333;
+      color: #0f0;
+      padding: 10px;
+      border-radius: 4px;
+      display: inline-block;
+    }
+    footer {
+      margin-top: 60px;
+      padding-top: 20px;
+      border-top: 1px solid #ddd;
+      color: #666;
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🎛️ DuinoDCX: How Data Flows From Wire to Screen</h1>
+  
+  <p>
+    This document explains how a single byte traveling from your Behringer DCX2496 
+    audio processor ends up displayed in the web interface. We'll follow the journey 
+    step by step, like those "explain it like I'm 5" memes about the internet.
+  </p>
+
+  <nav>
+    <h2>📑 Table of Contents</h2>
+    <ul>
+      <li><a href="#overview">Overview: The 30-Second Version</a></li>
+      <li><a href="#layer1">Layer 1: The Physical Wire (RS-232 Serial)</a></li>
+      <li><a href="#layer2">Layer 2: SysEx Protocol (MIDI Messages)</a></li>
+      <li><a href="#layer3">Layer 3: 7-bit to 8-bit Decoding</a></li>
+      <li><a href="#layer4">Layer 4: Edit Buffer Parsing</a></li>
+      <li><a href="#layer5">Layer 5: The State Store</a></li>
+      <li><a href="#layer6">Layer 6: React Components → HTML</a></li>
+      <li><a href="#example">Example: Following a Gain Value</a></li>
+      <li><a href="#architecture">Architecture Diagram</a></li>
+    </ul>
+  </nav>
+
+  <!-- OVERVIEW -->
+  <h2 id="overview">🎯 Overview: The 30-Second Version</h2>
+  
+  <div class="summary-flow">
+    <strong>The Journey of a Byte (TL;DR):</strong>
+    <ol>
+      <li><strong>Hardware</strong>: DCX2496 sends bytes over RS-232 serial cable</li>
+      <li><strong>ESP32/Mac</strong>: Reads serial data, broadcasts via Server-Sent Events (SSE)</li>
+      <li><strong>Browser</strong>: Receives SSE stream, passes to parser</li>
+      <li><strong>Parser</strong>: Decodes 7-to-8 bit encoding, extracts parameter values</li>
+      <li><strong>Store</strong>: Holds the complete device state as JavaScript object</li>
+      <li><strong>React</strong>: Components subscribe to store, render as HTML</li>
+    </ol>
+  </div>
+
+  <div class="analogy">
+    <strong>🍕 Pizza Delivery Analogy:</strong><br>
+    Think of it like ordering pizza online. Your pizza (data) travels from the kitchen (DCX2496), 
+    through roads (serial cable), to a dispatcher (ESP32), who broadcasts updates (SSE) to your 
+    phone (browser). The app (React) shows you where your pizza is on a map (the UI).
+  </div>
+
+  <!-- LAYER 1: Physical Wire -->
+  <h2 id="layer1">Layer 1: The Physical Wire (RS-232 Serial)</h2>
+  
+  <p>
+    The Behringer DCX2496 is a professional audio processor from the early 2000s. 
+    It communicates using <strong>RS-232 serial</strong> - the same technology your 
+    grandpa's modem used!
+  </p>
+
+  <div class="layer-box">
+    <h3>📡 Connection Settings</h3>
+    <table>
+      <tr><th>Setting</th><th>Value</th></tr>
+      <tr><td>Baud Rate</td><td>38400</td></tr>
+      <tr><td>Data Bits</td><td>8</td></tr>
+      <tr><td>Parity</td><td>None</td></tr>
+      <tr><td>Stop Bits</td><td>1</td></tr>
+    </table>
+  </div>
+
+  <p>
+    An <strong>ESP32 microcontroller</strong> sits between the DCX2496 and your network. 
+    It reads bytes from the serial port and serves a web interface. The ESP32 is like 
+    a translator between the old world (serial) and the new world (WiFi/HTTP).
+  </p>
+
+  <div class="analogy">
+    <strong>🏠 House Analogy:</strong><br>
+    The RS-232 cable is like a really old landline telephone. The ESP32 is like 
+    one of those VoIP adapters that lets your old phone work with modern internet.
+  </div>
+
+  <p class="arrow">⬇️</p>
+
+  <!-- LAYER 2: SysEx Protocol -->
+  <h2 id="layer2">Layer 2: SysEx Protocol (MIDI Messages)</h2>
+
+  <p>
+    The DCX2496 speaks <strong>MIDI SysEx</strong> (System Exclusive messages). 
+    Even though it's connected via RS-232 (not USB MIDI), it uses the same message format.
+  </p>
+
+  <div class="layer-box">
+    <h3>📦 SysEx Message Structure</h3>
+    <pre><code>F0 00 20 32 [DeviceID] [ModelID] [Command] ... data ... F7
+│  └─────┬─────┘    │         │        │              │
+│        │          │         │        │              └─ End byte
+│        │          │         │        └─ What to do (e.g., 0x10 = dump response)
+│        │          │         └─ 0x0E = DCX2496
+│        │          └─ Usually 0x00
+│        └─ Behringer's manufacturer ID
+└─ Start byte (0xF0 = SysEx start)</code></pre>
+  </div>
+
+  <p>Key commands the device uses:</p>
+  <table>
+    <tr><th>Command</th><th>Hex</th><th>Description</th></tr>
+    <tr><td>Search/Ping</td><td>0x40</td><td>Find devices on the wire</td></tr>
+    <tr><td>Dump Response</td><td>0x10</td><td>Device sends its current state</td></tr>
+    <tr><td>Direct Change</td><td>0x20</td><td>Change a single parameter</td></tr>
+    <tr><td>Request Dump</td><td>0x50</td><td>Ask device to send its state</td></tr>
+  </table>
+
+  <div class="analogy">
+    <strong>📧 Email Analogy:</strong><br>
+    SysEx is like an email format. <code>F0</code> is "Dear Sir/Madam", 
+    the vendor ID is the return address, the command is the subject line, 
+    the data is the message body, and <code>F7</code> is "Sincerely, DCX2496".
+  </div>
+
+  <p class="arrow">⬇️</p>
+
+  <!-- LAYER 3: 7-to-8 Bit Decoding -->
+  <h2 id="layer3">Layer 3: 7-bit to 8-bit Decoding</h2>
+
+  <p>
+    Here's where it gets interesting! MIDI was designed in the 1980s when memory was expensive. 
+    The protocol only allows values 0-127 per byte (7 bits). But real data needs 0-255 (8 bits)!
+  </p>
+
+  <div class="layer-box">
+    <h3>🔢 The Problem</h3>
+    <p>
+      MIDI bytes must have the high bit = 0 (values 0x00-0x7F). 
+      But the device wants to send the value <code>0xA5</code> (165) which has the high bit = 1!
+    </p>
+  </div>
+
+  <div class="layer-box">
+    <h3>💡 The Solution: Block Encoding</h3>
+    <p>Every 7 data bytes are packed into 8 wire bytes:</p>
+    <pre><code>Wire bytes:  [byte0] [byte1] [byte2] [byte3] [byte4] [byte5] [byte6] [msbByte]
+              0x25    0x33    0x41    0x00    0x00    0x00    0x00    0x01
+               │                                                        │
+               └── Lower 7 bits of data (0x25)                         │
+                                                        MSB flag byte ──┘
+                                                        (bit 0 = 1 = byte0 has MSB set)
+
+Real value: byte0 = 0x25 | 0x80 = 0xA5 ✓</code></pre>
+  </div>
+
+  <p>The decoder extracts the MSBs from the 8th byte and restores them to bytes 1-7:</p>
+
+  <pre><code>// Simplified decoding logic
+for each block of 8 bytes:
+    msbByte = block[7]
+    for i = 0 to 6:
+        if (msbByte has bit i set):
+            block[i] |= 0x80  // Restore high bit</code></pre>
+
+  <div class="analogy">
+    <strong>🧳 Luggage Analogy:</strong><br>
+    Imagine airline rules say each bag can only weigh 70 lbs. But you have items weighing 
+    up to 100 lbs. So you pack 7 bags with 70 lbs each, then put the "overflow weight" 
+    in an 8th bag. At your destination, you combine them back to get your original 100 lb items.
+  </div>
+
+  <p class="arrow">⬇️</p>
+
+  <!-- LAYER 4: Edit Buffer Parsing -->
+  <h2 id="layer4">Layer 4: Edit Buffer Parsing</h2>
+
+  <p>
+    After decoding, we have raw 8-bit data (~1659 bytes for the edit buffer). 
+    Now we need to understand <em>what</em> each byte means.
+  </p>
+
+  <div class="layer-box">
+    <h3>🗺️ The Edit Buffer Map</h3>
+    <p>The DCX2496's edit buffer is organized in a specific structure:</p>
+    <table>
+      <tr><th>Section</th><th>Byte Range</th><th>Contains</th></tr>
+      <tr><td>Header</td><td>0-78</td><td>Signatures, metadata</td></tr>
+      <tr><td>Preset Name</td><td>79-86</td><td>8-character ASCII name</td></tr>
+      <tr><td>Setup</td><td>87-120</td><td>Output config, delays, mutes</td></tr>
+      <tr><td>Input A</td><td>121-244</td><td>EQ, dynamics, gain</td></tr>
+      <tr><td>Input B</td><td>245-368</td><td>EQ, dynamics, gain</td></tr>
+      <tr><td>Input C</td><td>369-492</td><td>EQ, dynamics, gain</td></tr>
+      <tr><td>Input Sum</td><td>493-616</td><td>EQ, dynamics, gain</td></tr>
+      <tr><td>Outputs 1-6</td><td>617-1500+</td><td>Crossovers, EQ, limiters</td></tr>
+    </table>
+  </div>
+
+  <p>The parser reads bytes sequentially and builds a JavaScript object:</p>
+
+  <pre><code>// Pseudo-code for parsing
+const state = {
+  setup: {
+    outputConfig: readWord(offset + 0),   // 0=Mono, 1=LMH-LMH, etc.
+    airTemperature: readWord(offset + 2), // 40 = 20°C
+  },
+  inputs: {
+    A: {
+      gain: (readWord(offset + 10) - 150) / 10, // 150 = 0dB
+      mute: readWord(offset + 11) === 1,
+      equalizers: [...],
+    },
+    // B, C, Sum...
+  },
+  outputs: { /* 1-6 */ },
+};</code></pre>
+
+  <div class="analogy">
+    <strong>📄 Spreadsheet Analogy:</strong><br>
+    The raw bytes are like a CSV file with no headers. The parser is like someone 
+    who knows "column A is names, column B is ages, column C is salaries" and 
+    creates a proper labeled spreadsheet from the raw data.
+  </div>
+
+  <p class="arrow">⬇️</p>
+
+  <!-- LAYER 5: State Store -->
+  <h2 id="layer5">Layer 5: The State Store</h2>
+
+  <p>
+    The parsed state is stored in a <strong>centralized store</strong> 
+    (like Redux, but simpler). This is the "single source of truth" for 
+    the entire application.
+  </p>
+
+  <div class="layer-box">
+    <h3>🏪 The Store Pattern</h3>
+    <pre><code>// dcx-store.ts (simplified)
+const dcxStore = {
+  state: null,  // The device state object
+  listeners: [],
+  
+  setFullState(newState) {
+    this.state = newState;
+    this.notify();  // Tell everyone the state changed!
+  },
+  
+  subscribe(listener) {
+    this.listeners.push(listener);
+    return () => { /* remove listener */ };
+  },
+  
+  notify() {
+    for (const listener of this.listeners) {
+      listener();  // "Hey! State changed!"
+    }
+  }
+};</code></pre>
+  </div>
+
+  <p>
+    When you change a parameter on the device (like turning a knob), 
+    it sends a <code>0x20</code> (Direct Change) message. The store 
+    applies this update and notifies all listeners.
+  </p>
+
+  <div class="analogy">
+    <strong>📻 Radio Station Analogy:</strong><br>
+    The store is like a radio station. React components are radios tuned to that station. 
+    When the station broadcasts new music (state change), all radios automatically play it.
+  </div>
+
+  <p class="arrow">⬇️</p>
+
+  <!-- LAYER 6: React → HTML -->
+  <h2 id="layer6">Layer 6: React Components → HTML</h2>
+
+  <p>
+    Finally, React components subscribe to the store and render HTML. 
+    When the store updates, React automatically re-renders the affected components.
+  </p>
+
+  <div class="layer-box">
+    <h3>⚛️ The useDcxState Hook</h3>
+    <pre><code>// In your component
+function GainSlider({ channelId }) {
+  const { state } = useDcxState(connection);
+  
+  if (!state) return &lt;p&gt;Loading...&lt;/p&gt;;
+  
+  const gain = state.inputs[channelId].gain;
+  
+  return (
+    &lt;input 
+      type="range" 
+      value={gain} 
+      min={-15} 
+      max={15} 
+      step={0.1}
+    /&gt;
+  );
+}</code></pre>
+  </div>
+
+  <p>The HTML output might look like:</p>
+  <pre><code>&lt;input type="range" value="0" min="-15" max="15" step="0.1"&gt;</code></pre>
+
+  <div class="analogy">
+    <strong>🎭 Theater Analogy:</strong><br>
+    React components are like stage actors. The script (state) tells them what to say. 
+    When the script changes, they instantly change their lines. The audience (you) 
+    sees the new performance (updated HTML) without any visible transition.
+  </div>
+
+  <!-- EXAMPLE: Following a Value -->
+  <h2 id="example">Example: Following a Gain Value End-to-End</h2>
+
+  <p>Let's trace Input A's gain value from wire to screen:</p>
+
+  <div class="layer-box">
+    <h3>🔬 Step-by-Step Trace</h3>
+    
+    <p><strong>1. On the wire (serial bytes):</strong></p>
+    <pre><code>F0 00 20 32 00 0E 10 00 ... 16 00 00 00 00 00 00 00 ... F7
+                            │
+                            └─ 0x16 = 22 (7-bit encoded)</code></pre>
+    
+    <p><strong>2. After 7-to-8 decoding:</strong></p>
+    <pre><code>... 96 00 ...
+    │
+    └─ 0x96 = 150 (high bit restored: 22 | 0x80 = 150)</code></pre>
+    
+    <p><strong>3. Parser extracts value:</strong></p>
+    <pre><code>// At byte offset 130 (Input A gain position)
+const rawGain = data[130] | (data[131] &lt;&lt; 8);  // = 150
+const gain = (rawGain - 150) / 10;              // = 0.0 dB</code></pre>
+    
+    <p><strong>4. Store holds state:</strong></p>
+    <pre><code>dcxStore.state = {
+  inputs: {
+    A: { gain: 0.0, mute: false, ... },
+    ...
+  }
+};</code></pre>
+    
+    <p><strong>5. React renders HTML:</strong></p>
+    <pre><code>&lt;FormLabel&gt;A. Input A&lt;/FormLabel&gt;
+&lt;input type="range" value="0" ... /&gt;
+&lt;span&gt;0.0 dB&lt;/span&gt;</code></pre>
+  </div>
+
+  <!-- ARCHITECTURE DIAGRAM -->
+  <h2 id="architecture">Architecture Diagram</h2>
+
+  <pre><code>
+┌─────────────────────────────────────────────────────────────────────────┐
+│                              DCX2496                                    │
+│                         (Audio Processor)                               │
+└──────────────────────────────┬──────────────────────────────────────────┘
+                               │ RS-232 Serial (38400 baud)
+                               │ SysEx messages (0xF0...0xF7)
+                               ▼
+┌─────────────────────────────────────────────────────────────────────────┐
+│                      ESP32 / MacOS Server                               │
+│  ┌─────────────┐    ┌────────────────┐    ┌──────────────────────────┐ │
+│  │ Serial Port │───▶│ Ultradrive.cpp │───▶│ Server-Sent Events (SSE) │ │
+│  │  (UART)     │    │ Parse commands │    │ Broadcast to browsers    │ │
+│  └─────────────┘    └────────────────┘    └──────────────────────────┘ │
+└─────────────────────────────────────────────────────────────────────────┘
+                               │
+                               │ HTTP + SSE (EventSource)
+                               │ Binary SysEx in event.data
+                               ▼
+┌─────────────────────────────────────────────────────────────────────────┐
+│                           Browser (dcx-ui)                              │
+│  ┌─────────────────────────────────────────────────────────────────┐   │
+│  │                      SSE Connection Layer                        │   │
+│  │  connection.onMessage(data) → parseMessage(data)                │   │
+│  └─────────────────────────────────────────────────────────────────┘   │
+│                               │                                         │
+│                               ▼                                         │
+│  ┌─────────────────────────────────────────────────────────────────┐   │
+│  │                      dcx-parser Library                          │   │
+│  │  ┌──────────────┐   ┌──────────────────┐   ┌─────────────────┐  │   │
+│  │  │ decode7to8() │──▶│ parseEditBuffer() │──▶│ JavaScript Object│  │   │
+│  │  │ Restore MSBs │   │ Map bytes→fields │   │ { inputs, ... } │  │   │
+│  │  └──────────────┘   └──────────────────┘   └─────────────────┘  │   │
+│  └─────────────────────────────────────────────────────────────────┘   │
+│                               │                                         │
+│                               ▼                                         │
+│  ┌─────────────────────────────────────────────────────────────────┐   │
+│  │                        dcxStore                                  │   │
+│  │  state: { setup: {...}, inputs: {...}, outputs: {...} }         │   │
+│  │  subscribe(listener) / notify()                                  │   │
+│  └─────────────────────────────────────────────────────────────────┘   │
+│                               │                                         │
+│                               ▼                                         │
+│  ┌─────────────────────────────────────────────────────────────────┐   │
+│  │                    React Components                              │   │
+│  │  useSyncExternalStore(dcxStore.subscribe, dcxStore.getSnapshot) │   │
+│  │                                                                   │   │
+│  │  &lt;Gain value={state.inputs.A.gain} /&gt;                           │   │
+│  │  &lt;Mute value={state.inputs.A.mute} /&gt;                           │   │
+│  │  &lt;Equalizer bands={state.inputs.A.equalizers} /&gt;                │   │
+│  └─────────────────────────────────────────────────────────────────┘   │
+│                               │                                         │
+│                               ▼                                         │
+│  ┌─────────────────────────────────────────────────────────────────┐   │
+│  │                        HTML / DOM                                │   │
+│  │  &lt;input type="range" value="0" ...&gt;                             │   │
+│  │  &lt;button class="mute"&gt;Mute&lt;/button&gt;                             │   │
+│  │  &lt;svg&gt;...frequency response graph...&lt;/svg&gt;                      │   │
+│  └─────────────────────────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────────────────────┘
+  </code></pre>
+
+  <h2>📚 Key Files Reference</h2>
+  
+  <table>
+    <tr><th>Layer</th><th>File</th><th>Purpose</th></tr>
+    <tr>
+      <td>Firmware</td>
+      <td><code>DuinoDCX/Ultradrive.cpp</code></td>
+      <td>Reads serial, broadcasts via SSE</td>
+    </tr>
+    <tr>
+      <td>Protocol</td>
+      <td><code>dcx-parser-new/src/protocol/sysex.ts</code></td>
+      <td>Parse SysEx messages</td>
+    </tr>
+    <tr>
+      <td>Encoding</td>
+      <td><code>dcx-parser-new/src/protocol/encoding.ts</code></td>
+      <td>7↔8 bit conversion</td>
+    </tr>
+    <tr>
+      <td>Parsing</td>
+      <td><code>dcx-parser-new/src/edit-buffer-parser.ts</code></td>
+      <td>Map bytes to state object</td>
+    </tr>
+    <tr>
+      <td>Store</td>
+      <td><code>dcx-parser-new/src/store/dcx-store.ts</code></td>
+      <td>Central state management</td>
+    </tr>
+    <tr>
+      <td>Hooks</td>
+      <td><code>dcx-parser-new/src/hooks/use-dcx-state.ts</code></td>
+      <td>React integration</td>
+    </tr>
+    <tr>
+      <td>Transport</td>
+      <td><code>dcx-ui/src/connection/sse-connection.ts</code></td>
+      <td>SSE client connection</td>
+    </tr>
+    <tr>
+      <td>UI</td>
+      <td><code>dcx-ui/src/gain.tsx</code></td>
+      <td>Example React component</td>
+    </tr>
+  </table>
+
+  <footer>
+    <p>
+      <strong>DuinoDCX</strong> - ESP32 WiFi remote for Behringer DCX2496<br>
+      <a href="https://github.com/lasselukkari/DuinoDCX">GitHub Repository</a> | 
+      <a href="https://lasselukkari.github.io/dcx-ui">Online Demo</a>
+    </p>
+    <p>Documentation generated for educational purposes.</p>
+  </footer>
+
+</body>
+</html>

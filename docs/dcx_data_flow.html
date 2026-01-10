@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Journey of a Byte: How DCX Data Reaches Your Screen</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --accent-color: #3498db;
+            --bg-color: #f8f9fa;
+            --text-color: #333;
+            --card-bg: #fff;
+            --code-bg: #272822;
+            --code-color: #f8f8f2;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: #6c757d;
+            font-size: 1.2rem;
+        }
+
+        .toc {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            margin-bottom: 3rem;
+            border: 1px solid #e9ecef;
+        }
+
+        .toc h2 {
+            margin-top: 0;
+            font-size: 1.25rem;
+        }
+
+        .toc ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .toc li {
+            margin-bottom: 0.5rem;
+        }
+
+        .toc a {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .toc a:hover {
+            text-decoration: underline;
+        }
+
+        .layer {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+            border-left: 5px solid var(--accent-color);
+        }
+
+        .layer h2 {
+            margin-top: 0;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .layer-icon {
+            font-size: 1.5rem;
+        }
+
+        .analogy {
+            background-color: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .analogy strong {
+            color: #1976d2;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        code {
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+            background-color: #e9ecef;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.9em;
+            color: #e83e8c;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            color: var(--code-color);
+            padding: 1rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+
+        .byte-viz {
+            display: flex;
+            gap: 4px;
+            margin: 1rem 0;
+            font-family: monospace;
+            flex-wrap: wrap;
+        }
+
+        .byte {
+            background: #eee;
+            padding: 4px 8px;
+            border-radius: 4px;
+            position: relative;
+        }
+
+        .byte.highlight {
+            background: #ffeb3b;
+            font-weight: bold;
+            border: 2px solid #fbc02d;
+        }
+
+        .arrow {
+            text-align: center;
+            font-size: 2rem;
+            color: #cbd3da;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <header>
+            <h1>The Journey of a Byte</h1>
+            <div class="subtitle">From Wire to Web: Unpacking the DCX2496 Data Flow</div>
+        </header>
+
+        <div class="toc">
+            <h2>Table of Contents</h2>
+            <ul>
+                <li><a href="#intro">Introduction: The Postal Service Analogy</a></li>
+                <li><a href="#layer1">Layer 1: The Wire (The Mail Truck at Night)</a></li>
+                <li><a href="#layer2">Layer 2: The Parser (The Translator)</a></li>
+                <li><a href="#layer3">Layer 3: The State (The Clipboard)</a></li>
+                <li><a href="#layer4">Layer 4: The UI (The Display Board)</a></li>
+            </ul>
+        </div>
+
+        <section id="intro" class="layer" style="border-left-color: #6c757d;">
+            <h2><span class="layer-icon">📦</span> Introduction</h2>
+            <p>
+                Imagine you want to know the volume level of a speaker connected to a DCX2496 unit.
+                The device knows the answer, but it speaks a weird alien language called "MIDI SysEx".
+                Our job is to get that answer, translate it, and put it on your screen.
+            </p>
+            <div class="analogy">
+                <strong>The Analogy: The Postal Service</strong>
+                Think of the data flow as a letter being delivered.
+                The <strong>Wire</strong> is the mail truck.
+                The <strong>Parser</strong> is the person who opens the envelope and translates the letter.
+                The <strong>State</strong> is a clipboard where we write down the important info.
+                The <strong>UI</strong> is a big display board that reads from the clipboard.
+            </div>
+        </section>
+
+        <div class="arrow">⬇</div>
+
+        <section id="layer1" class="layer">
+            <h2><span class="layer-icon">🚛</span> Layer 1: The Wire format</h2>
+            <p>
+                The data travels from the device to your computer over a serial cable. But there's a catch:
+                the road is old and bumpy. It can only handle small packages.
+            </p>
+
+            <h3>The 7-bit Limit</h3>
+            <p>
+                Standard computer data uses 8 bits (like having 8 fingers to count on, allowing numbers 0-255).
+                But MIDI, the protocol used by the DCX, is from the 80s. It only allows 7 bits (0-127).
+            </p>
+            <p>
+                So, if the device wants to send the number <strong>150</strong> (which needs 8 bits), it has to chop it
+                up.
+                This is like tearing a page of a letter in half to fit it into two smaller envelopes.
+            </p>
+
+            <h3>Animation: 7-to-8 Bit Decoding</h3>
+            <p>
+                Watch how the "MSB Byte" (Byte #7) distributes its bits to complete the other 7 bytes.
+                This reassembles the full 8-bit values.
+            </p>
+
+            <div class="animation-container">
+                <style>
+                    .animation-container {
+                        background: #272822;
+                        padding: 20px;
+                        border-radius: 8px;
+                        overflow: visible;
+                        position: relative;
+                        margin: 2rem 0;
+                    }
+
+                    .byte-row {
+                        display: flex;
+                        justify-content: space-between;
+                        margin-bottom: 40px;
+                    }
+
+                    .byte-box {
+                        width: 60px;
+                        background: #3e3d32;
+                        border: 2px solid #75715e;
+                        border-radius: 4px;
+                        padding: 5px;
+                        text-align: center;
+                        color: #f8f8f2;
+                        position: relative;
+                    }
+
+                    .byte-label {
+                        font-size: 10px;
+                        color: #aaa;
+                        margin-bottom: 4px;
+                    }
+
+                    .bits {
+                        display: flex;
+                        justify-content: center;
+                        gap: 2px;
+                    }
+
+                    .bit {
+                        width: 6px;
+                        height: 12px;
+                        background: #a6e22e;
+                        border-radius: 1px;
+                    }
+
+                    .bit.msb {
+                        background: #f92672;
+                        /* Red for Missing MSB */
+                        opacity: 0.3;
+                    }
+
+                    .bit.msb-source {
+                        background: #f92672;
+                        /* The source bits */
+                    }
+
+                    .bit.unused {
+                        background: #555;
+                        opacity: 0.2;
+                    }
+
+                    .msb-container {
+                        border-color: #f92672;
+                        box-shadow: 0 0 10px rgba(249, 38, 114, 0.2);
+                    }
+
+                    /* Flying bit animation */
+                    .flying-bit {
+                        width: 10px;
+                        height: 10px;
+                        background: #f92672;
+                        border-radius: 50%;
+                        position: absolute;
+                        z-index: 100;
+                        box-shadow: 0 0 5px #f92672;
+                        display: none;
+                    }
+
+                    .controls {
+                        text-align: center;
+                        margin-top: 10px;
+                    }
+
+                    button {
+                        background: #3498db;
+                        color: white;
+                        border: none;
+                        padding: 8px 16px;
+                        border-radius: 4px;
+                        cursor: pointer;
+                        font-size: 14px;
+                    }
+
+                    button:hover {
+                        background: #2980b9;
+                    }
+                </style>
+
+                <div id="byteContainer">
+                    <!-- Generated by JS -->
+                </div>
+
+                <div class="controls">
+                    <button onclick="stepBack()" id="btnStepBack">⏮ Back</button>
+                    <button onclick="togglePlay()" id="btnPlay">▶ Play</button>
+                    <button onclick="stepForward()" id="btnStepFwd">Next ⏭</button>
+                    <button onclick="resetAnimation()" id="btnReset">Reset</button>
+                </div>
+            </div>
+
+            <script>
+                const NUM_BLOCKS = 1;
+                const TOTAL_STEPS = 7;
+
+                let currentStep = 0;
+                let isPlaying = false;
+                let animationAbortController = null;
+
+                // Initialize UI
+                function initUI() {
+                    const btnPlay = document.getElementById('btnPlay');
+                    const btnStepBack = document.getElementById('btnStepBack');
+                    const btnStepFwd = document.getElementById('btnStepFwd');
+
+                    btnPlay.innerText = isPlaying ? "⏸ Pause" : "▶ Play";
+
+                    // Disable/Enable based on bounds
+                    btnStepBack.disabled = isPlaying || currentStep <= 0;
+                    btnStepFwd.disabled = isPlaying || currentStep >= TOTAL_STEPS;
+
+                    // Reset styling
+                    btnPlay.style.background = isPlaying ? '#e67e22' : '#3498db';
+                }
+
+                function createBytes() {
+                    const mainContainer = document.getElementById('byteContainer');
+                    mainContainer.innerHTML = '';
+
+                    // We assume 1 block for now as per user request
+                    const block = 0;
+                    const row = document.createElement('div');
+                    row.className = 'byte-row';
+                    row.id = `byteRow-${block}`;
+
+                    // 7 Data Bytes
+                    for (let i = 0; i < 7; i++) {
+                        const box = document.createElement('div');
+                        box.className = 'byte-box';
+                        box.id = `b${block}-byte-${i}`;
+
+                        let bitsHtml = '';
+                        // MSB placeholder
+                        bitsHtml += `<div class="bit msb" id="b${block}-msb-dest-${i}"></div>`;
+                        // 7 normal bits
+                        for (let b = 0; b < 7; b++) bitsHtml += '<div class="bit"></div>';
+
+                        box.innerHTML = `
+                        <div class="byte-label">Byte ${block * 8 + i}</div>
+                        <div class="bits">${bitsHtml}</div>
+                    `;
+                        row.appendChild(box);
+                    }
+
+                    // MSB Container Byte
+                    const msbBox = document.createElement('div');
+                    msbBox.className = 'byte-box msb-container';
+                    msbBox.id = `b${block}-byte-7`;
+                    let msbBitsHtml = '';
+
+                    // Add unused 8th bit for the MSB byte itself
+                    msbBitsHtml += '<div class="bit unused"></div>';
+
+                    for (let b = 0; b < 7; b++) {
+                        msbBitsHtml += `<div class="bit msb-source" id="b${block}-msb-src-${b}"></div>`;
+                    }
+                    msbBox.innerHTML = `
+                        <div class="byte-label">Byte 7</div>
+                        <div class="bits">${msbBitsHtml}</div>
+                    `;
+                    row.appendChild(msbBox);
+
+                    mainContainer.appendChild(row);
+
+                    // Restore visual state based on currentStep
+                    // If we are at step 3, bits 0,1,2 should be moved.
+                    for (let i = 0; i < currentStep; i++) {
+                        setBitState(i, true); // moved
+                    }
+                }
+
+                function setBitState(index, isMoved) {
+                    const block = 0;
+                    const src = document.getElementById(`b${block}-msb-src-${index}`);
+                    const dest = document.getElementById(`b${block}-msb-dest-${index}`);
+                    if (!src || !dest) return;
+
+                    if (isMoved) {
+                        dest.style.opacity = '1';
+                        src.style.opacity = '0.3';
+                    } else {
+                        dest.style.opacity = '0'; // default css
+                        src.style.opacity = '1';  // default css
+                    }
+                }
+
+                async function runAnimationStep(index) {
+                    const block = 0;
+                    const src = document.getElementById(`b${block}-msb-src-${index}`);
+                    const dest = document.getElementById(`b${block}-msb-dest-${index}`);
+
+                    if (!src || !dest) return;
+
+                    // Create flyer
+                    const flyer = document.createElement('div');
+                    flyer.className = 'flying-bit';
+                    document.querySelector('.animation-container').appendChild(flyer);
+
+                    const containerRect = document.querySelector('.animation-container').getBoundingClientRect();
+                    const srcRect = src.getBoundingClientRect();
+                    const destRect = dest.getBoundingClientRect();
+
+                    // Set start pos
+                    flyer.style.left = (srcRect.left - containerRect.left) + 'px';
+                    flyer.style.top = (srcRect.top - containerRect.top) + 'px';
+                    flyer.style.display = 'block';
+
+                    // Animate
+                    const anim = flyer.animate([
+                        { left: (srcRect.left - containerRect.left) + 'px', top: (srcRect.top - containerRect.top) + 'px', opacity: 1 },
+                        { left: (destRect.left - containerRect.left) + 'px', top: (destRect.top - containerRect.top) + 'px', opacity: 1 }
+                    ], {
+                        duration: 800,
+                        easing: 'cubic-bezier(0.4, 0.0, 0.2, 1)'
+                    });
+
+                    return new Promise(resolve => {
+                        anim.onfinish = () => {
+                            flyer.remove();
+                            setBitState(index, true);
+                            resolve();
+                        };
+                    });
+                }
+
+                async function togglePlay() {
+                    if (isPlaying) {
+                        // Pause
+                        isPlaying = false;
+                        if (animationAbortController) animationAbortController.abort();
+                        initUI();
+                        return;
+                    }
+
+                    if (currentStep >= TOTAL_STEPS) {
+                        resetAnimation();
+                        // Small delay to let visual reset happen before playing
+                        await new Promise(r => setTimeout(r, 50));
+                    }
+
+                    // Play
+                    isPlaying = true;
+                    initUI();
+                    animationAbortController = new AbortController();
+                    const signal = animationAbortController.signal;
+
+                    try {
+                        while (currentStep < TOTAL_STEPS) {
+                            if (signal.aborted) break;
+
+                            await runAnimationStep(currentStep);
+                            currentStep++;
+                            initUI();
+
+                            // Wait a bit before next
+                            if (currentStep < TOTAL_STEPS) {
+                                await new Promise(r => setTimeout(r, 400));
+                            }
+                        }
+                    } catch (e) {
+                        // Aborted or error
+                    } finally {
+                        if (!signal.aborted) {
+                            isPlaying = false;
+                            initUI();
+                        }
+                    }
+                }
+
+                async function stepForward() {
+                    if (currentStep >= TOTAL_STEPS) return;
+
+                    const btn = document.getElementById('btnStepFwd');
+                    btn.disabled = true;
+
+                    await runAnimationStep(currentStep);
+                    currentStep++;
+
+                    btn.disabled = false;
+                    initUI();
+                }
+
+                function stepBack() {
+                    if (currentStep <= 0) return;
+                    currentStep--;
+                    setBitState(currentStep, false); // Undo visual
+                    initUI();
+                }
+
+                function resetAnimation() {
+                    isPlaying = false;
+                    if (animationAbortController) animationAbortController.abort();
+                    currentStep = 0;
+                    document.querySelectorAll('.flying-bit').forEach(el => el.remove());
+                    createBytes(); // Re-render fresh
+                    initUI();
+                }
+
+                // Init
+                window.addEventListener('load', () => {
+                    createBytes();
+                    initUI();
+                    togglePlay(); // Auto-play once
+                });
+            </script>
+
+            <h3>The Container (SysEx)</h3>
+            <p>
+                The data doesn't just travel naked. It's wrapped in a container called a "SysEx Message".
+            </p>
+            <div class="byte-viz">
+                <div class="byte">F0</div>
+                <div class="byte">00</div>
+                <div class="byte">20</div>
+                <div class="byte">32</div>
+                <div class="byte">...DATA...</div>
+                <div class="byte">F7</div>
+            </div>
+            <ul>
+                <li><code>F0</code>: "Start of message" (The opening of the envelope)</li>
+                <li><code>00 20 32</code>: "To Behringer" (The address)</li>
+                <li><code>...DATA...</code>: The actual settings (The chopped up letter)</li>
+                <li><code>F7</code>: "End of message" (The seal)</li>
+            </ul>
+        </section>
+
+        <div class="arrow">⬇</div>
+
+        <section id="layer2" class="layer">
+            <h2><span class="layer-icon">🧩</span> Layer 2: The Parser (The Translator)</h2>
+            <p>
+                This layer lives in <code>dcx-parser-new</code>. Its job is to open the envelope and tape the pages back
+                together.
+            </p>
+
+            <h3>Step 1: Unwrap and Glue</h3>
+            <p>
+                First, we strip off the <code>F0...</code> wrapper. Then we run a "7-to-8 bit decode".
+                We take those chopped-up 7-bit bytes and stitch them back into normal 8-bit bytes.
+            </p>
+
+            <h3>Step 2: The Map</h3>
+            <p>
+                Now we have a long string of numbers, like:
+                <code>... 02 01 96 ...</code>
+            </p>
+            <p>
+                How do we know which number is "Input A Gain"? We use a <strong>Map</strong> (Offsets).
+                We know that for Input A:
+            </p>
+            <pre>
+Input A Gain is always at Byte Offset #24
+Input A Mute is always at Byte Offset #25
+        </pre>
+            <p>
+                So the parser counts 24 steps into the data, grabs the number (let's say it finds <code>150</code>),
+                and attaches a label to it: <code>gain: 150</code>.
+            </p>
+        </section>
+
+        <div class="arrow">⬇</div>
+
+        <section id="layer3" class="layer">
+            <h2><span class="layer-icon">📋</span> Layer 3: The State (The Clipboard)</h2>
+            <p>
+                Once parsed, we don't just throw the data at the screen. We store it in a central place called the
+                <strong>State</strong>.
+                This lives in the React application (<code>dcx-ui</code>).
+            </p>
+            <p>
+                The State is a big JavaScript object that looks like this:
+            </p>
+            <pre>
+{
+  "inputs": [
+    {
+      "channel": "A",
+      "gain": 150,     // Raw value
+      "mute": false
+    },
+    ...
+  ]
+}
+        </pre>
+            <p>
+                This is our "Single Source of Truth". The app <code>useDcxState</code> hook watches the parser.
+                Every time a new message is parsed, it updates this clipboard.
+            </p>
+        </section>
+
+        <div class="arrow">⬇</div>
+
+        <section id="layer4" class="layer">
+            <h2><span class="layer-icon">🖥️</span> Layer 4: The UI (The Display)</h2>
+            <p>
+                Finally, the React components (like <code>inputs.tsx</code>) read from the State.
+            </p>
+
+            <h3>The Conversion</h3>
+            <p>
+                Wait, the state says <code>gain: 150</code> using a raw value. That doesn't mean anything to a human!
+                The UI (or sometimes the parser helper) needs to convert it.
+            </p>
+            <div class="analogy">
+                <strong>The conversion rule:</strong>
+                <code>(Value - 150) / 10 = dB</code>
+            </div>
+            <p>
+                So:
+                <code>(150 - 150) / 10 = 0.0 dB</code>
+            </p>
+            <p>
+                If the raw value was <code>160</code>:
+                <code>(160 - 150) / 10 = +1.0 dB</code>
+            </p>
+
+            <h3>The Render</h3>
+            <p>
+                The component paints <code>&lt;div&gt;+1.0 dB&lt;/div&gt;</code> on your screen.
+                When you click a button to change it, the whole process happens in reverse:
+                UI → State → Parser (Encoder) → Wire.
+            </p>
+        </section>
+
+    </div>
+
+</body>
+
+</html>
