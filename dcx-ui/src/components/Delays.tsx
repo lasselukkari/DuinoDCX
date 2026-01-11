@@ -1,6 +1,6 @@
 import React from 'react';
 import Card from 'react-bootstrap/Card';
-import isEqual from 'lodash.isequal';
+import isEqual from 'react-fast-compare';
 import {type Channel, type Setup, isOutputChannel} from 'dcx-parser';
 import Delay from '@/components/Delay.tsx';
 import {setup as setupParameters} from '@/components/parameters/index.tsx';

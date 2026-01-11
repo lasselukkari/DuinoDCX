@@ -1,5 +1,5 @@
 import React, {useMemo} from 'react';
-import isEqual from 'lodash.isequal';
+import isEqual from 'react-fast-compare';
 import {LineChart, Line, XAxis, YAxis, Tooltip} from 'recharts';
 import {type Channel, isOutputChannel, type Equalizer} from 'dcx-parser';
 import {useWindowSize} from '@/hooks/useWindowSize.js';

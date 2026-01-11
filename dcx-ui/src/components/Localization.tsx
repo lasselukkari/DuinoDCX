@@ -2,7 +2,7 @@ import {memo} from 'react';
 import {FaGlobe} from 'react-icons/fa';
 import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-import isEqual from 'lodash.isequal';
+import isEqual from 'react-fast-compare';
 import {type Setup} from 'dcx-parser';
 import Temperature from '@/components/Temperature.tsx';
 import DelayUnits from '@/components/DelayUnits.tsx';

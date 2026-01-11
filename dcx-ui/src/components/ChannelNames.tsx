@@ -2,7 +2,7 @@ import React, {useMemo} from 'react';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-import isEqual from 'lodash.isequal';
+import isEqual from 'react-fast-compare';
 import {type OutputChannel} from 'dcx-parser';
 import ChannelName from '@/components/ChannelName.tsx';
 

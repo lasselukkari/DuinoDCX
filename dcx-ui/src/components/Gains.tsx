@@ -1,7 +1,7 @@
 import React from 'react';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-import isEqual from 'lodash.isequal';
+import isEqual from 'react-fast-compare';
 import {type Channel} from 'dcx-parser';
 import Gain from '@/components/Gain.tsx';
 

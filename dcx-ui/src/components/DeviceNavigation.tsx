@@ -3,7 +3,7 @@ import React, {useState} from 'react';
 import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Navbar from 'react-bootstrap/Navbar';
-import isEqual from 'lodash.isequal';
+import isEqual from 'react-fast-compare';
 import {type State} from 'dcx-parser';
 import {Link, useLocation} from '@tanstack/react-router';
 import ChannelLevels from '@/components/ChannelLevels.tsx';

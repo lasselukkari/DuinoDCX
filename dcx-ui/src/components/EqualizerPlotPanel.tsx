@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-import isEqual from 'lodash.isequal';
+import isEqual from 'react-fast-compare';
 import {type Channel} from 'dcx-parser';
 import EqualizerPlot from '@/components/plots/EqualizerPlot.tsx';
 
