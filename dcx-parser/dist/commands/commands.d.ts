@@ -6,9 +6,8 @@ export type Command = {
     min?: number;
     max?: number;
     step?: number;
-    paramNumber?: number;
 };
-export declare const setupCommands: Command[];
+export declare const setupCommands: (Command | null)[];
 export declare const inputOutputCommands: Command[];
 export declare const equalizerCommands: Command[];
 export declare const outputCommands: Command[];

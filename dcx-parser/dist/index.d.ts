@@ -37,7 +37,7 @@ import { parseDcxPresets } from './dcx-file.js';
 declare const Parser: {
     camelize: typeof camelize;
     commands: {
-        setupCommands: import("./index.js").Command[];
+        setupCommands: (import("./index.js").Command | null)[];
         inputOutputCommands: import("./index.js").Command[];
         eqCommands: import("./index.js").Command[];
         outputCommands: import("./index.js").Command[];

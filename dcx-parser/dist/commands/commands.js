@@ -1,55 +1,58 @@
 import constants from '../constants/index.js';
+// Setup commands: params 0x02-0x0B, gap at 0x0C-0x13, then 0x14-0x18
+// Uses null entries to fill gaps, allowing index-based param calculation
 export const setupCommands = [
+    // 0x02
     {
         name: 'Input Sum Type',
         type: 'enum',
         values: constants.inputSumTypes,
-        paramNumber: 0x02,
     },
+    // 0x03
     {
         name: 'Input AB Source',
         type: 'enum',
         values: constants.inputAbSources,
-        paramNumber: 0x03,
     },
+    // 0x04
     {
         name: 'Input C Gain',
         type: 'enum',
         values: constants.inputCGains,
-        paramNumber: 0x04,
     },
+    // 0x05
     {
         name: 'Output Config',
         type: 'enum',
         values: constants.outputConfigs,
-        paramNumber: 0x05,
     },
+    // 0x06
     {
         name: 'Stereolink',
         type: 'bool',
-        paramNumber: 0x06,
     },
+    // 0x07
     {
         name: 'Stereolink Mode',
         type: 'enum',
         values: constants.stereoLinkModes,
-        paramNumber: 0x07,
     },
+    // 0x08
     {
         name: 'Delay Link',
         type: 'bool',
-        paramNumber: 0x08,
     },
+    // 0x09
     {
         name: 'Crossover Link',
         type: 'bool',
-        paramNumber: 0x09,
     },
+    // 0x0A
     {
         name: 'Is Delay Correction On',
         type: 'bool',
-        paramNumber: 0x0a,
     },
+    // 0x0B
     {
         name: 'Air Temperature',
         unit: '°C',
@@ -57,19 +60,28 @@ export const setupCommands = [
         min: -20,
         max: 50,
         step: 1,
-        paramNumber: 0x0b,
     },
+    // 0x0C - 0x13: Gap (8 null entries)
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    // 0x14
     {
         name: 'Delay Units',
         type: 'enum',
         values: constants.delayUnits,
-        paramNumber: 0x14,
     },
+    // 0x15
     {
         name: 'Mute Outs When Powered',
         type: 'bool',
-        paramNumber: 0x15,
     },
+    // 0x16
     {
         name: 'Input A Sum Gain',
         type: 'number',
@@ -77,8 +89,8 @@ export const setupCommands = [
         min: -15,
         max: 15,
         step: 0.1,
-        paramNumber: 0x16,
     },
+    // 0x17
     {
         name: 'Input B Sum Gain',
         type: 'number',
@@ -86,8 +98,8 @@ export const setupCommands = [
         min: -15,
         max: 15,
         step: 0.1,
-        paramNumber: 0x17,
     },
+    // 0x18
     {
         name: 'Input C Sum Gain',
         type: 'number',
@@ -95,10 +107,11 @@ export const setupCommands = [
         min: -15,
         max: 15,
         step: 0.1,
-        paramNumber: 0x18,
     },
 ];
+// Input/Output commands: params 0x02-0x12 (param = index + 0x02)
 export const inputOutputCommands = [
+    // 0x02
     {
         name: 'Gain',
         type: 'number',
@@ -106,18 +119,18 @@ export const inputOutputCommands = [
         min: -15,
         max: 15,
         step: 0.1,
-        paramNumber: 0x02,
     },
+    // 0x03
     {
         name: 'Mute',
         type: 'bool',
-        paramNumber: 0x03,
     },
+    // 0x04
     {
         name: 'Is Delay On',
         type: 'bool',
-        paramNumber: 0x04,
     },
+    // 0x05
     {
         name: 'Long Delay',
         type: 'number',
@@ -125,49 +138,49 @@ export const inputOutputCommands = [
         min: 0,
         max: 20_000,
         step: 5,
-        paramNumber: 0x05,
     },
+    // 0x06
     {
         name: 'Is Equalizer On',
         type: 'bool',
-        paramNumber: 0x06,
     },
+    // 0x07
     {
         name: 'Equalizer Number',
         type: 'number',
         min: 0,
         max: 9,
         step: 1,
-        paramNumber: 0x07,
     },
+    // 0x08
     {
         name: 'Equalizer Index',
         type: 'number',
         min: 0,
         max: 9,
         step: 1,
-        paramNumber: 0x08,
     },
+    // 0x09
     {
         name: 'Dynamic Equalizer Attack',
         type: 'enum',
         unit: 'ms',
         values: constants.attackTimes,
-        paramNumber: 0x09,
     },
+    // 0x0A
     {
         name: 'Dynamic Equalizer Release',
         type: 'enum',
         unit: 'ms',
         values: constants.logZeroTo4000Ms,
-        paramNumber: 0x0a,
     },
+    // 0x0B
     {
         name: 'Dynamic Equalizer Ratio',
         type: 'enum',
         values: constants.equalizerRatios,
-        paramNumber: 0x0b,
     },
+    // 0x0C
     {
         name: 'Dynamic Equalizer Threshold',
         type: 'number',
@@ -175,26 +188,26 @@ export const inputOutputCommands = [
         min: -60,
         max: 0,
         step: 0.1,
-        paramNumber: 0x0c,
     },
+    // 0x0D
     {
         name: 'Is Dynamic Equalizer On',
         type: 'bool',
-        paramNumber: 0x0d,
     },
+    // 0x0E
     {
         name: 'Dynamic Equalizer Frequency',
         type: 'enum',
         unit: 'Hz',
         values: constants.logFrequencyScale,
-        paramNumber: 0x0e,
     },
+    // 0x0F
     {
         name: 'Dynamic Equalizer Q',
         type: 'enum',
         values: constants.equalizerQValues,
-        paramNumber: 0x0f,
     },
+    // 0x10
     {
         name: 'Dynamic Equalizer Gain',
         type: 'number',
@@ -202,35 +215,36 @@ export const inputOutputCommands = [
         min: -15,
         max: 15,
         step: 0.1,
-        paramNumber: 0x10,
     },
+    // 0x11
     {
         name: 'Dynamic Equalizer Type',
         type: 'enum',
         values: constants.equalizerTypes,
-        paramNumber: 0x11,
     },
+    // 0x12
     {
         name: 'Dynamic Equalizer Shelving',
         type: 'enum',
         values: constants.equalizerShelvingSlopes,
-        paramNumber: 0x12,
     },
 ];
+// Equalizer band commands: base param 0x13 (param = 0x13 + index + band*5)
 export const equalizerCommands = [
+    // 0x13 (base for band 1)
     {
         name: 'Equalizer Frequency',
         type: 'enum',
         unit: 'Hz',
         values: constants.logFrequencyScale,
-        paramNumber: 0x13,
     },
+    // 0x14
     {
         name: 'Equalizer Q',
         type: 'enum',
         values: constants.equalizerQValues,
-        paramNumber: 0x14,
     },
+    // 0x15
     {
         name: 'Equalizer Gain',
         type: 'number',
@@ -238,65 +252,66 @@ export const equalizerCommands = [
         min: -15,
         max: 15,
         step: 0.1,
-        paramNumber: 0x15,
     },
+    // 0x16
     {
         name: 'Equalizer Type',
         type: 'enum',
         values: constants.equalizerTypes,
-        paramNumber: 0x16,
     },
+    // 0x17
     {
         name: 'Equalizer Shelving',
         type: 'enum',
         values: constants.equalizerShelvingSlopes,
-        paramNumber: 0x17,
     },
 ];
+// Output-only commands: params 0x40-0x4B (param = 0x40 + index)
 export const outputCommands = [
+    // 0x40
     {
         name: 'Channel Name',
         type: 'enum',
         values: constants.outputNames,
-        paramNumber: 0x40,
     },
+    // 0x41
     {
         name: 'Source',
         type: 'enum',
         values: constants.outputSources,
-        paramNumber: 0x41,
     },
+    // 0x42
     {
         name: 'Highpass Filter',
         type: 'enum',
         values: constants.crossoverFilters,
-        paramNumber: 0x42,
     },
+    // 0x43
     {
         name: 'Highpass Frequency',
         type: 'enum',
         unit: 'Hz',
         values: constants.logFrequencyScale,
-        paramNumber: 0x43,
     },
+    // 0x44
     {
         name: 'Lowpass Filter',
         type: 'enum',
         values: constants.crossoverFilters,
-        paramNumber: 0x44,
     },
+    // 0x45
     {
         name: 'Lowpass Frequency',
         type: 'enum',
         unit: 'Hz',
         values: constants.logFrequencyScale,
-        paramNumber: 0x45,
     },
+    // 0x46
     {
         name: 'Is Limiter On',
         type: 'bool',
-        paramNumber: 0x46,
     },
+    // 0x47
     {
         name: 'Limiter Threshold',
         type: 'number',
@@ -304,21 +319,21 @@ export const outputCommands = [
         min: -24,
         max: 0,
         step: 0.1,
-        paramNumber: 0x47,
     },
+    // 0x48
     {
         name: 'Limiter Release',
         type: 'enum',
         unit: 'ms',
         values: constants.logZeroTo4000Ms,
-        paramNumber: 0x48,
     },
+    // 0x49
     {
         name: 'Polarity',
         type: 'enum',
         values: constants.polarities,
-        paramNumber: 0x49,
     },
+    // 0x4A
     {
         name: 'Phase',
         type: 'number',
@@ -326,8 +341,8 @@ export const outputCommands = [
         min: 0,
         max: 180,
         step: 5,
-        paramNumber: 0x4a,
     },
+    // 0x4B
     {
         name: 'Short Delay',
         type: 'number',
@@ -335,7 +350,6 @@ export const outputCommands = [
         min: 0,
         max: 4000,
         step: 2,
-        paramNumber: 0x4b,
     },
 ];
 //# sourceMappingURL=commands.js.map

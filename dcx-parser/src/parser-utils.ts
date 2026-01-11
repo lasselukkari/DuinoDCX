@@ -30,31 +30,14 @@ function toCamelCase(name: string): string {
 
 const COMMAND_BY_NAME: Record<string, Command> = {};
 
-// Build lookup from all command arrays
+// Build lookup from all command arrays (filter nulls from setupCommands)
 for (const cmd of [
-  ...setupCommands,
+  ...setupCommands.filter((c): c is Command => c !== null),
   ...inputOutputCommands,
   ...outputCommands,
   ...equalizerCommands,
 ]) {
   COMMAND_BY_NAME[toCamelCase(cmd.name)] = cmd;
-}
-
-// Add aliases for EQ short names used in structure.ts
-// structure.ts uses: frequency, q, gain, type, shelving
-// commands.ts has: 'Equalizer Frequency', 'Equalizer Q', etc.
-const EQ_ALIASES: Record<string, string> = {
-  frequency: 'equalizerFrequency',
-  q: 'equalizerQ',
-  gain: 'equalizerGain',
-  type: 'equalizerType',
-  shelving: 'equalizerShelving',
-};
-
-for (const [alias, fullName] of Object.entries(EQ_ALIASES)) {
-  if (COMMAND_BY_NAME[fullName]) {
-    COMMAND_BY_NAME[alias] = COMMAND_BY_NAME[fullName];
-  }
 }
 
 /**

@@ -85,11 +85,11 @@ export const INPUT_CHANNEL_PARAMS = [
 // ============ EQ BAND PARAMETERS ============
 // 10 bytes per band, 9 bands = 90 bytes total
 export const EQ_BAND_PARAMS = [
-    'frequency',
-    'q',
-    'gain',
-    'type',
-    'shelving',
+    'equalizerFrequency',
+    'equalizerQ',
+    'equalizerGain',
+    'equalizerType',
+    'equalizerShelving',
 ];
 // Output Channels use same structure as Input
 export const OUTPUT_CHANNEL_PARAMS_PREFIX = [

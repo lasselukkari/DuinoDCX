@@ -384,8 +384,8 @@ function createEqNumberComponent(
 
 const squeeze = (word: string) => word.replaceAll(/\s/g, '');
 
-function findCommand(commands: readonly Command[], name: string): Command {
-  const found = commands.find((c) => squeeze(c.name) === name);
+function findCommand(commands: readonly (Command | null)[], name: string): Command {
+  const found = commands.find((c): c is Command => c !== null && squeeze(c.name) === name);
   if (!found) throw new Error(`Command not found: ${name}`);
   return found;
 }

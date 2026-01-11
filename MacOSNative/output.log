@@ -9,143 +9,467 @@ HTTP server started on http://localhost:3000
 Press Ctrl+C to exit
 
 3: Started receiving data from device
-10: Received end of data from device
-10: Received search response
-1000: Pinging selected device.
+11: Received end of data from device
+11: Received search response
+1001: Pinging selected device.
 1004: Started receiving data from device
-1011: Received end of data from device
-1011: Received ping response
-2000: Pinging selected device.
-2004: Started receiving data from device
-2011: Received end of data from device
-2011: Received ping response
-3000: Pinging selected device.
-3004: Started receiving data from device
-3010: Received end of data from device
-3010: Received ping response
-4000: Pinging selected device.
-4004: Started receiving data from device
+1012: Received end of data from device
+1012: Received ping response
+2002: Pinging selected device.
+2005: Started receiving data from device
+2012: Received end of data from device
+2012: Received ping response
+2469: HTTP GET /api/events 2469: Syncing selected device.
+SSE client connected (slot 0, socket 5, id m2e0helslyo32g36pkpjo)
+2492: Started receiving data from device
+2783: Received end of data from device
+2783: Received state part 0
+2783: Started receiving data from device
+3002: Pinging selected device.
+3043: Received end of data from device
+3043: Received state part 1
+3043: Started receiving data from device
+3052: Received end of data from device
+3052: Received ping response
+4002: Pinging selected device.
+4005: Started receiving data from device
 4012: Received end of data from device
 4012: Received ping response
 5000: Searching for devices.
-5002: Pinging selected device.
+5003: Pinging selected device.
 5004: Started receiving data from device
 5010: Received end of data from device
 5010: Received search response
-5012: Started receiving data from device
-5018: Received end of data from device
-5018: Received ping response
-5120: HTTP GET /api/events 5120: Syncing selected device.
-SSE client connected (slot 0, socket 5, id c2n2dky5lch5ka0mx76uxy)
-5141: Started receiving data from device
-5432: Received end of data from device
-5432: Received state part 0
-5432: Started receiving data from device
-5693: Received end of data from device
-5693: Received state part 1
-6002: Pinging selected device.
-6006: Started receiving data from device
-6013: Received end of data from device
-6013: Received ping response
-7002: Pinging selected device.
-7006: Started receiving data from device
-7012: Received end of data from device
-7012: Received ping response
-8002: Pinging selected device.
-8005: Started receiving data from device
-8012: Received end of data from device
-8012: Received ping response
-9002: Pinging selected device.
-9006: Started receiving data from device
-9013: Received end of data from device
-9013: Received ping response
-10001: Searching for devices.
-10002: Pinging selected device.
+5010: Started receiving data from device
+5017: Received end of data from device
+5017: Received ping response
+6003: Pinging selected device.
+6007: Started receiving data from device
+6015: Received end of data from device
+6015: Received ping response
+7003: Pinging selected device.
+7007: Started receiving data from device
+7014: Received end of data from device
+7014: Received ping response
+8008: Pinging selected device.
+8012: Started receiving data from device
+8018: Received end of data from device
+8018: Received ping response
+9008: Pinging selected device.
+9011: Started receiving data from device
+9018: Received end of data from device
+9018: Received ping response
+10000: Searching for devices.
 10004: Started receiving data from device
+10009: Pinging selected device.
 10011: Received end of data from device
 10011: Received search response
-10011: Started receiving data from device
-10018: Received end of data from device
-10018: Received ping response
-11002: Pinging selected device.
-11005: Started receiving data from device
-11012: Received end of data from device
-11012: Received ping response
-12002: Pinging selected device.
-12006: Started receiving data from device
-12014: Received end of data from device
-12014: Received ping response
-13002: Pinging selected device.
-13006: Started receiving data from device
-13013: Received end of data from device
-13013: Received ping response
-14002: Pinging selected device.
-14006: Started receiving data from device
-14013: Received end of data from device
-14013: Received ping response
-15001: Searching for devices.
-15002: Pinging selected device.
+10012: Started receiving data from device
+10020: Received end of data from device
+10020: Received ping response
+11009: Pinging selected device.
+11013: Started receiving data from device
+11019: Received end of data from device
+11019: Received ping response
+12009: Pinging selected device.
+12013: Started receiving data from device
+12020: Received end of data from device
+12020: Received ping response
+13009: Pinging selected device.
+13013: Started receiving data from device
+13020: Received end of data from device
+13020: Received ping response
+14009: Pinging selected device.
+14012: Started receiving data from device
+14019: Received end of data from device
+14019: Received ping response
+15000: Searching for devices.
 15004: Started receiving data from device
-15010: Received end of data from device
-15010: Received search response
+15009: Pinging selected device.
+15011: Received end of data from device
+15011: Received search response
 15012: Started receiving data from device
-15018: Received end of data from device
-15018: Received ping response
-15927: HTTP / 0 b 0.00 ms
-16002: Pinging selected device.
-16006: Started receiving data from device
-16013: Received end of data from device
-16013: Received ping response
-17002: Pinging selected device.
-17006: Started receiving data from device
-17013: Received end of data from device
-17013: Received ping response
-18003: Pinging selected device.
-18007: Started receiving data from device
-18014: Received end of data from device
-18014: Received ping response
-19004: Pinging selected device.
-19008: Started receiving data from device
-19014: Received end of data from device
-19014: Received ping response
-20001: Searching for devices.
+15019: Received end of data from device
+15019: Received ping response
+16009: Pinging selected device.
+16013: Started receiving data from device
+16020: Received end of data from device
+16020: Received ping response
+17009: Pinging selected device.
+17013: Started receiving data from device
+17020: Received end of data from device
+17020: Received ping response
+18009: Pinging selected device.
+18013: Started receiving data from device
+18020: Received end of data from device
+18020: Received ping response
+19009: Pinging selected device.
+19013: Started receiving data from device
+19019: Received end of data from device
+19019: Received ping response
+20000: Searching for devices.
 20004: Started receiving data from device
-20004: Pinging selected device.
+20009: Pinging selected device.
 20010: Received end of data from device
 20010: Received search response
-20012: Started receiving data from device
-20019: Received end of data from device
-20019: Received ping response
-21004: Pinging selected device.
-21008: Started receiving data from device
-21014: Received end of data from device
-21014: Received ping response
-22005: Pinging selected device.
-22008: Started receiving data from device
-22016: Received end of data from device
-22016: Received ping response
-23005: Pinging selected device.
-23009: Started receiving data from device
-23016: Received end of data from device
-23016: Received ping response
-24005: Pinging selected device.
-24009: Started receiving data from device
-24016: Received end of data from device
-24016: Received ping response
+20013: Started receiving data from device
+20020: Received end of data from device
+20020: Received ping response
+21009: Pinging selected device.
+21012: Started receiving data from device
+21019: Received end of data from device
+21019: Received ping response
+22009: Pinging selected device.
+22013: Started receiving data from device
+22020: Received end of data from device
+22020: Received ping response
+23009: Pinging selected device.
+23013: Started receiving data from device
+23020: Received end of data from device
+23020: Received ping response
+24010: Pinging selected device.
+24014: Started receiving data from device
+24021: Received end of data from device
+24021: Received ping response
 25001: Searching for devices.
 25004: Started receiving data from device
-25006: Pinging selected device.
+25010: Pinging selected device.
 25011: Received end of data from device
 25011: Received search response
-25011: Started receiving data from device
-25019: Received end of data from device
-25019: Received ping response
-26007: Pinging selected device.
-26011: Started receiving data from device
-26018: Received end of data from device
-26018: Received ping response
-27007: Pinging selected device.
-27011: Started receiving data from device
-27018: Received end of data from device
-27018: Received ping response
-28007: Pinging 
+25014: Started receiving data from device
+25021: Received end of data from device
+25021: Received ping response
+26010: Pinging selected device.
+26014: Started receiving data from device
+26021: Received end of data from device
+26021: Received ping response
+27042: Pinging selected device.
+27046: Started receiving data from device
+27051: Received end of data from device
+27051: Received ping response
+28042: Pinging selected device.
+28047: Started receiving data from device
+28053: Received end of data from device
+28053: Received ping response
+29042: Pinging selected device.
+29046: Started receiving data from device
+29052: Received end of data from device
+29052: Received ping response
+30001: Searching for devices.
+30005: Started receiving data from device
+30012: Received end of data from device
+30012: Received search response
+30042: Pinging selected device.
+30046: Started receiving data from device
+30052: Received end of data from device
+30052: Received ping response
+31042: Pinging selected device.
+31046: Started receiving data from device
+31053: Received end of data from device
+31053: Received ping response
+32042: Pinging selected device.
+32046: Started receiving data from device
+32054: Received end of data from device
+32054: Received ping response
+33042: Pinging selected device.
+33045: Started receiving data from device
+33053: Received end of data from device
+33053: Received ping response
+34042: Pinging selected device.
+34046: Started receiving data from device
+34053: Received end of data from device
+34053: Received ping response
+35002: Searching for devices.
+35005: Started receiving data from device
+35012: Received end of data from device
+35012: Received search response
+35042: Pinging selected device.
+35045: Started receiving data from device
+35052: Received end of data from device
+35052: Received ping response
+36042: Pinging selected device.
+36045: Started receiving data from device
+36052: Received end of data from device
+36052: Received ping response
+37043: Pinging selected device.
+37046: Started receiving data from device
+37054: Received end of data from device
+37054: Received ping response
+38043: Pinging selected device.
+38048: Started receiving data from device
+38055: Received end of data from device
+38055: Received ping response
+39043: Pinging selected device.
+39046: Started receiving data from device
+39054: Received end of data from device
+39054: Received ping response
+40003: Searching for devices.
+40006: Started receiving data from device
+40013: Received end of data from device
+40013: Received search response
+40043: Pinging selected device.
+40047: Started receiving data from device
+40054: Received end of data from device
+40054: Received ping response
+41043: Pinging selected device.
+41049: Started receiving data from device
+41054: Received end of data from device
+41054: Received ping response
+42043: Pinging selected device.
+42047: Started receiving data from device
+42054: Received end of data from device
+42054: Received ping response
+43043: Pinging selected device.
+43046: Started receiving data from device
+43054: Received end of data from device
+43054: Received ping response
+44043: Pinging selected device.
+44046: Started receiving data from device
+44053: Received end of data from device
+44053: Received ping response
+45003: Searching for devices.
+45007: Started receiving data from device
+45014: Received end of data from device
+45014: Received search response
+45043: Pinging selected device.
+45047: Started receiving data from device
+45054: Received end of data from device
+45054: Received ping response
+46043: Pinging selected device.
+46047: Started receiving data from device
+46053: Received end of data from device
+46053: Received ping response
+47043: Pinging selected device.
+47046: Started receiving data from device
+47053: Received end of data from device
+47053: Received ping response
+48044: Pinging selected device.
+48047: Started receiving data from device
+48055: Received end of data from device
+48055: Received ping response
+49044: Pinging selected device.
+49048: Started receiving data from device
+49055: Received end of data from device
+49055: Received ping response
+49397: HTTP GET /inputs/equalizers/A 49413: HTTP GET /assets/index-CX4qBEWE.js 49537: HTTP POST /api/commands 49546: HTTP GET /api/events 49546: Syncing selected device.
+SSE client connected (slot 1, socket 6, id f0pkqpm3dzqdm93r6873g)
+49552: HTTP POST /api/commands SSE client disconnected (slot 0)
+49558: Started receiving data from device
+49849: Received end of data from device
+49849: Received state part 0
+49849: Started receiving data from device
+50003: Searching for devices.
+50045: Pinging selected device.
+50146: Received end of data from device
+50146: Received state part 0
+50146: Started receiving data from device
+50410: Received end of data from device
+50410: Received state part 1
+50410: Started receiving data from device
+50417: Received end of data from device
+50417: Received search response
+50417: Started receiving data from device
+50425: Received end of data from device
+50425: Received ping response
+51045: Pinging selected device.
+51049: Started receiving data from device
+51056: Received end of data from device
+51056: Received ping response
+52045: Pinging selected device.
+52048: Started receiving data from device
+52055: Received end of data from device
+52055: Received ping response
+53045: Pinging selected device.
+53048: Started receiving data from device
+53055: Received end of data from device
+53055: Received ping response
+54045: Pinging selected device.
+54049: Started receiving data from device
+54056: Received end of data from device
+54056: Received ping response
+55003: Searching for devices.
+55006: Started receiving data from device
+55013: Received end of data from device
+55013: Received search response
+55045: Pinging selected device.
+55049: Started receiving data from device
+55056: Received end of data from device
+55056: Received ping response
+56045: Pinging selected device.
+56049: Started receiving data from device
+56056: Received end of data from device
+56056: Received ping response
+57045: Pinging selected device.
+57050: Started receiving data from device
+57056: Received end of data from device
+57056: Received ping response
+57146: HTTP POST /api/commands 57190: Started receiving data from device
+57191: Received end of data from device
+57191: Received commands
+58045: Pinging selected device.
+58049: Started receiving data from device
+58056: Received end of data from device
+58056: Received ping response
+59045: Pinging selected device.
+59048: Started receiving data from device
+59056: Received end of data from device
+59056: Received ping response
+59588: HTTP POST /api/commands 59611: Started receiving data from device
+59615: Received end of data from device
+59615: Received commands
+60003: Searching for devices.
+60007: Started receiving data from device
+60014: Received end of data from device
+60014: Received search response
+60045: Pinging selected device.
+60049: Started receiving data from device
+60056: Received end of data from device
+60056: Received ping response
+61045: Pinging selected device.
+61049: Started receiving data from device
+61056: Received end of data from device
+61056: Received ping response
+61521: HTTP POST /api/commands 61534: Started receiving data from device
+61536: Received end of data from device
+61536: Received commands
+62045: Pinging selected device.
+62049: Started receiving data from device
+62056: Received end of data from device
+62056: Received ping response
+63045: Pinging selected device.
+63048: Started receiving data from device
+63056: Received end of data from device
+63056: Received ping response
+64045: Pinging selected device.
+64048: Started receiving data from device
+64056: Received end of data from device
+64056: Received ping response
+65003: Searching for devices.
+65006: Started receiving data from device
+65014: Received end of data from device
+65014: Received search response
+65045: Pinging selected device.
+65049: Started receiving data from device
+65056: Received end of data from device
+65056: Received ping response
+66045: Pinging selected device.
+66049: Started receiving data from device
+66056: Received end of data from device
+66056: Received ping response
+67045: Pinging selected device.
+67049: Started receiving data from device
+67057: Received end of data from device
+67057: Received ping response
+68045: Pinging selected device.
+68049: Started receiving data from device
+68056: Received end of data from device
+68056: Received ping response
+69045: Pinging selected device.
+69049: Started receiving data from device
+69056: Received end of data from device
+69056: Received ping response
+70003: Searching for devices.
+70007: Started receiving data from device
+70014: Received end of data from device
+70014: Received search response
+70045: Pinging selected device.
+70049: Started receiving data from device
+70057: Received end of data from device
+70057: Received ping response
+71045: Pinging selected device.
+71049: Started receiving data from device
+71057: Received end of data from device
+71057: Received ping response
+72045: Pinging selected device.
+72049: Started receiving data from device
+72057: Received end of data from device
+72057: Received ping response
+73045: Pinging selected device.
+73049: Started receiving data from device
+73056: Received end of data from device
+73056: Received ping response
+74045: Pinging selected device.
+74049: Started receiving data from device
+74056: Received end of data from device
+74056: Received ping response
+75003: Searching for devices.
+75007: Started receiving data from device
+75014: Received end of data from device
+75014: Received search response
+75045: Pinging selected device.
+75049: Started receiving data from device
+75056: Received end of data from device
+75056: Received ping response
+76045: Pinging selected device.
+76049: Started receiving data from device
+76057: Received end of data from device
+76057: Received ping response
+77045: Pinging selected device.
+77048: Started receiving data from device
+77056: Received end of data from device
+77056: Received ping response
+78045: Pinging selected device.
+78049: Started receiving data from device
+78056: Received end of data from device
+78056: Received ping response
+79045: Pinging selected device.
+79050: Started receiving data from device
+79056: Received end of data from device
+79056: Received ping response
+80003: Searching for devices.
+80007: Started receiving data from device
+80014: Received end of data from device
+80014: Received search response
+80045: Pinging selected device.
+80048: Started receiving data from device
+80055: Received end of data from device
+80055: Received ping response
+81045: Pinging selected device.
+81048: Started receiving data from device
+81057: Received end of data from device
+81057: Received ping response
+82045: Pinging selected device.
+82049: Started receiving data from device
+82056: Received end of data from device
+82056: Received ping response
+83045: Pinging selected device.
+83049: Started receiving data from device
+83056: Received end of data from device
+83056: Received ping response
+84045: Pinging selected device.
+84049: Started receiving data from device
+84056: Received end of data from device
+84056: Received ping response
+85003: Searching for devices.
+85007: Started receiving data from device
+85015: Received end of data from device
+85015: Received search response
+85045: Pinging selected device.
+85048: Started receiving data from device
+85056: Received end of data from device
+85056: Received ping response
+86045: Pinging selected device.
+86049: Started receiving data from device
+86057: Received end of data from device
+86057: Received ping response
+87045: Pinging selected device.
+87049: Started receiving data from device
+87057: Received end of data from device
+87057: Received ping response
+88046: Pinging selected device.
+88050: Started receiving data from device
+88057: Received end of data from device
+88057: Received ping response
+89046: Pinging selected device.
+89050: Started receiving data from device
+89056: Received end of data from device
+89056: Received ping response
+90003: Searching for devices.
+90007: Started receiving data from device
+90015: Received end of data from device
+90015: Received search response
+90047: Pinging selected device.
+90051: Started receiving data from device
+90058: Received end of data from device
+90058: Received ping response
+91047: Pinging selected dev

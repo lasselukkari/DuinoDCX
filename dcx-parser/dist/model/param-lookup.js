@@ -5,6 +5,11 @@ import { setupCommands, inputOutputCommands, outputCommands, equalizerCommands, 
 const INPUT_IDS = ['A', 'B', 'C', 'Sum'];
 const OUTPUT_IDS = ['1', '2', '3', '4', '5', '6'];
 const EQUALIZER_BANDS = 9;
+// Base parameter numbers for each command array
+const SETUP_BASE = 0x02;
+const INPUT_OUTPUT_BASE = 0x02;
+const EQUALIZER_BASE = 0x13;
+const OUTPUT_ONLY_BASE = 0x40;
 // ============================================================================
 // Helpers
 // ============================================================================
@@ -28,12 +33,12 @@ function buildDirectLookup() {
     // Channel 4 = Input Sum
     // Channel 5-10 = Outputs (1-6)
     // 1. Setup Parameters (Channel 0)
-    for (const cmd of setupCommands) {
-        if (cmd.paramNumber === undefined) {
+    // Param number = SETUP_BASE + index (with nulls filling gaps)
+    for (let i = 0; i < setupCommands.length; i++) {
+        const cmd = setupCommands[i];
+        if (cmd === null)
             continue;
-        }
-        // Setup params (2..16)
-        const parameterNumber = cmd.paramNumber;
+        const parameterNumber = SETUP_BASE + i;
         const def = {
             ...cmd,
             key: toCamelCase(cmd.name),
@@ -61,12 +66,10 @@ function buildDirectLookup() {
             group = 'outputs';
             channelId = OUTPUT_IDS[ch - 5]; // Index 0..5 -> 1..6
         }
-        // Channel params: 2-18 (inputOutputCommands)
-        for (const cmd of inputOutputCommands) {
-            if (cmd.paramNumber === undefined) {
-                continue;
-            }
-            const parameterNumber = cmd.paramNumber;
+        // Channel params: INPUT_OUTPUT_BASE + index
+        for (let i = 0; i < inputOutputCommands.length; i++) {
+            const cmd = inputOutputCommands[i];
+            const parameterNumber = INPUT_OUTPUT_BASE + i;
             const def = {
                 ...cmd,
                 key: toCamelCase(cmd.name),
@@ -75,16 +78,11 @@ function buildDirectLookup() {
             lookup.set(makeDirectKey(ch, parameterNumber), def);
         }
         // 3. EQ Parameters (Same channels)
-        // Equalizer params: 19-63 (9 bands × equalizerCommands)
-        // equalizerCommands should have 5 items (Freq, Q, Gain, Type, Shelving)
+        // Param number = EQUALIZER_BASE + cmdIndex + band*5
         for (let band = 0; band < EQUALIZER_BANDS; band++) {
-            for (const cmd of equalizerCommands) {
-                if (cmd.paramNumber === undefined) {
-                    continue;
-                }
-                // cmd.paramNumber is 0x13..0x17 (base offset)
-                // paramNumber = base + band * 5
-                const parameterNumber = cmd.paramNumber + band * 5;
+            for (let i = 0; i < equalizerCommands.length; i++) {
+                const cmd = equalizerCommands[i];
+                const parameterNumber = EQUALIZER_BASE + i + band * 5;
                 const def = {
                     ...cmd,
                     key: toCamelCase(cmd.name),
@@ -99,13 +97,11 @@ function buildDirectLookup() {
                 lookup.set(makeDirectKey(ch, parameterNumber), def);
             }
         }
-        // Output-only params: 64+
+        // Output-only params: OUTPUT_ONLY_BASE + index
         if (group === 'outputs') {
-            for (const cmd of outputCommands) {
-                if (cmd.paramNumber === undefined) {
-                    continue;
-                }
-                const parameterNumber = cmd.paramNumber;
+            for (let i = 0; i < outputCommands.length; i++) {
+                const cmd = outputCommands[i];
+                const parameterNumber = OUTPUT_ONLY_BASE + i;
                 const def = {
                     ...cmd,
                     key: toCamelCase(cmd.name),
