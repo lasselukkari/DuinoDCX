@@ -93,24 +93,20 @@ export class DcxStore {
     if (!this.state) return;
 
     console.log(
-      `[DcxStore] Optimistic Update: ${group}.${id || ''}.${key} = ${value}`,
+      `[DcxStore] Optimistic Update: ${group}.${id ?? ''}.${key} = ${value}`,
     );
     const newState = this.cloneState(this.state);
 
     if (group === 'setup') {
-      if (newState.setup) newState.setup[key] = value;
+      newState.setup[key] = value;
     } else if (id) {
       // Check inputs or outputs
       if (group === 'inputs') {
         const channel = newState.inputs[id];
-        if (channel) {
-          (channel as any)[key] = value;
-        }
+        (channel as any)[key] = value;
       } else if (group === 'outputs') {
         const channel = newState.outputs[id];
-        if (channel) {
-          (channel as any)[key] = value;
-        }
+        (channel as any)[key] = value;
       }
     }
 
@@ -146,7 +142,7 @@ export class DcxStore {
   private cloneState(state: State): State {
     // Since V2 state structure is deep, JSON clone is safest and easiest for now.
     // Performance impact is negligible for this size of object (few KB).
-    return JSON.parse(JSON.stringify(state));
+    return structuredClone(state);
   }
 }
 

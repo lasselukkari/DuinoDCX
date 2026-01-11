@@ -85,7 +85,7 @@ export class RestoreSession {
             this.phase === RestorePhase.COMPLETED) {
             return undefined;
         }
-        return this.messageQueue.shift() || undefined;
+        return this.messageQueue.shift() ?? undefined;
     }
     /**
      * Process a message received from the device.

@@ -5,7 +5,7 @@ import {
   equalizerCommands,
   type Command,
 } from '../commands/commands.js';
-import { State } from '../types/index.js';
+import {type State} from '../types/index.js';
 
 // ============================================================================
 // Types

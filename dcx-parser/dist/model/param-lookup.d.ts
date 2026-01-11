@@ -1,5 +1,5 @@
 import { type Command } from '../commands/commands.js';
-import { State } from '../types/index.js';
+import { type State } from '../types/index.js';
 /** Parameter definition for lookups (Matched to Command + Target info) */
 export type ParameterDefinition = Command & {
     /** Target Property Key (camelCase) */

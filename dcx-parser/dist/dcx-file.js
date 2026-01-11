@@ -85,9 +85,7 @@ export function parseDcxPresets(data) {
             // Preset 1 is already in currentBuffer at PRESET_1_OFFSET
             try {
                 const state = parsePreset(currentBuffer);
-                if (state.header) {
-                    state.header.presetName = slot.name;
-                }
+                state.header.presetName = slot.name;
                 results.push({ ...slot, state });
             }
             catch (error) {
@@ -142,9 +140,7 @@ export function parseDcxPresets(data) {
             // Parse the patched buffer
             try {
                 const state = parsePreset(currentBuffer);
-                if (state.header) {
-                    state.header.presetName = slot.name; // Use name from directory
-                }
+                state.header.presetName = slot.name; // Use name from directory
                 results.push({ ...slot, state });
             }
             catch (error) {

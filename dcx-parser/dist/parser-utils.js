@@ -93,7 +93,7 @@ export function parseSequential(cursor, parameters) {
                 result[name] = stringValue.trim();
             }
             else if (type === 'skip') {
-                cursor.offset += length || 2;
+                cursor.offset += length ?? 2;
             }
             else if (type === 'uint32') {
                 const b0 = cursor.buffer[cursor.offset];

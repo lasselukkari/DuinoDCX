@@ -76,12 +76,9 @@ export function parsePreset(input) {
     const setup = setupRaw;
     // Add missing setup fields to match Edit Buffer structure
     // These are likely global settings not stored in presets, or in the header we skipped
-    if (setup.delayUnits === undefined) {
-        setup.delayUnits = 'mm'; // Default
-    }
-    if (setup.muteOutsWhenPowered === undefined) {
-        setup.muteOutsWhenPowered = false; // Default
-    }
+    // TODO: Verify this
+    setup.delayUnits ??= 'mm'; // Default
+    setup.muteOutsWhenPowered ??= false; // Default
     // Parse 4 Input Channels
     const inputs = {};
     for (const name of INPUT_NAMES) {

@@ -103,7 +103,7 @@ export class RestoreSession {
       return undefined;
     }
 
-    return this.messageQueue.shift() || undefined;
+    return this.messageQueue.shift() ?? undefined;
   }
 
   /**
@@ -134,6 +134,17 @@ export class RestoreSession {
     } else if (message.type === 'unknown') {
       // Log?
     }
+  }
+
+  public getStatus() {
+    return {
+      phase: RestorePhase[this.phase],
+      queueLength: this.messageQueue.length,
+    };
+  }
+
+  public isComplete(): boolean {
+    return this.phase === RestorePhase.COMPLETED;
   }
 
   private handleMainPageRequest(page: number) {
