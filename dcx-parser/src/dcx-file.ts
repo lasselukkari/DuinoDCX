@@ -15,8 +15,8 @@
  * - Terminator: 4-byte sequence
  */
 
-import { parsePreset } from './preset-parser.js';
-import type { State } from './types/index.js';
+import {parsePreset} from './preset-parser.js';
+import type {State} from './types/index.js';
 
 // ============================================================================
 // Constants
@@ -138,7 +138,10 @@ export function parseDcxPresets(data: Uint8Array): ParsedPreset[] {
   const results: ParsedPreset[] = [];
 
   // Save the original preset 1 data (to reset between each compact preset)
-  const preset1Data = data.slice(PRESET_1_OFFSET, PRESET_1_OFFSET + FULL_PRESET_BYTES);
+  const preset1Data = data.slice(
+    PRESET_1_OFFSET,
+    PRESET_1_OFFSET + FULL_PRESET_BYTES,
+  );
 
   // Working buffer: Starts as a clone of the original file
   const currentBuffer = new Uint8Array(data);
@@ -152,14 +155,14 @@ export function parseDcxPresets(data: Uint8Array): ParsedPreset[] {
           state.header.presetName = slot.name;
         }
 
-        results.push({ ...slot, state });
+        results.push({...slot, state});
       } catch (error) {
         console.warn(`Failed to parse Preset 1:`, error);
         throw error;
       }
     } else {
       if (slot.isEmpty) {
-        results.push({ ...slot, state: createEmptyState() });
+        results.push({...slot, state: createEmptyState()});
         continue;
       }
 
@@ -217,11 +220,11 @@ export function parseDcxPresets(data: Uint8Array): ParsedPreset[] {
           state.header.presetName = slot.name; // Use name from directory
         }
 
-        results.push({ ...slot, state });
+        results.push({...slot, state});
       } catch (error) {
         console.warn(`Failed to parse Preset ${slot.slot}:`, error);
         // Fallback or empty
-        results.push({ ...slot, state: createEmptyState() });
+        results.push({...slot, state: createEmptyState()});
       }
     }
   }
@@ -278,7 +281,7 @@ function parsePresetSlots(
   // First, scan entire file for all compact preset entries
   // Entry format: [ptr_lo, ptr_hi, slotIndex, 0x00, name(8 bytes), 0x00, 0x00]
   // Total: 14 bytes per entry
-  const compactEntries = new Map<number, { offset: number; name: string }>();
+  const compactEntries = new Map<number, {offset: number; name: string}>();
 
   const compactStart = PRESET_1_OFFSET + FULL_PRESET_BYTES;
   for (let i = compactStart; i < data.length - 14; i++) {
@@ -297,9 +300,10 @@ function parsePresetSlots(
     // Name must START with alphanumeric character (A-Z, a-z, 0-9)
     // This filters out UTF-16LE data where high bytes are 00
     const firstChar = data[i + 4];
-    const isAlphanumeric = (firstChar >= 0x30 && firstChar <= 0x39) || // 0-9
-      (firstChar >= 0x41 && firstChar <= 0x5A) || // A-Z
-      (firstChar >= 0x61 && firstChar <= 0x7A);   // a-z
+    const isAlphanumeric =
+      (firstChar >= 0x30 && firstChar <= 0x39) || // 0-9
+      (firstChar >= 0x41 && firstChar <= 0x5a) || // A-Z
+      (firstChar >= 0x61 && firstChar <= 0x7a); // A-z
     if (!isAlphanumeric) continue;
 
     let validName = true;
@@ -318,13 +322,13 @@ function parsePresetSlots(
 
     // Only accept if we haven't seen this slot yet
     if (!compactEntries.has(slotIdx)) {
-      compactEntries.set(slotIdx, { offset: i, name });
+      compactEntries.set(slotIdx, {offset: i, name});
     }
   }
 
   // Parse slots 2-60 using the found entries
   for (let slotNumber = 2; slotNumber <= NUM_SLOTS; slotNumber++) {
-    const slotIdx = slotNumber - 1; // slot 2 = index 1, slot 37 = index 36
+    const slotIdx = slotNumber - 1; // Slot 2 = index 1, slot 37 = index 36
 
     const entry = compactEntries.get(slotIdx);
     if (entry) {
@@ -405,7 +409,7 @@ function readCompactPresetName(data: Uint8Array, offset: number): string {
  * This is used when downloading presets from the device.
  */
 export function assemblePagesIntoDcxFile(
-  pages: Array<{ page: number; data: Uint8Array }>,
+  pages: Array<{page: number; data: Uint8Array}>,
 ): Uint8Array {
   if (pages.length === 0) {
     throw new Error('No pages to assemble');
@@ -453,8 +457,8 @@ export function assemblePagesIntoDcxFile(
 export function splitDcxFileIntoPages(
   dcxData: Uint8Array,
   pageSize = DECODED_PAGE_SIZE,
-): Array<{ page: number; data: Uint8Array }> {
-  const pages: Array<{ page: number; data: Uint8Array }> = [];
+): Array<{page: number; data: Uint8Array}> {
+  const pages: Array<{page: number; data: Uint8Array}> = [];
 
   // Create the preamble for the first page
   // Format: [LenLo, LenHi, 0, 0, 0, 0, 0] + XSNP data
@@ -483,10 +487,10 @@ export function splitDcxFileIntoPages(
     const finalData = isLastPage
       ? pageData
       : (() => {
-        const paddedData = new Uint8Array(pageSize);
-        paddedData.set(pageData);
-        return paddedData;
-      })();
+          const paddedData = new Uint8Array(pageSize);
+          paddedData.set(pageData);
+          return paddedData;
+        })();
 
     pages.push({
       page: pageNumber,

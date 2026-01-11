@@ -19,7 +19,7 @@ export declare class DcxStore {
      * Get the current state snapshot.
      * Required by useSyncExternalStore.
      */
-    getSnapshot: () => State | null;
+    getSnapshot: () => State | undefined;
     /**
      * Subscribe to state changes.
      * Required by useSyncExternalStore.

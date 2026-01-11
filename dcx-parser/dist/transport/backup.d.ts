@@ -47,7 +47,7 @@ export declare class BackupSession {
      * Get the next message to send to the device.
      * Returns null if no messages are pending.
      */
-    getNextMessage(): Uint8Array | null;
+    getNextMessage(): Uint8Array | undefined;
     /**
      * Process a message received from the device.
      * Reacts to pageDump messages by queuing the next page request.
@@ -74,11 +74,11 @@ export declare class BackupSession {
     /**
      * Get the assembled DCX data (only available after completion).
      */
-    getDcxData(): Uint8Array | null;
+    getDcxData(): Uint8Array | undefined;
     /**
      * Get the error message (only available after error).
      */
-    getError(): string | null;
+    getError(): string | undefined;
     /**
      * Get the current phase.
      */

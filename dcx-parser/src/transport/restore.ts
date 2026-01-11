@@ -1,12 +1,12 @@
-import { type ParsedMessage } from '../protocol/sysex.js';
+import {type ParsedMessage} from '../protocol/sysex.js';
 import {
   SYSEX_START,
   SYSEX_END,
   VENDOR_ID,
   PACKET_TYPE_PAGE,
 } from '../constants/protocol.js';
-import { buildDataPacket } from '../commands/builders.js';
-import { splitDcxFileIntoPages } from '../dcx-file.js';
+import {buildDataPacket} from '../commands/builders.js';
+import {splitDcxFileIntoPages} from '../dcx-file.js';
 
 // Protocol Implementation Constants
 const CMD_IDENTIFY = 0x40; // Identify device
@@ -34,7 +34,7 @@ export enum RestorePhase {
  * 3. Phase 2: Send Page 0 (Type 01, unsolicited), wait for request 1
  */
 export class RestoreSession {
-  private readonly pages: Array<{ page: number; data: Uint8Array }>;
+  private readonly pages: Array<{page: number; data: Uint8Array}>;
   private phase: RestorePhase = RestorePhase.IDLE;
   private readonly messageQueue: Uint8Array[] = [];
   private readonly deviceId: number;
@@ -95,7 +95,7 @@ export class RestoreSession {
    * Get the next message to send to the device.
    * Returns null if no messages are pending (waiting for device request).
    */
-  public getNextMessage(): Uint8Array | null {
+  public getNextMessage(): Uint8Array | undefined {
     if (
       this.phase === RestorePhase.ERROR ||
       this.phase === RestorePhase.COMPLETED
@@ -119,7 +119,7 @@ export class RestoreSession {
 
     // We primarily look for Page Requests (CMD 0x50)
     if (message.type === 'pageRequest') {
-      const { page, requestType } = message;
+      const {page, requestType} = message;
 
       // Handle Request Type
       const bank = requestType ?? 0x00; // Default to 0 if undefined

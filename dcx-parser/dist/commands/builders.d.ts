@@ -84,5 +84,5 @@ export type ParameterTarget = {
  * It looks up the channel/param indices from the target and converts
  * the value to raw format automatically.
  */
-export declare function buildParamChangeCommand(target: ParameterTarget, value: boolean | string | number, deviceId?: number): Uint8Array | null;
+export declare function buildParamChangeCommand(target: ParameterTarget, value: boolean | string | number, deviceId?: number): Uint8Array | undefined;
 //# sourceMappingURL=builders.d.ts.map

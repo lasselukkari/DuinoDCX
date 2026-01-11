@@ -62,14 +62,14 @@ export const setupCommands = [
         step: 1,
     },
     // 0x0C - 0x13: Gap (8 null entries)
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
     // 0x14
     {
         name: 'Delay Units',

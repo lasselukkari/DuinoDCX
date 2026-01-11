@@ -13,7 +13,7 @@ import { parseMessage, parseDevices } from './protocol/sysex.js';
 import { parseEditBuffer } from './edit-buffer-parser.js';
 import { parsePreset } from './preset-parser.js';
 import { parseStatus } from './status-parser.js';
-import { getPresetNames } from './dcx-file.js';
+import { getPresetNames, parseDcxPresets } from './dcx-file.js';
 // Encoding (7-to-8 bit transformation)
 export { encode8to7, decode7to8 } from './protocol/encoding.js';
 // Checksum
@@ -52,7 +52,6 @@ const commands = {
     eqCommands: equalizerCommands,
     outputCommands,
 };
-import { parseDcxPresets } from './dcx-file.js';
 // Default export for Parser (UI expects this)
 const Parser = {
     camelize,

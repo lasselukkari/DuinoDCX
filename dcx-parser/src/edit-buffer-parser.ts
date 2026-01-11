@@ -29,7 +29,7 @@ export {
   parseInputChannel,
   parseOutputChannel,
 } from './parser-utils.js';
-export type { Cursor } from './parser-utils.js';
+export type {Cursor} from './parser-utils.js';
 
 function parseHeader(buffer: Uint8Array): BufferHeader {
   // Offsets based on refined analysis

@@ -12,7 +12,7 @@ import { directLookup, convertValue, applyToState, } from '../model/param-lookup
  * External store for device state.
  */
 export class DcxStore {
-    state = null;
+    state;
     listeners = new Set();
     /**
      * Get the current state snapshot.

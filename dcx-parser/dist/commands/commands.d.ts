@@ -7,7 +7,7 @@ export type Command = {
     max?: number;
     step?: number;
 };
-export declare const setupCommands: (Command | null)[];
+export declare const setupCommands: Array<Command | undefined>;
 export declare const inputOutputCommands: Command[];
 export declare const equalizerCommands: Command[];
 export declare const outputCommands: Command[];

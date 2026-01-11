@@ -34,9 +34,8 @@ function buildDirectLookup() {
     // Channel 5-10 = Outputs (1-6)
     // 1. Setup Parameters (Channel 0)
     // Param number = SETUP_BASE + index (with nulls filling gaps)
-    for (let i = 0; i < setupCommands.length; i++) {
-        const cmd = setupCommands[i];
-        if (cmd === null)
+    for (const [i, cmd] of setupCommands.entries()) {
+        if (cmd === undefined)
             continue;
         const parameterNumber = SETUP_BASE + i;
         const def = {
@@ -67,8 +66,7 @@ function buildDirectLookup() {
             channelId = OUTPUT_IDS[ch - 5]; // Index 0..5 -> 1..6
         }
         // Channel params: INPUT_OUTPUT_BASE + index
-        for (let i = 0; i < inputOutputCommands.length; i++) {
-            const cmd = inputOutputCommands[i];
+        for (const [i, cmd] of inputOutputCommands.entries()) {
             const parameterNumber = INPUT_OUTPUT_BASE + i;
             const def = {
                 ...cmd,
@@ -80,8 +78,7 @@ function buildDirectLookup() {
         // 3. EQ Parameters (Same channels)
         // Param number = EQUALIZER_BASE + cmdIndex + band*5
         for (let band = 0; band < EQUALIZER_BANDS; band++) {
-            for (let i = 0; i < equalizerCommands.length; i++) {
-                const cmd = equalizerCommands[i];
+            for (const [i, cmd] of equalizerCommands.entries()) {
                 const parameterNumber = EQUALIZER_BASE + i + band * 5;
                 const def = {
                     ...cmd,
@@ -99,8 +96,7 @@ function buildDirectLookup() {
         }
         // Output-only params: OUTPUT_ONLY_BASE + index
         if (group === 'outputs') {
-            for (let i = 0; i < outputCommands.length; i++) {
-                const cmd = outputCommands[i];
+            for (const [i, cmd] of outputCommands.entries()) {
                 const parameterNumber = OUTPUT_ONLY_BASE + i;
                 const def = {
                     ...cmd,
@@ -187,12 +183,13 @@ export function applyToState(state, def, value) {
             const group = state[target.group];
             if (group?.[target.channelId]) {
                 const channel = group[target.channelId];
-                const eqKey = `eq${target.band}`;
-                if (channel[eqKey]) {
-                    channel[eqKey][key] = value;
+                const bandKey = String(target.band);
+                channel.equalizers ||= {};
+                if (channel.equalizers[bandKey]) {
+                    channel.equalizers[bandKey][key] = value;
                 }
                 else {
-                    channel[eqKey] = { [key]: value };
+                    channel.equalizers[bandKey] = { [key]: value };
                 }
             }
             break;

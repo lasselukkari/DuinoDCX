@@ -33,7 +33,7 @@ export declare class RestoreSession {
      * Get the next message to send to the device.
      * Returns null if no messages are pending (waiting for device request).
      */
-    getNextMessage(): Uint8Array | null;
+    getNextMessage(): Uint8Array | undefined;
     /**
      * Process a message received from the device.
      * Expects 'pageRequest' messages to drive the transfer.

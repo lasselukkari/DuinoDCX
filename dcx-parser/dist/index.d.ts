@@ -11,11 +11,11 @@ import { parseMessage, parseDevices } from './protocol/sysex.js';
 import { parseEditBuffer } from './edit-buffer-parser.js';
 import { parsePreset } from './preset-parser.js';
 import { parseStatus } from './status-parser.js';
-import { getPresetNames } from './dcx-file.js';
+import { getPresetNames, parseDcxPresets } from './dcx-file.js';
 export type { State, Setup, InputChannel, OutputChannel, BufferHeader, Equalizer, Channel, } from './types/index.js';
 export type { ParameterDefinition } from './model/param-lookup.js';
 export type { ParsedMessage } from './protocol/sysex.js';
-export type { DcxFile, PresetSlot, ParsedPreset, ParsedPreset as PresetEntry } from './dcx-file.js';
+export type { DcxFile, PresetSlot, ParsedPreset, ParsedPreset as PresetEntry, } from './dcx-file.js';
 export { encode8to7, decode7to8 } from './protocol/encoding.js';
 export { calculateChecksum, verifyChecksum } from './protocol/checksum.js';
 export { buildHeader, buildPingCommand, buildPageDumpRequest, buildEditBufferRequest, buildRecallCommand, buildStoreCommand, buildSyncCommand, buildDataPacket, buildHeaderPacket, buildPagePacket, buildDirectCommand, buildListenModeCommand, buildParamChangeCommand, } from './commands/builders.js';
@@ -33,11 +33,10 @@ export { RestoreSession } from './transport/restore.js';
 export { parseStatus } from './status-parser.js';
 export { parseDcxFile, parseDcxPresets, assemblePagesIntoDcxFile, splitDcxFileIntoPages, createRestoreHeader, getPresetNames, isValidDcxFile, DCX_SIGNATURE, DCX_TERMINATOR, } from './dcx-file.js';
 export declare function camelize(string_: string): string;
-import { parseDcxPresets } from './dcx-file.js';
 declare const Parser: {
     camelize: typeof camelize;
     commands: {
-        setupCommands: (import("./index.js").Command | null)[];
+        setupCommands: (import("./index.js").Command | undefined)[];
         inputOutputCommands: import("./index.js").Command[];
         eqCommands: import("./index.js").Command[];
         outputCommands: import("./index.js").Command[];

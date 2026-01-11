@@ -12,7 +12,7 @@ function toCamelCase(name) {
 const COMMAND_BY_NAME = {};
 // Build lookup from all command arrays (filter nulls from setupCommands)
 for (const cmd of [
-    ...setupCommands.filter((c) => c !== null),
+    ...setupCommands.filter((c) => c !== undefined),
     ...inputOutputCommands,
     ...outputCommands,
     ...equalizerCommands,

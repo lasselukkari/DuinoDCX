@@ -32,7 +32,7 @@ const COMMAND_BY_NAME: Record<string, Command> = {};
 
 // Build lookup from all command arrays (filter nulls from setupCommands)
 for (const cmd of [
-  ...setupCommands.filter((c): c is Command => c !== null),
+  ...setupCommands.filter((c): c is Command => c !== undefined),
   ...inputOutputCommands,
   ...outputCommands,
   ...equalizerCommands,
@@ -63,6 +63,7 @@ function convertRaw(
         `Invalid enum value ${raw} for parameter "${parameterName}" (valid range: 0-${cmd.values.length - 1})`,
       );
     }
+
     return cmd.values[raw];
   }
 
@@ -137,8 +138,8 @@ export function parseSequential(
       const raw = nextU16(cursor);
       result[parameter] = convertRaw(parameter, raw);
     } else {
-      const def = parameter as { name: string; type: string; length?: number };
-      const { name, type, length } = def;
+      const def = parameter as {name: string; type: string; length?: number};
+      const {name, type, length} = def;
 
       if (type === 'string' && length) {
         const stringBytes = readBytes(cursor.buffer, cursor.offset, length);
@@ -169,7 +170,7 @@ export function parseSequential(
 export function parseInputChannel(cursor: Cursor): InputChannel {
   const baseParameters = parseSequential(cursor, INPUT_CHANNEL_PARAMS);
 
-  const parameters = { ...baseParameters, equalizers: {} } as InputChannel;
+  const parameters = {...baseParameters, equalizers: {}} as InputChannel;
 
   // Parse 9 EQ bands
   for (let i = 1; i <= 9; i++) {
@@ -198,5 +199,5 @@ export function parseOutputChannel(cursor: Cursor): OutputChannel {
   // 3. Extra Output Params (Name, Source, Filters, etc.) - AFTER EQs in binary
   const extra = parseSequential(cursor, OUTPUT_EXTRA_PARAMS);
 
-  return { ...prefix, equalizers, ...extra } as OutputChannel;
+  return {...prefix, equalizers, ...extra} as OutputChannel;
 }

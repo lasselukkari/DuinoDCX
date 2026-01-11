@@ -1,9 +1,5 @@
-import { decode7to8 } from './protocol/encoding.js';
-import {
-  PRESET_SETUP_PARAMS,
-  INPUT_NAMES,
-  OUTPUT_NAMES,
-} from './structure.js';
+import {decode7to8} from './protocol/encoding.js';
+import {PRESET_SETUP_PARAMS, INPUT_NAMES, OUTPUT_NAMES} from './structure.js';
 import {
   type State as ExtendedState,
   type BufferHeader,
@@ -32,10 +28,10 @@ export function parsePreset(input: Uint8Array | Uint8Array[]): ExtendedState {
         page[2] === 0x20 &&
         page[3] === 0x32
       ) {
-        return decode7to8(page.slice(13, -1), { indexed: false });
+        return decode7to8(page.slice(13, -1), {indexed: false});
       }
 
-      return decode7to8(page, { indexed: false });
+      return decode7to8(page, {indexed: false});
     });
 
     const totalSize = payloads.reduce((acc, p) => acc + p.length, 0);
@@ -119,6 +115,7 @@ export function parsePreset(input: Uint8Array | Uint8Array[]): ExtendedState {
   if (setup.delayUnits === undefined) {
     setup.delayUnits = 'mm'; // Default
   }
+
   if (setup.muteOutsWhenPowered === undefined) {
     setup.muteOutsWhenPowered = false; // Default
   }
@@ -142,4 +139,3 @@ export function parsePreset(input: Uint8Array | Uint8Array[]): ExtendedState {
     outputs: outputs as any,
   };
 }
-

@@ -8,7 +8,7 @@
  * @see https://react.dev/reference/react/useSyncExternalStore
  */
 
-import type { State } from '../types/index.js';
+import type {State} from '../types/index.js';
 import {
   directLookup,
   convertValue,
@@ -21,14 +21,14 @@ type Listener = () => void;
  * External store for device state.
  */
 export class DcxStore {
-  private state: State | null = null;
+  private state: State | undefined;
   private readonly listeners = new Set<Listener>();
 
   /**
    * Get the current state snapshot.
    * Required by useSyncExternalStore.
    */
-  getSnapshot = (): State | null => {
+  getSnapshot = (): State | undefined => {
     return this.state;
   };
 
@@ -59,18 +59,19 @@ export class DcxStore {
   applyDirectUpdate(channel: number, parameter: number, value: number): void {
     if (!this.state) return;
 
-    const key = `${channel}:${parameter}` as `${number}:${number}`;
+    const key = `${channel}:${parameter}`;
     const def = directLookup.get(key);
 
     if (!def) {
-      console.warn(`[DcxStore] Unknown parameter: channel=${channel}, param=${parameter}`);
+      console.warn(
+        `[DcxStore] Unknown parameter: channel=${channel}, param=${parameter}`,
+      );
       return;
     }
 
     // Create new state immutably
     const newState = this.cloneState(this.state);
     const typedValue = convertValue(def, value);
-
 
     applyToState(newState, def, typedValue);
 

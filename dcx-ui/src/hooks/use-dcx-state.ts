@@ -23,6 +23,9 @@ import {
     buildParamChangeCommand,
     type ParameterTarget,
     dcxStore,
+    getSetupParamId,
+    getInputOutputParamId,
+    getEqualizerParamId,
 } from 'dcx-parser';
 
 /**
@@ -123,8 +126,9 @@ export function useDcxState(connection: DcxConnection | undefined) {
             const cmd = buildParamChangeCommand(target, value);
             if (cmd) {
                 await connection.send(cmd);
-                // Optimistic update through the store
-                dcxStore.applyOptimisticUpdate('setup', undefined, String(key), value);
+                // Optimistic update through the store with type-safe ParamId
+                const paramId = getSetupParamId(String(key));
+                dcxStore.updateSetupParam(paramId, value);
             }
         },
         [connection],
@@ -146,8 +150,9 @@ export function useDcxState(connection: DcxConnection | undefined) {
             const cmd = buildParamChangeCommand(target, value);
             if (cmd) {
                 await connection.send(cmd);
-                // Optimistic update through the store
-                dcxStore.applyOptimisticUpdate(group, id, key, value);
+                // Optimistic update through the store with type-safe ParamId
+                const paramId = getInputOutputParamId(key);
+                dcxStore.updateChannelParam(group, id, paramId, value);
             }
         },
         [connection],
@@ -176,8 +181,9 @@ export function useDcxState(connection: DcxConnection | undefined) {
             const cmd = buildParamChangeCommand(target, value);
             if (cmd) {
                 await connection.send(cmd);
-                // Note: EQ optimistic updates would need additional store method
-                // For now, rely on device echo
+                // Optimistic update through the store with type-safe ParamId
+                const paramId = getEqualizerParamId(key);
+                dcxStore.updateEqualizerParam(group, channelId, band, paramId, value);
             }
         },
         [connection],

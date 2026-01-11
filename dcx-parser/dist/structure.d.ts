@@ -10,7 +10,7 @@
  * - 124 bytes per Input Channel
  * - 10 bytes per EQ band (same as Edit Buffer)
  */
-export type ParamDef = string | undefined | null | {
+export type ParamDef = string | undefined | {
     name: string;
     type: 'string';
     length: number;

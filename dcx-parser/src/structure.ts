@@ -14,10 +14,9 @@
 export type ParamDef =
   | string
   | undefined
-  | null
-  | { name: string; type: 'string'; length: number }
-  | { name: string; type: 'skip'; length: number }
-  | { name: string; type: 'uint32' };
+  | {name: string; type: 'string'; length: number}
+  | {name: string; type: 'skip'; length: number}
+  | {name: string; type: 'uint32'};
 
 // ============ SETUP PARAMETERS (Edit Buffer) ============
 // Matches the structure expected by edit-buffer-parser (starts at offset 1)
@@ -25,10 +24,10 @@ export const EDIT_BUFFER_SETUP_PARAMS: ParamDef[] = [
   // Bytes 0-36: Headers (handled by parser skipping or separate header object)
   // The parser starts cursor at 1.
   // Old buffer-structure had 18 nulls (36 bytes).
-  ...(Array.from({ length: 18 }).fill(null) as ParamDef[]),
+  ...(Array.from({length: 18}).fill(null) as ParamDef[]),
   'delayUnits', // 36-37
   'muteOutsWhenPowered', // 38-39
-  ...(Array.from({ length: 24 }).fill(null) as ParamDef[]), // Skip 48 bytes -> to byte 88
+  ...(Array.from({length: 24}).fill(null) as ParamDef[]), // Skip 48 bytes -> to byte 88
   'outputConfig', // 88-89
   'inputSumType', // 90-91
   'inputABSource', // 92-93
@@ -52,23 +51,23 @@ export const EDIT_BUFFER_SETUP_PARAMS: ParamDef[] = [
 // - After preset name (8 bytes), fields start at offset 91
 // - outputConfig at absolute offset 93 (relative +10 from preset name start)
 export const PRESET_SETUP_PARAMS: ParamDef[] = [
-  { name: 'setup_header', type: 'skip', length: 76 }, // Skip to preset name (XSNP at 7, name at 83)
-  { name: 'presetName', type: 'string', length: 8 }, // offset 83-90
-  null, // offset 91-92 (padding)
-  'outputConfig', // offset 93-94
-  'inputSumType', // offset 95-96
-  'inputABSource', // offset 97-98
-  'inputCGain', // offset 99-100
-  null, // offset 101-102 (reserved)
-  'stereolink', // offset 103-104
-  'stereolinkMode', // offset 105-106
-  'delayLink', // offset 107-108
-  'crossoverLink', // offset 109-110
-  'isDelayCorrectionOn', // offset 111-112
-  'airTemperature', // offset 113-114
-  'inputASumGain', // offset 115-116
-  'inputBSumGain', // offset 117-118
-  'inputCSumGain', // offset 119-120
+  {name: 'setup_header', type: 'skip', length: 76}, // Skip to preset name (XSNP at 7, name at 83)
+  {name: 'presetName', type: 'string', length: 8}, // Offset 83-90
+  null, // Offset 91-92 (padding)
+  'outputConfig', // Offset 93-94
+  'inputSumType', // Offset 95-96
+  'inputABSource', // Offset 97-98
+  'inputCGain', // Offset 99-100
+  null, // Offset 101-102 (reserved)
+  'stereolink', // Offset 103-104
+  'stereolinkMode', // Offset 105-106
+  'delayLink', // Offset 107-108
+  'crossoverLink', // Offset 109-110
+  'isDelayCorrectionOn', // Offset 111-112
+  'airTemperature', // Offset 113-114
+  'inputASumGain', // Offset 115-116
+  'inputBSumGain', // Offset 117-118
+  'inputCSumGain', // Offset 119-120
   // No trailing padding - Input channels start immediately at offset 121
 ];
 

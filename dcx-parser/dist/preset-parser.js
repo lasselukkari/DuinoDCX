@@ -1,5 +1,5 @@
 import { decode7to8 } from './protocol/encoding.js';
-import { PRESET_SETUP_PARAMS, INPUT_NAMES, OUTPUT_NAMES, } from './structure.js';
+import { PRESET_SETUP_PARAMS, INPUT_NAMES, OUTPUT_NAMES } from './structure.js';
 import { readString, readU16LE, readBytes, parseSequential, parseInputChannel, parseOutputChannel, } from './parser-utils.js';
 export function parsePreset(input) {
     let buffer;

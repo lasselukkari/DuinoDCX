@@ -218,8 +218,8 @@ function parsePresetSlots(data, lockFlags) {
         // This filters out UTF-16LE data where high bytes are 00
         const firstChar = data[i + 4];
         const isAlphanumeric = (firstChar >= 0x30 && firstChar <= 0x39) || // 0-9
-            (firstChar >= 0x41 && firstChar <= 0x5A) || // A-Z
-            (firstChar >= 0x61 && firstChar <= 0x7A); // a-z
+            (firstChar >= 0x41 && firstChar <= 0x5a) || // A-Z
+            (firstChar >= 0x61 && firstChar <= 0x7a); // A-z
         if (!isAlphanumeric)
             continue;
         let validName = true;
@@ -241,7 +241,7 @@ function parsePresetSlots(data, lockFlags) {
     }
     // Parse slots 2-60 using the found entries
     for (let slotNumber = 2; slotNumber <= NUM_SLOTS; slotNumber++) {
-        const slotIdx = slotNumber - 1; // slot 2 = index 1, slot 37 = index 36
+        const slotIdx = slotNumber - 1; // Slot 2 = index 1, slot 37 = index 36
         const entry = compactEntries.get(slotIdx);
         if (entry) {
             // Read pointer to calculate data offset

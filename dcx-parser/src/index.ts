@@ -8,18 +8,18 @@
  */
 
 // Types
-import { isOutputChannel } from './types/index.js';
+import {isOutputChannel} from './types/index.js';
 import {
   setupCommands,
   inputOutputCommands,
   equalizerCommands,
   outputCommands,
 } from './commands/commands.js';
-import { parseMessage, parseDevices } from './protocol/sysex.js';
-import { parseEditBuffer } from './edit-buffer-parser.js';
-import { parsePreset } from './preset-parser.js';
-import { parseStatus } from './status-parser.js';
-import { getPresetNames } from './dcx-file.js';
+import {parseMessage, parseDevices} from './protocol/sysex.js';
+import {parseEditBuffer} from './edit-buffer-parser.js';
+import {parsePreset} from './preset-parser.js';
+import {parseStatus} from './status-parser.js';
+import {getPresetNames, parseDcxPresets} from './dcx-file.js';
 
 export type {
   State,
@@ -31,15 +31,20 @@ export type {
   Channel,
 } from './types/index.js';
 
-export type { ParameterDefinition } from './model/param-lookup.js';
-export type { ParsedMessage } from './protocol/sysex.js';
-export type { DcxFile, PresetSlot, ParsedPreset, ParsedPreset as PresetEntry } from './dcx-file.js';
+export type {ParameterDefinition} from './model/param-lookup.js';
+export type {ParsedMessage} from './protocol/sysex.js';
+export type {
+  DcxFile,
+  PresetSlot,
+  ParsedPreset,
+  ParsedPreset as PresetEntry,
+} from './dcx-file.js';
 
 // Encoding (7-to-8 bit transformation)
-export { encode8to7, decode7to8 } from './protocol/encoding.js';
+export {encode8to7, decode7to8} from './protocol/encoding.js';
 
 // Checksum
-export { calculateChecksum, verifyChecksum } from './protocol/checksum.js';
+export {calculateChecksum, verifyChecksum} from './protocol/checksum.js';
 
 // SysEx message building
 export {
@@ -57,7 +62,7 @@ export {
   buildListenModeCommand,
   buildParamChangeCommand,
 } from './commands/builders.js';
-export type { ParameterTarget } from './commands/builders.js';
+export type {ParameterTarget} from './commands/builders.js';
 
 export {
   type Command,
@@ -91,20 +96,18 @@ export {
 // If UI needs them, we must check. 'model/helpers.js' is legacy.
 
 // NEW PARSERS (V2)
-export { parseEditBuffer } from './edit-buffer-parser.js';
-export { parsePreset } from './preset-parser.js';
+export {parseEditBuffer} from './edit-buffer-parser.js';
+export {parsePreset} from './preset-parser.js';
 
 // Re-export constants
 export * as constants from './constants/index.js';
 
 // Transport layer
-export type { DcxConnection } from './transport/types.js';
-export { BackupSession } from './transport/backup.js';
-export { RestoreSession } from './transport/restore.js';
+export type {DcxConnection} from './transport/types.js';
+export {BackupSession} from './transport/backup.js';
+export {RestoreSession} from './transport/restore.js';
 
-
-
-export { parseStatus } from './status-parser.js';
+export {parseStatus} from './status-parser.js';
 
 export {
   parseDcxFile,
@@ -134,8 +137,6 @@ const commands = {
   outputCommands,
 };
 
-import { parseDcxPresets } from './dcx-file.js';
-
 // Default export for Parser (UI expects this)
 const Parser = {
   camelize,
@@ -151,6 +152,6 @@ const Parser = {
 };
 
 export default Parser;
-export { dcxStore, DcxStore } from './store/dcx-store.js';
+export {dcxStore, DcxStore} from './store/dcx-store.js';
 
-export { isOutputChannel } from './types/index.js';
+export {isOutputChannel} from './types/index.js';

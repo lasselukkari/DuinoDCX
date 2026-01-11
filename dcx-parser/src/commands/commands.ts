@@ -12,7 +12,7 @@ export type Command = {
 
 // Setup commands: params 0x02-0x0B, gap at 0x0C-0x13, then 0x14-0x18
 // Uses null entries to fill gaps, allowing index-based param calculation
-export const setupCommands: (Command | null)[] = [
+export const setupCommands: Array<Command | undefined> = [
   // 0x02
   {
     name: 'Input Sum Type',
@@ -73,14 +73,14 @@ export const setupCommands: (Command | null)[] = [
     step: 1,
   },
   // 0x0C - 0x13: Gap (8 null entries)
-  null,
-  null,
-  null,
-  null,
-  null,
-  null,
-  null,
-  null,
+  undefined,
+  undefined,
+  undefined,
+  undefined,
+  undefined,
+  undefined,
+  undefined,
+  undefined,
   // 0x14
   {
     name: 'Delay Units',

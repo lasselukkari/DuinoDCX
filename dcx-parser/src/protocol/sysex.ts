@@ -25,8 +25,8 @@ import {
   CMD_STATUS,
   HEADER_SIZE,
 } from '../constants/protocol.js';
-import { verifyChecksum } from './checksum.js';
-import { decode7to8 } from './encoding.js';
+import {verifyChecksum} from './checksum.js';
+import {decode7to8} from './encoding.js';
 
 // ============================================================================
 // Message Building
@@ -38,44 +38,44 @@ import { decode7to8 } from './encoding.js';
 
 /** Result of parsing a SysEx message */
 export type ParsedMessage =
-  | { type: 'ping'; deviceId: number; command: number }
+  | {type: 'ping'; deviceId: number; command: number}
   | {
-    type: 'search';
-    deviceId: number;
-    version: number;
-    name: string;
-    command: number;
-  }
+      type: 'search';
+      deviceId: number;
+      version: number;
+      name: string;
+      command: number;
+    }
   | {
-    type: 'pageDump';
-    deviceId: number;
-    page: number;
-    data: Uint8Array;
-    command: number;
-  }
+      type: 'pageDump';
+      deviceId: number;
+      page: number;
+      data: Uint8Array;
+      command: number;
+    }
   | {
-    type: 'editBuffer';
-    deviceId: number;
-    part: number;
-    data: Uint8Array;
-    command: number;
-  }
-  | { type: 'ack'; deviceId: number; payload: Uint8Array; command: number }
+      type: 'editBuffer';
+      deviceId: number;
+      part: number;
+      data: Uint8Array;
+      command: number;
+    }
+  | {type: 'ack'; deviceId: number; payload: Uint8Array; command: number}
   | {
-    type: 'pageRequest';
-    deviceId: number;
-    page: number;
-    requestType: number;
-    command: number;
-  }
+      type: 'pageRequest';
+      deviceId: number;
+      page: number;
+      requestType: number;
+      command: number;
+    }
   | {
-    type: 'direct';
-    deviceId: number;
-    parameters: Array<{ channel: number; param: number; value: number }>;
-    command: number;
-  }
-  | { type: 'status'; deviceId: number; command: number; data: Uint8Array }
-  | { type: 'unknown'; deviceId: number; command: number; data: Uint8Array };
+      type: 'direct';
+      deviceId: number;
+      parameters: Array<{channel: number; param: number; value: number}>;
+      command: number;
+    }
+  | {type: 'status'; deviceId: number; command: number; data: Uint8Array}
+  | {type: 'unknown'; deviceId: number; command: number; data: Uint8Array};
 
 /**
  * Parse a complete SysEx message from the device.
@@ -174,10 +174,10 @@ export function parseMessage(message: Uint8Array): ParsedMessage | undefined {
  */
 export function parseDevices(
   message: Uint8Array,
-): Array<{ id: number; version: number; name: string }> {
+): Array<{id: number; version: number; name: string}> {
   const parsed = parseMessage(message);
   if (parsed?.type === 'search') {
-    return [{ id: parsed.deviceId, version: parsed.version, name: parsed.name }];
+    return [{id: parsed.deviceId, version: parsed.version, name: parsed.name}];
   }
 
   return [];
@@ -232,7 +232,7 @@ function parseDumpResponse(
 
     const page = message[12];
     const encodedData = message.slice(HEADER_SIZE, -2); // Exclude checksum and F7
-    const data = decode7to8(encodedData, { indexed: false });
+    const data = decode7to8(encodedData, {indexed: false});
 
     return {
       type: 'pageDump',
@@ -247,7 +247,7 @@ function parseDumpResponse(
   if (bank === 0x01) {
     const part = message[12]; // Part number is at the same offset as page
     const encodedData = message.slice(HEADER_SIZE, -2);
-    const data = decode7to8(encodedData, { indexed: false });
+    const data = decode7to8(encodedData, {indexed: false});
 
     return {
       type: 'editBuffer',
@@ -285,7 +285,7 @@ function parseDirectCommand(
   deviceId: number,
 ): ParsedMessage {
   const count = message[7];
-  const parameters: Array<{ channel: number; param: number; value: number }> = [];
+  const parameters: Array<{channel: number; param: number; value: number}> = [];
 
   for (let i = 0; i < count; i++) {
     const offset = 8 + i * 4;
@@ -343,5 +343,5 @@ export function extractSysexMessages(buffer: Uint8Array): {
   // Return remaining bytes (incomplete message)
   const remaining = start >= 0 ? buffer.slice(start) : new Uint8Array(0);
 
-  return { messages, remaining };
+  return {messages, remaining};
 }

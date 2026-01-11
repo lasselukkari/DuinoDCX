@@ -22,8 +22,8 @@ import {
   PACKET_TYPE_PAGE,
   HEADER_SIZE,
 } from '../constants/protocol.js';
-import { encode8to7 } from '../protocol/encoding.js';
-import { calculateChecksum } from '../protocol/checksum.js';
+import {encode8to7} from '../protocol/encoding.js';
+import {calculateChecksum} from '../protocol/checksum.js';
 
 // ============================================================================
 // High-Level Parameter Commands
@@ -211,7 +211,7 @@ export function buildDirectCommand(
   deviceId = DEFAULT_DEVICE_ID,
 ): Uint8Array {
   const parameterBytes: number[] = [];
-  for (const { channel, param, value } of parameters) {
+  for (const {channel, param, value} of parameters) {
     parameterBytes.push(
       channel & 0x7f,
       param & 0x7f,
@@ -232,15 +232,15 @@ export function buildDirectCommand(
  * Target for a parameter change.
  */
 export type ParameterTarget =
-  | { kind: 'setup'; key: string }
-  | { kind: 'channel'; group: 'inputs' | 'outputs'; id: string; key: string }
+  | {kind: 'setup'; key: string}
+  | {kind: 'channel'; group: 'inputs' | 'outputs'; id: string; key: string}
   | {
-    kind: 'equalizer';
-    group: 'inputs' | 'outputs';
-    channelId: string;
-    band: number;
-    key: string;
-  };
+      kind: 'equalizer';
+      group: 'inputs' | 'outputs';
+      channelId: string;
+      band: number;
+      key: string;
+    };
 
 /**
  * Build a direct command from a semantic parameter target and value.
@@ -253,19 +253,19 @@ export function buildParamChangeCommand(
   target: ParameterTarget,
   value: boolean | string | number,
   deviceId = DEFAULT_DEVICE_ID,
-): Uint8Array | null {
+): Uint8Array | undefined {
   // Find the parameter definition
   const def = findParameterDefinition(target);
   if (!def) {
     console.warn('Parameter not found for target:', target);
-    return null;
+    return undefined;
   }
 
   // Find the direct command address
   const address = findDirectAddress(target, def.key);
   if (!address) {
     console.warn('Direct address not found for target:', target);
-    return null;
+    return undefined;
   }
 
   // Convert value to raw
@@ -329,7 +329,7 @@ function findParameterDefinition(
 function findDirectAddress(
   target: ParameterTarget,
   key: string,
-): { channel: number; param: number } | undefined {
+): {channel: number; param: number} | undefined {
   for (const [directKey, def] of directLookup.entries()) {
     if (def.key !== key) continue;
 
@@ -347,7 +347,7 @@ function findDirectAddress(
 
     if (matchesTarget) {
       const [ch, parameter] = directKey.split(':').map(Number);
-      return { channel: ch, param: parameter };
+      return {channel: ch, param: parameter};
     }
   }
 
