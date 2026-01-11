@@ -58,7 +58,7 @@ function PlotTooltip({payload, label, filter}: Props) {
       );
     }
 
-    return null;
+    return undefined;
   };
 
   return (

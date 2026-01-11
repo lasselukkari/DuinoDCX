@@ -1,6 +1,6 @@
 import constants from '../constants/index.js';
 // Setup commands: params 0x02-0x0B, gap at 0x0C-0x13, then 0x14-0x18
-// Uses null entries to fill gaps, allowing index-based param calculation
+// Uses undefined entries to fill gaps, allowing index-based param calculation
 export const setupCommands = [
     // 0x02
     {
@@ -61,7 +61,7 @@ export const setupCommands = [
         max: 50,
         step: 1,
     },
-    // 0x0C - 0x13: Gap (8 null entries)
+    // 0x0C - 0x13: Gap (8 undefined entries)
     undefined,
     undefined,
     undefined,

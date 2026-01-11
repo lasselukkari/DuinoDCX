@@ -14,10 +14,10 @@ import {
  * Hook for handling .dcx file parsing
  */
 export function useDcxFile() {
-    const [file, setFile] = useState<DcxFile | null>(null);
+    const [file, setFile] = useState<DcxFile | undefined>(undefined);
     const [presets, setPresets] = useState<ParsedPreset[]>([]);
-    const [dcxData, setDcxData] = useState<Uint8Array | null>(null);
-    const [error, setError] = useState<string | null>(null);
+    const [dcxData, setDcxData] = useState<Uint8Array | undefined>(undefined);
+    const [error, setError] = useState<string | undefined>(undefined);
     const [isLoading, setIsLoading] = useState(false);
 
     /**
@@ -25,10 +25,10 @@ export function useDcxFile() {
      */
     const loadFromBuffer = useCallback((data: Uint8Array) => {
         setIsLoading(true);
-        setError(null);
-        setFile(null);
+        setError(undefined);
+        setFile(undefined);
         setPresets([]);
-        setDcxData(null);
+        setDcxData(undefined);
 
         try {
             if (!isValidDcxFile(data)) {
@@ -65,10 +65,10 @@ export function useDcxFile() {
      * Clear loaded file
      */
     const clear = useCallback(() => {
-        setFile(null);
+        setFile(undefined);
         setPresets([]);
-        setDcxData(null);
-        setError(null);
+        setDcxData(undefined);
+        setError(undefined);
     }, []);
 
     return {

@@ -213,7 +213,7 @@ function parsePresetSlots(data, lockFlags) {
         // This filters out false positives from UTF-16LE data
         if (data[i + 12] !== 0x00 || data[i + 13] !== 0x00)
             continue;
-        // Check if name looks valid (bytes 4-11 should be printable or null)
+        // Check if name looks valid (bytes 4-11 should be printable or undefined)
         // Name must START with alphanumeric character (A-Z, a-z, 0-9)
         // This filters out UTF-16LE data where high bytes are 00
         const firstChar = data[i + 4];

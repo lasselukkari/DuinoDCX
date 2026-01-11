@@ -20,9 +20,9 @@ export type RestoreStatus =
 export function useDcxRestore(connection: DcxConnection | undefined) {
     const [status, setStatus] = useState<RestoreStatus>('idle');
     const [progress, setProgress] = useState(0);
-    const [error, setError] = useState<string | null>(null);
-    const sessionRef = useRef<RestoreSession | null>(null);
-    const unsubscribeRef = useRef<(() => void) | null>(null);
+    const [error, setError] = useState<string | undefined>(undefined);
+    const sessionRef = useRef<RestoreSession | undefined>(undefined);
+    const unsubscribeRef = useRef<(() => void) | undefined>(undefined);
 
     /**
      * Start the restore process.
@@ -38,7 +38,7 @@ export function useDcxRestore(connection: DcxConnection | undefined) {
             // Reset state
             setStatus('initializing');
             setProgress(0);
-            setError(null);
+            setError(undefined);
 
             // Create restore session
             const session = new RestoreSession(dcxData);
@@ -70,14 +70,14 @@ export function useDcxRestore(connection: DcxConnection | undefined) {
                         setStatus('completed');
                         setProgress(1);
                         unsubscribeRef.current?.();
-                        unsubscribeRef.current = null;
+                        unsubscribeRef.current = undefined;
                         return;
                     }
 
                     case 'ERROR': {
                         setStatus('error');
                         unsubscribeRef.current?.();
-                        unsubscribeRef.current = null;
+                        unsubscribeRef.current = undefined;
                         return;
                     }
                 }
@@ -117,7 +117,7 @@ export function useDcxRestore(connection: DcxConnection | undefined) {
                         setError(String(error_));
                         setStatus('error');
                         unsubscribeRef.current?.();
-                        unsubscribeRef.current = null;
+                        unsubscribeRef.current = undefined;
                     }
                 }
             }
@@ -130,11 +130,11 @@ export function useDcxRestore(connection: DcxConnection | undefined) {
      */
     const reset = useCallback(() => {
         unsubscribeRef.current?.();
-        unsubscribeRef.current = null;
-        sessionRef.current = null;
+        unsubscribeRef.current = undefined;
+        sessionRef.current = undefined;
         setStatus('idle');
         setProgress(0);
-        setError(null);
+        setError(undefined);
     }, []);
 
     // Cleanup on unmount

@@ -144,7 +144,7 @@ export function NumberParameter({
         <FormLabel style={{marginBottom: '5px', display: 'block'}}>
           {name}
         </FormLabel>
-      ) : null}
+      ) : undefined}
 
       <div className="number-param-container">
         <div className="min-number">

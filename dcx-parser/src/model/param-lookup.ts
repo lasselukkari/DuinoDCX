@@ -73,7 +73,7 @@ function buildDirectLookup(): Map<DirectKey, ParameterDefinition> {
   // Channel 5-10 = Outputs (1-6)
 
   // 1. Setup Parameters (Channel 0)
-  // Param number = SETUP_BASE + index (with nulls filling gaps)
+  // Param number = SETUP_BASE + index (with undefineds filling gaps)
   for (const [i, cmd] of setupCommands.entries()) {
     if (cmd === undefined) continue;
 

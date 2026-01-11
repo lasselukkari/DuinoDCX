@@ -95,7 +95,7 @@ export class DcxStore {
      */
     reset() {
         console.log('[DcxStore] Reset');
-        this.state = null;
+        this.state = undefined;
         this.notify();
     }
     /**

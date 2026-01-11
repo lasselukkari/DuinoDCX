@@ -10,7 +10,7 @@ function toCamelCase(name) {
         .replace(/^(.)/, (match) => match.toLowerCase());
 }
 const COMMAND_BY_NAME = {};
-// Build lookup from all command arrays (filter nulls from setupCommands)
+// Build lookup from all command arrays (filter undefineds from setupCommands)
 for (const cmd of [
     ...setupCommands.filter((c) => c !== undefined),
     ...inputOutputCommands,
@@ -47,7 +47,7 @@ function convertRaw(parameterName, raw) {
 }
 export function readString(buffer, offset, length) {
     const slice = buffer.subarray(offset, offset + length);
-    // Remove null bytes but keep whitespace (fixed length fields)
+    // Remove undefined bytes but keep whitespace (fixed length fields)
     let end = 0;
     while (end < slice.length && slice[end] !== 0)
         end++;
@@ -71,7 +71,7 @@ export function nextU16(cursor) {
 export function parseSequential(cursor, parameters) {
     const result = {};
     for (const parameter of parameters) {
-        if (parameter === null) {
+        if (parameter === undefined) {
             cursor.offset += 2;
             continue;
         }

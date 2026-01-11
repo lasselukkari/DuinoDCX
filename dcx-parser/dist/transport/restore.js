@@ -78,14 +78,14 @@ export class RestoreSession {
     }
     /**
      * Get the next message to send to the device.
-     * Returns null if no messages are pending (waiting for device request).
+     * Returns undefined if no messages are pending (waiting for device request).
      */
     getNextMessage() {
         if (this.phase === RestorePhase.ERROR ||
             this.phase === RestorePhase.COMPLETED) {
-            return null;
+            return undefined;
         }
-        return this.messageQueue.shift() || null;
+        return this.messageQueue.shift() || undefined;
     }
     /**
      * Process a message received from the device.

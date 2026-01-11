@@ -23,7 +23,7 @@ const ConfigNavigation = memo(({ device, free: _free = 0 }: ConfigNavigationProp
     >
       {device?.setup ? (
         <Localization setup={device.setup} isXs={isXs} />
-      ) : null}
+      ) : undefined}
       <Config isXs={isXs} />
     </Navbar>
   );

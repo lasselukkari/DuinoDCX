@@ -16,11 +16,11 @@ export type BackupStatus = 'idle' | 'downloading' | 'completed' | 'error';
 export function useDcxBackup(connection: DcxConnection | undefined) {
     const [status, setStatus] = useState<BackupStatus>('idle');
     const [progress, setProgress] = useState(0);
-    const [dcxData, setDcxData] = useState<Uint8Array | null>(null);
-    const [error, setError] = useState<string | null>(null);
+    const [dcxData, setDcxData] = useState<Uint8Array | undefined>(undefined);
+    const [error, setError] = useState<string | undefined>(undefined);
 
-    const sessionRef = useRef<BackupSession | null>(null);
-    const unsubscribeRef = useRef<(() => void) | null>(null);
+    const sessionRef = useRef<BackupSession | undefined>(undefined);
+    const unsubscribeRef = useRef<(() => void) | undefined>(undefined);
 
     /**
      * Process pending messages from the session.
@@ -65,13 +65,13 @@ export function useDcxBackup(connection: DcxConnection | undefined) {
             setStatus('completed');
             // Cleanup subscription
             unsubscribeRef.current?.();
-            unsubscribeRef.current = null;
+            unsubscribeRef.current = undefined;
         } else if (session.isError()) {
             setError(session.getError());
             setStatus('error');
             // Cleanup subscription
             unsubscribeRef.current?.();
-            unsubscribeRef.current = null;
+            unsubscribeRef.current = undefined;
         } else {
             // Send the next queued message (if any)
             void flushMessages();
@@ -91,8 +91,8 @@ export function useDcxBackup(connection: DcxConnection | undefined) {
         // Reset state
         setStatus('downloading');
         setProgress(0);
-        setDcxData(null);
-        setError(null);
+        setDcxData(undefined);
+        setError(undefined);
 
         // Create new session
         const session = new BackupSession();
@@ -113,13 +113,13 @@ export function useDcxBackup(connection: DcxConnection | undefined) {
      */
     const reset = useCallback(() => {
         unsubscribeRef.current?.();
-        unsubscribeRef.current = null;
+        unsubscribeRef.current = undefined;
         sessionRef.current?.reset();
-        sessionRef.current = null;
+        sessionRef.current = undefined;
         setStatus('idle');
         setProgress(0);
-        setDcxData(null);
-        setError(null);
+        setDcxData(undefined);
+        setError(undefined);
     }, []);
 
     // Cleanup on unmount

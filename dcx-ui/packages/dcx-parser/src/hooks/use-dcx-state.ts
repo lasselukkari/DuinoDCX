@@ -27,13 +27,13 @@ import {
  * Hook for real-time device state.
  */
 export function useDcxState(connection: DcxConnection | undefined) {
-  const [state, setState] = useState<State | undefined>(null);
+  const [state, setState] = useState<State | undefined>(undefined);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | undefined>(null);
+  const [error, setError] = useState<string | undefined>(undefined);
 
-  const unsubscribeRef = useRef<(() => void) | undefined>(null);
-  const part0Ref = useRef<Uint8Array | undefined>(null);
-  const part1Ref = useRef<Uint8Array | undefined>(null);
+  const unsubscribeRef = useRef<(() => void) | undefined>(undefined);
+  const part0Ref = useRef<Uint8Array | undefined>(undefined);
+  const part1Ref = useRef<Uint8Array | undefined>(undefined);
 
   /**
    * Fetch current state from device.
@@ -45,9 +45,9 @@ export function useDcxState(connection: DcxConnection | undefined) {
     }
 
     setIsLoading(true);
-    setError(null);
-    part0Ref.current = null;
-    part1Ref.current = null;
+    setError(undefined);
+    part0Ref.current = undefined;
+    part1Ref.current = undefined;
 
     try {
       // Request both edit buffer parts
@@ -103,7 +103,7 @@ export function useDcxState(connection: DcxConnection | undefined) {
 
     return () => {
       unsubscribeRef.current?.();
-      unsubscribeRef.current = null;
+      unsubscribeRef.current = undefined;
     };
   }, [connection, state]);
 

@@ -36,15 +36,15 @@ export function useDcxState(connection: DcxConnection | undefined) {
     const state = useSyncExternalStore(
         dcxStore.subscribe,
         dcxStore.getSnapshot,
-        () => null, // Server snapshot (SSR)
+        () => undefined, // Server snapshot (SSR)
     );
 
     const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
+    const [error, setError] = useState<string | undefined>(undefined);
 
     // Refs for accumulating edit buffer parts
-    const part0Ref = useRef<Uint8Array | null>(null);
-    const part1Ref = useRef<Uint8Array | null>(null);
+    const part0Ref = useRef<Uint8Array | undefined>(undefined);
+    const part1Ref = useRef<Uint8Array | undefined>(undefined);
 
     /**
      * Fetch current state from device.
@@ -56,9 +56,9 @@ export function useDcxState(connection: DcxConnection | undefined) {
         }
 
         setIsLoading(true);
-        setError(null);
-        part0Ref.current = null;
-        part1Ref.current = null;
+        setError(undefined);
+        part0Ref.current = undefined;
+        part1Ref.current = undefined;
 
         try {
             // Request both edit buffer parts

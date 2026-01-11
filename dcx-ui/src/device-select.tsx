@@ -17,7 +17,7 @@ function DeviceSelect({ onSelect, devices, free, selected, isXs }: Props) {
   const selectedDevice = devices.find(({ id }) => id === selected);
 
   if (devices.length === 0 || !selectedDevice || !free) {
-    return null;
+    return undefined;
   }
 
   const deviceName = `${selectedDevice.id}. ${selectedDevice.name} ${selectedDevice.version} (${free}%)`;

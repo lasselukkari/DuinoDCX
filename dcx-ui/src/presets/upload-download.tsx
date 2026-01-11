@@ -157,7 +157,7 @@ export function UploadDownload(_props: Props) {
             style={{ height: '10px' }}
           />
         </div>
-      ) : null}
+      ) : undefined}
     </div>
   );
 }

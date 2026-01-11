@@ -45,7 +45,7 @@ export declare class BackupSession {
     reset(): void;
     /**
      * Get the next message to send to the device.
-     * Returns null if no messages are pending.
+     * Returns undefined if no messages are pending.
      */
     getNextMessage(): Uint8Array | undefined;
     /**

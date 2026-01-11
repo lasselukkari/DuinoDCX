@@ -24,7 +24,7 @@ interface RouterContext {
 }
 
 interface DeviceContextType {
-    device: State | null;
+    device: State | undefined;
     isBlocking: boolean;
 }
 
@@ -94,14 +94,14 @@ function RootComponent() {
                         outputs={outputs}
                         onBlockingChange={handleBlockingChange}
                     />
-                ) : null}
+                ) : undefined}
                 <div className="container">
                     <Outlet />
                     <div className="mt-5 mb-5 p-3 border rounded bg-dark border-secondary">
                         <details>
                             <summary className="text-secondary cursor-pointer">Debug: Device State JSON</summary>
                             <pre className="mt-3 text-info small" style={{ maxHeight: '400px', overflow: 'auto' }}>
-                                {JSON.stringify(device, null, 2)}
+                                {JSON.stringify(device, undefined, 2)}
                             </pre>
                         </details>
                     </div>
@@ -150,7 +150,7 @@ const inputsTabRoute = createRoute({
 
 function InputsWrapper() {
     const { device, isBlocking } = useDeviceContext();
-    if (!device) return null;
+    if (!device) return undefined;
     return <Inputs device={device} isBlocking={isBlocking} />;
 }
 
@@ -185,7 +185,7 @@ const outputsTabRoute = createRoute({
 
 function OutputsWrapper() {
     const { device, isBlocking } = useDeviceContext();
-    if (!device) return null;
+    if (!device) return undefined;
     return <Outputs device={device} isBlocking={isBlocking} />;
 }
 

@@ -17,7 +17,7 @@ function Equalizers({ channels, group, isBlocking }: Props) {
   const defaultChannel = Object.keys(channels)[0];
   const activeKey = channelId || defaultChannel;
 
-  const handleSelect = (key: string | null) => {
+  const handleSelect = (key: string | undefined) => {
     if (key) {
       void navigate({
         to: `/${group}/equalizers/$channelId`,

@@ -30,9 +30,9 @@ export function EnumParameter({
     <Form.Group style={{marginBottom: '15px'}}>
       {hasLabel ? (
         <Form.Label>
-          {name} {unit ? `(${unit})` : null}
+          {name} {unit ? `(${unit})` : undefined}
         </Form.Label>
-      ) : null}
+      ) : undefined}
       <Form.Select value={value} onChange={handleValueChange}>
         {enums.map((enumeral) => (
           <option key={enumeral}>{enumeral}</option>

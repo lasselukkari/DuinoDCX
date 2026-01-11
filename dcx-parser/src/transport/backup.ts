@@ -38,8 +38,8 @@ export class BackupSession {
   private readonly messageQueue: Uint8Array[] = [];
   private readonly pages = new Map<number, Uint8Array>();
   private nextPageToRequest = 0;
-  private dcxData: Uint8Array | undefined = null;
-  private errorMessage: string | undefined = null;
+  private dcxData: Uint8Array | undefined = undefined;
+  private errorMessage: string | undefined = undefined;
 
   constructor() {
     // Nothing to initialize
@@ -57,8 +57,8 @@ export class BackupSession {
     this.phase = BackupPhase.DOWNLOADING;
     this.pages.clear();
     this.nextPageToRequest = 0;
-    this.dcxData = null;
-    this.errorMessage = null;
+    this.dcxData = undefined;
+    this.errorMessage = undefined;
 
     // Queue only the first page request
     this.queuePageRequest(0);
@@ -72,14 +72,14 @@ export class BackupSession {
     this.phase = BackupPhase.IDLE;
     this.pages.clear();
     this.nextPageToRequest = 0;
-    this.dcxData = null;
-    this.errorMessage = null;
+    this.dcxData = undefined;
+    this.errorMessage = undefined;
     this.messageQueue.length = 0;
   }
 
   /**
    * Get the next message to send to the device.
-   * Returns null if no messages are pending.
+   * Returns undefined if no messages are pending.
    */
   public getNextMessage(): Uint8Array | undefined {
     if (
@@ -87,10 +87,10 @@ export class BackupSession {
       this.phase === BackupPhase.COMPLETED ||
       this.phase === BackupPhase.IDLE
     ) {
-      return null;
+      return undefined;
     }
 
-    return this.messageQueue.shift() || null;
+    return this.messageQueue.shift() || undefined;
   }
 
   /**

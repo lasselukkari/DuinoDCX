@@ -35,7 +35,7 @@ export function BoolParameter({
         <Form.Label style={{marginBottom: '5px', display: 'block'}}>
           {label ?? name}
         </Form.Label>
-      ) : null}
+      ) : undefined}
 
       <Button
         className="w-100"

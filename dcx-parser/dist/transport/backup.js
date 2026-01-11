@@ -34,8 +34,8 @@ export class BackupSession {
     messageQueue = [];
     pages = new Map();
     nextPageToRequest = 0;
-    dcxData = null;
-    errorMessage = null;
+    dcxData = undefined;
+    errorMessage = undefined;
     constructor() {
         // Nothing to initialize
     }
@@ -50,8 +50,8 @@ export class BackupSession {
         this.phase = BackupPhase.DOWNLOADING;
         this.pages.clear();
         this.nextPageToRequest = 0;
-        this.dcxData = null;
-        this.errorMessage = null;
+        this.dcxData = undefined;
+        this.errorMessage = undefined;
         // Queue only the first page request
         this.queuePageRequest(0);
         this.nextPageToRequest = 1;
@@ -63,21 +63,21 @@ export class BackupSession {
         this.phase = BackupPhase.IDLE;
         this.pages.clear();
         this.nextPageToRequest = 0;
-        this.dcxData = null;
-        this.errorMessage = null;
+        this.dcxData = undefined;
+        this.errorMessage = undefined;
         this.messageQueue.length = 0;
     }
     /**
      * Get the next message to send to the device.
-     * Returns null if no messages are pending.
+     * Returns undefined if no messages are pending.
      */
     getNextMessage() {
         if (this.phase === BackupPhase.ERROR ||
             this.phase === BackupPhase.COMPLETED ||
             this.phase === BackupPhase.IDLE) {
-            return null;
+            return undefined;
         }
-        return this.messageQueue.shift() || null;
+        return this.messageQueue.shift() || undefined;
     }
     /**
      * Process a message received from the device.

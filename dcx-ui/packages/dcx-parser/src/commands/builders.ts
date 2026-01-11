@@ -258,14 +258,14 @@ export function buildParamChangeCommand(
   const def = findParameterDefinition(target);
   if (!def) {
     console.warn('Parameter not found for target:', target);
-    return null;
+    return undefined;
   }
 
   // Find the direct command address
   const address = findDirectAddress(target, def.key);
   if (!address) {
     console.warn('Direct address not found for target:', target);
-    return null;
+    return undefined;
   }
 
   // Convert value to raw

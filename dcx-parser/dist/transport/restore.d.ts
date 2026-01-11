@@ -31,7 +31,7 @@ export declare class RestoreSession {
     start(): void;
     /**
      * Get the next message to send to the device.
-     * Returns null if no messages are pending (waiting for device request).
+     * Returns undefined if no messages are pending (waiting for device request).
      */
     getNextMessage(): Uint8Array | undefined;
     /**

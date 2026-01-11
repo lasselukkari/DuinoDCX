@@ -18,7 +18,7 @@ function Connection(_props: ConnectionProps) {
   const [current, setCurrent] = useState<string | undefined>(undefined);
 
   // Connection state from API
-  // const [hostname, setHostname] = useState<string | null | null>(null); // Unused in original render? Original checked hostname in shouldComponentUpdate but didn't use it?
+  // const [hostname, setHostname] = useState<string | undefined | undefined>(undefined); // Unused in original render? Original checked hostname in shouldComponentUpdate but didn't use it?
 
   const showFetchError = () => {
     if (!toast.isActive('fetch-failed')) {
@@ -130,7 +130,7 @@ function Connection(_props: ConnectionProps) {
       // Original:
       // async diconnectConnetion() { ... await fetch(DELETE) ... this.updateConnection(); }
       // Maybe it meant `this.fetchConnection()`?
-      // `updateConnection` sets IP to null, sends PATCH with ssid/password.
+      // `updateConnection` sets IP to undefined, sends PATCH with ssid/password.
       // If I disconnect, surely I don't want to immediately reconnect to `selected`?
       // But maybe `selected` is preserved?
       // Let's assume original code was correct in intent or just call fetchConnection to refresh status.

@@ -54,7 +54,7 @@ export function DcxConnectionProvider({
   // Create connection once
   const connectionRef = useRef<
     ReturnType<typeof createSseConnection> | undefined
-  >(null);
+  >(undefined);
 
   connectionRef.current ||= createSseConnection({
     clientId: clientIdRef.current,

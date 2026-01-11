@@ -15,16 +15,16 @@
 export const EDIT_BUFFER_SETUP_PARAMS = [
     // Bytes 0-36: Headers (handled by parser skipping or separate header object)
     // The parser starts cursor at 1.
-    // Old buffer-structure had 18 nulls (36 bytes).
-    ...Array.from({ length: 18 }).fill(null),
+    // Old buffer-structure had 18 undefineds (36 bytes).
+    ...Array.from({ length: 18 }).fill(undefined),
     'delayUnits', // 36-37
     'muteOutsWhenPowered', // 38-39
-    ...Array.from({ length: 24 }).fill(null), // Skip 48 bytes -> to byte 88
+    ...Array.from({ length: 24 }).fill(undefined), // Skip 48 bytes -> to byte 88
     'outputConfig', // 88-89
     'inputSumType', // 90-91
     'inputABSource', // 92-93
     'inputCGain', // 94-95
-    null, // 96-97 (reserved)
+    undefined, // 96-97 (reserved)
     'stereolink', // 98-99
     'stereolinkMode', // 100-101
     'delayLink', // 102-103
@@ -44,12 +44,12 @@ export const EDIT_BUFFER_SETUP_PARAMS = [
 export const PRESET_SETUP_PARAMS = [
     { name: 'setup_header', type: 'skip', length: 76 }, // Skip to preset name (XSNP at 7, name at 83)
     { name: 'presetName', type: 'string', length: 8 }, // Offset 83-90
-    null, // Offset 91-92 (padding)
+    undefined, // Offset 91-92 (padding)
     'outputConfig', // Offset 93-94
     'inputSumType', // Offset 95-96
     'inputABSource', // Offset 97-98
     'inputCGain', // Offset 99-100
-    null, // Offset 101-102 (reserved)
+    undefined, // Offset 101-102 (reserved)
     'stereolink', // Offset 103-104
     'stereolinkMode', // Offset 105-106
     'delayLink', // Offset 107-108
@@ -69,8 +69,8 @@ export const INPUT_CHANNEL_PARAMS = [
     'isDelayOn',
     'longDelay',
     'isEqualizerOn',
-    null,
-    null,
+    undefined,
+    undefined,
     'dynamicEqualizerAttack',
     'dynamicEqualizerRelease',
     'dynamicEqualizerRatio',

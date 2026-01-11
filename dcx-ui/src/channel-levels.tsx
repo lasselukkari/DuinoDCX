@@ -51,7 +51,7 @@ function ChannelLevels({ device, inputs, outputs }: Props) {
   }));
 
   if (!device || !inputs || !outputs) {
-    return null;
+    return undefined;
   }
 
   const handleMuteAll = (value: boolean) => {

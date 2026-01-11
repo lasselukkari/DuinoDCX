@@ -122,7 +122,7 @@ export class DcxStore {
    */
   reset(): void {
     console.log('[DcxStore] Reset');
-    this.state = null;
+    this.state = undefined;
     this.notify();
   }
 

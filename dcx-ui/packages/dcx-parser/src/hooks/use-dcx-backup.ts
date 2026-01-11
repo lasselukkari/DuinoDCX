@@ -20,11 +20,11 @@ const TOTAL_PAGES = 12;
 export function useDcxBackup(connection: DcxConnection | undefined) {
   const [status, setStatus] = useState<BackupStatus>('idle');
   const [progress, setProgress] = useState(0);
-  const [dcxData, setDcxData] = useState<Uint8Array | undefined>(null);
-  const [error, setError] = useState<string | undefined>(null);
+  const [dcxData, setDcxData] = useState<Uint8Array | undefined>(undefined);
+  const [error, setError] = useState<string | undefined>(undefined);
 
   const pagesRef = useRef<Map<number, Uint8Array>>(new Map());
-  const unsubscribeRef = useRef<(() => void) | undefined>(null);
+  const unsubscribeRef = useRef<(() => void) | undefined>(undefined);
 
   /**
    * Start the backup process.
@@ -39,8 +39,8 @@ export function useDcxBackup(connection: DcxConnection | undefined) {
     // Reset state
     setStatus('downloading');
     setProgress(0);
-    setDcxData(null);
-    setError(null);
+    setDcxData(undefined);
+    setError(undefined);
     pagesRef.current.clear();
 
     // Subscribe to messages
@@ -71,7 +71,7 @@ export function useDcxBackup(connection: DcxConnection | undefined) {
 
           // Cleanup
           unsubscribeRef.current?.();
-          unsubscribeRef.current = null;
+          unsubscribeRef.current = undefined;
         }
       }
     });
@@ -85,7 +85,7 @@ export function useDcxBackup(connection: DcxConnection | undefined) {
       setError(String(error_));
       setStatus('error');
       unsubscribeRef.current?.();
-      unsubscribeRef.current = null;
+      unsubscribeRef.current = undefined;
     }
   }, [connection]);
 
@@ -94,11 +94,11 @@ export function useDcxBackup(connection: DcxConnection | undefined) {
    */
   const reset = useCallback(() => {
     unsubscribeRef.current?.();
-    unsubscribeRef.current = null;
+    unsubscribeRef.current = undefined;
     setStatus('idle');
     setProgress(0);
-    setDcxData(null);
-    setError(null);
+    setDcxData(undefined);
+    setError(undefined);
     pagesRef.current.clear();
   }, []);
 

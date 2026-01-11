@@ -24,7 +24,7 @@ function Presets() {
   const dcxFile = useDcxFile();
 
   // Modal state
-  const [selectedPreset, setSelectedPreset] = useState<PresetEntry | null>(null);
+  const [selectedPreset, setSelectedPreset] = useState<PresetEntry | undefined>(undefined);
   const [showModal, setShowModal] = useState(false);
 
   // When backup completes, load the data into the file hook
@@ -281,7 +281,7 @@ function Presets() {
               fontSize: '0.85em',
             }}
           >
-            {selectedPreset ? JSON.stringify(selectedPreset.state, null, 2) : 'No data'}
+            {selectedPreset ? JSON.stringify(selectedPreset.state, undefined, 2) : 'No data'}
           </pre>
         </Modal.Body>
         <Modal.Footer>

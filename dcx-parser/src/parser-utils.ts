@@ -30,7 +30,7 @@ function toCamelCase(name: string): string {
 
 const COMMAND_BY_NAME: Record<string, Command> = {};
 
-// Build lookup from all command arrays (filter nulls from setupCommands)
+// Build lookup from all command arrays (filter undefineds from setupCommands)
 for (const cmd of [
   ...setupCommands.filter((c): c is Command => c !== undefined),
   ...inputOutputCommands,
@@ -93,7 +93,7 @@ export function readString(
   length: number,
 ): string {
   const slice = buffer.subarray(offset, offset + length);
-  // Remove null bytes but keep whitespace (fixed length fields)
+  // Remove undefined bytes but keep whitespace (fixed length fields)
   let end = 0;
   while (end < slice.length && slice[end] !== 0) end++;
   return new TextDecoder().decode(slice.subarray(0, end));
@@ -129,7 +129,7 @@ export function parseSequential(
   const result: Record<string, number | string | boolean> = {};
 
   for (const parameter of parameters) {
-    if (parameter === null) {
+    if (parameter === undefined) {
       cursor.offset += 2;
       continue;
     }

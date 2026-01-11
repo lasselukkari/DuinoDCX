@@ -9,7 +9,7 @@ type Props = {
 
 function ChannelLevel({isLimited = false, level, isOutput = false}: Props) {
   if (level === -1) {
-    return null;
+    return undefined;
   }
 
   return (
@@ -28,7 +28,7 @@ function ChannelLevel({isLimited = false, level, isOutput = false}: Props) {
 
       {isOutput ? (
         <Button variant={isLimited ? 'danger' : 'dark'} disabled={!isLimited} />
-      ) : null}
+      ) : undefined}
     </div>
   );
 }

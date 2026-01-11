@@ -28,7 +28,7 @@ export type PresetEntry = {
  * Hook for managing .dcx file data and accessing presets.
  */
 export function useDcxFile() {
-  const [dcxData, setDcxData] = useState<Uint8Array | undefined>(null);
+  const [dcxData, setDcxData] = useState<Uint8Array | undefined>(undefined);
   const [parsedPresets, setParsedPresets] = useState<ParsedPreset[]>([]);
   const [lockFlags, setLockFlags] = useState<boolean[]>([]);
 
@@ -52,7 +52,7 @@ export function useDcxFile() {
       setLockFlags(result.lockFlags);
     } catch (error) {
       console.error('Failed to parse DCX file:', error);
-      setDcxData(null);
+      setDcxData(undefined);
       setParsedPresets([]);
       setLockFlags([]);
     }
@@ -62,7 +62,7 @@ export function useDcxFile() {
    * Clear current file data.
    */
   const clear = useCallback(() => {
-    setDcxData(null);
+    setDcxData(undefined);
     setParsedPresets([]);
     setLockFlags([]);
   }, []);
@@ -97,7 +97,7 @@ export function useDcxFile() {
           name: `<Empty ${slot}>`,
           isEmpty: true,
           isLocked: lockFlags[slot - 1] ?? false,
-          state: null as unknown as State, // Empty slots have no state
+          state: undefined as unknown as State, // Empty slots have no state
         });
       }
     }

@@ -32,7 +32,7 @@ function Inputs({ device, isBlocking }: Props) {
     activeTab = 'equalizers';
   }
 
-  const handleSelect = (key: string | null) => {
+  const handleSelect = (key: string | undefined) => {
     if (key) {
       if (key === 'equalizers') {
         void navigate({

@@ -133,7 +133,7 @@ function Upload(_props: UploadProps) {
     const release = allReleases[0];
 
     if (!release) {
-      return null;
+      return undefined;
     }
 
     const asset = release.assets.find(
@@ -141,7 +141,7 @@ function Upload(_props: UploadProps) {
     );
 
     if (!asset?.browser_download_url || !asset.name) {
-      return null;
+      return undefined;
     }
 
     // CurrentVer.version might need handling if it contains 'v' prefix vs tag etc.
@@ -175,7 +175,7 @@ function Upload(_props: UploadProps) {
     }
 
     if (!release.link || !release.name) {
-      return null;
+      return undefined;
     }
 
     return (
@@ -188,7 +188,7 @@ function Upload(_props: UploadProps) {
     );
   };
 
-  let latestRelease = null;
+  let latestRelease = undefined;
   if (version && releases && releases.length > 0) {
     latestRelease = getNewRelease(version, releases);
   }
@@ -229,7 +229,7 @@ function Upload(_props: UploadProps) {
         <p>
           Current version: {version.version}, {version.buildDate}
         </p>
-        {latestRelease ? renderRelease(latestRelease) : null}
+        {latestRelease ? renderRelease(latestRelease) : undefined}
       </div>
     </div>
   );
