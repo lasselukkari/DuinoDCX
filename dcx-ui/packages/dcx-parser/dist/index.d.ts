@@ -87,7 +87,7 @@ export {useDcxState} from './hooks/use-dcx-state.js';
 export {useDcxBackup, type BackupStatus} from './hooks/use-dcx-backup.js';
 export {useDcxRestore, type RestoreStatus} from './hooks/use-dcx-restore.js';
 export {
-  buildParamChangeCommand,
+  buildParameterChangeCommand,
   type ParameterTarget,
 } from './commands/builders.js';
 export {

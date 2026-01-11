@@ -20,7 +20,7 @@ export * from './enums/outputs.js';
 export * from './enums/channels.js';
 export * from './enums/channel-levels.js';
 export * from './enums/delay-units.js';
-declare const _default: {
+declare const constants: {
     delayUnits: string[];
     channelLevels: (number | undefined)[];
     channels: string[];
@@ -67,5 +67,5 @@ declare const _default: {
     PART_0: 0;
     PART_1: 1;
 };
-export default _default;
+export default constants;
 //# sourceMappingURL=index.d.ts.map

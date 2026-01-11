@@ -167,31 +167,19 @@ export function applyToState(state, def, value) {
     const { target, key } = def;
     switch (target.kind) {
         case 'setup': {
-            if (state.setup) {
-                state.setup[key] = value;
-            }
+            state.setup[key] = value;
             break;
         }
         case 'channel': {
-            const group = state[target.group];
-            if (group?.[target.id]) {
-                group[target.id][key] = value;
-            }
+            state[target.group][target.id][key] = value;
             break;
         }
         case 'equalizer': {
             const group = state[target.group];
-            if (group?.[target.channelId]) {
-                const channel = group[target.channelId];
-                const bandKey = String(target.band);
-                channel.equalizers ||= {};
-                if (channel.equalizers[bandKey]) {
-                    channel.equalizers[bandKey][key] = value;
-                }
-                else {
-                    channel.equalizers[bandKey] = { [key]: value };
-                }
-            }
+            const channel = group[target.channelId];
+            const bandKey = String(target.band);
+            channel.equalizers ||= {};
+            channel.equalizers[bandKey][key] = value;
             break;
         }
     }

@@ -5,6 +5,7 @@ import {
   equalizerCommands,
   type Command,
 } from '../commands/commands.js';
+import { State } from '../types/index.js';
 
 // ============================================================================
 // Types
@@ -233,7 +234,7 @@ export function toRawValue(
  * Apply a value to the correct location in state.
  */
 export function applyToState(
-  state: any,
+  state: State,
   def: ParameterDefinition,
   value: boolean | string | number,
 ): void {
@@ -241,36 +242,24 @@ export function applyToState(
 
   switch (target.kind) {
     case 'setup': {
-      if (state.setup) {
-        state.setup[key] = value;
-      }
+      state.setup[key] = value;
 
       break;
     }
 
     case 'channel': {
-      const group = state[target.group];
-      if (group?.[target.id]) {
-        group[target.id][key] = value;
-      }
+      state[target.group][target.id][key] = value;
 
       break;
     }
 
     case 'equalizer': {
       const group = state[target.group];
-      if (group?.[target.channelId]) {
-        const channel = group[target.channelId];
-        const bandKey = String(target.band);
+      const channel = group[target.channelId];
+      const bandKey = String(target.band);
 
-        channel.equalizers ||= {};
-
-        if (channel.equalizers[bandKey]) {
-          channel.equalizers[bandKey][key] = value;
-        } else {
-          channel.equalizers[bandKey] = {[key]: value};
-        }
-      }
+      channel.equalizers ||= {};
+      channel.equalizers[bandKey][key] = value;
 
       break;
     }

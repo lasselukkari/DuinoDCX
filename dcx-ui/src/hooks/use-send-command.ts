@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { toast } from 'react-toastify';
-import { buildParamChangeCommand, type ParameterTarget } from 'dcx-parser';
+import { buildParameterChangeCommand, type ParameterTarget } from 'dcx-parser';
 import { useDcxConnection } from '../connection/connection-context.js';
 
 /**
@@ -31,14 +31,14 @@ export const useSendCommand = () => {
         // Batch mode: array of {target, value} objects
         if (Array.isArray(targetOrBatch)) {
           for (const cmd of targetOrBatch) {
-            const command = buildParamChangeCommand(cmd.target, cmd.value);
+            const command = buildParameterChangeCommand(cmd.target, cmd.value);
             if (command) {
               await connection.send(command);
             }
           }
         } else {
           // Single mode: target + value as separate arguments
-          const command = buildParamChangeCommand(targetOrBatch, value!);
+          const command = buildParameterChangeCommand(targetOrBatch, value!);
           if (command) {
             await connection.send(command);
           }

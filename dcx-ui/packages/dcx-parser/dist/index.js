@@ -86,7 +86,7 @@ export {useDcxState} from './hooks/use-dcx-state.js';
 export {useDcxBackup} from './hooks/use-dcx-backup.js';
 export {useDcxRestore} from './hooks/use-dcx-restore.js';
 // High-level parameter commands
-export {buildParamChangeCommand} from './commands/builders.js';
+export {buildParameterChangeCommand} from './commands/builders.js';
 // Command definitions for UI
 export {
   setupCommands,

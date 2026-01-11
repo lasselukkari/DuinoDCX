@@ -116,6 +116,6 @@ export {useDcxRestore, type RestoreStatus} from './hooks/use-dcx-restore.js';
 
 // High-level parameter commands
 export {
-  buildParamChangeCommand,
+  buildParameterChangeCommand,
   type ParameterTarget,
 } from './commands/builders.js';

@@ -20,7 +20,7 @@ import {
     parseMessage,
     parseEditBuffer,
     buildEditBufferRequest,
-    buildParamChangeCommand,
+    buildParameterChangeCommand,
     type ParameterTarget,
     dcxStore,
     getSetupParamId,
@@ -123,7 +123,7 @@ export function useDcxState(connection: DcxConnection | undefined) {
             if (!connection) return;
 
             const target: ParameterTarget = { kind: 'setup', key: String(key) };
-            const cmd = buildParamChangeCommand(target, value);
+            const cmd = buildParameterChangeCommand(target, value);
             if (cmd) {
                 await connection.send(cmd);
                 // Optimistic update through the store with type-safe ParamId
@@ -147,7 +147,7 @@ export function useDcxState(connection: DcxConnection | undefined) {
             if (!connection) return;
 
             const target: ParameterTarget = { kind: 'channel', group, id, key };
-            const cmd = buildParamChangeCommand(target, value);
+            const cmd = buildParameterChangeCommand(target, value);
             if (cmd) {
                 await connection.send(cmd);
                 // Optimistic update through the store with type-safe ParamId
@@ -178,7 +178,7 @@ export function useDcxState(connection: DcxConnection | undefined) {
                 band,
                 key,
             };
-            const cmd = buildParamChangeCommand(target, value);
+            const cmd = buildParameterChangeCommand(target, value);
             if (cmd) {
                 await connection.send(cmd);
                 // Optimistic update through the store with type-safe ParamId

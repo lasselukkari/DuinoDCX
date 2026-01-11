@@ -36,9 +36,6 @@ export class BackupSession {
     nextPageToRequest = 0;
     dcxData = undefined;
     errorMessage = undefined;
-    constructor() {
-        // Nothing to initialize
-    }
     /**
      * Start the backup process.
      * Queues only the first page request.
@@ -77,7 +74,7 @@ export class BackupSession {
             this.phase === BackupPhase.IDLE) {
             return undefined;
         }
-        return this.messageQueue.shift() || undefined;
+        return this.messageQueue.shift() ?? undefined;
     }
     /**
      * Process a message received from the device.
@@ -101,29 +98,6 @@ export class BackupSession {
                 this.queuePageRequest(this.nextPageToRequest);
                 this.nextPageToRequest++;
             }
-        }
-    }
-    queuePageRequest(page) {
-        const request = buildPageDumpRequest(page);
-        this.messageQueue.push(request);
-    }
-    assembleAndComplete() {
-        try {
-            // Assemble pages into DCX file
-            const pageArray = [];
-            for (let i = 0; i < TOTAL_PAGES; i++) {
-                const pageData = this.pages.get(i);
-                if (!pageData) {
-                    throw new Error(`Missing page ${i}`);
-                }
-                pageArray.push({ page: i, data: pageData });
-            }
-            this.dcxData = assemblePagesIntoDcxFile(pageArray);
-            this.phase = BackupPhase.COMPLETED;
-        }
-        catch (error) {
-            this.errorMessage = String(error);
-            this.phase = BackupPhase.ERROR;
         }
     }
     /**
@@ -165,6 +139,29 @@ export class BackupSession {
      */
     getPhase() {
         return this.phase;
+    }
+    queuePageRequest(page) {
+        const request = buildPageDumpRequest(page);
+        this.messageQueue.push(request);
+    }
+    assembleAndComplete() {
+        try {
+            // Assemble pages into DCX file
+            const pageArray = [];
+            for (let i = 0; i < TOTAL_PAGES; i++) {
+                const pageData = this.pages.get(i);
+                if (!pageData) {
+                    throw new Error(`Missing page ${i}`);
+                }
+                pageArray.push({ page: i, data: pageData });
+            }
+            this.dcxData = assemblePagesIntoDcxFile(pageArray);
+            this.phase = BackupPhase.COMPLETED;
+        }
+        catch (error) {
+            this.errorMessage = String(error);
+            this.phase = BackupPhase.ERROR;
+        }
     }
 }
 //# sourceMappingURL=backup.js.map

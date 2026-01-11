@@ -8,27 +8,8 @@
  * Block format: [data0, data1, data2, data3, data4, data5, data6, msbByte]
  * where msbByte = bit0*data0.msb + bit1*data1.msb + ... + bit6*data6.msb
  */
-/**
- * Encode 8-bit data to 7-bit MIDI-safe format.
- * Every 7 input bytes become 8 output bytes.
- *
- * @param data - Raw 8-bit data
- * @returns Encoded 7-bit safe data
- */
-/**
- * Decode 7-bit MIDI-safe data back to 8-bit.
- *
- * Mode 1: "Indexed" (default)
- * Maps 8 encoded bytes to 8 decoded bytes.
- * Restores MSBs in the first 7 bytes but KEEPS the flag byte at index 7.
- * Use this for real-time state sync to maintain 1:1 parameter indices.
- *
- * Mode 2: "Raw"
- * Maps 8 encoded bytes to 7 decoded bytes.
- * Restores MSBs and STRIPS the flag byte.
- * Use this for .dcx file storage and preset parsing.
- */
-export function decode7to8(data, options = { indexed: true }) {
+const DEFAULT_DECODE_OPTIONS = { indexed: true };
+export function decode7to8(data, options = DEFAULT_DECODE_OPTIONS) {
     const numberBlocks = Math.floor(data.length / 8);
     const resultLength = options.indexed ? data.length : numberBlocks * 7;
     const result = new Uint8Array(resultLength);
@@ -56,10 +37,11 @@ export function decode7to8(data, options = { indexed: true }) {
     }
     return result;
 }
+const DEFAULT_ENCODE_OPTIONS = { indexed: false };
 /**
  * Encode 8-bit data to 7-bit MIDI-safe format.
  */
-export function encode8to7(data, options = { indexed: false }) {
+export function encode8to7(data, options = DEFAULT_ENCODE_OPTIONS) {
     if (options.indexed) {
         const outputLength = data.length;
         const result = new Uint8Array(outputLength);

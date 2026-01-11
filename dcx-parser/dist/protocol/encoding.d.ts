@@ -28,13 +28,15 @@
  * Restores MSBs and STRIPS the flag byte.
  * Use this for .dcx file storage and preset parsing.
  */
-export declare function decode7to8(data: Uint8Array, options?: {
+export type DecodeOptions = {
     indexed: boolean;
-}): Uint8Array;
+};
+export declare function decode7to8(data: Uint8Array, options?: DecodeOptions): Uint8Array;
+export type EncodeOptions = {
+    indexed: boolean;
+};
 /**
  * Encode 8-bit data to 7-bit MIDI-safe format.
  */
-export declare function encode8to7(data: Uint8Array, options?: {
-    indexed: boolean;
-}): Uint8Array;
+export declare function encode8to7(data: Uint8Array, options?: EncodeOptions): Uint8Array;
 //# sourceMappingURL=encoding.d.ts.map

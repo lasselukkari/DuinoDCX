@@ -2,7 +2,7 @@ import {
   INPUT_CHANNEL_PARAMS,
   EQ_BAND_PARAMS,
   OUTPUT_EXTRA_PARAMS,
-  type ParamDef,
+  type ParameterDefinition,
 } from './structure.js';
 import {
   setupCommands,
@@ -124,7 +124,7 @@ export function nextU16(cursor: Cursor): number {
 
 export function parseSequential(
   cursor: Cursor,
-  parameters: ParamDef[],
+  parameters: ParameterDefinition[],
 ): Record<string, number | string | boolean> {
   const result: Record<string, number | string | boolean> = {};
 
@@ -146,7 +146,7 @@ export function parseSequential(
         cursor.offset += length;
         let stringValue = '';
         for (const b of stringBytes) {
-          if (b !== 0) stringValue += String.fromCharCode(b);
+          if (b !== 0) stringValue += String.fromCodePoint(b);
         }
 
         result[name] = stringValue.trim();

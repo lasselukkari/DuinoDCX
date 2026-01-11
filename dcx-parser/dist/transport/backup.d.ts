@@ -33,7 +33,6 @@ export declare class BackupSession {
     private nextPageToRequest;
     private dcxData;
     private errorMessage;
-    constructor();
     /**
      * Start the backup process.
      * Queues only the first page request.
@@ -53,8 +52,6 @@ export declare class BackupSession {
      * Reacts to pageDump messages by queuing the next page request.
      */
     processResponse(message: ParsedMessage): void;
-    private queuePageRequest;
-    private assembleAndComplete;
     /**
      * Get the current status.
      */
@@ -83,5 +80,7 @@ export declare class BackupSession {
      * Get the current phase.
      */
     getPhase(): BackupPhase;
+    private queuePageRequest;
+    private assembleAndComplete;
 }
 //# sourceMappingURL=backup.d.ts.map

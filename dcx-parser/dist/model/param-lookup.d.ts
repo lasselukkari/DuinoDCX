@@ -1,4 +1,5 @@
 import { type Command } from '../commands/commands.js';
+import { State } from '../types/index.js';
 /** Parameter definition for lookups (Matched to Command + Target info) */
 export type ParameterDefinition = Command & {
     /** Target Property Key (camelCase) */
@@ -36,5 +37,5 @@ export declare function toRawValue(def: ParameterDefinition, value: boolean | st
 /**
  * Apply a value to the correct location in state.
  */
-export declare function applyToState(state: any, def: ParameterDefinition, value: boolean | string | number): void;
+export declare function applyToState(state: State, def: ParameterDefinition, value: boolean | string | number): void;
 //# sourceMappingURL=param-lookup.d.ts.map

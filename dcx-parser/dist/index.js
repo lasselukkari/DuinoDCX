@@ -19,7 +19,7 @@ export { encode8to7, decode7to8 } from './protocol/encoding.js';
 // Checksum
 export { calculateChecksum, verifyChecksum } from './protocol/checksum.js';
 // SysEx message building
-export { buildHeader, buildPingCommand, buildPageDumpRequest, buildEditBufferRequest, buildRecallCommand, buildStoreCommand, buildSyncCommand, buildDataPacket, buildHeaderPacket, buildPagePacket, buildDirectCommand, buildListenModeCommand, buildParamChangeCommand, } from './commands/builders.js';
+export { buildHeader, buildPingCommand, buildPageDumpRequest, buildEditBufferRequest, buildRecallCommand, buildStoreCommand, buildSyncCommand, buildDataPacket, buildHeaderPacket, buildPagePacket, buildDirectCommand, buildListenModeCommand, buildParameterChangeCommand, } from './commands/builders.js';
 export { setupCommands, inputOutputCommands, equalizerCommands, outputCommands, } from './commands/commands.js';
 // SysEx message parsing
 export { parseMessage, parseDevices, isValidSysex, extractSysexMessages, } from './protocol/sysex.js';

@@ -18,7 +18,7 @@ export type { ParsedMessage } from './protocol/sysex.js';
 export type { DcxFile, PresetSlot, ParsedPreset, ParsedPreset as PresetEntry, } from './dcx-file.js';
 export { encode8to7, decode7to8 } from './protocol/encoding.js';
 export { calculateChecksum, verifyChecksum } from './protocol/checksum.js';
-export { buildHeader, buildPingCommand, buildPageDumpRequest, buildEditBufferRequest, buildRecallCommand, buildStoreCommand, buildSyncCommand, buildDataPacket, buildHeaderPacket, buildPagePacket, buildDirectCommand, buildListenModeCommand, buildParamChangeCommand, } from './commands/builders.js';
+export { buildHeader, buildPingCommand, buildPageDumpRequest, buildEditBufferRequest, buildRecallCommand, buildStoreCommand, buildSyncCommand, buildDataPacket, buildHeaderPacket, buildPagePacket, buildDirectCommand, buildListenModeCommand, buildParameterChangeCommand, } from './commands/builders.js';
 export type { ParameterTarget } from './commands/builders.js';
 export { type Command, setupCommands, inputOutputCommands, equalizerCommands, outputCommands, } from './commands/commands.js';
 export { parseMessage, parseDevices, isValidSysex, extractSysexMessages, } from './protocol/sysex.js';

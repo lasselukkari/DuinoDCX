@@ -11,7 +11,7 @@ import {parseMessage} from '../protocol/sysex.js';
 import {parseEditBuffer} from '../model/state-parser.js';
 import {
   buildEditBufferRequest,
-  buildParamChangeCommand,
+  buildParameterChangeCommand,
 } from '../commands/builders.js';
 import {
   applyToState,
@@ -101,7 +101,7 @@ export function useDcxState(connection) {
     async (key, value) => {
       if (!connection) return;
       const target = {kind: 'setup', key};
-      const cmd = buildParamChangeCommand(target, value);
+      const cmd = buildParameterChangeCommand(target, value);
       if (cmd) {
         await connection.send(cmd);
         // Optimistic update
@@ -122,7 +122,7 @@ export function useDcxState(connection) {
     async (group, id, key, value) => {
       if (!connection) return;
       const target = {kind: 'channel', group, id, key};
-      const cmd = buildParamChangeCommand(target, value);
+      const cmd = buildParameterChangeCommand(target, value);
       if (cmd) {
         await connection.send(cmd);
         // Optimistic update
@@ -148,7 +148,7 @@ export function useDcxState(connection) {
         band,
         key,
       };
-      const cmd = buildParamChangeCommand(target, value);
+      const cmd = buildParameterChangeCommand(target, value);
       if (cmd) {
         await connection.send(cmd);
         // Optimistic update

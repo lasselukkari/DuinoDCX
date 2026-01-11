@@ -88,7 +88,7 @@ export function parseSequential(cursor, parameters) {
                 let stringValue = '';
                 for (const b of stringBytes) {
                     if (b !== 0)
-                        stringValue += String.fromCharCode(b);
+                        stringValue += String.fromCodePoint(b);
                 }
                 result[name] = stringValue.trim();
             }

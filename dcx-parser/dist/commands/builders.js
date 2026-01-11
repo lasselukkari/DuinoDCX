@@ -6,9 +6,6 @@
 import { SYSEX_START, SYSEX_END, VENDOR_ID, MODEL_ID, DEFAULT_DEVICE_ID, CMD_PING, CMD_DUMP_REQUEST, CMD_RECALL, CMD_STORE, CMD_INIT_SYNC, CMD_WRITE_DATA, CMD_DIRECT, CMD_LISTEN_MODE, PACKET_TYPE_HEADER, PACKET_TYPE_PAGE, HEADER_SIZE, } from '../constants/protocol.js';
 import { encode8to7 } from '../protocol/encoding.js';
 import { calculateChecksum } from '../protocol/checksum.js';
-// ============================================================================
-// High-Level Parameter Commands
-// ============================================================================
 import { directLookup, toRawValue, } from '../model/param-lookup.js';
 /**
  * Build the SysEx header common to all messages.
@@ -154,7 +151,7 @@ export function buildDirectCommand(parameters, deviceId = DEFAULT_DEVICE_ID) {
  * It looks up the channel/param indices from the target and converts
  * the value to raw format automatically.
  */
-export function buildParamChangeCommand(target, value, deviceId = DEFAULT_DEVICE_ID) {
+export function buildParameterChangeCommand(target, value, deviceId = DEFAULT_DEVICE_ID) {
     // Find the parameter definition
     const def = findParameterDefinition(target);
     if (!def) {

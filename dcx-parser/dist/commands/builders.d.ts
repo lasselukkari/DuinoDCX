@@ -1,9 +1,4 @@
 /**
- * SysEx command builders for DCX2496.
- *
- * This module provides functions to build SysEx messages for various device commands.
- */
-/**
  * Build the SysEx header common to all messages.
  */
 export declare function buildHeader(deviceId: number, command: number): Uint8Array;
@@ -84,5 +79,5 @@ export type ParameterTarget = {
  * It looks up the channel/param indices from the target and converts
  * the value to raw format automatically.
  */
-export declare function buildParamChangeCommand(target: ParameterTarget, value: boolean | string | number, deviceId?: number): Uint8Array | undefined;
+export declare function buildParameterChangeCommand(target: ParameterTarget, value: boolean | string | number, deviceId?: number): Uint8Array | undefined;
 //# sourceMappingURL=builders.d.ts.map

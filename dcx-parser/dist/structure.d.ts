@@ -10,7 +10,7 @@
  * - 124 bytes per Input Channel
  * - 10 bytes per EQ band (same as Edit Buffer)
  */
-export type ParamDef = string | undefined | {
+export type ParameterDefinition = string | undefined | {
     name: string;
     type: 'string';
     length: number;
@@ -22,12 +22,12 @@ export type ParamDef = string | undefined | {
     name: string;
     type: 'uint32';
 };
-export declare const EDIT_BUFFER_SETUP_PARAMS: ParamDef[];
-export declare const PRESET_SETUP_PARAMS: ParamDef[];
-export declare const INPUT_CHANNEL_PARAMS: ParamDef[];
-export declare const EQ_BAND_PARAMS: ParamDef[];
-export declare const OUTPUT_CHANNEL_PARAMS_PREFIX: ParamDef[];
-export declare const OUTPUT_EXTRA_PARAMS: ParamDef[];
+export declare const EDIT_BUFFER_SETUP_PARAMS: ParameterDefinition[];
+export declare const PRESET_SETUP_PARAMS: ParameterDefinition[];
+export declare const INPUT_CHANNEL_PARAMS: ParameterDefinition[];
+export declare const EQ_BAND_PARAMS: ParameterDefinition[];
+export declare const OUTPUT_CHANNEL_PARAMS_PREFIX: ParameterDefinition[];
+export declare const OUTPUT_EXTRA_PARAMS: ParameterDefinition[];
 export declare const INPUT_NAMES: readonly ["A", "B", "C", "Sum"];
 export declare const OUTPUT_NAMES: readonly ["1", "2", "3", "4", "5", "6"];
 export declare const INPUT_CHANNEL_SIZE = 124;

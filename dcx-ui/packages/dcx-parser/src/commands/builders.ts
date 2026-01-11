@@ -249,7 +249,7 @@ export type ParameterTarget =
  * It looks up the channel/param indices from the target and converts
  * the value to raw format automatically.
  */
-export function buildParamChangeCommand(
+export function buildParameterChangeCommand(
   target: ParameterTarget,
   value: boolean | string | number,
   deviceId = DEFAULT_DEVICE_ID,

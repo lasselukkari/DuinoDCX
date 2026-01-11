@@ -1,7 +1,7 @@
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import {describe, it, expect} from 'vitest';
-import Parser from '../index';
+import Parser from '../index.js';
 
 const {parseMessage, parseEditBuffer, parsePreset, parseDcxPresets} = Parser;
 
@@ -21,7 +21,7 @@ function normalizeForJsonComparison(object: unknown): unknown {
   }
 
   if (Array.isArray(object)) {
-    return object.map(normalizeForJsonComparison);
+    return object.map((item) => normalizeForJsonComparison(item));
   }
 
   // Note: null check needed because typeof null === 'object' in JavaScript
@@ -39,9 +39,10 @@ function normalizeForJsonComparison(object: unknown): unknown {
 
 describe('State Integration Test', () => {
   // Use absolute path to src/fixtures to ensure tests work from both src/ and dist/
+  const currentDir = path.dirname(new URL(import.meta.url).pathname);
   const fixturesDir = path.resolve(
-    __dirname.replace('/dist/', '/src/').replace('\\dist\\', '\\src\\'),
-    __dirname.includes('/dist/') || __dirname.includes('\\dist\\') ? '' : '',
+    currentDir.replace('/dist/', '/src/').replace('\\dist\\', '\\src\\'),
+    currentDir.includes('/dist/') || currentDir.includes('\\dist\\') ? '' : '',
   );
   const actualFixturesDir = fixturesDir.includes('/dist/')
     ? fixturesDir.replace('/dist/', '/src/')
@@ -90,7 +91,7 @@ describe('State Integration Test', () => {
       path.join(actualFixturesDir, 'current-state-browser.json'),
       'utf8',
     );
-    const expected = JSON.parse(expectedJson);
+    const expected: unknown = JSON.parse(expectedJson);
 
     // 6. Normalize for comparison (Uint8Array -> plain object)
     const normalized = normalizeForJsonComparison(result);
@@ -143,12 +144,10 @@ describe('State Integration Test', () => {
 
     // Compar setup
     // normalizeForJsonComparison is used to handle Uint8Array serialization differences
-    const normalizedPresetSetup = normalizeForJsonComparison(
-      firstPreset.setup,
-    ) as any;
-    const normalizedEditBufferSetup = normalizeForJsonComparison(
-      editBuffer.setup,
-    ) as any;
+    const normalizedPresetSetup: Record<string, unknown> =
+      normalizeForJsonComparison(firstPreset.setup) as Record<string, unknown>;
+    const normalizedEditBufferSetup: Record<string, unknown> =
+      normalizeForJsonComparison(editBuffer.setup) as Record<string, unknown>;
 
     // Sync known valid differences
     // delayLink is distinct in the capture files (true in preset, false in editBuffer)
@@ -292,7 +291,7 @@ describe('State Integration Test', () => {
 
     // Check all expected preset names
     for (const [index, expectedName] of Object.entries(expectedNames)) {
-      const idx = Number.parseInt(index);
+      const idx = Number.parseInt(index, 10);
       const preset = presets[idx];
       expect(preset.isEmpty).toBe(false);
       expect(preset.name).toBe(expectedName);
@@ -371,16 +370,17 @@ describe('State Integration Test', () => {
     combined.set(part1Data, part0Data.length);
 
     const currentState = parseEditBuffer(combined);
-    const currentStateNormalized = normalizeForJsonComparison(
-      currentState,
-    ) as any;
+    const currentStateNormalized: Record<string, unknown> =
+      normalizeForJsonComparison(currentState) as Record<string, unknown>;
 
     // 2. Load "Stored JSON"
     const expectedJson = fs.readFileSync(
       path.join(actualFixturesDir, 'current-state-browser.json'),
       'utf8',
     );
-    const storedJson = JSON.parse(expectedJson);
+    const storedJson: Record<string, unknown> = JSON.parse(
+      expectedJson,
+    ) as Record<string, unknown>;
 
     // 3. Load "First Preset" (from preset pages)
     const presetPages: Uint8Array[] = [];
@@ -392,9 +392,8 @@ describe('State Integration Test', () => {
     }
 
     const firstPreset = parsePreset(presetPages);
-    const firstPresetNormalized = normalizeForJsonComparison(
-      firstPreset,
-    ) as any;
+    const firstPresetNormalized: Record<string, unknown> =
+      normalizeForJsonComparison(firstPreset) as Record<string, unknown>;
 
     // 4. Load "Preset 36" (from factory dump)
     const dcxData = new Uint8Array(
@@ -402,9 +401,8 @@ describe('State Integration Test', () => {
     );
     const presets = parseDcxPresets(dcxData);
     const preset36 = presets[36];
-    const preset36StateNormalized = normalizeForJsonComparison(
-      preset36.state,
-    ) as any;
+    const preset36StateNormalized: Record<string, unknown> =
+      normalizeForJsonComparison(preset36.state) as Record<string, unknown>;
 
     // --- Verify Inputs ---
     // currrent state = stored json
@@ -425,10 +423,16 @@ describe('State Integration Test', () => {
     // --- Verify Setup ---
     // Sync known valid differences
     // delayLink is distinct in the capture files (true in preset, false in editBuffer)
-    firstPresetNormalized.setup.delayLink =
-      currentStateNormalized.setup.delayLink;
-    preset36StateNormalized.setup.delayLink =
-      currentStateNormalized.setup.delayLink;
+    (
+      firstPresetNormalized as Record<string, Record<string, unknown>>
+    ).setup.delayLink = (
+      currentStateNormalized as Record<string, Record<string, unknown>>
+    ).setup.delayLink;
+    (
+      preset36StateNormalized as Record<string, Record<string, unknown>>
+    ).setup.delayLink = (
+      currentStateNormalized as Record<string, Record<string, unknown>>
+    ).setup.delayLink;
 
     // Currrent state = stored json
     expect(currentStateNormalized.setup).toEqual(storedJson.setup);

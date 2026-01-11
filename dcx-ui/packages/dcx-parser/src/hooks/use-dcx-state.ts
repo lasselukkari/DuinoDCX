@@ -14,7 +14,7 @@ import {parseMessage} from '../protocol/sysex.js';
 import {parseEditBuffer} from '../model/state-parser.js';
 import {
   buildEditBufferRequest,
-  buildParamChangeCommand,
+  buildParameterChangeCommand,
   type ParameterTarget,
 } from '../commands/builders.js';
 import {
@@ -115,7 +115,7 @@ export function useDcxState(connection: DcxConnection | undefined) {
       if (!connection) return;
 
       const target: ParameterTarget = {kind: 'setup', key};
-      const cmd = buildParamChangeCommand(target, value);
+      const cmd = buildParameterChangeCommand(target, value);
       if (cmd) {
         await connection.send(cmd);
 
@@ -144,7 +144,7 @@ export function useDcxState(connection: DcxConnection | undefined) {
       if (!connection) return;
 
       const target: ParameterTarget = {kind: 'channel', group, id, key};
-      const cmd = buildParamChangeCommand(target, value);
+      const cmd = buildParameterChangeCommand(target, value);
       if (cmd) {
         await connection.send(cmd);
 
@@ -179,7 +179,7 @@ export function useDcxState(connection: DcxConnection | undefined) {
         band,
         key,
       };
-      const cmd = buildParamChangeCommand(target, value);
+      const cmd = buildParameterChangeCommand(target, value);
       if (cmd) {
         await connection.send(cmd);
 

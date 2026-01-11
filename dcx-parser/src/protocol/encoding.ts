@@ -29,9 +29,12 @@
  * Restores MSBs and STRIPS the flag byte.
  * Use this for .dcx file storage and preset parsing.
  */
+export type DecodeOptions = {indexed: boolean};
+const DEFAULT_DECODE_OPTIONS: DecodeOptions = {indexed: true};
+
 export function decode7to8(
   data: Uint8Array,
-  options: {indexed: boolean} = {indexed: true},
+  options: DecodeOptions = DEFAULT_DECODE_OPTIONS,
 ): Uint8Array {
   const numberBlocks = Math.floor(data.length / 8);
   const resultLength = options.indexed ? data.length : numberBlocks * 7;
@@ -67,12 +70,15 @@ export function decode7to8(
   return result;
 }
 
+export type EncodeOptions = {indexed: boolean};
+const DEFAULT_ENCODE_OPTIONS: EncodeOptions = {indexed: false};
+
 /**
  * Encode 8-bit data to 7-bit MIDI-safe format.
  */
 export function encode8to7(
   data: Uint8Array,
-  options: {indexed: boolean} = {indexed: false},
+  options: EncodeOptions = DEFAULT_ENCODE_OPTIONS,
 ): Uint8Array {
   if (options.indexed) {
     const outputLength = data.length;

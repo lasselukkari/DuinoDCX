@@ -60,7 +60,7 @@ export {
   buildPagePacket,
   buildDirectCommand,
   buildListenModeCommand,
-  buildParamChangeCommand,
+  buildParameterChangeCommand,
 } from './commands/builders.js';
 export type {ParameterTarget} from './commands/builders.js';
 

@@ -44,7 +44,7 @@ export * from './enums/channels.js';
 export * from './enums/channel-levels.js';
 export * from './enums/delay-units.js';
 
-export default {
+const constants = {
   ...protocol,
   ...logFrequencyScale,
   ...logZeroTo4000Ms,
@@ -68,3 +68,5 @@ export default {
   ...channelLevels,
   ...delayUnits,
 };
+
+export default constants;
