@@ -37,8 +37,7 @@
     "react-dropzone": "^14.2.3",
     "react-icons": "^5.0.1",
     "react-toastify": "^11.0.5",
-    "recharts": "^3.6.0",
-    "uint8array-extras": "^1.5.0"
+    "recharts": "^3.6.0"
   },
   "devDependencies": {
     "@types/lodash.clonedeep": "^4.5.9",
