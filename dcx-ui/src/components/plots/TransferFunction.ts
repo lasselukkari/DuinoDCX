@@ -36,7 +36,7 @@ import {
   exp,
   abs,
   type Complex,
-} from 'mathjs';
+} from '@/components/plots/mathUtils.ts';
 
 export type BiquadCoefficients = {
   // Feed-forward coefficients (numerator)
@@ -61,7 +61,7 @@ class TransferFunction {
     const step = (logEnd - logStart) / (count - 1);
 
     for (let i = 0; i < count; i++) {
-      freqData[i] = pow(10, logStart + i * step) as number;
+      freqData[i] = pow(10, logStart + i * step);
     }
 
     return freqData;
@@ -118,14 +118,14 @@ class TransferFunction {
       const numerator = add(
         add(feedForward0, multiply(feedForward1, zInverse1)),
         multiply(feedForward2, zInverse2),
-      ) as Complex;
+      );
       const denominator = add(
         add(feedback0, multiply(feedback1, zInverse1)),
         multiply(feedback2, zInverse2),
-      ) as Complex;
+      );
 
-      const responseAtFrequency = divide(numerator, denominator) as Complex;
-      return multiply(currentTf, responseAtFrequency) as Complex;
+      const responseAtFrequency = divide(numerator, denominator);
+      return multiply(currentTf, responseAtFrequency);
     });
   }
 
@@ -452,9 +452,7 @@ class TransferFunction {
   }
 
   getMagnitude(): number[] {
-    return this.transferFunction.map(
-      (point) => 20 * log10(abs(point) as any as number),
-    );
+    return this.transferFunction.map((point) => 20 * log10(abs(point)));
   }
 
   getAngle(): number[] {
