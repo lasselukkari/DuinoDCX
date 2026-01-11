@@ -3,8 +3,8 @@ import {RouterProvider} from '@tanstack/react-router';
 import {
   DcxConnectionProvider,
   useDcxConnection,
-} from './connection/connection-context.js';
-import {router} from './router.js';
+} from '@/connection/connectionContext.js';
+import {router} from '@/router.js';
 
 function AppWrapper() {
   const {connection} = useDcxConnection();

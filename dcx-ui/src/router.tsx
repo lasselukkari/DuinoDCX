@@ -17,13 +17,13 @@ import {
 } from 'dcx-parser';
 import 'bootswatch/dist/slate/bootstrap.min.css';
 import 'react-toastify/dist/ReactToastify.css';
-import {useDcxState} from './hooks/use-dcx-state.js';
-import ConfigNavigation from './config-navigation.js';
-import DeviceNavigation from './device-navigation.js';
-import Inputs from './inputs.js';
-import Outputs from './outputs.js';
-import Presets from './presets/index.js';
 import './app.css';
+import {useDcxState} from '@/hooks/useDcxState.js';
+import ConfigNavigation from '@/components/ConfigNavigation.js';
+import DeviceNavigation from '@/components/DeviceNavigation.js';
+import Inputs from '@/pages/Inputs.js';
+import Outputs from '@/pages/Outputs.js';
+import Presets from '@/pages/Presets.js';
 
 type RouterContext = {
   connection: DcxConnection | undefined;

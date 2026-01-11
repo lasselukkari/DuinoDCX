@@ -18,6 +18,7 @@ const config = {
   ],
   resolve: {
     alias: {
+      '@': path.resolve(__dirname, './src'),
       react: path.resolve(__dirname, 'node_modules/react'),
       'react-dom': path.resolve(__dirname, 'node_modules/react-dom'),
       'dcx-parser': path.resolve(__dirname, '../dcx-parser/src/index.ts'),

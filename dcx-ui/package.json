@@ -65,7 +65,16 @@
       "@typescript-eslint/naming-convention": "off",
       "react/react-in-jsx-scope": "off",
       "no-bitwise": "off",
-      "no-alert": "off"
+      "no-alert": "off",
+      "unicorn/filename-case": [
+        "error",
+        {
+          "cases": {
+            "camelCase": true,
+            "pascalCase": true
+          }
+        }
+      ]
     }
   },
   "proxy": "http://localhost:3000/",
