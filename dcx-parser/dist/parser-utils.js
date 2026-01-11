@@ -110,12 +110,12 @@ export function parseSequential(cursor, parameters) {
 }
 export function parseInputChannel(cursor) {
     const baseParameters = parseSequential(cursor, INPUT_CHANNEL_PARAMS);
-    const parameters = { ...baseParameters, equalizers: {} };
+    const equalizers = {};
     // Parse 9 EQ bands
     for (let i = 1; i <= 9; i++) {
-        parameters.equalizers[String(i)] = parseSequential(cursor, EQ_BAND_PARAMS);
+        equalizers[String(i)] = parseSequential(cursor, EQ_BAND_PARAMS);
     }
-    return parameters;
+    return { ...baseParameters, equalizers };
 }
 export function parseOutputChannel(cursor) {
     // 1. Basic Prefix (Shared with Input)

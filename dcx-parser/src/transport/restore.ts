@@ -215,15 +215,4 @@ export class RestoreSession {
     this.phase = RestorePhase.ERROR;
     console.error(`Restore Error: ${message}`);
   }
-
-  public getStatus() {
-    return {
-      phase: RestorePhase[this.phase],
-      queueLength: this.messageQueue.length,
-    };
-  }
-
-  public isComplete(): boolean {
-    return this.phase === RestorePhase.COMPLETED;
-  }
 }

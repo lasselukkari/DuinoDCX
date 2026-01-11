@@ -113,6 +113,15 @@ export class RestoreSession {
             // Log?
         }
     }
+    getStatus() {
+        return {
+            phase: RestorePhase[this.phase],
+            queueLength: this.messageQueue.length,
+        };
+    }
+    isComplete() {
+        return this.phase === RestorePhase.COMPLETED;
+    }
     handleMainPageRequest(page) {
         if (this.phase !== RestorePhase.MAIN_MEMORY) {
             // It's possible we are still in INITIALIZING but device is fast
@@ -158,15 +167,6 @@ export class RestoreSession {
     transitionToError(message) {
         this.phase = RestorePhase.ERROR;
         console.error(`Restore Error: ${message}`);
-    }
-    getStatus() {
-        return {
-            phase: RestorePhase[this.phase],
-            queueLength: this.messageQueue.length,
-        };
-    }
-    isComplete() {
-        return this.phase === RestorePhase.COMPLETED;
     }
 }
 //# sourceMappingURL=restore.js.map

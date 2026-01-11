@@ -132,7 +132,7 @@ export function parsePreset(input: Uint8Array | Uint8Array[]): ExtendedState {
   return {
     header,
     setup,
-    inputs: inputs as any,
-    outputs: outputs as any,
+    inputs,
+    outputs,
   };
 }

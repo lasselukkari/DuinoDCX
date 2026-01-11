@@ -11,11 +11,7 @@ import {
   equalizerCommands,
   type Command,
 } from './commands/commands.js';
-import {
-  type InputChannel,
-  type OutputChannel,
-  type Equalizer,
-} from './types/index.js';
+import {type InputChannel, type OutputChannel} from './types/index.js';
 
 // ============================================================================
 // Build Command Lookup by Parameter Name (camelCase)
@@ -169,18 +165,14 @@ export function parseSequential(
 
 export function parseInputChannel(cursor: Cursor): InputChannel {
   const baseParameters = parseSequential(cursor, INPUT_CHANNEL_PARAMS);
-
-  const parameters = {...baseParameters, equalizers: {}} as InputChannel;
+  const equalizers: Record<string, unknown> = {};
 
   // Parse 9 EQ bands
   for (let i = 1; i <= 9; i++) {
-    parameters.equalizers[String(i)] = parseSequential(
-      cursor,
-      EQ_BAND_PARAMS,
-    ) as any as Equalizer;
+    equalizers[String(i)] = parseSequential(cursor, EQ_BAND_PARAMS);
   }
 
-  return parameters;
+  return {...baseParameters, equalizers} as unknown as InputChannel;
 }
 
 export function parseOutputChannel(cursor: Cursor): OutputChannel {
@@ -188,16 +180,13 @@ export function parseOutputChannel(cursor: Cursor): OutputChannel {
   const prefix = parseSequential(cursor, INPUT_CHANNEL_PARAMS);
 
   // 2. 9 EQ Bands
-  const equalizers: Record<string, Equalizer> = {};
+  const equalizers: Record<string, unknown> = {};
   for (let i = 1; i <= 9; i++) {
-    equalizers[String(i)] = parseSequential(
-      cursor,
-      EQ_BAND_PARAMS,
-    ) as any as Equalizer;
+    equalizers[String(i)] = parseSequential(cursor, EQ_BAND_PARAMS);
   }
 
   // 3. Extra Output Params (Name, Source, Filters, etc.) - AFTER EQs in binary
   const extra = parseSequential(cursor, OUTPUT_EXTRA_PARAMS);
 
-  return {...prefix, equalizers, ...extra} as OutputChannel;
+  return {...prefix, equalizers, ...extra} as unknown as OutputChannel;
 }

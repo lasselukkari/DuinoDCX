@@ -103,10 +103,10 @@ export class DcxStore {
       // Check inputs or outputs
       if (group === 'inputs') {
         const channel = newState.inputs[id];
-        (channel as any)[key] = value;
+        channel[key] = value;
       } else if (group === 'outputs') {
         const channel = newState.outputs[id];
-        (channel as any)[key] = value;
+        channel[key] = value;
       }
     }
 

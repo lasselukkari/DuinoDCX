@@ -92,8 +92,8 @@ export function parsePreset(input) {
     return {
         header,
         setup,
-        inputs: inputs,
-        outputs: outputs,
+        inputs,
+        outputs,
     };
 }
 //# sourceMappingURL=preset-parser.js.map

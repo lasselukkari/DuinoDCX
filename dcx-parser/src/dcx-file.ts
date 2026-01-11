@@ -251,7 +251,7 @@ function createEmptyState(): State {
     setup: {},
     inputs: {},
     outputs: {},
-  } as State;
+  };
 }
 
 /**

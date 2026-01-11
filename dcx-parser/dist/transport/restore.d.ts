@@ -39,14 +39,14 @@ export declare class RestoreSession {
      * Expects 'pageRequest' messages to drive the transfer.
      */
     processResponse(message: ParsedMessage): void;
-    private handleMainPageRequest;
-    private handleCurrentStateRequest;
-    private queuePage;
-    private transitionToError;
     getStatus(): {
         phase: string;
         queueLength: number;
     };
     isComplete(): boolean;
+    private handleMainPageRequest;
+    private handleCurrentStateRequest;
+    private queuePage;
+    private transitionToError;
 }
 //# sourceMappingURL=restore.d.ts.map

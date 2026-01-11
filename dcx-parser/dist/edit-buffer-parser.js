@@ -63,8 +63,8 @@ export function parseEditBuffer(decoded) {
     return {
         header,
         setup,
-        inputs: inputs,
-        outputs: outputs,
+        inputs,
+        outputs,
     };
 }
 //# sourceMappingURL=edit-buffer-parser.js.map

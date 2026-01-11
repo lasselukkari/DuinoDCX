@@ -95,19 +95,19 @@ export function parseEditBuffer(decoded: Uint8Array): ExtendedState {
   // 2. Inputs
   const inputs: Record<string, InputChannel> = {};
   for (const name of INPUT_NAMES) {
-    (inputs as any)[name] = parseInputChannel(cursor);
+    inputs[name] = parseInputChannel(cursor);
   }
 
   // 3. Outputs
   const outputs: Record<string, OutputChannel> = {};
   for (const name of OUTPUT_NAMES) {
-    (outputs as any)[name] = parseOutputChannel(cursor);
+    outputs[name] = parseOutputChannel(cursor);
   }
 
   return {
     header,
     setup,
-    inputs: inputs as any,
-    outputs: outputs as any,
+    inputs,
+    outputs,
   };
 }

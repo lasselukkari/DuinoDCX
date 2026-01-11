@@ -46675,4 +46675,3212 @@ SSE client connected (slot 0, socket 5, id f0pkqpm3dzqdm93r6873g)
 9723999: Started receiving data from device
 9724006: Received end of data from device
 9724006: Received ping response
-9724995: Pinging selected d
+9724995: Pinging selected device.
+9724999: Started receiving data from device
+9725007: Received end of data from device
+9725007: Received ping response
+9725864: Searching for devices.
+9725868: Started receiving data from device
+9725875: Received end of data from device
+9725875: Received search response
+9725996: Pinging selected device.
+9726000: Started receiving data from device
+9726007: Received end of data from device
+9726007: Received ping response
+9726996: Pinging selected device.
+9727000: Started receiving data from device
+9727007: Received end of data from device
+9727007: Received ping response
+9727996: Pinging selected device.
+9728001: Started receiving data from device
+9728007: Received end of data from device
+9728007: Received ping response
+9728996: Pinging selected device.
+9729001: Started receiving data from device
+9729007: Received end of data from device
+9729007: Received ping response
+9729996: Pinging selected device.
+9730000: Started receiving data from device
+9730008: Received end of data from device
+9730008: Received ping response
+9730864: Searching for devices.
+9730867: Started receiving data from device
+9730874: Received end of data from device
+9730874: Received search response
+9730996: Pinging selected device.
+9731000: Started receiving data from device
+9731007: Received end of data from device
+9731007: Received ping response
+9731996: Pinging selected device.
+9732001: Started receiving data from device
+9732008: Received end of data from device
+9732008: Received ping response
+9732996: Pinging selected device.
+9733001: Started receiving data from device
+9733008: Received end of data from device
+9733008: Received ping response
+9733997: Pinging selected device.
+9734001: Started receiving data from device
+9734008: Received end of data from device
+9734008: Received ping response
+9734997: Pinging selected device.
+9735001: Started receiving data from device
+9735008: Received end of data from device
+9735008: Received ping response
+9735864: Searching for devices.
+9735868: Started receiving data from device
+9735875: Received end of data from device
+9735875: Received search response
+9735997: Pinging selected device.
+9736001: Started receiving data from device
+9736009: Received end of data from device
+9736009: Received ping response
+9736997: Pinging selected device.
+9737001: Started receiving data from device
+9737009: Received end of data from device
+9737009: Received ping response
+9737998: Pinging selected device.
+9738002: Started receiving data from device
+9738009: Received end of data from device
+9738009: Received ping response
+9738998: Pinging selected device.
+9739003: Started receiving data from device
+9739009: Received end of data from device
+9739009: Received ping response
+9739998: Pinging selected device.
+9740002: Started receiving data from device
+9740008: Received end of data from device
+9740008: Received ping response
+9740864: Searching for devices.
+9740868: Started receiving data from device
+9740875: Received end of data from device
+9740875: Received search response
+9740998: Pinging selected device.
+9741002: Started receiving data from device
+9741009: Received end of data from device
+9741009: Received ping response
+9741998: Pinging selected device.
+9742002: Started receiving data from device
+9742009: Received end of data from device
+9742009: Received ping response
+9742999: Pinging selected device.
+9743002: Started receiving data from device
+9743009: Received end of data from device
+9743009: Received ping response
+9744000: Pinging selected device.
+9744005: Started receiving data from device
+9744011: Received end of data from device
+9744011: Received ping response
+9745000: Pinging selected device.
+9745005: Started receiving data from device
+9745011: Received end of data from device
+9745011: Received ping response
+9745864: Searching for devices.
+9745868: Started receiving data from device
+9745875: Received end of data from device
+9745875: Received search response
+9746000: Pinging selected device.
+9746004: Started receiving data from device
+9746011: Received end of data from device
+9746011: Received ping response
+9747000: Pinging selected device.
+9747005: Started receiving data from device
+9747011: Received end of data from device
+9747011: Received ping response
+9748000: Pinging selected device.
+9748004: Started receiving data from device
+9748012: Received end of data from device
+9748012: Received ping response
+9749000: Pinging selected device.
+9749004: Started receiving data from device
+9749012: Received end of data from device
+9749012: Received ping response
+9750000: Pinging selected device.
+9750004: Started receiving data from device
+9750012: Received end of data from device
+9750012: Received ping response
+9750864: Searching for devices.
+9750868: Started receiving data from device
+9750875: Received end of data from device
+9750875: Received search response
+9751000: Pinging selected device.
+9751004: Started receiving data from device
+9751011: Received end of data from device
+9751011: Received ping response
+9752000: Pinging selected device.
+9752005: Started receiving data from device
+9752011: Received end of data from device
+9752011: Received ping response
+9753000: Pinging selected device.
+9753003: Started receiving data from device
+9753011: Received end of data from device
+9753011: Received ping response
+9754000: Pinging selected device.
+9754004: Started receiving data from device
+9754012: Received end of data from device
+9754012: Received ping response
+9755000: Pinging selected device.
+9755004: Started receiving data from device
+9755011: Received end of data from device
+9755011: Received ping response
+9755864: Searching for devices.
+9755868: Started receiving data from device
+9755875: Received end of data from device
+9755875: Received search response
+9756000: Pinging selected device.
+9756004: Started receiving data from device
+9756011: Received end of data from device
+9756011: Received ping response
+9757001: Pinging selected device.
+9757005: Started receiving data from device
+9757011: Received end of data from device
+9757011: Received ping response
+9758001: Pinging selected device.
+9758006: Started receiving data from device
+9758013: Received end of data from device
+9758013: Received ping response
+9759002: Pinging selected device.
+9759005: Started receiving data from device
+9759012: Received end of data from device
+9759012: Received ping response
+9760002: Pinging selected device.
+9760006: Started receiving data from device
+9760013: Received end of data from device
+9760013: Received ping response
+9760864: Searching for devices.
+9760868: Started receiving data from device
+9760875: Received end of data from device
+9760875: Received search response
+9761002: Pinging selected device.
+9761005: Started receiving data from device
+9761013: Received end of data from device
+9761013: Received ping response
+9762002: Pinging selected device.
+9762006: Started receiving data from device
+9762013: Received end of data from device
+9762013: Received ping response
+9763002: Pinging selected device.
+9763007: Started receiving data from device
+9763013: Received end of data from device
+9763013: Received ping response
+9764002: Pinging selected device.
+9764007: Started receiving data from device
+9764013: Received end of data from device
+9764013: Received ping response
+9765002: Pinging selected device.
+9765006: Started receiving data from device
+9765013: Received end of data from device
+9765013: Received ping response
+9765864: Searching for devices.
+9765868: Started receiving data from device
+9765875: Received end of data from device
+9765875: Received search response
+9766002: Pinging selected device.
+9766007: Started receiving data from device
+9766013: Received end of data from device
+9766013: Received ping response
+9767002: Pinging selected device.
+9767008: Started receiving data from device
+9767013: Received end of data from device
+9767013: Received ping response
+9768002: Pinging selected device.
+9768006: Started receiving data from device
+9768013: Received end of data from device
+9768013: Received ping response
+9769002: Pinging selected device.
+9769006: Started receiving data from device
+9769013: Received end of data from device
+9769013: Received ping response
+9770002: Pinging selected device.
+9770007: Started receiving data from device
+9770013: Received end of data from device
+9770013: Received ping response
+9770865: Searching for devices.
+9770869: Started receiving data from device
+9770876: Received end of data from device
+9770876: Received search response
+9771002: Pinging selected device.
+9771006: Started receiving data from device
+9771013: Received end of data from device
+9771013: Received ping response
+9772002: Pinging selected device.
+9772006: Started receiving data from device
+9772013: Received end of data from device
+9772013: Received ping response
+9773002: Pinging selected device.
+9773007: Started receiving data from device
+9773013: Received end of data from device
+9773013: Received ping response
+9774003: Pinging selected device.
+9774007: Started receiving data from device
+9774013: Received end of data from device
+9774013: Received ping response
+9775004: Pinging selected device.
+9775007: Started receiving data from device
+9775014: Received end of data from device
+9775014: Received ping response
+9775865: Searching for devices.
+9775868: Started receiving data from device
+9775876: Received end of data from device
+9775876: Received search response
+9776004: Pinging selected device.
+9776008: Started receiving data from device
+9776015: Received end of data from device
+9776015: Received ping response
+9777004: Pinging selected device.
+9777008: Started receiving data from device
+9777015: Received end of data from device
+9777015: Received ping response
+9778004: Pinging selected device.
+9778009: Started receiving data from device
+9778015: Received end of data from device
+9778015: Received ping response
+9779004: Pinging selected device.
+9779007: Started receiving data from device
+9779015: Received end of data from device
+9779015: Received ping response
+9780005: Pinging selected device.
+9780010: Started receiving data from device
+9780015: Received end of data from device
+9780015: Received ping response
+9780866: Searching for devices.
+9780870: Started receiving data from device
+9780876: Received end of data from device
+9780876: Received search response
+9781005: Pinging selected device.
+9781009: Started receiving data from device
+9781016: Received end of data from device
+9781016: Received ping response
+9782005: Pinging selected device.
+9782008: Started receiving data from device
+9782015: Received end of data from device
+9782015: Received ping response
+9783005: Pinging selected device.
+9783010: Started receiving data from device
+9783016: Received end of data from device
+9783016: Received ping response
+9784005: Pinging selected device.
+9784009: Started receiving data from device
+9784016: Received end of data from device
+9784016: Received ping response
+9785005: Pinging selected device.
+9785009: Started receiving data from device
+9785015: Received end of data from device
+9785015: Received ping response
+9785866: Searching for devices.
+9785869: Started receiving data from device
+9785876: Received end of data from device
+9785876: Received search response
+9786005: Pinging selected device.
+9786009: Started receiving data from device
+9786015: Received end of data from device
+9786015: Received ping response
+9787005: Pinging selected device.
+9787009: Started receiving data from device
+9787017: Received end of data from device
+9787017: Received ping response
+9788005: Pinging selected device.
+9788009: Started receiving data from device
+9788016: Received end of data from device
+9788016: Received ping response
+9789005: Pinging selected device.
+9789009: Started receiving data from device
+9789016: Received end of data from device
+9789016: Received ping response
+9790005: Pinging selected device.
+9790009: Started receiving data from device
+9790016: Received end of data from device
+9790016: Received ping response
+9790866: Searching for devices.
+9790870: Started receiving data from device
+9790876: Received end of data from device
+9790876: Received search response
+9791005: Pinging selected device.
+9791009: Started receiving data from device
+9791016: Received end of data from device
+9791016: Received ping response
+9792005: Pinging selected device.
+9792010: Started receiving data from device
+9792016: Received end of data from device
+9792016: Received ping response
+9793005: Pinging selected device.
+9793008: Started receiving data from device
+9793016: Received end of data from device
+9793016: Received ping response
+9794005: Pinging selected device.
+9794009: Started receiving data from device
+9794016: Received end of data from device
+9794016: Received ping response
+9795005: Pinging selected device.
+9795009: Started receiving data from device
+9795016: Received end of data from device
+9795016: Received ping response
+9795866: Searching for devices.
+9795869: Started receiving data from device
+9795876: Received end of data from device
+9795876: Received search response
+9796005: Pinging selected device.
+9796008: Started receiving data from device
+9796015: Received end of data from device
+9796015: Received ping response
+9797005: Pinging selected device.
+9797009: Started receiving data from device
+9797016: Received end of data from device
+9797016: Received ping response
+9798005: Pinging selected device.
+9798009: Started receiving data from device
+9798016: Received end of data from device
+9798016: Received ping response
+9799005: Pinging selected device.
+9799009: Started receiving data from device
+9799016: Received end of data from device
+9799016: Received ping response
+9800005: Pinging selected device.
+9800008: Started receiving data from device
+9800015: Received end of data from device
+9800015: Received ping response
+9800866: Searching for devices.
+9800869: Started receiving data from device
+9800876: Received end of data from device
+9800876: Received search response
+9801006: Pinging selected device.
+9801009: Started receiving data from device
+9801016: Received end of data from device
+9801016: Received ping response
+9802009: Pinging selected device.
+9802022: Started receiving data from device
+9802022: Received end of data from device
+9802022: Received ping response
+9803009: Pinging selected device.
+9803012: Started receiving data from device
+9803019: Received end of data from device
+9803019: Received ping response
+9804009: Pinging selected device.
+9804013: Started receiving data from device
+9804020: Received end of data from device
+9804020: Received ping response
+9805009: Pinging selected device.
+9805013: Started receiving data from device
+9805020: Received end of data from device
+9805020: Received ping response
+9805867: Searching for devices.
+9805870: Started receiving data from device
+9805877: Received end of data from device
+9805877: Received search response
+9806010: Pinging selected device.
+9806013: Started receiving data from device
+9806020: Received end of data from device
+9806020: Received ping response
+9807010: Pinging selected device.
+9807014: Started receiving data from device
+9807021: Received end of data from device
+9807021: Received ping response
+9808010: Pinging selected device.
+9808013: Started receiving data from device
+9808021: Received end of data from device
+9808021: Received ping response
+9809010: Pinging selected device.
+9809014: Started receiving data from device
+9809021: Received end of data from device
+9809021: Received ping response
+9810010: Pinging selected device.
+9810014: Started receiving data from device
+9810019: Received end of data from device
+9810019: Received ping response
+9810867: Searching for devices.
+9810871: Started receiving data from device
+9810878: Received end of data from device
+9810878: Received search response
+9811010: Pinging selected device.
+9811014: Started receiving data from device
+9811021: Received end of data from device
+9811021: Received ping response
+9812011: Pinging selected device.
+9812017: Started receiving data from device
+9812023: Received end of data from device
+9812023: Received ping response
+9813011: Pinging selected device.
+9813015: Started receiving data from device
+9813022: Received end of data from device
+9813022: Received ping response
+9814012: Pinging selected device.
+9814015: Started receiving data from device
+9814022: Received end of data from device
+9814022: Received ping response
+9815012: Pinging selected device.
+9815015: Started receiving data from device
+9815023: Received end of data from device
+9815023: Received ping response
+9815867: Searching for devices.
+9815871: Started receiving data from device
+9815877: Received end of data from device
+9815877: Received search response
+9816013: Pinging selected device.
+9816017: Started receiving data from device
+9816024: Received end of data from device
+9816024: Received ping response
+9817013: Pinging selected device.
+9817017: Started receiving data from device
+9817024: Received end of data from device
+9817024: Received ping response
+9818013: Pinging selected device.
+9818017: Started receiving data from device
+9818024: Received end of data from device
+9818024: Received ping response
+9819014: Pinging selected device.
+9819018: Started receiving data from device
+9819024: Received end of data from device
+9819024: Received ping response
+9820015: Pinging selected device.
+9820019: Started receiving data from device
+9820026: Received end of data from device
+9820026: Received ping response
+9820867: Searching for devices.
+9820870: Started receiving data from device
+9820877: Received end of data from device
+9820877: Received search response
+9821015: Pinging selected device.
+9821019: Started receiving data from device
+9821026: Received end of data from device
+9821026: Received ping response
+9822015: Pinging selected device.
+9822020: Started receiving data from device
+9822026: Received end of data from device
+9822026: Received ping response
+9823015: Pinging selected device.
+9823018: Started receiving data from device
+9823025: Received end of data from device
+9823025: Received ping response
+9824015: Pinging selected device.
+9824018: Started receiving data from device
+9824025: Received end of data from device
+9824025: Received ping response
+9825015: Pinging selected device.
+9825019: Started receiving data from device
+9825026: Received end of data from device
+9825026: Received ping response
+9825867: Searching for devices.
+9825871: Started receiving data from device
+9825878: Received end of data from device
+9825878: Received search response
+9826016: Pinging selected device.
+9826019: Started receiving data from device
+9826026: Received end of data from device
+9826026: Received ping response
+9827016: Pinging selected device.
+9827020: Started receiving data from device
+9827027: Received end of data from device
+9827027: Received ping response
+9828016: Pinging selected device.
+9828020: Started receiving data from device
+9828027: Received end of data from device
+9828027: Received ping response
+9829016: Pinging selected device.
+9829020: Started receiving data from device
+9829027: Received end of data from device
+9829027: Received ping response
+9830054: Pinging selected device.
+9830068: Started receiving data from device
+9830068: Received end of data from device
+9830068: Received ping response
+9830867: Searching for devices.
+9830871: Started receiving data from device
+9830877: Received end of data from device
+9830877: Received search response
+9831054: Pinging selected device.
+9831058: Started receiving data from device
+9831065: Received end of data from device
+9831065: Received ping response
+9832055: Pinging selected device.
+9832058: Started receiving data from device
+9832065: Received end of data from device
+9832065: Received ping response
+9833055: Pinging selected device.
+9833058: Started receiving data from device
+9833065: Received end of data from device
+9833065: Received ping response
+9834055: Pinging selected device.
+9834059: Started receiving data from device
+9834067: Received end of data from device
+9834067: Received ping response
+9835055: Pinging selected device.
+9835059: Started receiving data from device
+9835067: Received end of data from device
+9835067: Received ping response
+9835867: Searching for devices.
+9835871: Started receiving data from device
+9835877: Received end of data from device
+9835877: Received search response
+9836056: Pinging selected device.
+9836060: Started receiving data from device
+9836068: Received end of data from device
+9836068: Received ping response
+9837056: Pinging selected device.
+9837062: Started receiving data from device
+9837067: Received end of data from device
+9837067: Received ping response
+9838056: Pinging selected device.
+9838060: Started receiving data from device
+9838067: Received end of data from device
+9838067: Received ping response
+9839056: Pinging selected device.
+9839059: Started receiving data from device
+9839067: Received end of data from device
+9839067: Received ping response
+9840057: Pinging selected device.
+9840061: Started receiving data from device
+9840068: Received end of data from device
+9840068: Received ping response
+9840867: Searching for devices.
+9840871: Started receiving data from device
+9840878: Received end of data from device
+9840878: Received search response
+9841057: Pinging selected device.
+9841061: Started receiving data from device
+9841068: Received end of data from device
+9841068: Received ping response
+9842057: Pinging selected device.
+9842060: Started receiving data from device
+9842068: Received end of data from device
+9842068: Received ping response
+9843057: Pinging selected device.
+9843061: Started receiving data from device
+9843067: Received end of data from device
+9843067: Received ping response
+9844058: Pinging selected device.
+9844061: Started receiving data from device
+9844068: Received end of data from device
+9844068: Received ping response
+9845058: Pinging selected device.
+9845062: Started receiving data from device
+9845069: Received end of data from device
+9845069: Received ping response
+9845868: Searching for devices.
+9845871: Started receiving data from device
+9845878: Received end of data from device
+9845878: Received search response
+9846058: Pinging selected device.
+9846061: Started receiving data from device
+9846068: Received end of data from device
+9846068: Received ping response
+9847058: Pinging selected device.
+9847062: Started receiving data from device
+9847069: Received end of data from device
+9847069: Received ping response
+9848058: Pinging selected device.
+9848061: Started receiving data from device
+9848068: Received end of data from device
+9848068: Received ping response
+9849058: Pinging selected device.
+9849063: Started receiving data from device
+9849069: Received end of data from device
+9849069: Received ping response
+9850058: Pinging selected device.
+9850063: Started receiving data from device
+9850070: Received end of data from device
+9850070: Received ping response
+9850868: Searching for devices.
+9850872: Started receiving data from device
+9850878: Received end of data from device
+9850878: Received search response
+9851058: Pinging selected device.
+9851062: Started receiving data from device
+9851069: Received end of data from device
+9851069: Received ping response
+9852058: Pinging selected device.
+9852061: Started receiving data from device
+9852068: Received end of data from device
+9852068: Received ping response
+9853058: Pinging selected device.
+9853062: Started receiving data from device
+9853069: Received end of data from device
+9853069: Received ping response
+9854058: Pinging selected device.
+9854063: Started receiving data from device
+9854069: Received end of data from device
+9854069: Received ping response
+9855058: Pinging selected device.
+9855062: Started receiving data from device
+9855069: Received end of data from device
+9855069: Received ping response
+9855868: Searching for devices.
+9855871: Started receiving data from device
+9855878: Received end of data from device
+9855878: Received search response
+9856058: Pinging selected device.
+9856062: Started receiving data from device
+9856069: Received end of data from device
+9856069: Received ping response
+9857058: Pinging selected device.
+9857062: Started receiving data from device
+9857069: Received end of data from device
+9857069: Received ping response
+9858058: Pinging selected device.
+9858062: Started receiving data from device
+9858069: Received end of data from device
+9858069: Received ping response
+9859058: Pinging selected device.
+9859062: Started receiving data from device
+9859069: Received end of data from device
+9859069: Received ping response
+9860058: Pinging selected device.
+9860061: Started receiving data from device
+9860069: Received end of data from device
+9860069: Received ping response
+9860868: Searching for devices.
+9860872: Started receiving data from device
+9860878: Received end of data from device
+9860878: Received search response
+9861058: Pinging selected device.
+9861062: Started receiving data from device
+9861069: Received end of data from device
+9861069: Received ping response
+9862058: Pinging selected device.
+9862061: Started receiving data from device
+9862068: Received end of data from device
+9862068: Received ping response
+9863059: Pinging selected device.
+9863063: Started receiving data from device
+9863070: Received end of data from device
+9863070: Received ping response
+9864060: Pinging selected device.
+9864063: Started receiving data from device
+9864070: Received end of data from device
+9864070: Received ping response
+9865060: Pinging selected device.
+9865065: Started receiving data from device
+9865071: Received end of data from device
+9865071: Received ping response
+9865868: Searching for devices.
+9865872: Started receiving data from device
+9865879: Received end of data from device
+9865879: Received search response
+9866060: Pinging selected device.
+9866063: Started receiving data from device
+9866071: Received end of data from device
+9866071: Received ping response
+9867061: Pinging selected device.
+9867064: Started receiving data from device
+9867071: Received end of data from device
+9867071: Received ping response
+9868061: Pinging selected device.
+9868065: Started receiving data from device
+9868072: Received end of data from device
+9868072: Received ping response
+9869061: Pinging selected device.
+9869065: Started receiving data from device
+9869071: Received end of data from device
+9869071: Received ping response
+9870061: Pinging selected device.
+9870065: Started receiving data from device
+9870072: Received end of data from device
+9870072: Received ping response
+9870868: Searching for devices.
+9870872: Started receiving data from device
+9870879: Received end of data from device
+9870879: Received search response
+9871061: Pinging selected device.
+9871065: Started receiving data from device
+9871072: Received end of data from device
+9871072: Received ping response
+9872061: Pinging selected device.
+9872065: Started receiving data from device
+9872073: Received end of data from device
+9872073: Received ping response
+9873062: Pinging selected device.
+9873065: Started receiving data from device
+9873072: Received end of data from device
+9873072: Received ping response
+9874063: Pinging selected device.
+9874067: Started receiving data from device
+9874074: Received end of data from device
+9874074: Received ping response
+9875063: Pinging selected device.
+9875067: Started receiving data from device
+9875074: Received end of data from device
+9875074: Received ping response
+9875869: Searching for devices.
+9875872: Started receiving data from device
+9875880: Received end of data from device
+9875880: Received search response
+9876063: Pinging selected device.
+9876068: Started receiving data from device
+9876074: Received end of data from device
+9876074: Received ping response
+9877064: Pinging selected device.
+9877067: Started receiving data from device
+9877075: Received end of data from device
+9877075: Received ping response
+9878064: Pinging selected device.
+9878068: Started receiving data from device
+9878075: Received end of data from device
+9878075: Received ping response
+9879064: Pinging selected device.
+9879067: Started receiving data from device
+9879074: Received end of data from device
+9879074: Received ping response
+9880064: Pinging selected device.
+9880069: Started receiving data from device
+9880075: Received end of data from device
+9880075: Received ping response
+9880869: Searching for devices.
+9880872: Started receiving data from device
+9880879: Received end of data from device
+9880879: Received search response
+9881064: Pinging selected device.
+9881068: Started receiving data from device
+9881075: Received end of data from device
+9881075: Received ping response
+9882065: Pinging selected device.
+9882068: Started receiving data from device
+9882076: Received end of data from device
+9882076: Received ping response
+9883065: Pinging selected device.
+9883068: Started receiving data from device
+9883075: Received end of data from device
+9883075: Received ping response
+9884065: Pinging selected device.
+9884069: Started receiving data from device
+9884076: Received end of data from device
+9884076: Received ping response
+9885065: Pinging selected device.
+9885069: Started receiving data from device
+9885076: Received end of data from device
+9885076: Received ping response
+9885870: Searching for devices.
+9885873: Started receiving data from device
+9885881: Received end of data from device
+9885881: Received search response
+9886065: Pinging selected device.
+9886069: Started receiving data from device
+9886076: Received end of data from device
+9886076: Received ping response
+9887065: Pinging selected device.
+9887069: Started receiving data from device
+9887077: Received end of data from device
+9887077: Received ping response
+9888065: Pinging selected device.
+9888069: Started receiving data from device
+9888076: Received end of data from device
+9888076: Received ping response
+9889065: Pinging selected device.
+9889070: Started receiving data from device
+9889075: Received end of data from device
+9889075: Received ping response
+9890065: Pinging selected device.
+9890070: Started receiving data from device
+9890075: Received end of data from device
+9890075: Received ping response
+9890871: Searching for devices.
+9890874: Started receiving data from device
+9890881: Received end of data from device
+9890881: Received search response
+9891065: Pinging selected device.
+9891070: Started receiving data from device
+9891075: Received end of data from device
+9891075: Received ping response
+9892066: Pinging selected device.
+9892071: Started receiving data from device
+9892077: Received end of data from device
+9892077: Received ping response
+9893066: Pinging selected device.
+9893070: Started receiving data from device
+9893077: Received end of data from device
+9893077: Received ping response
+9894066: Pinging selected device.
+9894070: Started receiving data from device
+9894077: Received end of data from device
+9894077: Received ping response
+9895066: Pinging selected device.
+9895070: Started receiving data from device
+9895077: Received end of data from device
+9895077: Received ping response
+9895871: Searching for devices.
+9895875: Started receiving data from device
+9895882: Received end of data from device
+9895882: Received search response
+9896066: Pinging selected device.
+9896071: Started receiving data from device
+9896078: Received end of data from device
+9896078: Received ping response
+9897066: Pinging selected device.
+9897070: Started receiving data from device
+9897077: Received end of data from device
+9897077: Received ping response
+9898066: Pinging selected device.
+9898071: Started receiving data from device
+9898078: Received end of data from device
+9898078: Received ping response
+9899066: Pinging selected device.
+9899071: Started receiving data from device
+9899077: Received end of data from device
+9899077: Received ping response
+9900067: Pinging selected device.
+9900070: Started receiving data from device
+9900078: Received end of data from device
+9900078: Received ping response
+9900871: Searching for devices.
+9900874: Started receiving data from device
+9900881: Received end of data from device
+9900881: Received search response
+9901067: Pinging selected device.
+9901071: Started receiving data from device
+9901078: Received end of data from device
+9901078: Received ping response
+9902068: Pinging selected device.
+9902072: Started receiving data from device
+9902078: Received end of data from device
+9902078: Received ping response
+9903068: Pinging selected device.
+9903072: Started receiving data from device
+9903080: Received end of data from device
+9903080: Received ping response
+9904069: Pinging selected device.
+9904073: Started receiving data from device
+9904080: Received end of data from device
+9904080: Received ping response
+9905069: Pinging selected device.
+9905073: Started receiving data from device
+9905080: Received end of data from device
+9905080: Received ping response
+9905871: Searching for devices.
+9905874: Started receiving data from device
+9905881: Received end of data from device
+9905881: Received search response
+9906069: Pinging selected device.
+9906072: Started receiving data from device
+9906079: Received end of data from device
+9906079: Received ping response
+9907069: Pinging selected device.
+9907073: Started receiving data from device
+9907080: Received end of data from device
+9907080: Received ping response
+9908069: Pinging selected device.
+9908073: Started receiving data from device
+9908080: Received end of data from device
+9908080: Received ping response
+9909069: Pinging selected device.
+9909072: Started receiving data from device
+9909079: Received end of data from device
+9909079: Received ping response
+9910069: Pinging selected device.
+9910072: Started receiving data from device
+9910080: Received end of data from device
+9910080: Received ping response
+9910871: Searching for devices.
+9910875: Started receiving data from device
+9910882: Received end of data from device
+9910882: Received search response
+9911069: Pinging selected device.
+9911073: Started receiving data from device
+9911081: Received end of data from device
+9911081: Received ping response
+9912069: Pinging selected device.
+9912073: Started receiving data from device
+9912079: Received end of data from device
+9912079: Received ping response
+9913070: Pinging selected device.
+9913074: Started receiving data from device
+9913081: Received end of data from device
+9913081: Received ping response
+9914071: Pinging selected device.
+9914075: Started receiving data from device
+9914081: Received end of data from device
+9914081: Received ping response
+9915071: Pinging selected device.
+9915075: Started receiving data from device
+9915083: Received end of data from device
+9915083: Received ping response
+9915871: Searching for devices.
+9915876: Started receiving data from device
+9915882: Received end of data from device
+9915882: Received search response
+9916071: Pinging selected device.
+9916076: Started receiving data from device
+9916083: Received end of data from device
+9916083: Received ping response
+9917071: Pinging selected device.
+9917076: Started receiving data from device
+9917081: Received end of data from device
+9917081: Received ping response
+9918071: Pinging selected device.
+9918074: Started receiving data from device
+9918082: Received end of data from device
+9918082: Received ping response
+9919071: Pinging selected device.
+9919075: Started receiving data from device
+9919082: Received end of data from device
+9919082: Received ping response
+9920071: Pinging selected device.
+9920076: Started receiving data from device
+9920082: Received end of data from device
+9920082: Received ping response
+9920872: Searching for devices.
+9920876: Started receiving data from device
+9920882: Received end of data from device
+9920882: Received search response
+9921071: Pinging selected device.
+9921075: Started receiving data from device
+9921083: Received end of data from device
+9921083: Received ping response
+9922071: Pinging selected device.
+9922075: Started receiving data from device
+9922082: Received end of data from device
+9922082: Received ping response
+9923071: Pinging selected device.
+9923075: Started receiving data from device
+9923083: Received end of data from device
+9923083: Received ping response
+9924071: Pinging selected device.
+9924075: Started receiving data from device
+9924082: Received end of data from device
+9924082: Received ping response
+9925071: Pinging selected device.
+9925075: Started receiving data from device
+9925082: Received end of data from device
+9925082: Received ping response
+9925872: Searching for devices.
+9925875: Started receiving data from device
+9925882: Received end of data from device
+9925882: Received search response
+9926071: Pinging selected device.
+9926076: Started receiving data from device
+9926082: Received end of data from device
+9926082: Received ping response
+9927071: Pinging selected device.
+9927075: Started receiving data from device
+9927082: Received end of data from device
+9927082: Received ping response
+9928071: Pinging selected device.
+9928075: Started receiving data from device
+9928081: Received end of data from device
+9928081: Received ping response
+9929071: Pinging selected device.
+9929075: Started receiving data from device
+9929082: Received end of data from device
+9929082: Received ping response
+9930072: Pinging selected device.
+9930075: Started receiving data from device
+9930082: Received end of data from device
+9930082: Received ping response
+9930872: Searching for devices.
+9930876: Started receiving data from device
+9930883: Received end of data from device
+9930883: Received search response
+9931072: Pinging selected device.
+9931076: Started receiving data from device
+9931084: Received end of data from device
+9931084: Received ping response
+9932072: Pinging selected device.
+9932077: Started receiving data from device
+9932083: Received end of data from device
+9932083: Received ping response
+9933072: Pinging selected device.
+9933076: Started receiving data from device
+9933083: Received end of data from device
+9933083: Received ping response
+9934072: Pinging selected device.
+9934076: Started receiving data from device
+9934083: Received end of data from device
+9934083: Received ping response
+9935073: Pinging selected device.
+9935077: Started receiving data from device
+9935084: Received end of data from device
+9935084: Received ping response
+9935872: Searching for devices.
+9935876: Started receiving data from device
+9935883: Received end of data from device
+9935883: Received search response
+9936073: Pinging selected device.
+9936077: Started receiving data from device
+9936084: Received end of data from device
+9936084: Received ping response
+9937073: Pinging selected device.
+9937077: Started receiving data from device
+9937084: Received end of data from device
+9937084: Received ping response
+9938073: Pinging selected device.
+9938078: Started receiving data from device
+9938084: Received end of data from device
+9938084: Received ping response
+9939073: Pinging selected device.
+9939077: Started receiving data from device
+9939084: Received end of data from device
+9939084: Received ping response
+9940073: Pinging selected device.
+9940077: Started receiving data from device
+9940084: Received end of data from device
+9940084: Received ping response
+9940873: Searching for devices.
+9940876: Started receiving data from device
+9940884: Received end of data from device
+9940884: Received search response
+9941073: Pinging selected device.
+9941077: Started receiving data from device
+9941084: Received end of data from device
+9941084: Received ping response
+9942073: Pinging selected device.
+9942077: Started receiving data from device
+9942084: Received end of data from device
+9942084: Received ping response
+9943074: Pinging selected device.
+9943077: Started receiving data from device
+9943084: Received end of data from device
+9943084: Received ping response
+9944074: Pinging selected device.
+9944079: Started receiving data from device
+9944085: Received end of data from device
+9944085: Received ping response
+9945074: Pinging selected device.
+9945078: Started receiving data from device
+9945085: Received end of data from device
+9945085: Received ping response
+9945873: Searching for devices.
+9945877: Started receiving data from device
+9945884: Received end of data from device
+9945884: Received search response
+9946074: Pinging selected device.
+9946077: Started receiving data from device
+9946084: Received end of data from device
+9946084: Received ping response
+9947074: Pinging selected device.
+9947078: Started receiving data from device
+9947085: Received end of data from device
+9947085: Received ping response
+9948074: Pinging selected device.
+9948079: Started receiving data from device
+9948085: Received end of data from device
+9948085: Received ping response
+9949075: Pinging selected device.
+9949078: Started receiving data from device
+9949085: Received end of data from device
+9949085: Received ping response
+9950075: Pinging selected device.
+9950078: Started receiving data from device
+9950086: Received end of data from device
+9950086: Received ping response
+9950873: Searching for devices.
+9950877: Started receiving data from device
+9950884: Received end of data from device
+9950884: Received search response
+9951075: Pinging selected device.
+9951078: Started receiving data from device
+9951085: Received end of data from device
+9951085: Received ping response
+9952075: Pinging selected device.
+9952079: Started receiving data from device
+9952086: Received end of data from device
+9952086: Received ping response
+9953075: Pinging selected device.
+9953079: Started receiving data from device
+9953086: Received end of data from device
+9953086: Received ping response
+9954076: Pinging selected device.
+9954080: Started receiving data from device
+9954090: Received end of data from device
+9954090: Received ping response
+9955076: Pinging selected device.
+9955080: Started receiving data from device
+9955087: Received end of data from device
+9955087: Received ping response
+9955873: Searching for devices.
+9955877: Started receiving data from device
+9955884: Received end of data from device
+9955884: Received search response
+9956076: Pinging selected device.
+9956080: Started receiving data from device
+9956087: Received end of data from device
+9956087: Received ping response
+9957077: Pinging selected device.
+9957080: Started receiving data from device
+9957088: Received end of data from device
+9957088: Received ping response
+9958077: Pinging selected device.
+9958081: Started receiving data from device
+9958088: Received end of data from device
+9958088: Received ping response
+9959077: Pinging selected device.
+9959082: Started receiving data from device
+9959088: Received end of data from device
+9959088: Received ping response
+9960078: Pinging selected device.
+9960081: Started receiving data from device
+9960089: Received end of data from device
+9960089: Received ping response
+9960873: Searching for devices.
+9960877: Started receiving data from device
+9960884: Received end of data from device
+9960884: Received search response
+9961078: Pinging selected device.
+9961082: Started receiving data from device
+9961090: Received end of data from device
+9961090: Received ping response
+9962078: Pinging selected device.
+9962083: Started receiving data from device
+9962089: Received end of data from device
+9962089: Received ping response
+9963078: Pinging selected device.
+9963083: Started receiving data from device
+9963089: Received end of data from device
+9963089: Received ping response
+9964078: Pinging selected device.
+9964082: Started receiving data from device
+9964089: Received end of data from device
+9964089: Received ping response
+9965079: Pinging selected device.
+9965082: Started receiving data from device
+9965089: Received end of data from device
+9965089: Received ping response
+9965873: Searching for devices.
+9965877: Started receiving data from device
+9965884: Received end of data from device
+9965884: Received search response
+9966079: Pinging selected device.
+9966083: Started receiving data from device
+9966090: Received end of data from device
+9966090: Received ping response
+9967079: Pinging selected device.
+9967082: Started receiving data from device
+9967090: Received end of data from device
+9967090: Received ping response
+9968079: Pinging selected device.
+9968082: Started receiving data from device
+9968089: Received end of data from device
+9968089: Received ping response
+9969079: Pinging selected device.
+9969083: Started receiving data from device
+9969090: Received end of data from device
+9969090: Received ping response
+9970080: Pinging selected device.
+9970083: Started receiving data from device
+9970090: Received end of data from device
+9970090: Received ping response
+9970873: Searching for devices.
+9970876: Started receiving data from device
+9970883: Received end of data from device
+9970883: Received search response
+9971081: Pinging selected device.
+9971085: Started receiving data from device
+9971092: Received end of data from device
+9971092: Received ping response
+9972081: Pinging selected device.
+9972085: Started receiving data from device
+9972092: Received end of data from device
+9972092: Received ping response
+9973082: Pinging selected device.
+9973085: Started receiving data from device
+9973092: Received end of data from device
+9973092: Received ping response
+9974082: Pinging selected device.
+9974085: Started receiving data from device
+9974092: Received end of data from device
+9974092: Received ping response
+9975082: Pinging selected device.
+9975085: Started receiving data from device
+9975092: Received end of data from device
+9975092: Received ping response
+9975873: Searching for devices.
+9975877: Started receiving data from device
+9975884: Received end of data from device
+9975884: Received search response
+9976082: Pinging selected device.
+9976086: Started receiving data from device
+9976093: Received end of data from device
+9976093: Received ping response
+9977082: Pinging selected device.
+9977086: Started receiving data from device
+9977093: Received end of data from device
+9977093: Received ping response
+9978082: Pinging selected device.
+9978086: Started receiving data from device
+9978093: Received end of data from device
+9978093: Received ping response
+9979083: Pinging selected device.
+9979086: Started receiving data from device
+9979094: Received end of data from device
+9979094: Received ping response
+9980084: Pinging selected device.
+9980089: Started receiving data from device
+9980095: Received end of data from device
+9980095: Received ping response
+9980873: Searching for devices.
+9980876: Started receiving data from device
+9980884: Received end of data from device
+9980884: Received search response
+9981084: Pinging selected device.
+9981089: Started receiving data from device
+9981095: Received end of data from device
+9981095: Received ping response
+9982084: Pinging selected device.
+9982087: Started receiving data from device
+9982094: Received end of data from device
+9982094: Received ping response
+9983084: Pinging selected device.
+9983087: Started receiving data from device
+9983094: Received end of data from device
+9983094: Received ping response
+9984085: Pinging selected device.
+9984088: Started receiving data from device
+9984095: Received end of data from device
+9984095: Received ping response
+9985086: Pinging selected device.
+9985089: Started receiving data from device
+9985097: Received end of data from device
+9985097: Received ping response
+9985873: Searching for devices.
+9985876: Started receiving data from device
+9985883: Received end of data from device
+9985883: Received search response
+9986086: Pinging selected device.
+9986090: Started receiving data from device
+9986097: Received end of data from device
+9986097: Received ping response
+9987086: Pinging selected device.
+9987090: Started receiving data from device
+9987097: Received end of data from device
+9987097: Received ping response
+9988086: Pinging selected device.
+9988091: Started receiving data from device
+9988096: Received end of data from device
+9988096: Received ping response
+9989086: Pinging selected device.
+9989090: Started receiving data from device
+9989097: Received end of data from device
+9989097: Received ping response
+9990086: Pinging selected device.
+9990090: Started receiving data from device
+9990097: Received end of data from device
+9990097: Received ping response
+9990873: Searching for devices.
+9990877: Started receiving data from device
+9990883: Received end of data from device
+9990883: Received search response
+9991086: Pinging selected device.
+9991090: Started receiving data from device
+9991097: Received end of data from device
+9991097: Received ping response
+9992086: Pinging selected device.
+9992090: Started receiving data from device
+9992097: Received end of data from device
+9992097: Received ping response
+9993086: Pinging selected device.
+9993090: Started receiving data from device
+9993097: Received end of data from device
+9993097: Received ping response
+9994086: Pinging selected device.
+9994090: Started receiving data from device
+9994096: Received end of data from device
+9994096: Received ping response
+9995086: Pinging selected device.
+9995090: Started receiving data from device
+9995097: Received end of data from device
+9995097: Received ping response
+9995873: Searching for devices.
+9995877: Started receiving data from device
+9995884: Received end of data from device
+9995884: Received search response
+9996086: Pinging selected device.
+9996090: Started receiving data from device
+9996096: Received end of data from device
+9996096: Received ping response
+9997086: Pinging selected device.
+9997090: Started receiving data from device
+9997097: Received end of data from device
+9997097: Received ping response
+9998086: Pinging selected device.
+9998090: Started receiving data from device
+9998097: Received end of data from device
+9998097: Received ping response
+9999086: Pinging selected device.
+9999090: Started receiving data from device
+9999096: Received end of data from device
+9999096: Received ping response
+10000086: Pinging selected device.
+10000090: Started receiving data from device
+10000097: Received end of data from device
+10000097: Received ping response
+10000874: Searching for devices.
+10000877: Started receiving data from device
+10000885: Received end of data from device
+10000885: Received search response
+10001086: Pinging selected device.
+10001090: Started receiving data from device
+10001097: Received end of data from device
+10001097: Received ping response
+10002087: Pinging selected device.
+10002091: Started receiving data from device
+10002098: Received end of data from device
+10002098: Received ping response
+10003087: Pinging selected device.
+10003091: Started receiving data from device
+10003098: Received end of data from device
+10003098: Received ping response
+10004087: Pinging selected device.
+10004090: Started receiving data from device
+10004097: Received end of data from device
+10004097: Received ping response
+10005088: Pinging selected device.
+10005091: Started receiving data from device
+10005099: Received end of data from device
+10005099: Received ping response
+10005874: Searching for devices.
+10005877: Started receiving data from device
+10005884: Received end of data from device
+10005884: Received search response
+10006088: Pinging selected device.
+10006091: Started receiving data from device
+10006098: Received end of data from device
+10006098: Received ping response
+10007088: Pinging selected device.
+10007091: Started receiving data from device
+10007099: Received end of data from device
+10007099: Received ping response
+10008088: Pinging selected device.
+10008092: Started receiving data from device
+10008099: Received end of data from device
+10008099: Received ping response
+10009088: Pinging selected device.
+10009092: Started receiving data from device
+10009099: Received end of data from device
+10009099: Received ping response
+10010088: Pinging selected device.
+10010093: Started receiving data from device
+10010099: Received end of data from device
+10010099: Received ping response
+10010874: Searching for devices.
+10010877: Started receiving data from device
+10010884: Received end of data from device
+10010884: Received search response
+10011088: Pinging selected device.
+10011092: Started receiving data from device
+10011100: Received end of data from device
+10011100: Received ping response
+10012088: Pinging selected device.
+10012092: Started receiving data from device
+10012099: Received end of data from device
+10012099: Received ping response
+10013088: Pinging selected device.
+10013092: Started receiving data from device
+10013099: Received end of data from device
+10013099: Received ping response
+10014088: Pinging selected device.
+10014092: Started receiving data from device
+10014099: Received end of data from device
+10014099: Received ping response
+10015089: Pinging selected device.
+10015092: Started receiving data from device
+10015099: Received end of data from device
+10015099: Received ping response
+10015874: Searching for devices.
+10015877: Started receiving data from device
+10015884: Received end of data from device
+10015884: Received search response
+10016090: Pinging selected device.
+10016093: Started receiving data from device
+10016101: Received end of data from device
+10016101: Received ping response
+10017090: Pinging selected device.
+10017094: Started receiving data from device
+10017101: Received end of data from device
+10017101: Received ping response
+10018090: Pinging selected device.
+10018094: Started receiving data from device
+10018100: Received end of data from device
+10018100: Received ping response
+10019090: Pinging selected device.
+10019095: Started receiving data from device
+10019101: Received end of data from device
+10019101: Received ping response
+10020090: Pinging selected device.
+10020094: Started receiving data from device
+10020100: Received end of data from device
+10020100: Received ping response
+10020875: Searching for devices.
+10020878: Started receiving data from device
+10020885: Received end of data from device
+10020885: Received search response
+10021090: Pinging selected device.
+10021095: Started receiving data from device
+10021101: Received end of data from device
+10021101: Received ping response
+10022091: Pinging selected device.
+10022095: Started receiving data from device
+10022101: Received end of data from device
+10022101: Received ping response
+10023091: Pinging selected device.
+10023095: Started receiving data from device
+10023102: Received end of data from device
+10023102: Received ping response
+10024091: Pinging selected device.
+10024094: Started receiving data from device
+10024101: Received end of data from device
+10024101: Received ping response
+10025091: Pinging selected device.
+10025095: Started receiving data from device
+10025102: Received end of data from device
+10025102: Received ping response
+10025875: Searching for devices.
+10025879: Started receiving data from device
+10025886: Received end of data from device
+10025886: Received search response
+10026091: Pinging selected device.
+10026095: Started receiving data from device
+10026102: Received end of data from device
+10026102: Received ping response
+10027091: Pinging selected device.
+10027095: Started receiving data from device
+10027102: Received end of data from device
+10027102: Received ping response
+10028092: Pinging selected device.
+10028095: Started receiving data from device
+10028102: Received end of data from device
+10028102: Received ping response
+10029092: Pinging selected device.
+10029096: Started receiving data from device
+10029103: Received end of data from device
+10029103: Received ping response
+10030092: Pinging selected device.
+10030095: Started receiving data from device
+10030103: Received end of data from device
+10030103: Received ping response
+10030876: Searching for devices.
+10030880: Started receiving data from device
+10030887: Received end of data from device
+10030887: Received search response
+10031093: Pinging selected device.
+10031096: Started receiving data from device
+10031103: Received end of data from device
+10031103: Received ping response
+10032093: Pinging selected device.
+10032096: Started receiving data from device
+10032103: Received end of data from device
+10032103: Received ping response
+10033093: Pinging selected device.
+10033097: Started receiving data from device
+10033104: Received end of data from device
+10033104: Received ping response
+10034093: Pinging selected device.
+10034096: Started receiving data from device
+10034103: Received end of data from device
+10034103: Received ping response
+10035093: Pinging selected device.
+10035096: Started receiving data from device
+10035104: Received end of data from device
+10035104: Received ping response
+10035876: Searching for devices.
+10035880: Started receiving data from device
+10035887: Received end of data from device
+10035887: Received search response
+10036093: Pinging selected device.
+10036098: Started receiving data from device
+10036103: Received end of data from device
+10036103: Received ping response
+10037093: Pinging selected device.
+10037097: Started receiving data from device
+10037104: Received end of data from device
+10037104: Received ping response
+10038093: Pinging selected device.
+10038096: Started receiving data from device
+10038104: Received end of data from device
+10038104: Received ping response
+10039093: Pinging selected device.
+10039098: Started receiving data from device
+10039104: Received end of data from device
+10039104: Received ping response
+10040093: Pinging selected device.
+10040098: Started receiving data from device
+10040104: Received end of data from device
+10040104: Received ping response
+10040876: Searching for devices.
+10040880: Started receiving data from device
+10040887: Received end of data from device
+10040887: Received search response
+10041093: Pinging selected device.
+10041098: Started receiving data from device
+10041104: Received end of data from device
+10041104: Received ping response
+10042093: Pinging selected device.
+10042096: Started receiving data from device
+10042104: Received end of data from device
+10042104: Received ping response
+10043093: Pinging selected device.
+10043096: Started receiving data from device
+10043103: Received end of data from device
+10043103: Received ping response
+10044093: Pinging selected device.
+10044098: Started receiving data from device
+10044104: Received end of data from device
+10044104: Received ping response
+10045093: Pinging selected device.
+10045097: Started receiving data from device
+10045104: Received end of data from device
+10045104: Received ping response
+10045876: Searching for devices.
+10045880: Started receiving data from device
+10045887: Received end of data from device
+10045887: Received search response
+10046093: Pinging selected device.
+10046096: Started receiving data from device
+10046103: Received end of data from device
+10046103: Received ping response
+10047093: Pinging selected device.
+10047096: Started receiving data from device
+10047104: Received end of data from device
+10047104: Received ping response
+10048093: Pinging selected device.
+10048097: Started receiving data from device
+10048103: Received end of data from device
+10048103: Received ping response
+10049093: Pinging selected device.
+10049096: Started receiving data from device
+10049103: Received end of data from device
+10049103: Received ping response
+10050093: Pinging selected device.
+10050097: Started receiving data from device
+10050104: Received end of data from device
+10050104: Received ping response
+10050876: Searching for devices.
+10050880: Started receiving data from device
+10050886: Received end of data from device
+10050886: Received search response
+10051094: Pinging selected device.
+10051098: Started receiving data from device
+10051105: Received end of data from device
+10051105: Received ping response
+10052094: Pinging selected device.
+10052097: Started receiving data from device
+10052104: Received end of data from device
+10052104: Received ping response
+10053094: Pinging selected device.
+10053098: Started receiving data from device
+10053104: Received end of data from device
+10053104: Received ping response
+10054095: Pinging selected device.
+10054099: Started receiving data from device
+10054106: Received end of data from device
+10054106: Received ping response
+10055095: Pinging selected device.
+10055099: Started receiving data from device
+10055106: Received end of data from device
+10055106: Received ping response
+10055877: Searching for devices.
+10055880: Started receiving data from device
+10055887: Received end of data from device
+10055887: Received search response
+10056095: Pinging selected device.
+10056098: Started receiving data from device
+10056105: Received end of data from device
+10056105: Received ping response
+10057095: Pinging selected device.
+10057098: Started receiving data from device
+10057105: Received end of data from device
+10057105: Received ping response
+10058096: Pinging selected device.
+10058100: Started receiving data from device
+10058107: Received end of data from device
+10058107: Received ping response
+10059096: Pinging selected device.
+10059100: Started receiving data from device
+10059107: Received end of data from device
+10059107: Received ping response
+10060096: Pinging selected device.
+10060099: Started receiving data from device
+10060106: Received end of data from device
+10060106: Received ping response
+10060877: Searching for devices.
+10060881: Started receiving data from device
+10060888: Received end of data from device
+10060888: Received search response
+10061096: Pinging selected device.
+10061101: Started receiving data from device
+10061107: Received end of data from device
+10061107: Received ping response
+10062096: Pinging selected device.
+10062100: Started receiving data from device
+10062107: Received end of data from device
+10062107: Received ping response
+10063096: Pinging selected device.
+10063100: Started receiving data from device
+10063107: Received end of data from device
+10063107: Received ping response
+10064096: Pinging selected device.
+10064099: Started receiving data from device
+10064107: Received end of data from device
+10064107: Received ping response
+10065096: Pinging selected device.
+10065100: Started receiving data from device
+10065107: Received end of data from device
+10065107: Received ping response
+10065877: Searching for devices.
+10065881: Started receiving data from device
+10065888: Received end of data from device
+10065888: Received search response
+10066096: Pinging selected device.
+10066099: Started receiving data from device
+10066107: Received end of data from device
+10066107: Received ping response
+10067097: Pinging selected device.
+10067101: Started receiving data from device
+10067107: Received end of data from device
+10067107: Received ping response
+10068097: Pinging selected device.
+10068101: Started receiving data from device
+10068107: Received end of data from device
+10068107: Received ping response
+10069097: Pinging selected device.
+10069101: Started receiving data from device
+10069108: Received end of data from device
+10069108: Received ping response
+10070097: Pinging selected device.
+10070101: Started receiving data from device
+10070108: Received end of data from device
+10070108: Received ping response
+10070878: Searching for devices.
+10070881: Started receiving data from device
+10070889: Received end of data from device
+10070889: Received search response
+10071097: Pinging selected device.
+10071102: Started receiving data from device
+10071108: Received end of data from device
+10071108: Received ping response
+10072097: Pinging selected device.
+10072101: Started receiving data from device
+10072109: Received end of data from device
+10072109: Received ping response
+10073097: Pinging selected device.
+10073101: Started receiving data from device
+10073109: Received end of data from device
+10073109: Received ping response
+10074098: Pinging selected device.
+10074103: Started receiving data from device
+10074109: Received end of data from device
+10074109: Received ping response
+10075098: Pinging selected device.
+10075102: Started receiving data from device
+10075108: Received end of data from device
+10075108: Received ping response
+10075878: Searching for devices.
+10075882: Started receiving data from device
+10075889: Received end of data from device
+10075889: Received search response
+10076098: Pinging selected device.
+10076101: Started receiving data from device
+10076109: Received end of data from device
+10076109: Received ping response
+10077098: Pinging selected device.
+10077102: Started receiving data from device
+10077109: Received end of data from device
+10077109: Received ping response
+10078098: Pinging selected device.
+10078102: Started receiving data from device
+10078109: Received end of data from device
+10078109: Received ping response
+10079098: Pinging selected device.
+10079102: Started receiving data from device
+10079109: Received end of data from device
+10079109: Received ping response
+10080098: Pinging selected device.
+10080103: Started receiving data from device
+10080108: Received end of data from device
+10080108: Received ping response
+10080878: Searching for devices.
+10080882: Started receiving data from device
+10080889: Received end of data from device
+10080889: Received search response
+10081098: Pinging selected device.
+10081101: Started receiving data from device
+10081108: Received end of data from device
+10081108: Received ping response
+10082098: Pinging selected device.
+10082101: Started receiving data from device
+10082108: Received end of data from device
+10082108: Received ping response
+10083098: Pinging selected device.
+10083103: Started receiving data from device
+10083109: Received end of data from device
+10083109: Received ping response
+10084098: Pinging selected device.
+10084102: Started receiving data from device
+10084109: Received end of data from device
+10084109: Received ping response
+10085098: Pinging selected device.
+10085101: Started receiving data from device
+10085108: Received end of data from device
+10085108: Received ping response
+10085878: Searching for devices.
+10085881: Started receiving data from device
+10085888: Received end of data from device
+10085888: Received search response
+10086098: Pinging selected device.
+10086103: Started receiving data from device
+10086109: Received end of data from device
+10086109: Received ping response
+10087098: Pinging selected device.
+10087102: Started receiving data from device
+10087109: Received end of data from device
+10087109: Received ping response
+10088098: Pinging selected device.
+10088102: Started receiving data from device
+10088109: Received end of data from device
+10088109: Received ping response
+10089098: Pinging selected device.
+10089103: Started receiving data from device
+10089109: Received end of data from device
+10089109: Received ping response
+10090098: Pinging selected device.
+10090101: Started receiving data from device
+10090108: Received end of data from device
+10090108: Received ping response
+10090878: Searching for devices.
+10090881: Started receiving data from device
+10090889: Received end of data from device
+10090889: Received search response
+10091098: Pinging selected device.
+10091103: Started receiving data from device
+10091109: Received end of data from device
+10091109: Received ping response
+10092098: Pinging selected device.
+10092103: Started receiving data from device
+10092109: Received end of data from device
+10092109: Received ping response
+10093098: Pinging selected device.
+10093102: Started receiving data from device
+10093108: Received end of data from device
+10093108: Received ping response
+10094098: Pinging selected device.
+10094102: Started receiving data from device
+10094110: Received end of data from device
+10094110: Received ping response
+10095098: Pinging selected device.
+10095102: Started receiving data from device
+10095110: Received end of data from device
+10095110: Received ping response
+10095878: Searching for devices.
+10095882: Started receiving data from device
+10095889: Received end of data from device
+10095889: Received search response
+10096098: Pinging selected device.
+10096103: Started receiving data from device
+10096108: Received end of data from device
+10096108: Received ping response
+10097098: Pinging selected device.
+10097102: Started receiving data from device
+10097110: Received end of data from device
+10097110: Received ping response
+10098098: Pinging selected device.
+10098103: Started receiving data from device
+10098109: Received end of data from device
+10098109: Received ping response
+10099099: Pinging selected device.
+10099102: Started receiving data from device
+10099109: Received end of data from device
+10099109: Received ping response
+10100099: Pinging selected device.
+10100105: Started receiving data from device
+10100111: Received end of data from device
+10100111: Received ping response
+10100878: Searching for devices.
+10100881: Started receiving data from device
+10100889: Received end of data from device
+10100889: Received search response
+10101099: Pinging selected device.
+10101104: Started receiving data from device
+10101111: Received end of data from device
+10101111: Received ping response
+10102099: Pinging selected device.
+10102104: Started receiving data from device
+10102111: Received end of data from device
+10102111: Received ping response
+10103099: Pinging selected device.
+10103104: Started receiving data from device
+10103111: Received end of data from device
+10103111: Received ping response
+10104099: Pinging selected device.
+10104104: Started receiving data from device
+10104110: Received end of data from device
+10104110: Received ping response
+10105100: Pinging selected device.
+10105103: Started receiving data from device
+10105110: Received end of data from device
+10105110: Received ping response
+10105878: Searching for devices.
+10105881: Started receiving data from device
+10105889: Received end of data from device
+10105889: Received search response
+10106100: Pinging selected device.
+10106104: Started receiving data from device
+10106111: Received end of data from device
+10106111: Received ping response
+10107100: Pinging selected device.
+10107104: Started receiving data from device
+10107111: Received end of data from device
+10107111: Received ping response
+10108100: Pinging selected device.
+10108104: Started receiving data from device
+10108111: Received end of data from device
+10108111: Received ping response
+10109101: Pinging selected device.
+10109104: Started receiving data from device
+10109111: Received end of data from device
+10109111: Received ping response
+10110102: Pinging selected device.
+10110106: Started receiving data from device
+10110112: Received end of data from device
+10110112: Received ping response
+10110878: Searching for devices.
+10110881: Started receiving data from device
+10110888: Received end of data from device
+10110888: Received search response
+10111103: Pinging selected device.
+10111107: Started receiving data from device
+10111113: Received end of data from device
+10111113: Received ping response
+10112103: Pinging selected device.
+10112106: Started receiving data from device
+10112113: Received end of data from device
+10112113: Received ping response
+10113103: Pinging selected device.
+10113108: Started receiving data from device
+10113113: Received end of data from device
+10113113: Received ping response
+10114103: Pinging selected device.
+10114107: Started receiving data from device
+10114114: Received end of data from device
+10114114: Received ping response
+10115103: Pinging selected device.
+10115107: Started receiving data from device
+10115115: Received end of data from device
+10115115: Received ping response
+10115879: Searching for devices.
+10115883: Started receiving data from device
+10115890: Received end of data from device
+10115890: Received search response
+10116104: Pinging selected device.
+10116109: Started receiving data from device
+10116115: Received end of data from device
+10116115: Received ping response
+10117104: Pinging selected device.
+10117107: Started receiving data from device
+10117114: Received end of data from device
+10117114: Received ping response
+10118104: Pinging selected device.
+10118107: Started receiving data from device
+10118114: Received end of data from device
+10118114: Received ping response
+10119105: Pinging selected device.
+10119109: Started receiving data from device
+10119116: Received end of data from device
+10119116: Received ping response
+10120105: Pinging selected device.
+10120109: Started receiving data from device
+10120116: Received end of data from device
+10120116: Received ping response
+10120879: Searching for devices.
+10120883: Started receiving data from device
+10120890: Received end of data from device
+10120890: Received search response
+10121105: Pinging selected device.
+10121109: Started receiving data from device
+10121115: Received end of data from device
+10121115: Received ping response
+10122105: Pinging selected device.
+10122109: Started receiving data from device
+10122116: Received end of data from device
+10122116: Received ping response
+10123105: Pinging selected device.
+10123109: Started receiving data from device
+10123116: Received end of data from device
+10123116: Received ping response
+10124105: Pinging selected device.
+10124109: Started receiving data from device
+10124116: Received end of data from device
+10124116: Received ping response
+10125105: Pinging selected device.
+10125110: Started receiving data from device
+10125117: Received end of data from device
+10125117: Received ping response
+10125879: Searching for devices.
+10125883: Started receiving data from device
+10125890: Received end of data from device
+10125890: Received search response
+10126105: Pinging selected device.
+10126109: Started receiving data from device
+10126116: Received end of data from device
+10126116: Received ping response
+10127105: Pinging selected device.
+10127110: Started receiving data from device
+10127116: Received end of data from device
+10127116: Received ping response
+10128105: Pinging selected device.
+10128109: Started receiving data from device
+10128117: Received end of data from device
+10128117: Received ping response
+10129105: Pinging selected device.
+10129109: Started receiving data from device
+10129116: Received end of data from device
+10129116: Received ping response
+10130105: Pinging selected device.
+10130109: Started receiving data from device
+10130116: Received end of data from device
+10130116: Received ping response
+10130879: Searching for devices.
+10130883: Started receiving data from device
+10130890: Received end of data from device
+10130890: Received search response
+10131105: Pinging selected device.
+10131109: Started receiving data from device
+10131116: Received end of data from device
+10131116: Received ping response
+10132105: Pinging selected device.
+10132109: Started receiving data from device
+10132116: Received end of data from device
+10132116: Received ping response
+10133105: Pinging selected device.
+10133109: Started receiving data from device
+10133116: Received end of data from device
+10133116: Received ping response
+10134106: Pinging selected device.
+10134110: Started receiving data from device
+10134117: Received end of data from device
+10134117: Received ping response
+10135106: Pinging selected device.
+10135110: Started receiving data from device
+10135117: Received end of data from device
+10135117: Received ping response
+10135879: Searching for devices.
+10135883: Started receiving data from device
+10135890: Received end of data from device
+10135890: Received search response
+10136107: Pinging selected device.
+10136111: Started receiving data from device
+10136118: Received end of data from device
+10136118: Received ping response
+10137108: Pinging selected device.
+10137112: Started receiving data from device
+10137118: Received end of data from device
+10137118: Received ping response
+10138108: Pinging selected device.
+10138112: Started receiving data from device
+10138119: Received end of data from device
+10138119: Received ping response
+10139108: Pinging selected device.
+10139113: Started receiving data from device
+10139118: Received end of data from device
+10139118: Received ping response
+10140109: Pinging selected device.
+10140113: Started receiving data from device
+10140120: Received end of data from device
+10140120: Received ping response
+10140879: Searching for devices.
+10140883: Started receiving data from device
+10140890: Received end of data from device
+10140890: Received search response
+10141109: Pinging selected device.
+10141114: Started receiving data from device
+10141120: Received end of data from device
+10141120: Received ping response
+10142109: Pinging selected device.
+10142113: Started receiving data from device
+10142120: Received end of data from device
+10142120: Received ping response
+10143110: Pinging selected device.
+10143113: Started receiving data from device
+10143120: Received end of data from device
+10143120: Received ping response
+10144110: Pinging selected device.
+10144114: Started receiving data from device
+10144122: Received end of data from device
+10144122: Received ping response
+10145110: Pinging selected device.
+10145113: Started receiving data from device
+10145121: Received end of data from device
+10145121: Received ping response
+10145879: Searching for devices.
+10145883: Started receiving data from device
+10145889: Received end of data from device
+10145889: Received search response
+10146111: Pinging selected device.
+10146115: Started receiving data from device
+10146121: Received end of data from device
+10146121: Received ping response
+10147111: Pinging selected device.
+10147115: Started receiving data from device
+10147122: Received end of data from device
+10147122: Received ping response
+10148112: Pinging selected device.
+10148116: Started receiving data from device
+10148123: Received end of data from device
+10148123: Received ping response
+10149112: Pinging selected device.
+10149118: Started receiving data from device
+10149124: Received end of data from device
+10149124: Received ping response
+10150112: Pinging selected device.
+10150116: Started receiving data from device
+10150122: Received end of data from device
+10150122: Received ping response
+10150880: Searching for devices.
+10150883: Started receiving data from device
+10150890: Received end of data from device
+10150890: Received search response
+10151112: Pinging selected device.
+10151116: Started receiving data from device
+10151122: Received end of data from device
+10151122: Received ping response
+10152112: Pinging selected device.
+10152116: Started receiving data from device
+10152123: Received end of data from device
+10152123: Received ping response
+10153113: Pinging selected device.
+10153116: Started receiving data from device
+10153124: Received end of data from device
+10153124: Received ping response
+10154113: Pinging selected device.
+10154117: Started receiving data from device
+10154125: Received end of data from device
+10154125: Received ping response
+10155113: Pinging selected device.
+10155119: Started receiving data from device
+10155124: Received end of data from device
+10155124: Received ping response
+10155880: Searching for devices.
+10155884: Started receiving data from device
+10155891: Received end of data from device
+10155891: Received search response
+10156113: Pinging selected device.
+10156117: Started receiving data from device
+10156125: Received end of data from device
+10156125: Received ping response
+10157113: Pinging selected device.
+10157119: Started receiving data from device
+10157124: Received end of data from device
+10157124: Received ping response
+10158113: Pinging selected device.
+10158118: Started receiving data from device
+10158124: Received end of data from device
+10158124: Received ping response
+10159113: Pinging selected device.
+10159119: Started receiving data from device
+10159124: Received end of data from device
+10159124: Received ping response
+10160113: Pinging selected device.
+10160119: Started receiving data from device
+10160125: Received end of data from device
+10160125: Received ping response
+10160880: Searching for devices.
+10160883: Started receiving data from device
+10160891: Received end of data from device
+10160891: Received search response
+10161113: Pinging selected device.
+10161117: Started receiving data from device
+10161125: Received end of data from device
+10161125: Received ping response
+10162114: Pinging selected device.
+10162119: Started receiving data from device
+10162125: Received end of data from device
+10162125: Received ping response
+10163114: Pinging selected device.
+10163118: Started receiving data from device
+10163125: Received end of data from device
+10163125: Received ping response
+10164115: Pinging selected device.
+10164119: Started receiving data from device
+10164126: Received end of data from device
+10164126: Received ping response
+10165115: Pinging selected device.
+10165119: Started receiving data from device
+10165126: Received end of data from device
+10165126: Received ping response
+10165880: Searching for devices.
+10165883: Started receiving data from device
+10165890: Received end of data from device
+10165890: Received search response
+10166115: Pinging selected device.
+10166119: Started receiving data from device
+10166126: Received end of data from device
+10166126: Received ping response
+10167115: Pinging selected device.
+10167119: Started receiving data from device
+10167127: Received end of data from device
+10167127: Received ping response
+10168115: Pinging selected device.
+10168120: Started receiving data from device
+10168126: Received end of data from device
+10168126: Received ping response
+10169115: Pinging selected device.
+10169120: Started receiving data from device
+10169125: Received end of data from device
+10169125: Received ping response
+10170115: Pinging selected device.
+10170119: Started receiving data from device
+10170126: Received end of data from device
+10170126: Received ping response
+10170881: Searching for devices.
+10170884: Started receiving data from device
+10170892: Received end of data from device
+10170892: Received search response
+10171115: Pinging selected device.
+10171118: Started receiving data from device
+10171127: Received end of data from device
+10171127: Received ping response
+10172115: Pinging selected device.
+10172121: Started receiving data from device
+10172127: Received end of data from device
+10172127: Received ping response
+10173115: Pinging selected device.
+10173119: Started receiving data from device
+10173126: Received end of data from device
+10173126: Received ping response
+10174115: Pinging selected device.
+10174120: Started receiving data from device
+10174126: Received end of data from device
+10174126: Received ping response
+10175115: Pinging selected device.
+10175121: Started receiving data from device
+10175127: Received end of data from device
+10175127: Received ping response
+10175881: Searching for devices.
+10175885: Started receiving data from device
+10175892: Received end of data from device
+10175892: Received search response
+10176115: Pinging selected device.
+10176120: Started receiving data from device
+10176126: Received end of data from device
+10176126: Received ping response
+10177115: Pinging selected device.
+10177120: Started receiving data from device
+10177126: Received end of data from device
+10177126: Received ping response
+10178115: Pinging selected device.
+10178121: Started receiving data from device
+10178126: Received end of data from device
+10178126: Received ping response
+10179115: Pinging selected device.
+10179119: Started receiving data from device
+10179126: Received end of data from device
+10179126: Received ping response
+10180115: Pinging selected device.
+10180120: Started receiving data from device
+10180126: Received end of data from device
+10180126: Received ping response
+10180881: Searching for devices.
+10180885: Started receiving data from device
+10180892: Received end of data from device
+10180892: Received search response
+10181115: Pinging selected device.
+10181120: Started receiving data from device
+10181126: Received end of data from device
+10181126: Received ping response
+10182115: Pinging selected device.
+10182119: Started receiving data from device
+10182126: Received end of data from device
+10182126: Received ping response
+10183115: Pinging selected device.
+10183120: Started receiving data from device
+10183126: Received end of data from device
+10183126: Received ping response
+10184116: Pinging selected device.
+10184119: Started receiving data from device
+10184127: Received end of data from device
+10184127: Received ping response
+10185116: Pinging selected device.
+10185119: Started receiving data from device
+10185127: Received end of data from device
+10185127: Received ping response
+10185881: Searching for devices.
+10185884: Started receiving data from device
+10185891: Received end of data from device
+10185891: Received search response
+10186116: Pinging selected device.
+10186120: Started receiving data from device
+10186127: Received end of data from device
+10186127: Received ping response
+10187117: Pinging selected device.
+10187121: Started receiving data from device
+10187128: Received end of data from device
+10187128: Received ping response
+10188117: Pinging selected device.
+10188120: Started receiving data from device
+10188128: Received end of data from device
+10188128: Received ping response
+10189118: Pinging selected device.
+10189122: Started receiving data from device
+10189129: Received end of data from device
+10189129: Received ping response
+10190118: Pinging selected device.
+10190122: Started receiving data from device
+10190129: Received end of data from device
+10190129: Received ping response
+10190881: Searching for devices.
+10190884: Started receiving data from device
+10190891: Received end of data from device
+10190891: Received search response
+10191118: Pinging selected device.
+10191122: Started receiving data from device
+10191130: Received end of data from device
+10191130: Received ping response
+10192118: Pinging selected device.
+10192123: Started receiving data from device
+10192129: Received end of data from device
+10192129: Received ping response
+10193118: Pinging selected device.
+10193122: Started receiving data from device
+10193129: Received end of data from device
+10193129: Received ping response
+10194119: Pinging selected device.
+10194123: Started receiving data from device
+10194130: Received end of data from device
+10194130: Received ping response
+10195119: Pinging selected device.
+10195123: Started receiving data from device
+10195130: Received end of data from device
+10195130: Received ping response
+10195881: Searching for devices.
+10195885: Started receiving data from device
+10195893: Received end of data from device
+10195893: Received search response
+10196119: Pinging selected device.
+10196123: Started receiving data from device
+10196131: Received end of data from device
+10196131: Received ping response
+10197119: Pinging selected device.
+10197124: Started receiving data from device
+10197130: Received end of data from device
+10197130: Received ping response
+10198119: Pinging selected device.
+10198123: Started receiving data from device
+10198130: Received end of data from device
+10198130: Received ping response
+10199119: Pinging selected device.
+10199123: Started receiving data from device
+10199129: Received end of data from device
+10199129: Received ping response
+10200120: Pinging selected device.
+10200124: Started receiving data from device
+10200130: Received end of data from device
+10200130: Received ping response
+10200881: Searching for devices.
+10200884: Started receiving data from device
+10200892: Received end of data from device
+10200892: Received search response
+10201121: Pinging selected device.
+10201124: Started receiving data from device
+10201131: Received end of data from device
+10201131: Received ping response
+10202121: Pinging selected device.
+10202124: Started receiving data from device
+10202131: Received end of data from device
+10202131: Received ping response
+10203121: Pinging selected device.
+10203124: Started receiving data from device
+10203131: Received end of data from device
+10203131: Received ping response
+10204121: Pinging selected device.
+10204125: Started receiving data from device
+10204131: Received end of data from device
+10204131: Received ping response
+10205122: Pinging selected device.
+10205126: Started receiving data from device
+10205133: Received end of data from device
+10205133: Received ping response
+10205881: Searching for devices.
+10205884: Started receiving data from device
+10205891: Received end of data from device
+10205891: Received search response
+10206122: Pinging selected device.
+10206126: Started receiving data from device
+10206132: Received end of data from device
+10206132: Received ping response
+10207122: Pinging selected device.
+10207126: Started receiving data from device
+10207133: Received end of data from device
+10207133: Received ping response
+10208122: Pinging selected device.
+10208126: Started receiving data from device
+10208132: Received end of data from device
+10208132: Received ping response
+10209122: Pinging selected device.
+10209126: Started receiving data from device
+10209133: Received end of data from device
+10209133: Received ping response
+10210122: Pinging selected device.
+10210126: Started receiving data from device
+10210133: Received end of data from device
+10210133: Received ping response
+10210881: Searching for devices.
+10210885: Started receiving data from device
+10210892: Received end of data from device
+10210892: Received search response
+10211123: Pinging selected device.
+10211127: Started receiving data from device
+10211134: Received end of data from device
+10211134: Received ping response
+10212123: Pinging selected device.
+10212127: Started receiving data from device
+10212134: Received end of data from device
+10212134: Received ping response
+10213123: Pinging selected device.
+10213128: Started receiving data from device
+10213133: Received end of data from device
+10213133: Received ping response
+10214124: Pinging selected device.
+10214127: Started receiving data from device
+10214135: Received end of data from device
+10214135: Received ping response
+10215124: Pinging selected device.
+10215129: Started receiving data from device
+10215135: Received end of data from device
+10215135: Received ping response
+10215882: Searching for devices.
+10215886: Started receiving data from device
+10215893: Received end of data from device
+10215893: Received search response
+10216124: Pinging selected device.
+10216129: Started receiving data from device
+10216135: Received end of data from device
+10216135: Received ping response
+10217125: Pinging selected device.
+10217128: Started receiving data from device
+10217135: Received end of data from device
+10217135: Received ping response
+10218125: Pinging selected device.
+10218130: Started receiving data from device
+10218137: Received end of data from device
+10218137: Received ping response
+10219125: Pinging selected device.
+10219129: Started receiving data from device
+10219136: Received end of data from device
+10219136: Received ping response
+10220125: Pinging selected device.
+10220128: Started receiving data from device
+10220135: Received end of data from device
+10220135: Received ping response
+10220882: Searching for devices.
+10220886: Started receiving data from device
+10220893: Received end of data from device
+10220893: Received search response
+10221125: Pinging selected device.
+10221128: Started receiving data from device
+10221135: Received end of data from device
+10221135: Received ping response
+10222125: Pinging selected device.
+10222130: Started receiving data from device
+10222137: Received end of data from device
+10222137: Received ping response
+10223126: Pinging selected device.
+10223129: Started receiving data from device
+10223137: Received end of data from device
+10223137: Received ping response
+10224126: Pinging selected device.
+10224130: Started receiving data from device
+10224137: Received end of data from device
+10224137: Received ping response
+10225126: Pinging selected device.
+10225129: Started receiving data from device
+10225137: Received end of data from device
+10225137: Received ping response
+10225882: Searching for devices.
+10225886: Started receiving data from device
+10225893: Received end of data from device
+10225893: Received search response
+10226126: Pinging selected device.
+10226130: Started receiving data from device
+10226137: Received end of data from device
+10226137: Received ping response
+10227126: Pinging selected device.
+10227130: Started receiving data from device
+10227138: Received end of data from device
+10227138: Received ping response
+10228126: Pinging selected device.
+10228130: Started receiving data from device
+10228137: Received end of data from device
+10228137: Received ping response
+10229126: Pinging selected device.
+10229131: Started receiving data from device
+10229137: Received end of data from device
+10229137: Received ping response
+10230126: Pinging selected device.
+10230130: Started receiving data from device
+10230137: Received end of data from device
+10230137: Received ping response
+10230883: Searching for devices.
+10230887: Started receiving data from device
+10230894: Received end of data from device
+10230894: Received search response
+10231126: Pinging selected device.
+10231130: Started receiving data from device
+10231137: Received end of data from device
+10231137: Received ping response
+10232126: Pinging selected device.
+10232129: Started receiving data from device
+10232137: Received end of data from device
+10232137: Received ping response
+10233126: Pinging selected device.
+10233131: Started receiving data from device
+10233137: Received end of data from device
+10233137: Received ping response
+10234127: Pinging selected device.
+10234130: Started receiving data from device
+10234137: Received end of data from device
+10234137: Received ping response
+10235127: Pinging selected device.
+10235130: Started receiving data from device
+10235137: Received end of data from device
+10235137: Received ping response
+10235883: Searching for devices.
+10235887: Started receiving data from device
+10235894: Received end of data from device
+10235894: Received search response
+10236128: Pinging selected device.
+10236131: Started receiving data from device
+10236138: Received end of data from device
+10236138: Received ping response
+10237129: Pinging selected device.
+10237133: Started receiving data from device
+10237140: Received end of data from device
+10237140: Received ping response
+10238129: Pinging selected device.
+10238134: Started receiving data from device
+10238140: Received end of data from device
+10238140: Received ping response
+10239129: Pinging selected device.
+10239132: Started receiving data from device
+10239140: Received end of data from device
+10239140: Received ping response
+10240130: Pinging selected device.
+10240134: Started receiving data from device
+10240141: Received end of data from device
+10240141: Received ping response
+10240883: Searching for devices.
+10240887: Started receiving data from device
+10240893: Received end of data from device
+10240893: Received search response
+10241130: Pinging selected device.
+10241135: Started receiving data from device
+10241141: Received end of data from device
+10241141: Received ping response
+10242131: Pinging selected device.
+10242134: Started receiving data from device
+10242142: Received end of data from device
+10242142: Received ping response
+10243131: Pinging selected device.
+10243135: Started receiving data from device
+10243142: Received end of data from device
+10243142: Received ping response
+10244131: Pinging selected device.
+10244135: Started receiving data from device
+10244141: Received end of data from device
+10244141: Received ping response
+10245131: Pinging selected device.
+10245134: Started receiving data from device
+10245141: Received end of data from device
+10245141: Received ping response
+10245883: Searching for devices.
+10245886: Started receiving data from device
+10245894: Received end of data from device
+10245894: Received search response
+10246131: Pinging selected device.
+10246135: Started receiving data from device
+10246142: Received end of data from device
+10246142: Received ping response
+10247131: Pinging selected device.
+10247135: Started receiving data from device
+10247142: Received end of data from device
+10247142: Received ping response
+10248131: Pinging selected device.
+10248134: Started receiving data from device
+10248141: Received end of data from device
+10248141: Received ping response
+10249131: Pinging selected device.
+10249135: Started receiving data from device
+10249142: Received end of data from device
+10249142: Received ping response
+10250131: Pinging selected device.
+10250135: Started receiving data from device
+10250142: Received end of data from device
+10250142: Received ping response
+10250883: Searching for devices.
+10250886: Started receiving data from device
+10250893: Received end of data from device
+10250893: Received search response
+10251131: Pinging selected device.
+10251135: Started receiving data from device
+10251142: Received end of data from device
+10251142: Received ping response
+10252132: Pinging selected device.
+10252135: Started receiving data from device
+10252142: Received end of data from device
+10252142: Received ping response
+10253133: Pinging selected device.
+10253136: Started receiving data from device
+10253143: Received end of data from device
+10253143: Received ping response
+10254133: Pinging selected device.
+10254137: Started receiving data from device
+10254143: Received end of data from device
+10254143: Received ping response
+10255133: Pinging selected device.
+10255137: Started receiving data from device
+10255143: Received end of data from device
+10255143: Received ping response
+10255883: Searching for devices.
+10255886: Started receiving data from device
+10255893: Received end of data from device
+10255893: Received search response
+10256133: Pinging selected device.
+10256138: Started receiving data from device
+10256144: Received end of data from device
+10256144: Received ping response
+10257134: Pinging selected device.
+10257137: Started receiving data from device
+10257144: Received end of data from device
+10257144: Received ping response
+10258134: Pinging selected device.
+10258138: Started receiving data from device
+10258146: Received end of data from device
+10258146: Received ping response
+10259134: Pinging selected device.
+10259138: Started receiving data from device
+10259145: Received end of data from device
+10259145: Received ping response
+10260157: Pinging selected device.
+10260167: Started receiving data from device
+10260167: Received end of data from device
+10260167: Received ping response
+10260883: Searching for devices.
+10260886: Started receiving data from device
+10260893: Received end of data from device
+10260893: Received search response
+10261157: Pinging selected device.
+10261161: Started receiving data from device
+10261167: Received end of data from device
+10261167: Received ping response
+10262158: Pinging selected device.
+10262161: Started receiving data from device
+10262168: Received end of data from device
+10262168: Received ping response
+10263158: Pinging selected device.
+10263162: Started receiving data from device
+10263169: Received end of data from device
+10263169: Received ping response
+10264158: Pinging selected device.
+10264162: Started receiving data from device
+10264169: Received end of data from device
+10264169: Received ping response
+10265159: Pinging selected device.
+10265163: Started receiving data from device
+10265170: Received end of data from device
+10265170: Received ping response
+10265883: Searching for devices.
+10265887: Started receiving data from device
+10265894: Received end of data from device
+10265894: Received search response
+10266159: Pinging selected device.
+10266163: Started receiving data from device
+10266170: Received end of data from device
+10266170: Received ping response
+10267159: Pinging selected device.
+10267162: Started receiving data from device
+10267169: Received end of data from device
+10267169: Received ping response
+10268159: Pinging selected device.
+10268162: Started receiving data from device
+10268170: Received end of data from device
+10268170: Received ping response
+10269159: Pinging selected device.
+10269163: Started receiving data from device
+10269170: Received end of data from device
+10269170: Received ping response
+10270159: Pinging selected device.
+10270163: Started receiving data from device
+10270171: Received end of data from device
+10270171: Received ping response
+10270883: Searching for devices.
+10270886: Started receiving data from device
+10270894: Received end of data from device
+10270894: Received search response
+10271159: Pinging selected device.
+10271163: Started receiving data from device
+10271170: Received end of data from device
+10271170: Received ping response
+10272159: Pinging selected device.
+10272163: Started receiving data from device
+10272169: Received end of data from device
+10272169: Received ping response
+10273160: Pinging selected device.
+10273163: Started receiving data from device
+10273170: Received end of data from device
+10273170: Received ping response
+10274160: Pinging selected device.
+10274164: Started receiving data from device
+10274170: Received end of data from device
+10274170: Received ping response
+10275161: Pinging selected device.
+10275164: Started receiving data from device
+10275171: Received end of data from device
+10275171: Received ping response
+10275883: Searching for devices.
+10275886: Started receiving data from device
+10275894: Received end of data from device
+10275894: Received search response
+10276161: Pinging selected device.
+10276164: Started receiving data from device
+10276171: Received end of data from device
+10276171: Received ping response
+10277161: Pinging selected device.
+10277165: Started receiving data from device
+10277172: Received end of data from device
+10277172: Received ping response
+10278161: Pinging selected device.
+10278165: Started receiving data from device
+10278173: Received end of data from device
+10278173: Received ping response
+10279161: Pinging selected device.
+10279166: Started receiving data from device
+10279171: Received end of data from device
+10279171: Received ping response
+10280161: Pinging selected device.
+10280165: Started receiving data from device
+10280172: Received end of data from device
+10280172: Received ping response
+10280883: Searching for devices.
+10280886: Started receiving data from device
+10280893: Received end of data from device
+10280893: Received search response
+10281162: Pinging selected device.
+10281166: Started receiving data from device
+10281173: Received end of data from device
+10281173: Received ping response
+10282162: Pinging selected device.
+10282166: Started receiving data from device
+10282173: Received end of data from device
+10282173: Received ping response
+10283162: Pinging selected device.
+10283166: Started receiving data from device
+10283173: Received end of data from device
+10283173: Received ping response
+10284163: Pinging selected device.
+10284166: Started receiving data from device
+10284173: Received end of data from device
+10284173: Received ping response
+10285164: Pinging selected device.
+10285168: Started receiving data from device
+10285175: Received end of data from device
+10285175: Received ping response
+10285884: Searching for devices.
+10285887: Started receiving data from device
+10285894: Received end of data from device
+10285894: Received search response
+10286164: Pinging selected device.
+10286168: Started receiving data from device
+10286176: Received end of data from device
+10286176: Received ping response
+10287165: Pinging selected device.
+10287168: Started receiving data from device
+10287175: Received end of data from device
+10287175: Received ping response
+10288165: Pinging selected device.
+10288168: Started receiving data from device
+10288176: Received end of data from device
+10288176: Received ping response
+10289165: Pinging selected device.
+10289169: Started receiving data from device
+10289176: Received end of data from device
+10289176: Received ping response
+10290166: Pinging selected device.
+10290169: Started receiving data from device
+10290176: Received end of data from device
+10290176: Received ping response
+10290884: Searching for devices.
+10290888: Started receiving data from device
+10290895: Received end of data from device
+10290895: Received search response
+10291166: Pinging selected device.
+10291170: Started receiving data from device
+10291177: Received end of data from device
+10291177: Received ping response
+10292166: Pinging selected device.
+10292170: Started receiving data from device
+10292176: Received end of data from device
+10292176: Received ping response
+10293166: Pinging selected device.
+10293170: Started receiving data from device
+10293176: Received end of data from device
+10293176: Received ping response
+10294167: Pinging selected device.
+10294171: Started receiving data from device
+10294178: Received end of data from device
+10294178: Received ping response
+10295167: Pinging selected device.
+10295170: Started receiving data from device
+10295177: Received end of data from device
+10295177: Received ping response
+10295884: Searching for devices.
+10295888: Started receiving data from device
+10295895: Received end of data from device
+10295895: Received search response
+10296167: Pinging selected device.
+10296171: Started receiving data from device
+10296177: Received end of data from device
+10296177: Received ping response
+10297167: Pinging selected device.
+10297171: Started receiving data from device
+10297178: Received end of data from device
+10297178: Received ping response
+10298167: Pinging selected device.
+10298170: Started receiving data from device
+10298177: Received end of data from device
+10298177: Received ping response
+10299167: Pinging selected device.
+10299170: Started receiving data from device
+10299177: Received end of data from device
+10299177: Received ping response
+10300167: Pinging selected device.
+10300171: Started receiving data from device
+10300178: Received end of data from device
+10300178: Received ping response
+10300885: Searching for devices.
+10300888: Started receiving data from device
+10300895: Received end of data from device
+10300895: Received search response
+10301168: Pinging selected device.
+10301171: Started receiving data from device
+10301178: Received end of data from device
+10301178: Received ping response
+10302168: Pinging selected device.
+10302173: Started receiving data from device
+10302179: Received end of data from device
+10302179: Received ping response
+10303168: Pinging selected device.
+10303171: Started receiving data from device
+10303179: Received end of data from device
+10303179: Received ping response
+10304168: Pinging selected device.
+10304172: Started receiving data from device
+10304179: Received end of data from device
+10304179: Received ping response
+10305168: Pinging selected device.
+10305173: Started receiving data from device
+10305178: Received end of data from device
+10305178: Received ping response
+10305885: Searching for devices.
+10305889: Started receiving data from device
+10305896: Received end of data from device
+10305896: Received search response
+10306169: Pinging selected device.
+10306173: Started receiving data from device
+10306180: Received end of data from device
+10306180: Received ping response
+10307169: Pinging selected device.
+10307173: Started receiving data from device
+10307180: Received end of data from device
+10307180: Received ping response
+10308170: Pinging selected device.
+10308174: Started receiving data from device
+10308181: Received end of data from device
+10308181: Received ping response
+10309170: Pinging selected device.
+10309174: Started receiving data from device
+10309255: Received end of data from device
+10309255: Received ping response
+10310171: Pinging selected device.
+10310174: Started receiving data from device
+10310181: Received end of data from device
+10310181: Received ping response
+10310885: Searching for devices.
+10310889: Started receiving data from device
+10310896: Received end of data from device
+10310896: Received search response
+10311171: Pinging selected device.
+10311175: Started receiving data from device
+10311182: Received end of data from device
+10311182: Received ping response
+10312171: Pinging selected device.
+10312175: Started receiving data from device
+10312183: Received end of data from device
+10312183: Received ping response
+10313171: Pinging selected device.
+10313174: Started receiving data from device
+10313181: Received end of data from device
+10313181: Received ping response
+10314171: Pinging selected device.
+10314174: Started receiving data from device
+10314181: Received end of data from device
+10314181: Received ping response
+10315171: Pinging selected device.
+10315175: Started receiving data from device
+10315181: Received end of data from device
+10315181: Received ping response
+10315885: Searching for devices.
+10315888: Started receiving data from device
+10315896: Received end of data from device
+10315896: Received search response
+10316171: Pinging selected device.
+10316174: Started receiving data from device
+10316181: Received end of data from device
+10316181: Received ping response
+10317171: Pinging selected device.
+10317175: Started receiving data from device
+10317181: Received end of data from device
+10317181: Received ping response
+10318171: Pinging selected device.
+10318175: Started receiving data from device
+10318182: Received end of data from device
+10318182: Received ping response
+10319171: Pinging selected device.
+10319175: Started receiving data from device
+10319182: Received end of data from device
+10319182: Received ping response
+10320171: Pinging selected device.
+10320175: Started receiving data from device
+10320182: Received end of data from device
+10320182: Received ping response
+10320885: Searching for devices.
+10320888: Started receiving data from device
+10320896: Received end of data from device
+10320896: Received search response
+10321171: Pinging selected device.
+10321175: Started receiving data from device
+10321182: Received end of data from device
+10321182: Received ping response
+10322171: Pinging selected device.
+10322175: Started receiving data from device
+10322181: Received end of data from device
+10322181: Received ping response
+10323171: Pinging selected device.
+10323175: Started receiving data from device
+10323181: Received end of data from device
+10323181: Received ping response
+10324171: Pinging selected device.
+10324176: Started receiving data from device
+10324182: Received end of data from device
+10324182: Received ping response
+10325171: Pinging selected device.
+10325175: Started receiving data from device
+10325182: Received end of data from device
+10325182: Received ping response
+10325885: Searching for devices.
+10325889: Started receiving data from device
+10325895: Received end of data from device
+10325895: Received search response
+10326172: Pinging selected device.
+10326175: Started receiving data from device
+10326183: Received end of data from device
+10326183: Received ping response
+10327172: Pinging selected device.
+10327175: Started receiving data from device
+10327183: Received end of data from device
+10327183: Received ping response
+10328172: Pinging selected device.
+10328176: Started receiving data from device
+10328184: Received end of data from device
+10328184: Received ping response
+10329172: Pinging selected device.
+10329177: Started receiving data from device
+10329183: Received end of data from device
+10329183: Received ping response
+10330172: Pinging selected device.
+10330176: Started receiving data from device
+10330183: Received end of data from device
+10330183: Received ping response
+10330885: Searching for devices.
+10330889: Started receiving data from device
+10330895: Received end of data from device
+10330895: Received search response
+10331172: Pinging selected device.
+10331175: Started receiving data from device
+10331182: Received end of data from device
+10331182: Received ping response
+10332172: Pinging selected device.
+10332176: Started receiving data from device
+10332184: Received end of data from device
+10332184: Received ping response
+10333172: Pinging selected device.
+10333176: Started receiving data from device
+10333183: Received end of data from device
+10333183: Received ping response
+10334172: Pinging selected device.
+10334175: Started receiving data from device
+10334183: Received end of data from device
+10334183: Received ping response
+10335172: Pinging selected device.
+10335176: Started receiving data from device
+10335184: Received end of data from device
+10335184: Received ping response
+10335885: Searching for devices.
+10335888: Started receiving data from device
+10335896: Received end of data from device
+10335896: Received search response
+10336172: Pinging selected device.
+10336175: Started receiving data from device
+10336182: Received end of data from device
+10336182: Received ping response
+10337172: Pinging selected device.
+10337176: Started receiving data from device
+10337184: Received end of data from device
+10337184: Received ping response
+10338172: Pinging selected device.
+10338177: Started receiving data from device
+10338184: Received end of data from device
+10338184: Received ping response
+10339172: Pinging selected device.
+10339176: Started receiving data from device
+10339183: Received end of data from device
+10339183: Received ping response
+10340174: Pinging selected device.
+10340178: Started receiving data from device
+10340185: Received end of data from device
+10340185: Received ping response
+10340885: Searching for devices.
+10340889: Started receiving data from device
+10340896: Received end of data from device
+10340896: Received search response
+10341174: Pinging selected device.
+10341178: Started receiving data from device
+10341185: Received end of data from device
+10341185: Received ping response
+10342174: Pinging selected device.
+10342177: Started receiving data from device
+10342184: Received end of data from device
+10342184: Received ping response
+10343174: Pinging selected device.
+10343178: Started receiving data from device
+10343188: Received end of data from device
+10343188: Received ping response
+10344174: Pinging selected device.
+10344178: Started receiving data from device
+10344186: Received end of data from device
+10344186: Received ping response
+10345174: Pinging selected device.
+10345178: Started receiving data from device
+10345185: Received end of data from device
+10345185: Received ping response
+10345886: Searching for devices.
+10345889: Started receiving data from device
+10345897: Received end of data from device
+10345897: Received search response
+10346174: Pinging selected device.
+10346178: Started receiving data from device
+10346185: Received end of data from device
+10346185: Received ping response
+10347174: Pinging selected device.
+10347178: Started receiving data from device
+10347185: Received end of data from device
+10347185: Received ping response
+10348175: Pinging selected device.
+10348178: Started receiving data from device
+10348186: Received end of data from device
+10348186: Received ping response
+10349176: Pinging selected device.
+10349180: Started receiving data from device
+10349187: Received end of data from device
+10349187: Received ping response
+10350176: Pinging selected device.
+10350179: Started receiving data from device
+10350187: Received end of data from device
+10350187: Received ping response
+10350886: Searching for devices.
+10350890: Started receiving data from device
+10350897: Received end of data from device
+10350897: Received search response
+10351176: Pinging selected device.
+10351181: Started receiving data from device
+10351187: Received end of data from device
+10351187: Received ping response
+10352176: Pinging selected device.
+10352179: Started receiving data from device
+10352187: Received end of data from device
+10352187: Received ping response
+10353177: Pinging selected device.
+10353181: Started receiving data from device
+10353188: Received end of data from device
+10353188: Received ping response
+10354177: Pinging selected device.
+10354183: Started receiving data from device
+10354183: Received end of data from device
+10354183: Received ping response
+10355177: Pinging selected device.
+10355181: Started receiving data from device
+10355188: Received end of data from device
+10355188: Received ping response
+10355886: Searching for devices.
+10355890: Started receiving data from device
+10355897: Received end of data from device
+10355897: Received search response
+10356177: Pinging selected device.
+10356180: Started receiving data from device
+10356188: Received end of data from device
+10356188: Received ping response
+10357177: Pinging selected device.
+10357181: Started receiving data from device
+10357188: Received end of data from device
+10357188: Received ping response
+10358177: Pinging selected device.
+10358181: Started receiving data from device
+10358188: Received end of data from device
+10358188: Received ping response
+10359178: Pinging selected device.
+10359181: Started receiving data from device
+10359188: Received end of data from device
+10359188: Received ping response
+10360179: Pinging selected device.
+10360183: Started receiving data from device
+10360190: Received end of data from device
+10360190: Received ping response
+10360886: Searching for devices.
+10360889: Started receiving data from device
+10360897: Received end of data from device
+10360897: Received search response
+10361180: Pinging selected device.
+10361184: Started receiving data from device
+10361190: Received end of data from device
+10361190: Received ping response
+10362180: Pinging selected device.
+10362185: Started receiving data from device
+10362191: Received end of data from device
+10362191: Received ping response
+10363181: Pinging selected device.
+10363185: Started receiving data from device
+10363193: Received end of data from device
+10363193: Received ping response
+10364181: Pinging selected device.
+10364185: Started receiving data from device
+10364191: Received end of data from device
+10364191: Received ping response
+10365181: Pinging selected device.
+10365186: Started receiving data from device
+10365192: Received end of data from device
+10365192: Received ping response
+10365887: Searching for devices.
+10365890: Started receiving data from device
+10365897: Received end of data from device
+10365897: Received search response
+10366181: Pinging selected device.
+10366186: Started receiving data from device
+10366192: Received end of data from device
+10366192: Received ping response
+10367181: Pinging selected device.
+10367184: Started receiving data from device
+10367192: Received end of data from device
+10367192: Received ping response
+10368181: Pinging selected device.
+10368185: Started receiving data from device
+10368199: Received end of data from device
+10368199: Received ping response
+10369181: Pinging selected device.
+10369186: Started receiving data from device
+10369192: Received end of data from device
+10369192: Received ping response
+10370181: Pinging selected device.
+10370186: Started receiving data from device
+10370192: Received end of data from device
+10370192: Received ping response
+10370887: Searching for devices.
+10370891: Started receiving data from device
+10370897: Received end of data from device
+10370897: Received search response
+10371181: Pinging selected device.
+10371185: Started receiving data from device
+10371192: Received end of data from device
+10371192: Received ping response
+10372181: Pinging selected device.
+10372185: Started receiving data from device
+10372192: Received end of data from device
+10372192: Received ping response
+10373182: Pinging selected device.
+10373187: Started receiving data from device
+10373193: Received end of data from device
+10373193: Received ping response
+10374183: Pinging selected device.
+10374187: Started receiving data from device
+10374194: Received end of data from device
+10374194: Received ping response
+10375183: Pinging selected device.
+10375188: Started receiving data from device
+10375194: Received end of data from device
+10375194: Received ping response
+10375887: Searching for devices.
+10375891: Started receiving data from device
+10375898: Received end of data from device
+10375898: Received search response
+10376184: Pinging selected device.
+10376188: Started receiving data from device
+10376195: Received end of data from device
+10376195: Received ping response
+10377184: Pinging selected device.
+10377188: Started receiving data from device
+10377195: Received end of data from device
+10377195: Received ping response
+10378184: Pinging selected device.
+10378188: Started receiving data from device
+10378195: Received end of data from device
+10378195: Received ping response
+10379184: Pinging selected device.
+10379188: Started receiving data from device
+10379194: Received end of data from device
+10379194: Received ping response
+10380184: Pinging selected device.
+10380188: Started receiving data from device
+10380195: Received end of data from device
+10380195: Received ping response
+10380888: Searching for devices.
+10380891: Started receiving data from device
+10380898: Received end of data from device
+10380898: Received search response
+10381184: Pinging selected device.
+10381189: Started receiving data from device
+10381195: Received end of data from device
+10381195: Received ping response
+10382185: Pinging selected device.
+10382190: Started receiving data from device
+10382195: Received end of data from device
+10382195: Received ping response
+10383185: Pinging selected device.
+10383188: Started receiving data from device
+10383195: Received end of data from device
+10383195: Received ping response
+10384185: Pinging selected device.
+10384191: Started receiving data from device
+10384197: Received end of data from device
+10384197: Received ping response
+10385185: Pinging selected device.
+10385190: Started receiving data from device
+10385196: Received end of data from device
+10385196: Received ping response
+10385889: Searching for devices.
+10385892: Started receiving data from device
+10385899: Received end of data from device
+10385899: Received search response
+10386185: Pinging selected device.
+10386190: Started receiving data from device
+10386196: Received end of data from device
+10386196: Received ping response
+10387186: Pinging selected device.
+10387190: Started receiving data from device
+10387197: Received end of data from device
+10387197: Received ping response
+10388186: Pinging selected device.
+10388191: Started receiving data from device
+10388198: Received end of data from device
+10388198: Received ping response
+10389187: Pinging selected device.
+10389190: Started receiving data from device
+10389197: Received end of data from device
+10389197: Received ping response
+10390187: Pinging selected device.
+10390192: Started receiving data from device
+10390197: Received end of data from device
+10390197: Received ping response
+10390890: Searching for devices.
+10390895: Started receiving data from device
+10390901: Received end of data from device
+10390901: Received search response
+10391187: Pinging selected device.
+10391190: Started receiving data from device
+10391197: Received end of data from device
+10391197: Received ping response
+10392187: Pinging selected device.
+10392192: Started receiving data from device
+10392199: Received end of data from device
+10392199: Received ping response
+103
