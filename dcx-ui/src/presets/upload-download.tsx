@@ -21,7 +21,7 @@ export function UploadDownload(_props: Props) {
     if (backup.status !== 'idle' || restore.status !== 'idle') return;
 
     try {
-      backup.start();
+      void backup.start();
 
       // Wait for completion (hook manages the download process)
       // The hook will update status and progress automatically
@@ -73,7 +73,7 @@ export function UploadDownload(_props: Props) {
       const buffer = await file.arrayBuffer();
       const dcxData = new Uint8Array(buffer);
 
-      restore.start(dcxData);
+      void restore.start(dcxData);
     } catch (error: unknown) {
       console.error(error);
       const message = error instanceof Error ? error.message : String(error);

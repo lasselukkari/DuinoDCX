@@ -10,26 +10,32 @@ type ConfigNavigationProps = {
   readonly free?: number;
 };
 
-const ConfigNavigation = memo(
-  ({device, free: _free = 0}: ConfigNavigationProps) => {
-    const breakpoint = useBreakpoint();
-    const isXs = breakpoint === 'xs';
+function ConfigNavigationComponent({device, free}: ConfigNavigationProps) {
+  const breakpoint = useBreakpoint();
+  const isXs = breakpoint === 'xs';
+  const status = free === undefined ? 'Syncing...' : `Free: ${free}%`;
 
-    return (
-      <Navbar
-        fixed={isXs ? 'top' : 'bottom'}
-        bg="primary"
-        variant="dark"
-        className="justify-content-end p-0"
-      >
-        {device?.setup ? (
-          <Localization setup={device.setup} isXs={isXs} />
-        ) : undefined}
-        <Config isXs={isXs} />
-      </Navbar>
-    );
-  },
-);
+  return (
+    <Navbar
+      fixed={isXs ? 'top' : 'bottom'}
+      bg="primary"
+      variant="dark"
+      className="justify-content-end p-0"
+    >
+      {device?.setup ? (
+        <Localization setup={device.setup} isXs={isXs} />
+      ) : undefined}
+      <span className="navbar-text text-light me-3 small">{status}</span>
+      <Config isXs={isXs} />
+    </Navbar>
+  );
+}
+
+ConfigNavigationComponent.defaultProps = {
+  free: 0,
+};
+
+const ConfigNavigation = memo(ConfigNavigationComponent);
 
 ConfigNavigation.displayName = 'ConfigNavigation';
 

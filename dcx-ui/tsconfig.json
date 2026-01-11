@@ -18,12 +18,14 @@
         "jsx": "react-jsx",
         /* Linting */
         "strict": true,
+        "strictNullChecks": true,
         "noUnusedLocals": true,
         "noUnusedParameters": true,
         "noFallthroughCasesInSwitch": true
     },
     "include": [
-        "src"
+        "src",
+        "vite.config.ts"
     ],
     "references": [
         {

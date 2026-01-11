@@ -16,7 +16,7 @@ function Gains({channels, group}: Props) {
       {Object.keys(channels).map((channelId) => {
         const ch = channels[channelId];
         const {gain} = ch;
-        const {channelName} = ch as any;
+        const {channelName} = ch;
         return (
           <Col key={channelId} xs={12}>
             <Gain

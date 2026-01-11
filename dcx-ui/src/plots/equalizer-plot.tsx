@@ -1,10 +1,10 @@
 import React, {useMemo} from 'react';
 import isEqual from 'lodash.isequal';
 import {LineChart, Line, XAxis, YAxis, Tooltip} from 'recharts';
-import {type Channel, isOutputChannel} from 'dcx-parser';
+import {type Channel, isOutputChannel, type Equalizer} from 'dcx-parser';
 import {useWindowSize} from '../hooks/use-window-size.js';
 import {useBreakpoint} from '../hooks/use-breakpoint.js';
-import TransferFunction from './transfer-function.js';
+import TransferFunction from './transfer-function-new.js';
 import PlotTooltip from './plot-tooltip.js';
 
 const frequencyPoints = TransferFunction.generateFrequencyPoints(
@@ -45,18 +45,30 @@ function plotData(channels: Record<string, Channel>, isGainApplied: boolean) {
           continue;
         }
 
+        const processShelving = (
+          eq: Equalizer,
+          isHighShelv: boolean,
+          order: '6dB' | '12dB',
+        ) => {
+          const freq = Number.parseFloat(eq.equalizerFrequency ?? '20');
+          const gain = eq.equalizerGain ?? 0;
+          if (order === '6dB') {
+            if (isHighShelv) {
+              tf.highShelving1stOrder(freq, gain);
+            } else {
+              tf.lowShelving1stOrder(freq, gain);
+            }
+          } else if (isHighShelv) {
+            tf.highShelving(freq, gain);
+          } else {
+            tf.lowShelving(freq, gain);
+          }
+        };
+
         if (eq.equalizerShelving === '6dB') {
-          tf.firstOrderShelving(
-            Number.parseFloat(eq.equalizerFrequency) || 0,
-            eq.equalizerGain ?? 0,
-            eq.equalizerType === 'High Shelv',
-          );
+          processShelving(eq, eq.equalizerType === 'High Shelv', '6dB');
         } else if (eq.equalizerShelving === '12dB') {
-          tf.secondOrderShelving(
-            Number.parseFloat(eq.equalizerFrequency) || 0,
-            eq.equalizerGain ?? 0,
-            eq.equalizerType === 'High Shelv',
-          );
+          processShelving(eq, eq.equalizerType === 'High Shelv', '12dB');
         }
       }
     }
@@ -71,7 +83,7 @@ function plotData(channels: Record<string, Channel>, isGainApplied: boolean) {
     };
   });
 
-  return frequencyPoints.map((hz, index) => {
+  return frequencyPoints.map((hz: number, index: number) => {
     const result: PlotData = {hz};
     for (const value of values) {
       const rounded = Math.round(value.data[index] * 100) / 100;

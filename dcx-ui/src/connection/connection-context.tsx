@@ -56,7 +56,7 @@ export function DcxConnectionProvider({
     ReturnType<typeof createSseConnection> | undefined
   >(undefined);
 
-  connectionRef.current ||= createSseConnection({
+  connectionRef.current ??= createSseConnection({
     clientId: clientIdRef.current,
   });
 

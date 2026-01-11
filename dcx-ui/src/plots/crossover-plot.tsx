@@ -4,7 +4,7 @@ import {AreaChart, Area, XAxis, YAxis, Tooltip} from 'recharts';
 import {type OutputChannel} from 'dcx-parser';
 import {useWindowSize} from '../hooks/use-window-size.ts';
 import {useBreakpoint} from '../hooks/use-breakpoint.ts';
-import TransferFunction from './transfer-function.ts';
+import TransferFunction from './transfer-function-new.js';
 import PlotTooltip from './plot-tooltip.tsx';
 
 const frequencyPoints = TransferFunction.generateFrequencyPoints(
@@ -37,12 +37,12 @@ function createPlotData(
       lowpassFrequency,
       gain,
     } = channels[key];
-    tf.applyCrosover(
+    tf.applyCrossover(
       highpassFilter ?? '',
       Number(highpassFrequency ?? 20),
       true,
     );
-    tf.applyCrosover(
+    tf.applyCrossover(
       lowpassFilter ?? '',
       Number(lowpassFrequency ?? 20),
       false,
@@ -55,7 +55,7 @@ function createPlotData(
     };
   });
 
-  return frequencyPoints.map((hz, index) => {
+  return frequencyPoints.map((hz: number, index: number) => {
     const result: PlotData = {hz};
 
     for (const value of values) {

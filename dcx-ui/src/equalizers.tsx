@@ -15,9 +15,10 @@ function Equalizers({channels, group, isBlocking}: Props) {
   const navigate = useNavigate();
   const {channelId} = useParams({strict: false});
   const defaultChannel = Object.keys(channels)[0];
-  const activeKey = channelId || defaultChannel;
+  const activeKey = channelId ?? defaultChannel;
 
-  const handleSelect = (key: string | undefined) => {
+  // eslint-disable-next-line @typescript-eslint/no-restricted-types
+  const handleSelect = (key: string | null) => {
     if (key) {
       void navigate({
         to: `/${group}/equalizers/$channelId`,

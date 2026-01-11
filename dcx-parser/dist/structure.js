@@ -112,11 +112,4 @@ export const OUTPUT_EXTRA_PARAMETERS = [
 // ============ CHANNEL COUNTS ============
 export const INPUT_NAMES = ['A', 'B', 'C', 'Sum'];
 export const OUTPUT_NAMES = ['1', '2', '3', '4', '5', '6'];
-// ============ SIZES ============
-export const INPUT_CHANNEL_SIZE = 124;
-export const EQ_BAND_SIZE = 10;
-export const INPUT_EQ_COUNT = 9;
-export const OUTPUT_EQ_COUNT = 9;
-export const INPUT_PREFIX_SIZE = 34;
-export const OUTPUT_PREFIX_SIZE = 34;
 //# sourceMappingURL=structure.js.map

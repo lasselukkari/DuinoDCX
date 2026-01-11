@@ -29,6 +29,7 @@ export type {
   BufferHeader,
   Equalizer,
   Channel,
+  Status,
 } from './types/index.js';
 
 export type {ParameterDefinition} from './model/param-lookup.js';

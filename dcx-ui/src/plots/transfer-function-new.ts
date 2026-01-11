@@ -50,15 +50,6 @@ export type BiquadCoefficients = {
 };
 
 class TransferFunction {
-  private transferFunction: Complex[];
-
-  constructor(
-    public readonly frequencyPoints: number[],
-    private readonly sampleRate = 96_000,
-  ) {
-    this.transferFunction = this.frequencyPoints.map(() => complex(1, 0));
-  }
-
   static generateFrequencyPoints(
     startFrequency: number,
     endFrequency: number,
@@ -74,6 +65,33 @@ class TransferFunction {
     }
 
     return freqData;
+  }
+
+  static unwrapPhase(angle: number[]): number[] {
+    if (angle.length === 0) return [];
+    const unwrapped: number[] = [angle[0]];
+    let offset = 0;
+    for (let i = 1; i < angle.length; i++) {
+      const diff = angle[i] - angle[i - 1];
+      if (diff > 180) {
+        offset -= 360;
+      } else if (diff < -180) {
+        offset += 360;
+      }
+
+      unwrapped[i] = angle[i] + offset;
+    }
+
+    return unwrapped;
+  }
+
+  private transferFunction: Complex[];
+
+  constructor(
+    public readonly frequencyPoints: number[],
+    private readonly sampleRate = 96_000,
+  ) {
+    this.transferFunction = this.frequencyPoints.map(() => complex(1, 0));
   }
 
   applyBiquad(coeffs: BiquadCoefficients): void {
@@ -128,6 +146,52 @@ class TransferFunction {
     const a0 = 1 + alpha / gainAmplitude;
     const a1 = -2 * cosOmega;
     const a2 = 1 - alpha / gainAmplitude;
+
+    this.applyBiquad({
+      feedForward0: b0,
+      feedForward1: b1,
+      feedForward2: b2,
+      feedback0: a0,
+      feedback1: a1,
+      feedback2: a2,
+    });
+  }
+
+  lowShelving1stOrder(cornerFrequency: number, gainDb: number): void {
+    const omega = 2 * pi * cornerFrequency;
+    const timeStep = 1 / this.sampleRate;
+    const gainAmplitude = 10 ** (gainDb / 20);
+    const K = (omega * timeStep) / 2;
+
+    const b0 = (gainAmplitude * K + 1) / (K + 1);
+    const b1 = (gainAmplitude * K - 1) / (K + 1);
+    const b2 = 0;
+    const a0 = 1;
+    const a1 = (K - 1) / (K + 1);
+    const a2 = 0;
+
+    this.applyBiquad({
+      feedForward0: b0,
+      feedForward1: b1,
+      feedForward2: b2,
+      feedback0: a0,
+      feedback1: a1,
+      feedback2: a2,
+    });
+  }
+
+  highShelving1stOrder(cornerFrequency: number, gainDb: number): void {
+    const omega = 2 * pi * cornerFrequency;
+    const timeStep = 1 / this.sampleRate;
+    const gainAmplitude = 10 ** (gainDb / 20);
+    const K = (omega * timeStep) / 2;
+
+    const b0 = (gainAmplitude + K) / (K + 1);
+    const b1 = (gainAmplitude - K) / (K + 1);
+    const b2 = 0;
+    const a0 = 1;
+    const a1 = (K - 1) / (K + 1);
+    const a2 = 0;
 
     this.applyBiquad({
       feedForward0: b0,
@@ -380,6 +444,10 @@ class TransferFunction {
         apply2nd(crossoverFrequency, 1.3065);
         break;
       }
+
+      default: {
+        break;
+      }
     }
   }
 
@@ -411,22 +479,8 @@ class TransferFunction {
       gd[i] = (-(dphi / df) / 360) * 1000; // In ms
     }
 
-    gd.push(gd.at(-1) || 0);
+    gd.push(gd.at(-1) ?? 0);
     return gd;
-  }
-
-  static unwrapPhase(angle: number[]): number[] {
-    if (angle.length === 0) return [];
-    const unwrapped: number[] = [angle[0]];
-    let offset = 0;
-    for (let i = 1; i < angle.length; i++) {
-      const diff = angle[i] - angle[i - 1];
-      if (diff > 180) offset -= 360;
-      else if (diff < -180) offset += 360;
-      unwrapped[i] = angle[i] + offset;
-    }
-
-    return unwrapped;
   }
 }
 

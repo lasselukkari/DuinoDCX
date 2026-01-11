@@ -80,14 +80,18 @@ export function useDcxRestore(connection: DcxConnection | undefined) {
             unsubscribeRef.current = undefined;
             return;
           }
+
+          default: {
+            break;
+          }
         }
 
         // Send next message if available
-        sendNextMessage();
+        void sendNextMessage();
       });
 
       // Start sending messages
-      sendNextMessage();
+      void sendNextMessage();
 
       async function sendNextMessage() {
         if (!sessionRef.current || !connection) return;

@@ -158,22 +158,18 @@ export function useDcxState(connection: DcxConnection | undefined) {
    */
   const setEqualizer = useCallback(
     async (
-      group: 'inputs' | 'outputs',
-      channelId: string,
-      band: number,
+      target: {group: 'inputs' | 'outputs'; channelId: string; band: number},
       key: string,
       value: boolean | string | number,
     ) => {
       if (!connection) return;
 
-      const target: ParameterTarget = {
+      const fullTarget: ParameterTarget = {
         kind: 'equalizer',
-        group,
-        channelId,
-        band,
+        ...target,
         key,
       };
-      const cmd = buildParameterChangeCommand(target, value);
+      const cmd = buildParameterChangeCommand(fullTarget, value);
       if (cmd) {
         await connection.send(cmd);
         // Note: Equalizer changes flow through the device state sync

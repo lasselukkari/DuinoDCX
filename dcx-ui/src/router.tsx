@@ -8,7 +8,13 @@ import {
 } from '@tanstack/react-router';
 import {useState, useEffect, createContext, useContext, useMemo} from 'react';
 import {ToastContainer} from 'react-toastify';
-import {parseMessage, parseStatus, type State} from 'dcx-parser';
+import {
+  parseMessage,
+  parseStatus,
+  type State,
+  type DcxConnection,
+  type Status,
+} from 'dcx-parser';
 import 'bootswatch/dist/slate/bootstrap.min.css';
 import 'react-toastify/dist/ReactToastify.css';
 import {useDcxState} from './hooks/use-dcx-state.js';
@@ -20,7 +26,7 @@ import Presets from './presets/index.js';
 import './app.css';
 
 type RouterContext = {
-  connection: any;
+  connection: DcxConnection | undefined;
 };
 
 type DeviceContextType = {
@@ -50,8 +56,10 @@ function RootComponent() {
   const {state: device, sync, isLoading} = useDcxState(connection);
 
   const [free, setFree] = useState<number | undefined>(undefined);
-  const [inputs, setInputs] = useState<any[] | undefined>(undefined);
-  const [outputs, setOutputs] = useState<any[] | undefined>(undefined);
+  const [inputs, setInputs] = useState<Status['inputs'] | undefined>(undefined);
+  const [outputs, setOutputs] = useState<Status['outputs'] | undefined>(
+    undefined,
+  );
 
   useEffect(() => {
     if (connection && !device && !isLoading) {
@@ -227,12 +235,13 @@ const routeTree = rootRoute.addChildren([
 export const router = createRouter({
   routeTree,
   context: {
-    connection: undefined!,
+    connection: undefined as DcxConnection | undefined,
   },
 });
 
 declare module '@tanstack/react-router' {
-  type Register = {
+  // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+  interface Register {
     router: typeof router;
-  };
+  }
 }

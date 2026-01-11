@@ -33,6 +33,8 @@ export const useSendCommand = () => {
           for (const cmd of targetOrBatch) {
             const command = buildParameterChangeCommand(cmd.target, cmd.value);
             if (command) {
+              // Serial communication requires sequential requests to avoid flooding
+              // eslint-disable-next-line no-await-in-loop
               await connection.send(command);
             }
           }

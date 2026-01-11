@@ -27,7 +27,7 @@ function Outputs({device, isBlocking}: Props) {
   const router = useRouter();
   const parameters = useParams({strict: false});
 
-  let activeTab = parameters.tab || 'gain';
+  let activeTab = parameters.tab ?? 'gain';
   const {pathname} = router.state.location;
 
   if (pathname.includes('/dynamic-equalizers')) {
@@ -36,7 +36,8 @@ function Outputs({device, isBlocking}: Props) {
     activeTab = 'equalizers';
   }
 
-  const handleSelect = (key: string | undefined) => {
+  // eslint-disable-next-line @typescript-eslint/no-restricted-types
+  const handleSelect = (key: string | null) => {
     if (key) {
       if (key === 'equalizers') {
         void navigate({

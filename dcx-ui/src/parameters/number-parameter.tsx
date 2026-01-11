@@ -156,16 +156,13 @@ export function NumberParameter({
           <div className="slider-container">
             <Slider
               value={value}
-              // eslint-disable-next-line @typescript-eslint/no-deprecated
               handleStyle={handleStyle}
               marks={marks}
               max={max}
               min={min}
               step={step}
               onChange={handleOnChange}
-              // eslint-disable-next-line @typescript-eslint/no-deprecated
               onBeforeChange={handleOnBeforeChange}
-              // eslint-disable-next-line @typescript-eslint/no-deprecated
               onAfterChange={handleOnAfterChange}
             />
           </div>

@@ -33,15 +33,14 @@ function Presets() {
       dcxFile.loadFromBuffer(backup.dcxData);
       toast.success('Presets loaded from device!');
     }
-  }, [backup.status, backup.dcxData, dcxFile.loadFromBuffer]);
+  }, [backup.status, backup.dcxData, dcxFile]);
 
-  // Auto-fetch on mount when connected and no data
   // Auto-fetch on mount when connected and no data
   useEffect(() => {
     if (connection && !dcxFile.dcxData && backup.status === 'idle') {
-      backup.start();
+      void backup.start();
     }
-  }, [connection, dcxFile.dcxData, backup.status, backup.start]);
+  }, [connection, dcxFile, backup]);
 
   // Handle preset click - show in modal
   const handlePresetClick = useCallback(
@@ -123,7 +122,7 @@ function Presets() {
 
     dcxFile.clear();
     backup.reset();
-    backup.start();
+    void backup.start();
   }, [backup, dcxFile]);
 
   const isLoading = backup.status === 'downloading';
@@ -171,7 +170,7 @@ function Presets() {
           {/* Error state */}
           {backup.status === 'error' && (
             <div className="alert alert-danger">
-              <strong>Error:</strong> {backup.error || 'Failed to load presets'}
+              <strong>Error:</strong> {backup.error ?? 'Failed to load presets'}
             </div>
           )}
 
@@ -195,7 +194,9 @@ function Presets() {
                 variant="outline-warning"
                 disabled={isLoading}
                 onClick={() => {
-                  document.querySelector('#dcx-upload-input')?.click();
+                  document
+                    .querySelector<HTMLInputElement>('#dcx-upload-input')
+                    ?.click();
                 }}
               >
                 Upload .dcx
@@ -205,8 +206,8 @@ function Presets() {
                 type="file"
                 accept=".dcx"
                 style={{display: 'none'}}
-                onChange={(e) => {
-                  void handleUpload(e);
+                onChange={(event) => {
+                  void handleUpload(event);
                 }}
               />
             </div>
@@ -219,8 +220,8 @@ function Presets() {
 
           {!hasData && !isLoading && (
             <p className="text-muted">
-              No preset data loaded. Click "Refresh from Device" or upload a
-              .dcx file.
+              No preset data loaded. Click &quot;Refresh from Device&quot; or
+              upload a .dcx file.
             </p>
           )}
 
@@ -236,9 +237,11 @@ function Presets() {
                   className="d-flex justify-content-between align-items-center"
                   variant={preset.isEmpty ? 'dark' : undefined}
                   style={{cursor: preset.isEmpty ? 'default' : 'pointer'}}
-                  onClick={() =>
-                    !preset.isEmpty && handlePresetClick(preset.slot)
-                  }
+                  onClick={() => {
+                    if (!preset.isEmpty) {
+                      handlePresetClick(preset.slot);
+                    }
+                  }}
                 >
                   <div>
                     <span className="text-muted me-2">

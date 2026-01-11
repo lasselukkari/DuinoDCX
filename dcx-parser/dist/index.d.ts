@@ -12,7 +12,7 @@ import { parseEditBuffer } from './edit-buffer-parser.js';
 import { parsePreset } from './preset-parser.js';
 import { parseStatus } from './status-parser.js';
 import { getPresetNames, parseDcxPresets } from './dcx-file.js';
-export type { State, Setup, InputChannel, OutputChannel, BufferHeader, Equalizer, Channel, } from './types/index.js';
+export type { State, Setup, InputChannel, OutputChannel, BufferHeader, Equalizer, Channel, Status, } from './types/index.js';
 export type { ParameterDefinition } from './model/param-lookup.js';
 export type { ParsedMessage } from './protocol/sysex.js';
 export type { DcxFile, PresetSlot, ParsedPreset, ParsedPreset as PresetEntry, } from './dcx-file.js';

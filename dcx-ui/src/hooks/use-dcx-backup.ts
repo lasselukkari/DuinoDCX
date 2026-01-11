@@ -31,16 +31,12 @@ export function useDcxBackup(connection: DcxConnection | undefined) {
     if (!session || !connection) return;
 
     const message = session.getNextMessage();
-    while (message) {
+    if (message) {
       try {
         await connection.send(message);
       } catch (error_) {
         console.error('Failed to send backup request:', error_);
-        break;
       }
-
-      // Only send one message at a time, let the response trigger the next
-      break;
     }
   }, [connection]);
 

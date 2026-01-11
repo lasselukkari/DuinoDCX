@@ -1,3 +1,9 @@
+import {
+  base64ToUint8Array,
+  uint8ArrayToBase64,
+  uint8ArrayToString,
+  stringToUint8Array,
+} from 'uint8array-extras';
 import React, {useState, useEffect} from 'react';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
@@ -43,8 +49,10 @@ function Settings() {
       const {apSsid, apPassword, auth, mdnsHost, flowControl, autoDisableAp} =
         data;
 
-      // eslint-disable-next-line no-restricted-globals
-      const basicAuth = atob(auth.replace('Basic ', '')).split(':');
+      const authData = auth.replace('Basic ', '');
+      const basicAuth = uint8ArrayToString(base64ToUint8Array(authData)).split(
+        ':',
+      );
       setUsername(basicAuth[0]);
       setPassword(basicAuth[1]);
       setApSsid(apSsid);
@@ -61,8 +69,7 @@ function Settings() {
   };
 
   const updateSettings = async () => {
-    // eslint-disable-next-line no-restricted-globals
-    const auth = `Basic ${btoa(`${username}:${password}`)}`;
+    const auth = `Basic ${uint8ArrayToBase64(stringToUint8Array(`${username}:${password}`))}`;
 
     const formData = new FormData();
     formData.append('apSsid', apSsid);
