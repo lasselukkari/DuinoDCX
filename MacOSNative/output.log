@@ -30396,4 +30396,740 @@ SSE client connected (slot 0, socket 5, id f0pkqpm3dzqdm93r6873g)
 6330699: Received end of data from device
 6330699: Received ping response
 6331688: Pinging selected device.
-6331692: Started receiving data 
+6331692: Started receiving data from device
+6331699: Received end of data from device
+6331699: Received ping response
+6332688: Pinging selected device.
+6332692: Started receiving data from device
+6332699: Received end of data from device
+6332699: Received ping response
+6333688: Pinging selected device.
+6333692: Started receiving data from device
+6333698: Received end of data from device
+6333698: Received ping response
+6334688: Pinging selected device.
+6334692: Started receiving data from device
+6334699: Received end of data from device
+6334699: Received ping response
+6335554: Searching for devices.
+6335558: Started receiving data from device
+6335564: Received end of data from device
+6335564: Received search response
+6335688: Pinging selected device.
+6335693: Started receiving data from device
+6335700: Received end of data from device
+6335700: Received ping response
+6336688: Pinging selected device.
+6336692: Started receiving data from device
+6336699: Received end of data from device
+6336699: Received ping response
+6337688: Pinging selected device.
+6337692: Started receiving data from device
+6337699: Received end of data from device
+6337699: Received ping response
+6338688: Pinging selected device.
+6338692: Started receiving data from device
+6338699: Received end of data from device
+6338699: Received ping response
+6339688: Pinging selected device.
+6339692: Started receiving data from device
+6339699: Received end of data from device
+6339699: Received ping response
+6340554: Searching for devices.
+6340557: Started receiving data from device
+6340565: Received end of data from device
+6340565: Received search response
+6340688: Pinging selected device.
+6340691: Started receiving data from device
+6340698: Received end of data from device
+6340698: Received ping response
+6341688: Pinging selected device.
+6341692: Started receiving data from device
+6341699: Received end of data from device
+6341699: Received ping response
+6342688: Pinging selected device.
+6342692: Started receiving data from device
+6342699: Received end of data from device
+6342699: Received ping response
+6343688: Pinging selected device.
+6343692: Started receiving data from device
+6343699: Received end of data from device
+6343699: Received ping response
+6344688: Pinging selected device.
+6344692: Started receiving data from device
+6344699: Received end of data from device
+6344699: Received ping response
+6345554: Searching for devices.
+6345558: Started receiving data from device
+6345565: Received end of data from device
+6345565: Received search response
+6345688: Pinging selected device.
+6345692: Started receiving data from device
+6345700: Received end of data from device
+6345700: Received ping response
+6346688: Pinging selected device.
+6346693: Started receiving data from device
+6346700: Received end of data from device
+6346700: Received ping response
+6347688: Pinging selected device.
+6347692: Started receiving data from device
+6347699: Received end of data from device
+6347699: Received ping response
+6348688: Pinging selected device.
+6348692: Started receiving data from device
+6348699: Received end of data from device
+6348699: Received ping response
+6349688: Pinging selected device.
+6349692: Started receiving data from device
+6349699: Received end of data from device
+6349699: Received ping response
+6350554: Searching for devices.
+6350558: Started receiving data from device
+6350565: Received end of data from device
+6350565: Received search response
+6350688: Pinging selected device.
+6350692: Started receiving data from device
+6350700: Received end of data from device
+6350700: Received ping response
+6351688: Pinging selected device.
+6351692: Started receiving data from device
+6351698: Received end of data from device
+6351698: Received ping response
+6352688: Pinging selected device.
+6352692: Started receiving data from device
+6352698: Received end of data from device
+6352698: Received ping response
+6353689: Pinging selected device.
+6353693: Started receiving data from device
+6353700: Received end of data from device
+6353700: Received ping response
+6354689: Pinging selected device.
+6354692: Started receiving data from device
+6354699: Received end of data from device
+6354699: Received ping response
+6355554: Searching for devices.
+6355557: Started receiving data from device
+6355564: Received end of data from device
+6355564: Received search response
+6355690: Pinging selected device.
+6355694: Started receiving data from device
+6355701: Received end of data from device
+6355701: Received ping response
+6356691: Pinging selected device.
+6356695: Started receiving data from device
+6356703: Received end of data from device
+6356703: Received ping response
+6357691: Pinging selected device.
+6357695: Started receiving data from device
+6357702: Received end of data from device
+6357702: Received ping response
+6358691: Pinging selected device.
+6358695: Started receiving data from device
+6358702: Received end of data from device
+6358702: Received ping response
+6359691: Pinging selected device.
+6359695: Started receiving data from device
+6359702: Received end of data from device
+6359702: Received ping response
+6360554: Searching for devices.
+6360557: Started receiving data from device
+6360564: Received end of data from device
+6360564: Received search response
+6360705: Pinging selected device.
+6360710: Started receiving data from device
+6360715: Received end of data from device
+6360715: Received ping response
+6361706: Pinging selected device.
+6361709: Started receiving data from device
+6361716: Received end of data from device
+6361716: Received ping response
+6362706: Pinging selected device.
+6362710: Started receiving data from device
+6362717: Received end of data from device
+6362717: Received ping response
+6363706: Pinging selected device.
+6363710: Started receiving data from device
+6363716: Received end of data from device
+6363716: Received ping response
+6364706: Pinging selected device.
+6364710: Started receiving data from device
+6364717: Received end of data from device
+6364717: Received ping response
+6365554: Searching for devices.
+6365558: Started receiving data from device
+6365564: Received end of data from device
+6365564: Received search response
+6365706: Pinging selected device.
+6365709: Started receiving data from device
+6365716: Received end of data from device
+6365716: Received ping response
+6366707: Pinging selected device.
+6366710: Started receiving data from device
+6366718: Received end of data from device
+6366718: Received ping response
+6367707: Pinging selected device.
+6367712: Started receiving data from device
+6367718: Received end of data from device
+6367718: Received ping response
+6368708: Pinging selected device.
+6368711: Started receiving data from device
+6368719: Received end of data from device
+6368719: Received ping response
+6369709: Pinging selected device.
+6369713: Started receiving data from device
+6369720: Received end of data from device
+6369720: Received ping response
+6370555: Searching for devices.
+6370559: Started receiving data from device
+6370565: Received end of data from device
+6370565: Received search response
+6370709: Pinging selected device.
+6370713: Started receiving data from device
+6370719: Received end of data from device
+6370719: Received ping response
+6371709: Pinging selected device.
+6371713: Started receiving data from device
+6371721: Received end of data from device
+6371721: Received ping response
+6372709: Pinging selected device.
+6372713: Started receiving data from device
+6372720: Received end of data from device
+6372720: Received ping response
+6373709: Pinging selected device.
+6373713: Started receiving data from device
+6373720: Received end of data from device
+6373720: Received ping response
+6374709: Pinging selected device.
+6374713: Started receiving data from device
+6374720: Received end of data from device
+6374720: Received ping response
+6375555: Searching for devices.
+6375559: Started receiving data from device
+6375566: Received end of data from device
+6375566: Received search response
+6375709: Pinging selected device.
+6375712: Started receiving data from device
+6375719: Received end of data from device
+6375719: Received ping response
+6376709: Pinging selected device.
+6376713: Started receiving data from device
+6376720: Received end of data from device
+6376720: Received ping response
+6377709: Pinging selected device.
+6377713: Started receiving data from device
+6377720: Received end of data from device
+6377720: Received ping response
+6378709: Pinging selected device.
+6378713: Started receiving data from device
+6378720: Received end of data from device
+6378720: Received ping response
+6379709: Pinging selected device.
+6379714: Started receiving data from device
+6379720: Received end of data from device
+6379720: Received ping response
+6380555: Searching for devices.
+6380558: Started receiving data from device
+6380566: Received end of data from device
+6380566: Received search response
+6380710: Pinging selected device.
+6380715: Started receiving data from device
+6380721: Received end of data from device
+6380721: Received ping response
+6381710: Pinging selected device.
+6381713: Started receiving data from device
+6381720: Received end of data from device
+6381720: Received ping response
+6382711: Pinging selected device.
+6382714: Started receiving data from device
+6382721: Received end of data from device
+6382721: Received ping response
+6383711: Pinging selected device.
+6383716: Started receiving data from device
+6383722: Received end of data from device
+6383722: Received ping response
+6384711: Pinging selected device.
+6384715: Started receiving data from device
+6384722: Received end of data from device
+6384722: Received ping response
+6385555: Searching for devices.
+6385559: Started receiving data from device
+6385566: Received end of data from device
+6385566: Received search response
+6385712: Pinging selected device.
+6385716: Started receiving data from device
+6385725: Received end of data from device
+6385725: Received ping response
+6386712: Pinging selected device.
+6386715: Started receiving data from device
+6386722: Received end of data from device
+6386722: Received ping response
+6387713: Pinging selected device.
+6387716: Started receiving data from device
+6387724: Received end of data from device
+6387724: Received ping response
+6388713: Pinging selected device.
+6388718: Started receiving data from device
+6388725: Received end of data from device
+6388725: Received ping response
+6389714: Pinging selected device.
+6389717: Started receiving data from device
+6389724: Received end of data from device
+6389724: Received ping response
+6390555: Searching for devices.
+6390559: Started receiving data from device
+6390566: Received end of data from device
+6390566: Received search response
+6390714: Pinging selected device.
+6390718: Started receiving data from device
+6390725: Received end of data from device
+6390725: Received ping response
+6391714: Pinging selected device.
+6391718: Started receiving data from device
+6391724: Received end of data from device
+6391724: Received ping response
+6392714: Pinging selected device.
+6392718: Started receiving data from device
+6392725: Received end of data from device
+6392725: Received ping response
+6393714: Pinging selected device.
+6393718: Started receiving data from device
+6393725: Received end of data from device
+6393725: Received ping response
+6394714: Pinging selected device.
+6394719: Started receiving data from device
+6394725: Received end of data from device
+6394725: Received ping response
+6395555: Searching for devices.
+6395559: Started receiving data from device
+6395566: Received end of data from device
+6395566: Received search response
+6395714: Pinging selected device.
+6395718: Started receiving data from device
+6395724: Received end of data from device
+6395724: Received ping response
+6396714: Pinging selected device.
+6396718: Started receiving data from device
+6396724: Received end of data from device
+6396724: Received ping response
+6397714: Pinging selected device.
+6397719: Started receiving data from device
+6397726: Received end of data from device
+6397726: Received ping response
+6398714: Pinging selected device.
+6398718: Started receiving data from device
+6398725: Received end of data from device
+6398725: Received ping response
+6399714: Pinging selected device.
+6399718: Started receiving data from device
+6399725: Received end of data from device
+6399725: Received ping response
+6400555: Searching for devices.
+6400559: Started receiving data from device
+6400566: Received end of data from device
+6400566: Received search response
+6400714: Pinging selected device.
+6400720: Started receiving data from device
+6400725: Received end of data from device
+6400725: Received ping response
+6401715: Pinging selected device.
+6401718: Started receiving data from device
+6401725: Received end of data from device
+6401725: Received ping response
+6402715: Pinging selected device.
+6402719: Started receiving data from device
+6402726: Received end of data from device
+6402726: Received ping response
+6403715: Pinging selected device.
+6403719: Started receiving data from device
+6403726: Received end of data from device
+6403726: Received ping response
+6404715: Pinging selected device.
+6404720: Started receiving data from device
+6404726: Received end of data from device
+6404726: Received ping response
+6405556: Searching for devices.
+6405559: Started receiving data from device
+6405566: Received end of data from device
+6405566: Received search response
+6405715: Pinging selected device.
+6405719: Started receiving data from device
+6405725: Received end of data from device
+6405725: Received ping response
+6406715: Pinging selected device.
+6406719: Started receiving data from device
+6406727: Received end of data from device
+6406727: Received ping response
+6407715: Pinging selected device.
+6407720: Started receiving data from device
+6407725: Received end of data from device
+6407725: Received ping response
+6408715: Pinging selected device.
+6408718: Started receiving data from device
+6408726: Received end of data from device
+6408726: Received ping response
+6409715: Pinging selected device.
+6409719: Started receiving data from device
+6409726: Received end of data from device
+6409726: Received ping response
+6410556: Searching for devices.
+6410560: Started receiving data from device
+6410567: Received end of data from device
+6410567: Received search response
+6410715: Pinging selected device.
+6410719: Started receiving data from device
+6410727: Received end of data from device
+6410727: Received ping response
+6411715: Pinging selected device.
+6411720: Started receiving data from device
+6411726: Received end of data from device
+6411726: Received ping response
+6412716: Pinging selected device.
+6412719: Started receiving data from device
+6412726: Received end of data from device
+6412726: Received ping response
+6413716: Pinging selected device.
+6413720: Started receiving data from device
+6413726: Received end of data from device
+6413726: Received ping response
+6414716: Pinging selected device.
+6414719: Started receiving data from device
+6414727: Received end of data from device
+6414727: Received ping response
+6415556: Searching for devices.
+6415559: Started receiving data from device
+6415566: Received end of data from device
+6415566: Received search response
+6415716: Pinging selected device.
+6415721: Started receiving data from device
+6415727: Received end of data from device
+6415727: Received ping response
+6416716: Pinging selected device.
+6416720: Started receiving data from device
+6416726: Received end of data from device
+6416726: Received ping response
+6417716: Pinging selected device.
+6417720: Started receiving data from device
+6417726: Received end of data from device
+6417726: Received ping response
+6418716: Pinging selected device.
+6418720: Started receiving data from device
+6418726: Received end of data from device
+6418726: Received ping response
+6419716: Pinging selected device.
+6419720: Started receiving data from device
+6419727: Received end of data from device
+6419727: Received ping response
+6420556: Searching for devices.
+6420560: Started receiving data from device
+6420567: Received end of data from device
+6420567: Received search response
+6420716: Pinging selected device.
+6420720: Started receiving data from device
+6420727: Received end of data from device
+6420727: Received ping response
+6421716: Pinging selected device.
+6421720: Started receiving data from device
+6421727: Received end of data from device
+6421727: Received ping response
+6422716: Pinging selected device.
+6422720: Started receiving data from device
+6422727: Received end of data from device
+6422727: Received ping response
+6423717: Pinging selected device.
+6423722: Started receiving data from device
+6423728: Received end of data from device
+6423728: Received ping response
+6424717: Pinging selected device.
+6424721: Started receiving data from device
+6424728: Received end of data from device
+6424728: Received ping response
+6425557: Searching for devices.
+6425560: Started receiving data from device
+6425567: Received end of data from device
+6425567: Received search response
+6425717: Pinging selected device.
+6425721: Started receiving data from device
+6425728: Received end of data from device
+6425728: Received ping response
+6426717: Pinging selected device.
+6426721: Started receiving data from device
+6426728: Received end of data from device
+6426728: Received ping response
+6427717: Pinging selected device.
+6427721: Started receiving data from device
+6427728: Received end of data from device
+6427728: Received ping response
+6428717: Pinging selected device.
+6428721: Started receiving data from device
+6428729: Received end of data from device
+6428729: Received ping response
+6429717: Pinging selected device.
+6429721: Started receiving data from device
+6429728: Received end of data from device
+6429728: Received ping response
+6430557: Searching for devices.
+6430560: Started receiving data from device
+6430568: Received end of data from device
+6430568: Received search response
+6430717: Pinging selected device.
+6430722: Started receiving data from device
+6430729: Received end of data from device
+6430729: Received ping response
+6431717: Pinging selected device.
+6431723: Started receiving data from device
+6431729: Received end of data from device
+6431729: Received ping response
+6432717: Pinging selected device.
+6432721: Started receiving data from device
+6432728: Received end of data from device
+6432728: Received ping response
+6433717: Pinging selected device.
+6433720: Started receiving data from device
+6433727: Received end of data from device
+6433727: Received ping response
+6434718: Pinging selected device.
+6434721: Started receiving data from device
+6434728: Received end of data from device
+6434728: Received ping response
+6435557: Searching for devices.
+6435560: Started receiving data from device
+6435567: Received end of data from device
+6435567: Received search response
+6435718: Pinging selected device.
+6435722: Started receiving data from device
+6435729: Received end of data from device
+6435729: Received ping response
+6436718: Pinging selected device.
+6436723: Started receiving data from device
+6436729: Received end of data from device
+6436729: Received ping response
+6437719: Pinging selected device.
+6437723: Started receiving data from device
+6437730: Received end of data from device
+6437730: Received ping response
+6438719: Pinging selected device.
+6438722: Started receiving data from device
+6438730: Received end of data from device
+6438730: Received ping response
+6439719: Pinging selected device.
+6439722: Started receiving data from device
+6439729: Received end of data from device
+6439729: Received ping response
+6440558: Searching for devices.
+6440562: Started receiving data from device
+6440569: Received end of data from device
+6440569: Received search response
+6440719: Pinging selected device.
+6440723: Started receiving data from device
+6440730: Received end of data from device
+6440730: Received ping response
+6441719: Pinging selected device.
+6441723: Started receiving data from device
+6441730: Received end of data from device
+6441730: Received ping response
+6442719: Pinging selected device.
+6442724: Started receiving data from device
+6442731: Received end of data from device
+6442731: Received ping response
+6443719: Pinging selected device.
+6443724: Started receiving data from device
+6443730: Received end of data from device
+6443730: Received ping response
+6444719: Pinging selected device.
+6444723: Started receiving data from device
+6444730: Received end of data from device
+6444730: Received ping response
+6445558: Searching for devices.
+6445562: Started receiving data from device
+6445569: Received end of data from device
+6445569: Received search response
+6445720: Pinging selected device.
+6445723: Started receiving data from device
+6445731: Received end of data from device
+6445731: Received ping response
+6446720: Pinging selected device.
+6446725: Started receiving data from device
+6446732: Received end of data from device
+6446732: Received ping response
+6447720: Pinging selected device.
+6447723: Started receiving data from device
+6447730: Received end of data from device
+6447730: Received ping response
+6448720: Pinging selected device.
+6448723: Started receiving data from device
+6448731: Received end of data from device
+6448731: Received ping response
+6449720: Pinging selected device.
+6449724: Started receiving data from device
+6449731: Received end of data from device
+6449731: Received ping response
+6450558: Searching for devices.
+6450561: Started receiving data from device
+6450568: Received end of data from device
+6450568: Received search response
+6450720: Pinging selected device.
+6450724: Started receiving data from device
+6450731: Received end of data from device
+6450731: Received ping response
+6451720: Pinging selected device.
+6451724: Started receiving data from device
+6451731: Received end of data from device
+6451731: Received ping response
+6452720: Pinging selected device.
+6452725: Started receiving data from device
+6452732: Received end of data from device
+6452732: Received ping response
+6453720: Pinging selected device.
+6453724: Started receiving data from device
+6453731: Received end of data from device
+6453731: Received ping response
+6454720: Pinging selected device.
+6454724: Started receiving data from device
+6454731: Received end of data from device
+6454731: Received ping response
+6455559: Searching for devices.
+6455562: Started receiving data from device
+6455569: Received end of data from device
+6455569: Received search response
+6455721: Pinging selected device.
+6455725: Started receiving data from device
+6455732: Received end of data from device
+6455732: Received ping response
+6456721: Pinging selected device.
+6456725: Started receiving data from device
+6456732: Received end of data from device
+6456732: Received ping response
+6457721: Pinging selected device.
+6457726: Started receiving data from device
+6457733: Received end of data from device
+6457733: Received ping response
+6458722: Pinging selected device.
+6458727: Started receiving data from device
+6458733: Received end of data from device
+6458733: Received ping response
+6459722: Pinging selected device.
+6459725: Started receiving data from device
+6459733: Received end of data from device
+6459733: Received ping response
+6460560: Searching for devices.
+6460563: Started receiving data from device
+6460570: Received end of data from device
+6460570: Received search response
+6460723: Pinging selected device.
+6460727: Started receiving data from device
+6460733: Received end of data from device
+6460733: Received ping response
+6461723: Pinging selected device.
+6461727: Started receiving data from device
+6461734: Received end of data from device
+6461734: Received ping response
+6462723: Pinging selected device.
+6462727: Started receiving data from device
+6462734: Received end of data from device
+6462734: Received ping response
+6463724: Pinging selected device.
+6463728: Started receiving data from device
+6463735: Received end of data from device
+6463735: Received ping response
+6464724: Pinging selected device.
+6464728: Started receiving data from device
+6464734: Received end of data from device
+6464734: Received ping response
+6465560: Searching for devices.
+6465564: Started receiving data from device
+6465571: Received end of data from device
+6465571: Received search response
+6465724: Pinging selected device.
+6465728: Started receiving data from device
+6465735: Received end of data from device
+6465735: Received ping response
+6466724: Pinging selected device.
+6466728: Started receiving data from device
+6466735: Received end of data from device
+6466735: Received ping response
+6467724: Pinging selected device.
+6467729: Started receiving data from device
+6467736: Received end of data from device
+6467736: Received ping response
+6468724: Pinging selected device.
+6468729: Started receiving data from device
+6468735: Received end of data from device
+6468735: Received ping response
+6469724: Pinging selected device.
+6469729: Started receiving data from device
+6469735: Received end of data from device
+6469735: Received ping response
+6470561: Searching for devices.
+6470565: Started receiving data from device
+6470572: Received end of data from device
+6470572: Received search response
+6470725: Pinging selected device.
+6470729: Started receiving data from device
+6470735: Received end of data from device
+6470735: Received ping response
+6471725: Pinging selected device.
+6471729: Started receiving data from device
+6471736: Received end of data from device
+6471736: Received ping response
+6472726: Pinging selected device.
+6472730: Started receiving data from device
+6472737: Received end of data from device
+6472737: Received ping response
+6473727: Pinging selected device.
+6473731: Started receiving data from device
+6473738: Received end of data from device
+6473738: Received ping response
+6474728: Pinging selected device.
+6474731: Started receiving data from device
+6474739: Received end of data from device
+6474739: Received ping response
+6475561: Searching for devices.
+6475565: Started receiving data from device
+6475572: Received end of data from device
+6475572: Received search response
+6475728: Pinging selected device.
+6475732: Started receiving data from device
+6475739: Received end of data from device
+6475739: Received ping response
+6476728: Pinging selected device.
+6476731: Started receiving data from device
+6476738: Received end of data from device
+6476738: Received ping response
+6477728: Pinging selected device.
+6477733: Started receiving data from device
+6477739: Received end of data from device
+6477739: Received ping response
+6478728: Pinging selected device.
+6478731: Started receiving data from device
+6478738: Received end of data from device
+6478738: Received ping response
+6479728: Pinging selected device.
+6479731: Started receiving data from device
+6479739: Received end of data from device
+6479739: Received ping response
+6480561: Searching for devices.
+6480564: Started receiving data from device
+6480572: Received end of data from device
+6480572: Received search response
+6480728: Pinging selected device.
+6480732: Started receiving data from device
+6480739: Received end of data from device
+6480739: Received ping response
+6481729: Pinging selected device.
+6481732: Started receiving data from device
+6481740: Received end of data from device
+6481740: Received ping response
+6482729: Pinging selected device.
+6482732: Started receiving data from device
+6482739: Received end of data from device
+6482739: Received ping response
+6483730: Pinging selected device.
+6483735: Started receiving data from device
+6483740: Received end of data from device
+6483740: Received ping response
+6484730: Pinging selected device.
+6484734: Started receiving data from device
+6484741: Received end of data from device
+6484741: Received ping response
+6485562: Searching for devices.
+64

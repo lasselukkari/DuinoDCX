@@ -13,6 +13,7 @@ import {
   directLookup,
   convertValue,
   applyToState,
+  type DirectKey,
 } from '../model/param-lookup.js';
 
 type Listener = () => void;
@@ -59,7 +60,7 @@ export class DcxStore {
   applyDirectUpdate(channel: number, parameter: number, value: number): void {
     if (!this.state) return;
 
-    const key = `${channel}:${parameter}`;
+    const key: DirectKey = `${channel}:${parameter}`;
     const def = directLookup.get(key);
 
     if (!def) {
