@@ -25,6 +25,7 @@ bool flowControl;
 bool autoDisableAP;
 
 char authBuffer[AUTH_BUFFER_LENGHT];
+Request::HeaderNode authHeader = {"Authorization", authBuffer, AUTH_BUFFER_LENGHT, nullptr};
 char ssidBuffer[SSID_MAX_LENGTH];
 char passwordBuffer[PASSWORD_MAX_LENGHT];
 unsigned long lastReconnect;
@@ -279,7 +280,10 @@ void processWebServer() {
   WiFiClient client = httpServer.available();
 
   if (client.connected()) {
-    App::ProcessResult result = app.process(&client);
+    App::ProcessOptions options;
+    options.headers = &authHeader;
+    options.headerCount = 1;
+    App::ProcessResult result = app.process(&client, options);
 
     // If this was an SSE request, store the client for later
     if (result.responseOpen) {
@@ -335,7 +339,6 @@ void loadPreferences() {
 }
 
 void setupHttpServer() {
-  app.header("Authorization", authBuffer, AUTH_BUFFER_LENGHT);
 
   setupApiRoutes(apiRouter);
   apiRouter.get("/connection", &getConnection);

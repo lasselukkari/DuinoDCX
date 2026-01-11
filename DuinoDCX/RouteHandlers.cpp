@@ -91,7 +91,9 @@ int countSseClients() {
   return count;
 }
 
-void sendToSseClients(const uint8_t *data, size_t length) {
+void sendToSseClients(const uint8_t *data, size_t length,
+                      const char *targetClientId) {
+  (void)targetClientId; // Client ID filtering not yet implemented for ESP32
   for (int i = 0; i < MAX_SSE_CLIENTS; i++) {
     if (sseClients[i].connected()) {
       // SSE data format: "data: <base64-or-hex>\n\n"
