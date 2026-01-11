@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import {memo} from 'react';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
@@ -13,14 +13,14 @@ type OutputSourcesProps = {
   readonly channels: Record<string, ChannelData>;
 };
 
-function OutputSources({ channels }: OutputSourcesProps) {
+function OutputSources({channels}: OutputSourcesProps) {
   return (
     <Card>
       <Card.Header>Output Source</Card.Header>
       <Card.Body>
         <Row>
           {Object.keys(channels).map((channelId) => {
-            const { channelName, source } = channels[channelId];
+            const {channelName, source} = channels[channelId];
             return (
               <Col key={channelId} sm={4} xs={12}>
                 <OutputSource

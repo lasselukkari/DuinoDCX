@@ -1,16 +1,16 @@
-import React, { useMemo } from 'react';
+import React, {useMemo} from 'react';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import isEqual from 'lodash.isequal';
+import {type OutputChannel} from 'dcx-parser';
 import ChannelName from './channel-name.tsx';
-import { type OutputChannel } from 'dcx-parser';
 
 type Props = {
   readonly channels: Record<string, OutputChannel>;
 };
 
-function ChannelNames({ channels }: Props) {
+function ChannelNames({channels}: Props) {
   const channelIds = useMemo(() => Object.keys(channels), [channels]);
 
   return (

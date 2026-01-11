@@ -2,7 +2,7 @@ import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import FormLabel from 'react-bootstrap/FormLabel';
 import Row from 'react-bootstrap/Row';
-import { output, type OutputId } from './parameters/index.tsx';
+import {output, type OutputId} from './parameters/index.tsx';
 
 type Props = {
   readonly channelName?: string;
@@ -35,7 +35,10 @@ function Crossover({
             <output.HighpassFilter value={highpassFilter ?? 'OFF'} id={id} />
           </Col>
           <Col xs={6}>
-            <output.HighpassFrequency value={highpassFrequency ?? '20'} id={id} />
+            <output.HighpassFrequency
+              value={highpassFrequency ?? '20'}
+              id={id}
+            />
           </Col>
         </Row>
         <FormLabel>Lowpass Filter</FormLabel>

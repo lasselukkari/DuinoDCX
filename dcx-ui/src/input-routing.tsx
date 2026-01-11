@@ -1,16 +1,16 @@
-import { memo } from 'react';
+import {memo} from 'react';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import isEqual from 'lodash.isequal';
-import { setup as setupParameters } from './parameters/index.tsx';
-import { type Setup } from 'dcx-parser';
+import {type Setup} from 'dcx-parser';
+import {setup as setupParameters} from './parameters/index.tsx';
 
 type Props = {
   readonly setup: Setup;
 };
 
-function InputRouting({ setup }: Props) {
+function InputRouting({setup}: Props) {
   const {
     inputABSource,
     inputCGain,
@@ -28,13 +28,19 @@ function InputRouting({ setup }: Props) {
         <Card.Body>
           <Row>
             <Col xs={12} sm={4}>
-              <setupParameters.InputABSource hasLabel value={inputABSource ?? ''} />
+              <setupParameters.InputABSource
+                hasLabel
+                value={inputABSource ?? ''}
+              />
             </Col>
             <Col xs={12} sm={4}>
               <setupParameters.InputCGain hasLabel value={inputCGain ?? ''} />
             </Col>
             <Col xs={12} sm={4}>
-              <setupParameters.StereolinkMode hasLabel value={stereolinkMode ?? ''} />
+              <setupParameters.StereolinkMode
+                hasLabel
+                value={stereolinkMode ?? ''}
+              />
             </Col>
           </Row>
         </Card.Body>

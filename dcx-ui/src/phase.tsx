@@ -1,5 +1,5 @@
 import Card from 'react-bootstrap/Card';
-import { output, type OutputId } from './parameters/index.tsx';
+import {output, type OutputId} from './parameters/index.tsx';
 
 type PhaseProps = {
   readonly channelName?: string;
@@ -8,7 +8,7 @@ type PhaseProps = {
   readonly channelId: string;
 };
 
-function Phase({ channelName, polarity, phase, channelId }: PhaseProps) {
+function Phase({channelName, polarity, phase, channelId}: PhaseProps) {
   const id = channelId as OutputId;
 
   return (

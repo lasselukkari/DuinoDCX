@@ -12,7 +12,7 @@
  */
 // ============ SETUP PARAMETERS (Edit Buffer) ============
 // Matches the structure expected by edit-buffer-parser (starts at offset 1)
-export const EDIT_BUFFER_SETUP_PARAMS = [
+export const EDIT_BUFFER_SETUP_PARAMETERS = [
     // Bytes 0-36: Headers (handled by parser skipping or separate header object)
     // The parser starts cursor at 1.
     // Old buffer-structure had 18 undefineds (36 bytes).
@@ -41,7 +41,7 @@ export const EDIT_BUFFER_SETUP_PARAMS = [
 // - Preset name at offset 83 (skip 76 bytes from XSNP)
 // - After preset name (8 bytes), fields start at offset 91
 // - outputConfig at absolute offset 93 (relative +10 from preset name start)
-export const PRESET_SETUP_PARAMS = [
+export const PRESET_SETUP_PARAMETERS = [
     { name: 'setup_header', type: 'skip', length: 76 }, // Skip to preset name (XSNP at 7, name at 83)
     { name: 'presetName', type: 'string', length: 8 }, // Offset 83-90
     undefined, // Offset 91-92 (padding)
@@ -63,7 +63,7 @@ export const PRESET_SETUP_PARAMS = [
 ];
 // ============ INPUT CHANNEL PARAMETERS ============
 // 4 input channels: A, B, C, Sum
-export const INPUT_CHANNEL_PARAMS = [
+export const INPUT_CHANNEL_PARAMETERS = [
     'gain',
     'mute',
     'isDelayOn',
@@ -84,7 +84,7 @@ export const INPUT_CHANNEL_PARAMS = [
 ];
 // ============ EQ BAND PARAMETERS ============
 // 10 bytes per band, 9 bands = 90 bytes total
-export const EQ_BAND_PARAMS = [
+export const EQUALIZER_BAND_PARAMETERS = [
     'equalizerFrequency',
     'equalizerQ',
     'equalizerGain',
@@ -92,10 +92,10 @@ export const EQ_BAND_PARAMS = [
     'equalizerShelving',
 ];
 // Output Channels use same structure as Input
-export const OUTPUT_CHANNEL_PARAMS_PREFIX = [
-    ...INPUT_CHANNEL_PARAMS,
+export const OUTPUT_CHANNEL_PARAMETERS_PREFIX = [
+    ...INPUT_CHANNEL_PARAMETERS,
 ];
-export const OUTPUT_EXTRA_PARAMS = [
+export const OUTPUT_EXTRA_PARAMETERS = [
     'channelName',
     'source',
     'highpassFilter',

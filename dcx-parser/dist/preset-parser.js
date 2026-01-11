@@ -1,5 +1,5 @@
 import { decode7to8 } from './protocol/encoding.js';
-import { PRESET_SETUP_PARAMS, INPUT_NAMES, OUTPUT_NAMES } from './structure.js';
+import { PRESET_SETUP_PARAMETERS, INPUT_NAMES, OUTPUT_NAMES } from './structure.js';
 import { readString, readU16LE, readBytes, parseSequential, parseInputChannel, parseOutputChannel, } from './parser-utils.js';
 export function parsePreset(input) {
     let buffer;
@@ -64,7 +64,7 @@ export function parsePreset(input) {
         offset: headerOffset,
     };
     // Parse Setup parameters (includes skipping header, getting preset name, and setup values)
-    const setupRaw = parseSequential(cursor, PRESET_SETUP_PARAMS);
+    const setupRaw = parseSequential(cursor, PRESET_SETUP_PARAMETERS);
     // Use setup presetName if available (override header)
     if (typeof setupRaw.presetName === 'string' &&
         setupRaw.presetName.trim().length > 0) {

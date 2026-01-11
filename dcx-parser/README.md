@@ -184,7 +184,7 @@ The parser uses `src/structure.ts` as the single source of truth for parameter o
 **Edit Buffer Layout:**
 - XPCR signature at absolute offset 7
 - Preset name at absolute offset 79 (8 bytes)
-- Setup parameters follow the pattern in `EDIT_BUFFER_SETUP_PARAMS`
+- Setup parameters follow the pattern in `EDIT_BUFFER_SETUP_PARAMETERS`
 - Cursor starts at offset 1 for sequential parsing
 
 **Preset (.dcx) Layout:**
@@ -195,7 +195,7 @@ The parser uses `src/structure.ts` as the single source of truth for parameter o
 
 **Parameter Order (Verified):**
 - `dynamicEqualizerFrequency` comes BEFORE `dynamicEqualizerQ` (order matters!)
-- All parameters in `INPUT_CHANNEL_PARAMS` and `OUTPUT_CHANNEL_PARAMS` verified against device
+- All parameters in `INPUT_CHANNEL_PARAMETERS` and `OUTPUT_CHANNEL_PARAMS` verified against device
 
 ### Parsers
 - `preset-parser.ts`: Parses `.dcx` files and SysEx Memory Dumps.

@@ -1,7 +1,7 @@
-import { useCallback } from 'react';
-import { toast } from 'react-toastify';
-import { buildParameterChangeCommand, type ParameterTarget } from 'dcx-parser';
-import { useDcxConnection } from '../connection/connection-context.js';
+import {useCallback} from 'react';
+import {toast} from 'react-toastify';
+import {buildParameterChangeCommand, type ParameterTarget} from 'dcx-parser';
+import {useDcxConnection} from '../connection/connection-context.js';
 
 /**
  * A batch command with target and value bundled together.
@@ -20,7 +20,7 @@ export type BatchCommand = {
  * - sendCommand(batchCommands) - multiple parameter changes
  */
 export const useSendCommand = () => {
-  const { connection } = useDcxConnection();
+  const {connection} = useDcxConnection();
 
   const sendCommand = useCallback(
     async (
@@ -57,4 +57,3 @@ export const useSendCommand = () => {
 
   return sendCommand;
 };
-

@@ -20,7 +20,7 @@ export type ParameterDefinition =
 
 // ============ SETUP PARAMETERS (Edit Buffer) ============
 // Matches the structure expected by edit-buffer-parser (starts at offset 1)
-export const EDIT_BUFFER_SETUP_PARAMS: ParameterDefinition[] = [
+export const EDIT_BUFFER_SETUP_PARAMETERS: ParameterDefinition[] = [
   // Bytes 0-36: Headers (handled by parser skipping or separate header object)
   // The parser starts cursor at 1.
   // Old buffer-structure had 18 undefineds (36 bytes).
@@ -50,7 +50,7 @@ export const EDIT_BUFFER_SETUP_PARAMS: ParameterDefinition[] = [
 // - Preset name at offset 83 (skip 76 bytes from XSNP)
 // - After preset name (8 bytes), fields start at offset 91
 // - outputConfig at absolute offset 93 (relative +10 from preset name start)
-export const PRESET_SETUP_PARAMS: ParameterDefinition[] = [
+export const PRESET_SETUP_PARAMETERS: ParameterDefinition[] = [
   {name: 'setup_header', type: 'skip', length: 76}, // Skip to preset name (XSNP at 7, name at 83)
   {name: 'presetName', type: 'string', length: 8}, // Offset 83-90
   undefined, // Offset 91-92 (padding)
@@ -74,7 +74,7 @@ export const PRESET_SETUP_PARAMS: ParameterDefinition[] = [
 // ============ INPUT CHANNEL PARAMETERS ============
 // 4 input channels: A, B, C, Sum
 
-export const INPUT_CHANNEL_PARAMS: ParameterDefinition[] = [
+export const INPUT_CHANNEL_PARAMETERS: ParameterDefinition[] = [
   'gain',
   'mute',
   'isDelayOn',
@@ -96,7 +96,7 @@ export const INPUT_CHANNEL_PARAMS: ParameterDefinition[] = [
 
 // ============ EQ BAND PARAMETERS ============
 // 10 bytes per band, 9 bands = 90 bytes total
-export const EQ_BAND_PARAMS: ParameterDefinition[] = [
+export const EQUALIZER_BAND_PARAMETERS: ParameterDefinition[] = [
   'equalizerFrequency',
   'equalizerQ',
   'equalizerGain',
@@ -105,11 +105,11 @@ export const EQ_BAND_PARAMS: ParameterDefinition[] = [
 ];
 
 // Output Channels use same structure as Input
-export const OUTPUT_CHANNEL_PARAMS_PREFIX: ParameterDefinition[] = [
-  ...INPUT_CHANNEL_PARAMS,
+export const OUTPUT_CHANNEL_PARAMETERS_PREFIX: ParameterDefinition[] = [
+  ...INPUT_CHANNEL_PARAMETERS,
 ];
 
-export const OUTPUT_EXTRA_PARAMS: ParameterDefinition[] = [
+export const OUTPUT_EXTRA_PARAMETERS: ParameterDefinition[] = [
   'channelName',
   'source',
   'highpassFilter',
@@ -127,11 +127,3 @@ export const OUTPUT_EXTRA_PARAMS: ParameterDefinition[] = [
 // ============ CHANNEL COUNTS ============
 export const INPUT_NAMES = ['A', 'B', 'C', 'Sum'] as const;
 export const OUTPUT_NAMES = ['1', '2', '3', '4', '5', '6'] as const;
-
-// ============ SIZES ============
-export const INPUT_CHANNEL_SIZE = 124;
-export const EQ_BAND_SIZE = 10;
-export const INPUT_EQ_COUNT = 9;
-export const OUTPUT_EQ_COUNT = 9;
-export const INPUT_PREFIX_SIZE = 34;
-export const OUTPUT_PREFIX_SIZE = 34;

@@ -1,5 +1,5 @@
 import {decode7to8} from './protocol/encoding.js';
-import {PRESET_SETUP_PARAMS, INPUT_NAMES, OUTPUT_NAMES} from './structure.js';
+import {PRESET_SETUP_PARAMETERS, INPUT_NAMES, OUTPUT_NAMES} from './structure.js';
 import {
   type State as ExtendedState,
   type BufferHeader,
@@ -93,7 +93,7 @@ export function parsePreset(input: Uint8Array | Uint8Array[]): ExtendedState {
   };
 
   // Parse Setup parameters (includes skipping header, getting preset name, and setup values)
-  const setupRaw = parseSequential(cursor, PRESET_SETUP_PARAMS);
+  const setupRaw = parseSequential(cursor, PRESET_SETUP_PARAMETERS);
 
   // Use setup presetName if available (override header)
   if (

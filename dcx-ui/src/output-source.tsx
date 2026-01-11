@@ -1,5 +1,5 @@
 import FormLabel from 'react-bootstrap/FormLabel';
-import { output, type OutputId } from './parameters/index.tsx';
+import {output, type OutputId} from './parameters/index.tsx';
 
 type OutputSourceProps = {
   readonly channelName?: string;
@@ -7,7 +7,7 @@ type OutputSourceProps = {
   readonly channelId: string;
 };
 
-function OutputSource({ channelName, source, channelId }: OutputSourceProps) {
+function OutputSource({channelName, source, channelId}: OutputSourceProps) {
   return (
     <div>
       <FormLabel>

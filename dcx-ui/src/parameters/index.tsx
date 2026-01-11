@@ -66,15 +66,15 @@ type BoolExtraProps = {
 // =============================================================================
 
 function buildSetupTarget(key: string): ParameterTarget {
-  return { kind: 'setup', key };
+  return {kind: 'setup', key};
 }
 
 function buildInputTarget(id: InputId, key: string): ParameterTarget {
-  return { kind: 'channel', group: 'inputs', id, key };
+  return {kind: 'channel', group: 'inputs', id, key};
 }
 
 function buildOutputTarget(id: OutputId, key: string): ParameterTarget {
-  return { kind: 'channel', group: 'outputs', id, key };
+  return {kind: 'channel', group: 'outputs', id, key};
 }
 
 function buildEqTarget(
@@ -83,7 +83,7 @@ function buildEqTarget(
   band: number,
   key: string,
 ): ParameterTarget {
-  return { kind: 'equalizer', group, channelId, band, key };
+  return {kind: 'equalizer', group, channelId, band, key};
 }
 
 // =============================================================================
@@ -93,10 +93,10 @@ function buildEqTarget(
 function createSetupEnumComponent(
   command: Command,
 ): React.FC<SetupProps<string>> {
-  const { name, values, unit } = command;
+  const {name, values, unit} = command;
   const key = camelize(name);
 
-  return function SetupEnumComponent({ value, hasLabel = false }) {
+  return function SetupEnumComponent({value, hasLabel = false}) {
     return (
       <EnumParameter
         name={name}
@@ -113,7 +113,7 @@ function createSetupEnumComponent(
 function createSetupBoolComponent(
   command: Command,
 ): React.FC<SetupProps<boolean> & BoolExtraProps> {
-  const { name } = command;
+  const {name} = command;
   const key = camelize(name);
 
   return function SetupBoolComponent({
@@ -138,7 +138,7 @@ function createSetupBoolComponent(
 function createSetupNumberComponent(
   command: Command,
 ): React.FC<SetupProps<number> & NumberExtraProps> {
-  const { name, unit, min, max, step } = command;
+  const {name, unit, min, max, step} = command;
   const key = camelize(name);
 
   return function SetupNumberComponent({
@@ -167,10 +167,10 @@ function createSetupNumberComponent(
 function createInputEnumComponent(
   command: Command,
 ): React.FC<InputProps<string>> {
-  const { name, values, unit } = command;
+  const {name, values, unit} = command;
   const key = camelize(name);
 
-  return function InputEnumComponent({ id, value, hasLabel = false }) {
+  return function InputEnumComponent({id, value, hasLabel = false}) {
     return (
       <EnumParameter
         name={name}
@@ -187,7 +187,7 @@ function createInputEnumComponent(
 function createInputBoolComponent(
   command: Command,
 ): React.FC<InputProps<boolean> & BoolExtraProps> {
-  const { name } = command;
+  const {name} = command;
   const key = camelize(name);
 
   return function InputBoolComponent({
@@ -213,7 +213,7 @@ function createInputBoolComponent(
 function createInputNumberComponent(
   command: Command,
 ): React.FC<InputProps<number> & NumberExtraProps> {
-  const { name, unit, min, max, step } = command;
+  const {name, unit, min, max, step} = command;
   const key = camelize(name);
 
   return function InputNumberComponent({
@@ -243,10 +243,10 @@ function createInputNumberComponent(
 function createOutputEnumComponent(
   command: Command,
 ): React.FC<OutputProps<string>> {
-  const { name, values, unit } = command;
+  const {name, values, unit} = command;
   const key = camelize(name);
 
-  return function OutputEnumComponent({ id, value, hasLabel = false }) {
+  return function OutputEnumComponent({id, value, hasLabel = false}) {
     return (
       <EnumParameter
         name={name}
@@ -263,7 +263,7 @@ function createOutputEnumComponent(
 function createOutputBoolComponent(
   command: Command,
 ): React.FC<OutputProps<boolean> & BoolExtraProps> {
-  const { name } = command;
+  const {name} = command;
   const key = camelize(name);
 
   return function OutputBoolComponent({
@@ -289,7 +289,7 @@ function createOutputBoolComponent(
 function createOutputNumberComponent(
   command: Command,
 ): React.FC<OutputProps<number> & NumberExtraProps> {
-  const { name, unit, min, max, step } = command;
+  const {name, unit, min, max, step} = command;
   const key = camelize(name);
 
   return function OutputNumberComponent({
@@ -317,7 +317,7 @@ function createOutputNumberComponent(
 }
 
 function createEqEnumComponent(command: Command): React.FC<EqProps<string>> {
-  const { name, values, unit } = command;
+  const {name, values, unit} = command;
   const key = camelize(name);
 
   return function EqEnumComponent({
@@ -343,7 +343,7 @@ function createEqEnumComponent(command: Command): React.FC<EqProps<string>> {
 function createEqNumberComponent(
   command: Command,
 ): React.FC<EqProps<number> & NumberExtraProps> {
-  const { name, unit, min, max, step } = command;
+  const {name, unit, min, max, step} = command;
   const key = camelize(name);
 
   return function EqNumberComponent({
@@ -376,16 +376,19 @@ function createEqNumberComponent(
 // Generic Component Creators (dispatch by command type)
 // =============================================================================
 
-
-
 // =============================================================================
 // Helper to find command by name
 // =============================================================================
 
 const squeeze = (word: string) => word.replaceAll(/\s/g, '');
 
-function findCommand(commands: readonly (Command | undefined)[], name: string): Command {
-  const found = commands.find((c): c is Command => c !== undefined && squeeze(c.name) === name);
+function findCommand(
+  commands: ReadonlyArray<Command | undefined>,
+  name: string,
+): Command {
+  const found = commands.find(
+    (c): c is Command => c !== undefined && squeeze(c.name) === name,
+  );
   if (!found) throw new Error(`Command not found: ${name}`);
   return found;
 }
@@ -402,11 +405,15 @@ export const setup = {
   InputABSource: createSetupEnumComponent(
     findCommand(setupCommands, 'InputABSource'),
   ),
-  InputCGain: createSetupEnumComponent(findCommand(setupCommands, 'InputCGain')),
+  InputCGain: createSetupEnumComponent(
+    findCommand(setupCommands, 'InputCGain'),
+  ),
   OutputConfig: createSetupEnumComponent(
     findCommand(setupCommands, 'OutputConfig'),
   ),
-  Stereolink: createSetupBoolComponent(findCommand(setupCommands, 'Stereolink')),
+  Stereolink: createSetupBoolComponent(
+    findCommand(setupCommands, 'Stereolink'),
+  ),
   StereolinkMode: createSetupEnumComponent(
     findCommand(setupCommands, 'StereolinkMode'),
   ),
@@ -420,7 +427,9 @@ export const setup = {
   AirTemperature: createSetupNumberComponent(
     findCommand(setupCommands, 'AirTemperature'),
   ),
-  DelayUnits: createSetupEnumComponent(findCommand(setupCommands, 'DelayUnits')),
+  DelayUnits: createSetupEnumComponent(
+    findCommand(setupCommands, 'DelayUnits'),
+  ),
   MuteOutsWhenPowered: createSetupBoolComponent(
     findCommand(setupCommands, 'MuteOutsWhenPowered'),
   ),
@@ -563,7 +572,9 @@ export const eq = {
     findCommand(equalizerCommands, 'EqualizerFrequency'),
   ),
   Q: createEqEnumComponent(findCommand(equalizerCommands, 'EqualizerQ')),
-  Gain: createEqNumberComponent(findCommand(equalizerCommands, 'EqualizerGain')),
+  Gain: createEqNumberComponent(
+    findCommand(equalizerCommands, 'EqualizerGain'),
+  ),
   Type: createEqEnumComponent(findCommand(equalizerCommands, 'EqualizerType')),
   Shelving: createEqEnumComponent(
     findCommand(equalizerCommands, 'EqualizerShelving'),

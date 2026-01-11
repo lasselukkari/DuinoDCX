@@ -1,7 +1,7 @@
 import {
   INPUT_NAMES,
   OUTPUT_NAMES,
-  EDIT_BUFFER_SETUP_PARAMS as SETUP_PARAMS,
+  EDIT_BUFFER_SETUP_PARAMETERS as SETUP_PARAMETERS,
 } from './structure.js';
 import {
   type State as ExtendedState,
@@ -90,7 +90,7 @@ export function parseEditBuffer(decoded: Uint8Array): ExtendedState {
   };
 
   // 1. Setup
-  const setup = parseSequential(cursor, SETUP_PARAMS);
+  const setup = parseSequential(cursor, SETUP_PARAMETERS);
 
   // 2. Inputs
   const inputs: Record<string, InputChannel> = {};

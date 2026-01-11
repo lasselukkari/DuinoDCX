@@ -1,4 +1,4 @@
-import { INPUT_NAMES, OUTPUT_NAMES, EDIT_BUFFER_SETUP_PARAMS as SETUP_PARAMS, } from './structure.js';
+import { INPUT_NAMES, OUTPUT_NAMES, EDIT_BUFFER_SETUP_PARAMETERS as SETUP_PARAMETERS, } from './structure.js';
 import { readString, readU16LE, readBytes, parseSequential, parseInputChannel, parseOutputChannel, } from './parser-utils.js';
 // Export for tests if needed, but better to export from utils
 export { readString, readU16LE, readBytes, nextU16, parseSequential, parseInputChannel, parseOutputChannel, } from './parser-utils.js';
@@ -49,7 +49,7 @@ export function parseEditBuffer(decoded) {
         offset: 1,
     };
     // 1. Setup
-    const setup = parseSequential(cursor, SETUP_PARAMS);
+    const setup = parseSequential(cursor, SETUP_PARAMETERS);
     // 2. Inputs
     const inputs = {};
     for (const name of INPUT_NAMES) {

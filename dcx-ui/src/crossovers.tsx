@@ -2,14 +2,14 @@ import React from 'react';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import isEqual from 'lodash.isequal';
+import {type OutputChannel} from 'dcx-parser';
 import Crossover from './crossover.tsx';
-import { type OutputChannel } from 'dcx-parser';
 
 type Props = {
   readonly channels: Record<string, OutputChannel>;
 };
 
-function Crossovers({ channels }: Props) {
+function Crossovers({channels}: Props) {
   return (
     <div>
       <Row className="show-grid">

@@ -2,8 +2,8 @@ import React from 'react';
 import Card from 'react-bootstrap/Card';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
-import { useNavigate, useParams, useRouter } from '@tanstack/react-router';
-import type { State } from 'dcx-parser';
+import {useNavigate, useParams, useRouter} from '@tanstack/react-router';
+import type {State} from 'dcx-parser';
 import BlockUi from './components/block-ui.tsx';
 import Delays from './delays.tsx';
 import Equalizers from './equalizers.tsx';
@@ -17,14 +17,14 @@ type Props = {
   readonly isBlocking: boolean;
 };
 
-function Inputs({ device, isBlocking }: Props) {
-  const { inputs: channels, setup } = device;
+function Inputs({device, isBlocking}: Props) {
+  const {inputs: channels, setup} = device;
   const navigate = useNavigate();
   const router = useRouter();
-  const params = useParams({ strict: false }) as any;
+  const parameters = useParams({strict: false});
 
-  let activeTab = params.tab || 'gain';
-  const { pathname } = router.state.location;
+  let activeTab = parameters.tab || 'gain';
+  const {pathname} = router.state.location;
 
   if (pathname.includes('/dynamic-equalizers')) {
     activeTab = 'dynamic-equalizers';
@@ -37,12 +37,12 @@ function Inputs({ device, isBlocking }: Props) {
       if (key === 'equalizers') {
         void navigate({
           to: '/inputs/equalizers/$channelId',
-          params: { channelId: 'A' },
+          params: {channelId: 'A'},
         });
       } else if (key === 'dynamic-equalizers') {
-        void navigate({ to: '/inputs/dynamic-equalizers' });
+        void navigate({to: '/inputs/dynamic-equalizers'});
       } else {
-        void navigate({ to: '/inputs/$tab', params: { tab: key } });
+        void navigate({to: '/inputs/$tab', params: {tab: key}});
       }
     }
   };
@@ -52,10 +52,10 @@ function Inputs({ device, isBlocking }: Props) {
       <Tabs
         unmountOnExit
         activeKey={activeTab}
-        onSelect={handleSelect}
         variant="pills"
         id="inputs"
         className="control-menu"
+        onSelect={handleSelect}
       >
         <Tab title="Gain" eventKey="gain">
           <Card>

@@ -1,17 +1,17 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
 import ProgressBar from 'react-bootstrap/ProgressBar';
-import { toast } from 'react-toastify';
-import { useDcxBackup } from '../hooks/use-dcx-backup.js';
-import { useDcxRestore } from '../hooks/use-dcx-restore.js';
-import { useDcxConnection } from '../connection/connection-context.js';
+import {toast} from 'react-toastify';
+import {useDcxBackup} from '../hooks/use-dcx-backup.js';
+import {useDcxRestore} from '../hooks/use-dcx-restore.js';
+import {useDcxConnection} from '../connection/connection-context.js';
 
 type Props = {
   readonly deviceId?: number;
 };
 
 export function UploadDownload(_props: Props) {
-  const { connection } = useDcxConnection();
+  const {connection} = useDcxConnection();
 
   // Use new dcx-parser hooks
   const backup = useDcxBackup(connection);
@@ -126,7 +126,6 @@ export function UploadDownload(_props: Props) {
             variant="danger"
             disabled={isRestoring || isBackingUp}
             onClick={() => {
-              // eslint-disable-next-line @typescript-eslint/no-unsafe-call
               document.querySelector<HTMLInputElement>('#dcx-upload')?.click();
             }}
           >
@@ -136,7 +135,7 @@ export function UploadDownload(_props: Props) {
             id="dcx-upload"
             type="file"
             accept=".dcx"
-            style={{ display: 'none' }}
+            style={{display: 'none'}}
             onChange={handleFileSelect}
           />
         </div>
@@ -154,7 +153,7 @@ export function UploadDownload(_props: Props) {
             variant={
               progress === 100 ? 'success' : isBackingUp ? 'info' : 'danger'
             }
-            style={{ height: '10px' }}
+            style={{height: '10px'}}
           />
         </div>
       ) : undefined}

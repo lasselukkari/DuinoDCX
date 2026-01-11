@@ -2,15 +2,15 @@ import React from 'react';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import isEqual from 'lodash.isequal';
+import {type Channel, isOutputChannel} from 'dcx-parser';
 import DynamicEqualizer from './dynamic-equalizer.tsx';
-import { type Channel, isOutputChannel } from 'dcx-parser';
 
 type Props = {
   readonly group: 'inputs' | 'outputs';
   readonly channels: Record<string, Channel>;
 };
 
-function DynamicEqualizers({ channels, group }: Props) {
+function DynamicEqualizers({channels, group}: Props) {
   return (
     <Row className="show-grid">
       {Object.keys(channels).map((channelId) => {

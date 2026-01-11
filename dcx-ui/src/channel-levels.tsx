@@ -1,18 +1,18 @@
-import { FaRandom, FaVolumeMute, FaVolumeUp } from 'react-icons/fa';
-import React, { useState } from 'react';
+import {FaRandom, FaVolumeMute, FaVolumeUp} from 'react-icons/fa';
+import React, {useState} from 'react';
 import Button from 'react-bootstrap/Button';
-import type { State } from 'dcx-parser';
+import type {State} from 'dcx-parser';
 import ChannelControls from './channel-controls.tsx';
 import './ChannelLevels.css';
-import { useSendCommand, type BatchCommand } from './hooks/use-send-command.ts';
+import {useSendCommand, type BatchCommand} from './hooks/use-send-command.ts';
 
 const inputChannels = ['A', 'B', 'C', 'Sum'];
 const outputChannels = ['1', '2', '3', '4', '5', '6'];
 
 type Props = {
   readonly device?: State;
-  readonly inputs: Array<{ isLimited: boolean; level: number }>;
-  readonly outputs: Array<{ isLimited: boolean; level: number }>;
+  readonly inputs: Array<{isLimited: boolean; level: number}>;
+  readonly outputs: Array<{isLimited: boolean; level: number}>;
 };
 
 type SelectionItem = {
@@ -27,7 +27,7 @@ type SelectionState = {
   outputs: SelectionItem[];
 };
 
-function ChannelLevels({ device, inputs, outputs }: Props) {
+function ChannelLevels({device, inputs, outputs}: Props) {
   const sendCommand = useSendCommand();
 
   const [selected, setSelected] = useState<SelectionState>(() => ({
@@ -40,9 +40,9 @@ function ChannelLevels({ device, inputs, outputs }: Props) {
     outputs: outputChannels.map((channelId) => ({
       name: device?.outputs?.[channelId]?.channelName
         ? (device.outputs[channelId].channelName
-          .match(/\b\w/g)
-          ?.join('')
-          .toUpperCase() ?? channelId)
+            .match(/\b\w/g)
+            ?.join('')
+            .toUpperCase() ?? channelId)
         : channelId,
       isSelected: false,
       group: 'outputs',
@@ -89,15 +89,15 @@ function ChannelLevels({ device, inputs, outputs }: Props) {
   }) => {
     setSelected((previous) => {
       const nextGroup = [...previous[group]];
-      nextGroup[index] = { ...nextGroup[index], isSelected: !isSelected };
-      return { ...previous, [group]: nextGroup };
+      nextGroup[index] = {...nextGroup[index], isSelected: !isSelected};
+      return {...previous, [group]: nextGroup};
     });
   };
 
   const handleToggle = () => {
     const inputCommands: BatchCommand[] = selected.inputs
       .filter((input) => input.isSelected)
-      .map(({ group, channelId }) => ({
+      .map(({group, channelId}) => ({
         target: {
           kind: 'channel' as const,
           group,
@@ -108,7 +108,7 @@ function ChannelLevels({ device, inputs, outputs }: Props) {
       }));
     const outputCommands: BatchCommand[] = selected.outputs
       .filter((output) => output.isSelected)
-      .map(({ group, channelId }) => ({
+      .map(({group, channelId}) => ({
         target: {
           kind: 'channel' as const,
           group,
@@ -134,12 +134,12 @@ function ChannelLevels({ device, inputs, outputs }: Props) {
     <div className="channels-container">
       <div className="channel-group">
         {inputChannels.map((channelId, index) => {
-          const { isLimited, level } = inputs[index] ?? {
+          const {isLimited, level} = inputs[index] ?? {
             isLimited: false,
             level: -1,
           };
-          const { mute = false } = device.inputs[channelId];
-          const { group, name, isSelected } = selected.inputs[index];
+          const {mute = false} = device.inputs[channelId];
+          const {group, name, isSelected} = selected.inputs[index];
 
           return (
             <ChannelControls
@@ -160,12 +160,12 @@ function ChannelLevels({ device, inputs, outputs }: Props) {
       </div>
       <div className="channel-group">
         {outputChannels.map((channelId, index) => {
-          const { isLimited, level } = outputs[index] ?? {
+          const {isLimited, level} = outputs[index] ?? {
             isLimited: false,
             level: -1,
           };
-          const { mute = false } = device.outputs[channelId];
-          const { group, name, isSelected } = selected.outputs[index];
+          const {mute = false} = device.outputs[channelId];
+          const {group, name, isSelected} = selected.outputs[index];
 
           return (
             <ChannelControls

@@ -2,8 +2,8 @@ import React from 'react';
 import Card from 'react-bootstrap/Card';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
-import { useNavigate, useParams, useRouter } from '@tanstack/react-router';
-import type { State } from 'dcx-parser';
+import {useNavigate, useParams, useRouter} from '@tanstack/react-router';
+import type {State} from 'dcx-parser';
 import BlockUi from './components/block-ui.tsx';
 import CrossoverPlotPanel from './crossover-plot-panel.tsx';
 import Crossovers from './crossovers.tsx';
@@ -21,14 +21,14 @@ type Props = {
   readonly isBlocking: boolean;
 };
 
-function Outputs({ device, isBlocking }: Props) {
-  const { outputs: channels, setup } = device;
+function Outputs({device, isBlocking}: Props) {
+  const {outputs: channels, setup} = device;
   const navigate = useNavigate();
   const router = useRouter();
-  const params = useParams({ strict: false }) as any;
+  const parameters = useParams({strict: false});
 
-  let activeTab = params.tab || 'gain';
-  const { pathname } = router.state.location;
+  let activeTab = parameters.tab || 'gain';
+  const {pathname} = router.state.location;
 
   if (pathname.includes('/dynamic-equalizers')) {
     activeTab = 'dynamic-equalizers';
@@ -41,12 +41,12 @@ function Outputs({ device, isBlocking }: Props) {
       if (key === 'equalizers') {
         void navigate({
           to: '/outputs/equalizers/$channelId',
-          params: { channelId: '1' },
+          params: {channelId: '1'},
         });
       } else if (key === 'dynamic-equalizers') {
-        void navigate({ to: '/outputs/dynamic-equalizers' });
+        void navigate({to: '/outputs/dynamic-equalizers'});
       } else {
-        void navigate({ to: '/outputs/$tab', params: { tab: key } });
+        void navigate({to: '/outputs/$tab', params: {tab: key}});
       }
     }
   };
@@ -56,10 +56,10 @@ function Outputs({ device, isBlocking }: Props) {
       <Tabs
         unmountOnExit
         activeKey={activeTab}
-        onSelect={handleSelect}
         variant="pills"
         id="outputs"
         className="control-menu"
+        onSelect={handleSelect}
       >
         <Tab title="Gain" eventKey="gain">
           <Card>

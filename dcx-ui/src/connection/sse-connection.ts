@@ -6,7 +6,7 @@
  * architecture.
  */
 
-import type { DcxConnection } from 'dcx-parser';
+import type {DcxConnection} from 'dcx-parser';
 
 /** Hex string to Uint8Array */
 function hexToBytes(hex: string): Uint8Array {
@@ -40,8 +40,8 @@ export function createSseConnection(
   /** Check if connected */
   isConnected: () => boolean;
 } {
-  const { baseUrl = '', clientId } = options;
-  let eventSource: EventSource | undefined = undefined;
+  const {baseUrl = '', clientId} = options;
+  let eventSource: EventSource | undefined;
   const listeners = new Set<(data: Uint8Array) => void>();
 
   function connect() {
@@ -88,7 +88,7 @@ export function createSseConnection(
   }
 
   function isConnected() {
-    return eventSource !== undefined && eventSource.readyState === EventSource.OPEN;
+    return eventSource?.readyState === EventSource.OPEN;
   }
 
   const connection: DcxConnection & {
@@ -101,7 +101,7 @@ export function createSseConnection(
       const response = await fetch(`${baseUrl}/api/commands`, {
         method: 'POST',
         credentials: 'same-origin',
-        headers: { 'Content-Type': 'application/binary' },
+        headers: {'Content-Type': 'application/binary'},
         body: blob,
       });
 

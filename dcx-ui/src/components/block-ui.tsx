@@ -1,5 +1,5 @@
 import React from 'react';
-// import Spinner from 'react-bootstrap/Spinner';
+// Import Spinner from 'react-bootstrap/Spinner';
 
 type Props = {
   readonly isBlocking?: boolean;
@@ -9,7 +9,7 @@ type Props = {
   readonly className?: string;
 };
 
-function BlockUi({ isBlocking, children, className }: Props) {
+function BlockUi({isBlocking, children, className}: Props) {
   if (!isBlocking) {
     return <div className={className}>{children}</div>;
   }
@@ -17,7 +17,7 @@ function BlockUi({ isBlocking, children, className }: Props) {
   return (
     <div
       className={`position-relative ${className ?? ''}`}
-      style={{ minHeight: '50px' }}
+      style={{minHeight: '50px'}}
     >
       {children}
       <div

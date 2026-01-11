@@ -1,9 +1,9 @@
 import React from 'react';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
-import { useNavigate, useParams } from '@tanstack/react-router';
+import {useNavigate, useParams} from '@tanstack/react-router';
+import {type Channel, isOutputChannel} from 'dcx-parser';
 import EqualizerList from './equalizer-list.tsx';
-import { type Channel, isOutputChannel } from 'dcx-parser';
 
 type Props = {
   readonly isBlocking: boolean;
@@ -11,9 +11,9 @@ type Props = {
   readonly channels: Record<string, Channel>;
 };
 
-function Equalizers({ channels, group, isBlocking }: Props) {
+function Equalizers({channels, group, isBlocking}: Props) {
   const navigate = useNavigate();
-  const { channelId } = useParams({ strict: false }) as any;
+  const {channelId} = useParams({strict: false});
   const defaultChannel = Object.keys(channels)[0];
   const activeKey = channelId || defaultChannel;
 
@@ -21,20 +21,20 @@ function Equalizers({ channels, group, isBlocking }: Props) {
     if (key) {
       void navigate({
         to: `/${group}/equalizers/$channelId`,
-        params: { channelId: key },
+        params: {channelId: key},
       });
     }
   };
 
   return (
-    <Tabs activeKey={activeKey} onSelect={handleSelect} id="equalizers">
+    <Tabs activeKey={activeKey} id="equalizers" onSelect={handleSelect}>
       {Object.keys(channels).map((channelId) => {
         return (
           <Tab
             key={channelId}
             title={
               isOutputChannel(channels[channelId]) &&
-                channels[channelId].channelName
+              channels[channelId].channelName
                 ? `${channelId}. ${channels[channelId].channelName}`
                 : `Channel ${channelId}`
             }

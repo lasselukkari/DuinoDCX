@@ -1,13 +1,13 @@
-import { FaEdit, FaLock, FaSignal } from 'react-icons/fa';
-import React, { useState } from 'react';
+import {FaEdit, FaLock, FaSignal} from 'react-icons/fa';
+import React, {useState} from 'react';
 import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Navbar from 'react-bootstrap/Navbar';
 import isEqual from 'lodash.isequal';
-import { State } from 'dcx-parser';
-import { Link, useLocation } from '@tanstack/react-router';
+import {type State} from 'dcx-parser';
+import {Link, useLocation} from '@tanstack/react-router';
 import ChannelLevels from './channel-levels.tsx';
-import { useBreakpoint } from './hooks/use-breakpoint.ts';
+import {useBreakpoint} from './hooks/use-breakpoint.ts';
 
 type Props = {
   readonly device?: State;
@@ -37,7 +37,7 @@ function DeviceNavigation({
   // Maybe "rootClose" logic was inverse?
   // I'll implement exactly as is.
 
-  const handleToggle = (_nextShow: boolean, meta: { source?: string }) => {
+  const handleToggle = (_nextShow: boolean, meta: {source?: string}) => {
     if (meta.source === 'rootClose') {
       setShowLevels(true);
     } else {
@@ -63,11 +63,7 @@ function DeviceNavigation({
           drop={isXs ? 'up' : 'down'}
           onToggle={handleToggle}
         >
-          <ChannelLevels
-            device={_device}
-            inputs={inputs}
-            outputs={outputs}
-          />
+          <ChannelLevels device={_device} inputs={inputs} outputs={outputs} />
         </NavDropdown>
       </Nav>
       <Nav className="middle-buttons">
@@ -92,9 +88,9 @@ function DeviceNavigation({
           <Nav.Link>
             {' '}
             {isBlocking ? (
-              <FaLock style={{ color: '#ee5f5b' }} />
+              <FaLock style={{color: '#ee5f5b'}} />
             ) : (
-              <FaEdit style={{ color: '#62c462' }} />
+              <FaEdit style={{color: '#62c462'}} />
             )}
           </Nav.Link>
         </Nav.Item>

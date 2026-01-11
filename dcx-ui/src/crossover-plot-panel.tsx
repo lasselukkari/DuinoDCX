@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import isEqual from 'lodash.isequal';
+import {type OutputChannel} from 'dcx-parser';
 import CrossoverPlot from './plots/crossover-plot.tsx';
-import { type OutputChannel } from 'dcx-parser';
 
 type Props = {
   readonly channels: Record<string, OutputChannel>;
 };
 
-function CrossoverPlotPanel({ channels }: Props) {
+function CrossoverPlotPanel({channels}: Props) {
   const [isGainApplied, setIsGainApplied] = useState(false);
 
   const handleToggleGain = () => {

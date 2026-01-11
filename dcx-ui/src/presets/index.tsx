@@ -1,21 +1,18 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Modal from 'react-bootstrap/Modal';
 import ProgressBar from 'react-bootstrap/ProgressBar';
 import Badge from 'react-bootstrap/Badge';
-import { toast } from 'react-toastify';
-import {
-  isValidDcxFile,
-  type PresetEntry,
-} from 'dcx-parser';
-import { useDcxBackup } from '../hooks/use-dcx-backup.js';
-import { useDcxFile } from '../hooks/use-dcx-file.js';
-import { useDcxConnection } from '../connection/connection-context.js';
+import {toast} from 'react-toastify';
+import {isValidDcxFile, type PresetEntry} from 'dcx-parser';
+import {useDcxBackup} from '../hooks/use-dcx-backup.js';
+import {useDcxFile} from '../hooks/use-dcx-file.js';
+import {useDcxConnection} from '../connection/connection-context.js';
 
 function Presets() {
-  const { connection } = useDcxConnection();
+  const {connection} = useDcxConnection();
 
   // Use the backup hook for fetching from device
   const backup = useDcxBackup(connection);
@@ -24,7 +21,9 @@ function Presets() {
   const dcxFile = useDcxFile();
 
   // Modal state
-  const [selectedPreset, setSelectedPreset] = useState<PresetEntry | undefined>(undefined);
+  const [selectedPreset, setSelectedPreset] = useState<PresetEntry | undefined>(
+    undefined,
+  );
   const [showModal, setShowModal] = useState(false);
 
   // When backup completes, load the data into the file hook
@@ -56,7 +55,7 @@ function Presets() {
       setSelectedPreset(preset);
       setShowModal(true);
     },
-    [dcxFile]
+    [dcxFile],
   );
 
   // Handle download
@@ -66,15 +65,17 @@ function Presets() {
       return;
     }
 
-    const blob = new Blob([dcxFile.dcxData as BlobPart], { type: 'application/octet-stream' });
+    const blob = new Blob([dcxFile.dcxData as BlobPart], {
+      type: 'application/octet-stream',
+    });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
     // ISO date format: YYYY-MM-DD
     a.download = `${new Date().toISOString().slice(0, 10)}.dcx`;
-    document.body.appendChild(a);
+    document.body.append(a);
     a.click();
-    document.body.removeChild(a);
+    a.remove();
     URL.revokeObjectURL(url);
 
     toast.success('Preset file downloaded!');
@@ -110,7 +111,7 @@ function Presets() {
         toast.error('Failed to read file');
       }
     },
-    [dcxFile]
+    [dcxFile],
   );
 
   // Handle refresh from device
@@ -148,7 +149,7 @@ function Presets() {
 
         <Card.Body>
           {/* Progress bar during sync */}
-          {isLoading && (
+          {isLoading ? (
             <div className="mb-3">
               <div className="d-flex justify-content-between mb-1">
                 <span className="small text-muted">
@@ -162,10 +163,10 @@ function Presets() {
                 animated
                 now={backup.progress * 100}
                 variant="info"
-                style={{ height: '8px' }}
+                style={{height: '8px'}}
               />
             </div>
-          )}
+          ) : null}
 
           {/* Error state */}
           {backup.status === 'error' && (
@@ -194,7 +195,7 @@ function Presets() {
                 variant="outline-warning"
                 disabled={isLoading}
                 onClick={() => {
-                  document.getElementById('dcx-upload-input')?.click();
+                  document.querySelector('#dcx-upload-input')?.click();
                 }}
               >
                 Upload .dcx
@@ -203,7 +204,7 @@ function Presets() {
                 id="dcx-upload-input"
                 type="file"
                 accept=".dcx"
-                style={{ display: 'none' }}
+                style={{display: 'none'}}
                 onChange={(e) => {
                   void handleUpload(e);
                 }}
@@ -218,58 +219,63 @@ function Presets() {
 
           {!hasData && !isLoading && (
             <p className="text-muted">
-              No preset data loaded. Click "Refresh from Device" or upload a .dcx file.
+              No preset data loaded. Click "Refresh from Device" or upload a
+              .dcx file.
             </p>
           )}
 
-          {hasData && (
+          {hasData ? (
             <ListGroup
-              style={{ maxHeight: '400px', overflowY: 'auto' }}
+              style={{maxHeight: '400px', overflowY: 'auto'}}
               className="mt-3"
             >
               {dcxFile.presets.map((preset) => (
                 <ListGroup.Item
                   key={preset.slot}
                   action={!preset.isEmpty}
-                  onClick={() => !preset.isEmpty && handlePresetClick(preset.slot)}
                   className="d-flex justify-content-between align-items-center"
                   variant={preset.isEmpty ? 'dark' : undefined}
-                  style={{ cursor: preset.isEmpty ? 'default' : 'pointer' }}
+                  style={{cursor: preset.isEmpty ? 'default' : 'pointer'}}
+                  onClick={() =>
+                    !preset.isEmpty && handlePresetClick(preset.slot)
+                  }
                 >
                   <div>
-                    <span className="text-muted me-2">#{preset.slot.toString().padStart(2, '0')}</span>
+                    <span className="text-muted me-2">
+                      #{preset.slot.toString().padStart(2, '0')}
+                    </span>
                     <span className={preset.isEmpty ? 'text-muted' : ''}>
                       {preset.name}
                     </span>
                   </div>
                   <div>
-                    {preset.isLocked && (
+                    {preset.isLocked ? (
                       <Badge bg="secondary" className="me-1">
                         🔒
                       </Badge>
-                    )}
-                    {!preset.isEmpty && (
-                      <Badge bg="info">View JSON</Badge>
-                    )}
+                    ) : null}
+                    {!preset.isEmpty && <Badge bg="info">View JSON</Badge>}
                   </div>
                 </ListGroup.Item>
               ))}
             </ListGroup>
-          )}
+          ) : null}
         </Card.Body>
       </Card>
 
       {/* Preset JSON Modal */}
       <Modal
-        show={showModal}
-        onHide={() => setShowModal(false)}
-        size="xl"
         centered
+        show={showModal}
+        size="xl"
+        onHide={() => {
+          setShowModal(false);
+        }}
       >
         <Modal.Header closeButton>
           <Modal.Title>
             Preset #{selectedPreset?.slot ?? ''}{' '}
-            {selectedPreset?.name && `- ${selectedPreset.name}`}
+            {selectedPreset?.name ? `- ${selectedPreset.name}` : null}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -281,11 +287,18 @@ function Presets() {
               fontSize: '0.85em',
             }}
           >
-            {selectedPreset ? JSON.stringify(selectedPreset.state, undefined, 2) : 'No data'}
+            {selectedPreset
+              ? JSON.stringify(selectedPreset.state, undefined, 2)
+              : 'No data'}
           </pre>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowModal(false)}>
+          <Button
+            variant="secondary"
+            onClick={() => {
+              setShowModal(false);
+            }}
+          >
             Close
           </Button>
         </Modal.Footer>

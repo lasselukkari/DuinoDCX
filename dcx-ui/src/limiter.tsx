@@ -1,7 +1,7 @@
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-import { output, type OutputId } from './parameters/index.tsx';
+import {output, type OutputId} from './parameters/index.tsx';
 
 type LimiterProps = {
   readonly channelName?: string;

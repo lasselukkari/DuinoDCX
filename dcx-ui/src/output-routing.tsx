@@ -1,20 +1,20 @@
-import { memo } from 'react';
+import {memo} from 'react';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import isEqual from 'lodash.isequal';
+import {type Setup, type OutputChannel} from 'dcx-parser';
 import OutputSources from './output-sources.tsx';
 import ChannelNames from './channel-names.tsx';
-import { setup as setupParameters } from './parameters/index.tsx';
-import { type Setup, type OutputChannel } from 'dcx-parser';
+import {setup as setupParameters} from './parameters/index.tsx';
 
 type Props = {
   readonly setup: Setup;
   readonly outputs: Record<string, OutputChannel>;
 };
 
-function OutputRouting({ setup, outputs }: Props) {
-  const { stereolink, muteOutsWhenPowered, outputConfig, crossoverLink } = setup;
+function OutputRouting({setup, outputs}: Props) {
+  const {stereolink, muteOutsWhenPowered, outputConfig, crossoverLink} = setup;
 
   return (
     <div>

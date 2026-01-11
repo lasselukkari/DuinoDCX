@@ -1,6 +1,9 @@
 import Card from 'react-bootstrap/Card';
-import type { Equalizer as EqualizerType } from 'dcx-parser';
-import { type Channel, isOutputChannel } from 'dcx-parser';
+import {
+  type Equalizer as EqualizerType,
+  type Channel,
+  isOutputChannel,
+} from 'dcx-parser';
 import BlockUi from './components/block-ui.js';
 import Equalizer from './equalizer.js';
 import EqualizerPlot from './plots/equalizer-plot.js';
@@ -18,10 +21,10 @@ type Props = {
   readonly isBlocking: boolean;
 };
 
-function EqualizerList({ channel, group, channelId, isBlocking }: Props) {
-  const { equalizers, isEqualizerOn } = channel;
+function EqualizerList({channel, group, channelId, isBlocking}: Props) {
+  const {equalizers, isEqualizerOn} = channel;
   const eqsKeys = Object.keys(equalizers).sort();
-  const activeEQs: Array<EqualizerType & { id: string }> = [];
+  const activeEQs: Array<EqualizerType & {id: string}> = [];
   let activeFound = false;
 
   for (let i = eqsKeys.length - 1; i >= 0; i--) {
@@ -29,32 +32,33 @@ function EqualizerList({ channel, group, channelId, isBlocking }: Props) {
     const gain = eq.equalizerGain;
     if (!activeFound && gain && gain !== 0) {
       if (equalizers[eqsKeys[i + 1]]) {
-        activeEQs.push({ id: eqsKeys[i + 1], ...equalizers[eqsKeys[i + 1]] });
+        activeEQs.push({id: eqsKeys[i + 1], ...equalizers[eqsKeys[i + 1]]});
       }
 
       activeFound = true;
     }
 
     if (activeFound) {
-      activeEQs.unshift({ id: eqsKeys[i], ...equalizers[eqsKeys[i]] });
+      activeEQs.unshift({id: eqsKeys[i], ...equalizers[eqsKeys[i]]});
     }
   }
 
   if (!activeFound) {
-    activeEQs.push({ id: eqsKeys[0], ...equalizers[eqsKeys[0]] });
+    activeEQs.push({id: eqsKeys[0], ...equalizers[eqsKeys[0]]});
   }
 
   return (
     <div>
       <Card>
         <Card.Header>
-          {`Frequency Response: ${isOutputChannel(channel)
-            ? channel.channelName
-            : `Channel ${channelId}`
-            }`}
+          {`Frequency Response: ${
+            isOutputChannel(channel)
+              ? channel.channelName
+              : `Channel ${channelId}`
+          }`}
         </Card.Header>
         <Card.Body>
-          <EqualizerPlot channels={{ [channelId]: channel }} />
+          <EqualizerPlot channels={{[channelId]: channel}} />
         </Card.Body>
       </Card>
       <BlockUi isBlocking={isBlocking}>
@@ -89,7 +93,7 @@ function EqualizerList({ channel, group, channelId, isBlocking }: Props) {
               equalizerFrequency={eq.equalizerFrequency ?? '20'}
               equalizerQ={eq.equalizerQ ?? '0.1'}
               equalizerShelving={eq.equalizerShelving ?? '6dB'}
-              equalizerGain={eq.equalizerGain ?? 0.0}
+              equalizerGain={eq.equalizerGain ?? 0}
             />
           );
         })}

@@ -1,17 +1,17 @@
-import { memo } from 'react';
+import {memo} from 'react';
 import ToggleButton from 'react-bootstrap/ToggleButton';
 import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup';
-import { useSendCommand } from './hooks/use-send-command.js';
+import {useSendCommand} from './hooks/use-send-command.js';
 
 type Props = {
   readonly delayUnits: string;
 };
 
-function DelayUnits({ delayUnits }: Props) {
+function DelayUnits({delayUnits}: Props) {
   const sendCommand = useSendCommand();
 
   const handleDelayUnitChange = (value: string) => {
-    void sendCommand({ kind: 'setup', key: 'delayUnits' }, value);
+    void sendCommand({kind: 'setup', key: 'delayUnits'}, value);
   };
 
   return (
@@ -19,14 +19,14 @@ function DelayUnits({ delayUnits }: Props) {
       type="radio"
       name="delay-units"
       value={delayUnits}
-      style={{ padding: '10px 0', width: '100%' }}
+      style={{padding: '10px 0', width: '100%'}}
       onChange={handleDelayUnitChange}
     >
       <ToggleButton
         id="unit-mm"
         value="mm"
         variant={delayUnits === 'mm' ? 'info' : 'primary'}
-        style={{ width: '50%' }}
+        style={{width: '50%'}}
       >
         °C / mm
       </ToggleButton>
@@ -34,7 +34,7 @@ function DelayUnits({ delayUnits }: Props) {
         id="unit-inch"
         value="inch"
         variant={delayUnits === 'inch' ? 'info' : 'primary'}
-        style={{ width: '50%' }}
+        style={{width: '50%'}}
       >
         °F / inch
       </ToggleButton>
@@ -43,4 +43,3 @@ function DelayUnits({ delayUnits }: Props) {
 }
 
 export default memo(DelayUnits);
-
