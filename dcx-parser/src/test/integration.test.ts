@@ -24,7 +24,8 @@ function normalizeForJsonComparison(object: unknown): unknown {
     return object.map(normalizeForJsonComparison);
   }
 
-  if (object !== undefined && typeof object === 'object') {
+  // Note: null check needed because typeof null === 'object' in JavaScript
+  if (object !== undefined && object !== null && typeof object === 'object') {
     const result: Record<string, unknown> = {};
     for (const [key, value] of Object.entries(object)) {
       result[key] = normalizeForJsonComparison(value);

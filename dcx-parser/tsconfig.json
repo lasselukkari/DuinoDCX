@@ -17,16 +17,17 @@
     "noFallthroughCasesInSwitch": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
-    "isolatedModules": true
+    "isolatedModules": true,
+    "types": [
+      "vitest/globals",
+      "node"
+    ]
   },
   "include": [
     "src"
   ],
   "exclude": [
     "node_modules",
-    "dist",
-    "src/test",
-    "**/*.test.ts",
-    "**/*.spec.ts"
+    "dist"
   ]
 }

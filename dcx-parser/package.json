@@ -36,7 +36,7 @@
     "react": "^18.0.0 || ^19.0.0"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "tsc -p tsconfig.build.json",
     "test": "vitest",
     "test:run": "vitest run",
     "lint": "xo",
