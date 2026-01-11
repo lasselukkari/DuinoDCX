@@ -1,21 +1,31 @@
+/*
+  DuinoDCX - ESP32 and macOS web server for Behringer DCX2496 Ultradrive
+
+  This file compiles for both:
+  - ESP32 Arduino (WiFi, mDNS, OTA updates, Preferences storage)
+  - macOS/Linux native (BSD sockets, POSIX serial)
+
+  Platform detection and type aliases are handled by Platform.h
+*/
+
 #include "Config.h"
+#include "Platform.h"
 #include "RouteHandlers.h"
 #include "StaticFiles.h"
 #include "Ultradrive.h"
 #include "aWOT.h"
-#include <ESPmDNS.h>
-#include <Preferences.h>
-#include <Update.h>
-#include <WiFi.h>
-#include <esp_wifi.h>
+
+// ============================================================================
+// Platform-Specific Globals
+// ============================================================================
+
+#ifdef PLATFORM_ARDUINO
 
 Preferences preferences;
 WiFiServer httpServer(80);
 HardwareSerial UltradriveSerial(2);
 Ultradrive deviceManager(&UltradriveSerial, RTS_PIN, CTS_PIN);
 Ultradrive *deviceManagerPtr = &deviceManager;
-App app;
-Router apiRouter;
 
 char basicAuth[BASIC_AUTH_LENGTH];
 char softApSsid[SOFT_AP_SSID_LENGTH];
@@ -25,12 +35,46 @@ bool flowControl;
 bool autoDisableAP;
 
 char authBuffer[AUTH_BUFFER_LENGHT];
-Request::HeaderNode authHeader = {"Authorization", authBuffer, AUTH_BUFFER_LENGHT, nullptr};
+Request::HeaderNode authHeader = {"Authorization", authBuffer,
+                                  AUTH_BUFFER_LENGHT, nullptr};
 char ssidBuffer[SSID_MAX_LENGTH];
 char passwordBuffer[PASSWORD_MAX_LENGHT];
 unsigned long lastReconnect;
 bool shouldRestart = false;
+
+#endif // PLATFORM_ARDUINO
+
+#ifdef PLATFORM_NATIVE
+
+PlatformServer httpServer(HTTP_PORT);
+PlatformSerial *ultradriveSerial = nullptr;
+Ultradrive *deviceManagerPtr = nullptr;
+volatile bool shouldExit = false;
+
+void signalHandler(int sig) {
+  (void)sig;
+  std::cout << "\nShutting down..." << std::endl;
+  shouldExit = true;
+}
+
+void setupSignalHandlers() {
+  signal(SIGINT, signalHandler);
+  signal(SIGTERM, signalHandler);
+}
+
+#endif // PLATFORM_NATIVE
+
+// ============================================================================
+// Shared Globals
+// ============================================================================
+
+App app;
+Router apiRouter;
 unsigned long requestStart;
+
+// ============================================================================
+// Shared Request Handlers
+// ============================================================================
 
 void logRequestStart(Request &req, Response &res) {
   unsigned long now = millis();
@@ -51,7 +95,7 @@ void logRequestStart(Request &req, Response &res) {
     break;
   }
   case Request::PATCH: {
-    Serial.print("GET ");
+    Serial.print("PATCH ");
     break;
   }
   case Request::DELETE: {
@@ -69,6 +113,7 @@ void logRequestStart(Request &req, Response &res) {
 }
 
 void logRequestEnd(Request &req, Response &res) {
+  (void)req;
   float delta = (micros() - requestStart) / 1000.0;
   Serial.print(res.bytesSent());
   Serial.print(" b ");
@@ -76,20 +121,41 @@ void logRequestEnd(Request &req, Response &res) {
   Serial.println(" ms");
 }
 
-void auth(Request &req, Response &res) {
-  char *authHeader = req.get("Authorization");
+void handleSpa(Request &req, Response &res) { static_index(req, res); }
 
-  if (strcmp(authHeader, basicAuth) != 0) {
+void getVersion(Request &req, Response &res) {
+  (void)req;
+  res.set("Content-Type", "application/json");
+  res.print("{");
+
+  res.print("\"version\":");
+  res.print("\"");
+  res.print(VERSION);
+  res.print("\", ");
+  res.print("\"buildDate\":");
+  res.print("\"");
+  res.print(BUILD_DATE);
+  res.print("\"");
+
+  res.print("}");
+}
+
+// ============================================================================
+// ESP32 Arduino-Specific Handlers
+// ============================================================================
+
+#ifdef PLATFORM_ARDUINO
+
+void auth(Request &req, Response &res) {
+  char *authHeaderValue = req.get("Authorization");
+
+  if (strcmp(authHeaderValue, basicAuth) != 0) {
     res.set("WWW-Authenticate", "Basic realm=\"Ultradrive\"");
     res.sendStatus(401);
     res.end();
   } else {
     req.next();
   }
-}
-
-void handleSpa(Request &req, Response &res) {
-  static_index(req, res);
 }
 
 void update(Request &req, Response &res) {
@@ -116,6 +182,7 @@ void update(Request &req, Response &res) {
 }
 
 void getNetworks(Request &req, Response &res) {
+  (void)req;
   int n = WiFi.scanNetworks();
   res.set("Content-Type", "application/json");
 
@@ -132,6 +199,7 @@ void getNetworks(Request &req, Response &res) {
 }
 
 void getSettings(Request &req, Response &res) {
+  (void)req;
   res.set("Content-Type", "application/json");
   res.print("{");
 
@@ -163,23 +231,6 @@ void getSettings(Request &req, Response &res) {
   res.print("\"" AUTO_DISABLE_AP_KEY "\":");
   res.print("\"");
   res.print(autoDisableAP);
-  res.print("\"");
-
-  res.print("}");
-}
-
-void getVersion(Request &req, Response &res) {
-  res.set("Content-Type", "application/json");
-  res.print("{");
-
-  res.print("\"version\":");
-  res.print("\"");
-  res.print(VERSION);
-  res.print("\", ");
-
-  res.print("\"buildDate\":");
-  res.print("\"");
-  res.print(BUILD_DATE);
   res.print("\"");
 
   res.print("}");
@@ -219,6 +270,7 @@ void updateSettings(Request &req, Response &res) {
 }
 
 void getConnection(Request &req, Response &res) {
+  (void)req;
   res.set("Content-Type", "application/json");
   res.print("{");
 
@@ -269,34 +321,12 @@ void updateConnection(Request &req, Response &res) {
 }
 
 void removeConnection(Request &req, Response &res) {
+  (void)req;
   if (!WiFi.disconnect(false, true)) {
     return res.sendStatus(500);
   }
 
   res.sendStatus(204);
-}
-
-void processWebServer() {
-  WiFiClient client = httpServer.available();
-
-  if (client.connected()) {
-    App::ProcessOptions options;
-    options.headers = &authHeader;
-    options.headerCount = 1;
-    App::ProcessResult result = app.process(&client, options);
-
-    // If this was an SSE request, store the client for later
-    if (result.responseOpen) {
-      storeSseClient(client);
-    }
-  }
-}
-
-void restartIfNeeded() {
-  if (shouldRestart) {
-    delay(5000);
-    ESP.restart();
-  }
 }
 
 void loadPreferences() {
@@ -338,9 +368,170 @@ void loadPreferences() {
   preferences.end();
 }
 
-void setupHttpServer() {
+void restartIfNeeded() {
+  if (shouldRestart) {
+    delay(5000);
+    ESP.restart();
+  }
+}
 
+#endif // PLATFORM_ARDUINO
+
+// ============================================================================
+// macOS/Linux Native-Specific Handlers
+// ============================================================================
+
+#ifdef PLATFORM_NATIVE
+
+void getNetworks(Request &req, Response &res) {
+  (void)req;
+  res.set("Content-Type", "application/json");
+  res.print("[]"); // No WiFi scanning on desktop
+}
+
+void getConnection(Request &req, Response &res) {
+  (void)req;
+  res.set("Content-Type", "application/json");
+  res.print("{\"current\":\"localhost\",\"ip\":\"127.0.0.1\"}");
+}
+
+#endif // PLATFORM_NATIVE
+
+// ============================================================================
+// Web Server Processing (Shared with platform differences)
+// ============================================================================
+
+#ifdef PLATFORM_ARDUINO
+
+void processWebServer() {
+  WiFiClient client = httpServer.available();
+
+  if (client.connected()) {
+    App::ProcessOptions options;
+    options.headers = &authHeader;
+    options.headerCount = 1;
+    App::ProcessResult result = app.process(&client, options);
+
+    // If this was an SSE request, store the client for later
+    if (result.responseOpen) {
+      storeSseClient(client);
+    }
+  }
+}
+
+#endif // PLATFORM_ARDUINO
+
+#ifdef PLATFORM_NATIVE
+
+// SSE client management for macOS
+struct SseClientSlot {
+  int socket;
+  char clientId[40];
+};
+
+#define MAX_SSE_SLOTS 4
+SseClientSlot sseSlots[MAX_SSE_SLOTS] = {
+    {-1, ""}, {-1, ""}, {-1, ""}, {-1, ""}};
+
+void storeSseClientSocket(int socket, const char *clientId) {
+  for (int i = 0; i < MAX_SSE_SLOTS; i++) {
+    if (sseSlots[i].socket < 0) {
+      sseSlots[i].socket = socket;
+      if (clientId && strlen(clientId) > 0) {
+        strncpy(sseSlots[i].clientId, clientId, 39);
+        sseSlots[i].clientId[39] = '\0';
+      } else {
+        sseSlots[i].clientId[0] = '\0';
+      }
+      std::cout << "SSE client connected (slot " << i << ", socket " << socket
+                << ", id " << sseSlots[i].clientId << ")" << std::endl;
+      break;
+    }
+  }
+}
+
+int countSseClients() {
+  int count = 0;
+  for (int i = 0; i < MAX_SSE_SLOTS; i++) {
+    if (sseSlots[i].socket >= 0)
+      count++;
+  }
+  return count;
+}
+
+void sendToSseClients(const uint8_t *data, size_t length,
+                      const char *targetClientId) {
+  for (int i = 0; i < MAX_SSE_SLOTS; i++) {
+    int sock = sseSlots[i].socket;
+    if (sock >= 0) {
+      // If targetClientId is specified, check for match
+      if (targetClientId && targetClientId[0] != '\0') {
+        if (strcmp(sseSlots[i].clientId, targetClientId) != 0) {
+          continue;
+        }
+      }
+
+      // Build SSE message: "data: <hex>\n\n"
+      std::string message;
+      message.reserve(length * 2 + 8);
+      message += "data: ";
+
+      const char hexChars[] = "0123456789ABCDEF";
+      for (size_t j = 0; j < length; j++) {
+        message += hexChars[(data[j] >> 4) & 0xF];
+        message += hexChars[data[j] & 0xF];
+      }
+      message += "\n\n";
+
+      // Send chunked (transfer encoding is chunked)
+      char chunkHeader[16];
+      snprintf(chunkHeader, sizeof(chunkHeader), "%zx\r\n", message.size());
+
+      ssize_t sent = send(sock, chunkHeader, strlen(chunkHeader), MSG_NOSIGNAL);
+      if (sent > 0) {
+        sent = send(sock, message.c_str(), message.size(), MSG_NOSIGNAL);
+      }
+      if (sent > 0) {
+        sent = send(sock, "\r\n", 2, MSG_NOSIGNAL);
+      }
+
+      if (sent <= 0) {
+        // Client disconnected
+        std::cout << "SSE client disconnected (slot " << i << ")" << std::endl;
+        close(sock);
+        sseSlots[i].socket = -1;
+        sseSlots[i].clientId[0] = '\0';
+      }
+    }
+  }
+}
+
+void processWebServer() {
+  PlatformClient client = httpServer.available();
+
+  if (client.connected()) {
+    int socketFd = client.getSocket();
+    App::ProcessResult result = app.process(&client);
+
+    // If this was an SSE request, store socket and don't close
+    if (result.responseOpen) {
+      storeSseClientSocket(socketFd, pendingClientId);
+      return;
+    }
+    client.stop();
+  }
+}
+
+#endif // PLATFORM_NATIVE
+
+// ============================================================================
+// HTTP Server Setup
+// ============================================================================
+
+void setupHttpServer() {
   setupApiRoutes(apiRouter);
+
+#ifdef PLATFORM_ARDUINO
   apiRouter.get("/connection", &getConnection);
   apiRouter.patch("/connection", &updateConnection);
   apiRouter.del("/connection", &removeConnection);
@@ -348,17 +539,35 @@ void setupHttpServer() {
   apiRouter.patch("/settings", &updateSettings);
   apiRouter.get("/networks", &getNetworks);
   apiRouter.post("/update", &update);
+#endif
+
+#ifdef PLATFORM_NATIVE
+  apiRouter.get("/networks", &getNetworks);
+  apiRouter.get("/connection", &getConnection);
+#endif
+
   apiRouter.get("/version", &getVersion);
 
   app.use(&logRequestStart);
+
+#ifdef PLATFORM_ARDUINO
   app.use(&auth);
+#endif
+
   app.use("/api", &apiRouter);
   app.use("/", staticFiles());
   app.get(handleSpa);
+
   app.use(&logRequestEnd);
 
   httpServer.begin();
 }
+
+// ============================================================================
+// Arduino Entry Points
+// ============================================================================
+
+#ifdef PLATFORM_ARDUINO
 
 void setup() {
   Serial.begin(38400);
@@ -399,3 +608,69 @@ void loop() {
   processWebServer();
   restartIfNeeded();
 }
+
+#endif // PLATFORM_ARDUINO
+
+// ============================================================================
+// macOS/Linux Entry Point
+// ============================================================================
+
+#ifdef PLATFORM_NATIVE
+
+int main() {
+  // Get serial port from environment variable or use default
+  const char *serialPort = getenv("DUINODCX_SERIAL_PORT");
+  if (!serialPort) {
+    serialPort = DEFAULT_SERIAL_PORT;
+  }
+
+  // Set up signal handlers
+  setupSignalHandlers();
+
+  std::cout << "DuinoDCX macOS Native" << std::endl;
+  std::cout << "=====================" << std::endl;
+  std::cout << "Serial port: " << serialPort << std::endl;
+  std::cout << "  (set DUINODCX_SERIAL_PORT env var to change)" << std::endl;
+  std::cout << "HTTP port:   " << HTTP_PORT << std::endl;
+  std::cout << std::endl;
+
+  // Initialize serial
+  ultradriveSerial = new PlatformSerial(serialPort);
+  ultradriveSerial->begin(38400);
+
+  if (!(*ultradriveSerial)) {
+    std::cerr << "Failed to open serial port. Exiting." << std::endl;
+    delete ultradriveSerial;
+    return 1;
+  }
+
+  // Initialize Ultradrive manager (no flow control pins on macOS)
+  deviceManagerPtr = new Ultradrive((HardwareSerial *)ultradriveSerial, 0, 0);
+
+  // Initialize HTTP server
+  setupHttpServer();
+  std::cout << "HTTP server started on http://localhost:" << HTTP_PORT
+            << std::endl;
+  std::cout << "Press Ctrl+C to exit" << std::endl;
+  std::cout << std::endl;
+
+  // Main loop
+  while (!shouldExit) {
+    unsigned long now = millis();
+    deviceManagerPtr->processIncoming(now);
+    processWebServer();
+
+    // Small delay to prevent CPU spinning
+    usleep(1000); // 1ms
+  }
+
+  // Cleanup
+  ultradriveSerial->end();
+  delete deviceManagerPtr;
+  delete ultradriveSerial;
+
+  std::cout << "Goodbye!" << std::endl;
+  return 0;
+}
+
+#endif // PLATFORM_NATIVE

@@ -32,14 +32,14 @@ DUINODCX_SOURCES = ../DuinoDCX/Ultradrive.cpp \
 PLATFORM_SOURCES = MacOSSocket.cpp \
                    MacOSSerial.cpp
 
-# Main application
-APP_SOURCES = DuinoDCXMac.cpp
+# Main application - now using unified DuinoDCX.ino
+APP_SOURCES = ../DuinoDCX/DuinoDCX.ino
 
 # Object files
 ARDUINO_OBJECTS = Print.o Stream.o WString.o IPAddress.o Common.o
 DUINODCX_OBJECTS = Ultradrive.o App.o Request.o Response.o Router.o RouteHandlers.o
 PLATFORM_OBJECTS = MacOSSocket.o MacOSSerial.o
-APP_OBJECTS = DuinoDCXMac.o
+APP_OBJECTS = DuinoDCX.o
 
 ALL_OBJECTS = $(ARDUINO_OBJECTS) $(DUINODCX_OBJECTS) $(PLATFORM_OBJECTS) $(APP_OBJECTS)
 
@@ -95,9 +95,9 @@ MacOSSocket.o: MacOSSocket.cpp
 MacOSSerial.o: MacOSSerial.cpp
 	$(CXX) $(CXXFLAGS) $(INCLUDES) -c -o $@ $<
 
-# Application object
-DuinoDCXMac.o: DuinoDCXMac.cpp
-	$(CXX) $(CXXFLAGS) $(INCLUDES) -c -o $@ $<
+# Application object - compile .ino as C++
+DuinoDCX.o: ../DuinoDCX/DuinoDCX.ino
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -x c++ -c -o $@ $<
 
 clean:
 	rm -f $(TARGET) *.o
