@@ -19,6 +19,7 @@ import 'bootswatch/dist/slate/bootstrap.min.css';
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
 import {useDcxState} from '@/hooks/useDcxState.js';
+import {useDevicePolling} from '@/hooks/useDevicePolling.js';
 import ConfigNavigation from '@/components/ConfigNavigation.js';
 import DeviceNavigation from '@/components/DeviceNavigation.js';
 import Inputs from '@/pages/Inputs.js';
@@ -61,11 +62,17 @@ function RootComponent() {
     undefined,
   );
 
-  useEffect(() => {
-    if (connection && !device && !isLoading) {
+  // Timeout-based ping/search - self-coordinates across multiple clients
+  // When device is found, trigger sync to load edit buffer
+  const hasDevice = Boolean(device);
+  const deviceId = useMemo(() => Number(device?.setup?.deviceId) || 0, [device]);
+  useDevicePolling(connection, hasDevice, deviceId, () => {
+    // Only sync if we don't already have device state
+    if (!device && !isLoading) {
+      console.log('[RootComponent] Device found, triggering sync');
       void sync();
     }
-  }, [connection, device, isLoading, sync]);
+  });
 
   useEffect(() => {
     if (!connection) return;
@@ -74,7 +81,8 @@ function RootComponent() {
       const parsed = parseMessage(data);
       if (!parsed) return;
 
-      if (parsed.type === 'unknown' && data[6] === 0x04) {
+      // Status messages contain channel levels and free memory
+      if (parsed.type === 'status') {
         const parsedStatus = parseStatus(data);
         if (parsedStatus.free !== undefined) setFree(parsedStatus.free);
         if (parsedStatus.inputs !== undefined) setInputs(parsedStatus.inputs);

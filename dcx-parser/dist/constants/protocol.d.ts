@@ -19,6 +19,7 @@ export declare const CMD_DIRECT = 32;
 export declare const CMD_STATUS = 33;
 export declare const CMD_LISTEN_MODE = 63;
 export declare const RSP_SEARCH = 0;
+export declare const RSP_STATUS = 4;
 export declare const RSP_DUMP = 16;
 export declare const RSP_ACK = 82;
 export declare const PACKET_TYPE_HEADER = 1;

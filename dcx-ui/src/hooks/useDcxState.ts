@@ -4,6 +4,8 @@
  * Uses React's useSyncExternalStore to subscribe to an external store.
  * This is the React-recommended pattern for subscribing to external data.
  *
+ * Uses EditBufferSession for proper sequencing (part 0 before part 1).
+ *
  * @see https://react.dev/reference/react/useSyncExternalStore
  */
 
@@ -18,11 +20,11 @@ import {
   type DcxConnection,
   type Setup,
   parseMessage,
-  parseEditBuffer,
-  buildEditBufferRequest,
   buildParameterChangeCommand,
   type ParameterTarget,
   dcxStore,
+  EditBufferSession,
+  EditBufferPhase,
 } from 'dcx-parser';
 
 /**
@@ -39,12 +41,23 @@ export function useDcxState(connection: DcxConnection | undefined) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | undefined>(undefined);
 
-  // Refs for accumulating edit buffer parts
-  const part0Ref = useRef<Uint8Array | undefined>(undefined);
-  const part1Ref = useRef<Uint8Array | undefined>(undefined);
+  // Session for edit buffer fetch (handles part 0 before part 1 sequencing)
+  const sessionRef = useRef<EditBufferSession>(new EditBufferSession());
 
   /**
-   * Fetch current state from device.
+   * Send next message from session queue.
+   */
+  const sendNextMessage = useCallback(async () => {
+    if (!connection) return;
+
+    const message = sessionRef.current.getNextMessage();
+    if (message) {
+      await connection.send(message);
+    }
+  }, [connection]);
+
+  /**
+   * Fetch current state from device using EditBufferSession.
    */
   const sync = useCallback(async () => {
     if (!connection) {
@@ -52,24 +65,18 @@ export function useDcxState(connection: DcxConnection | undefined) {
       return;
     }
 
+    console.log('[useDcxState] Starting edit buffer session');
+    sessionRef.current.reset();
+    sessionRef.current.start();
     setIsLoading(true);
     setError(undefined);
-    part0Ref.current = undefined;
-    part1Ref.current = undefined;
 
-    try {
-      // Request both edit buffer parts
-      await connection.send(buildEditBufferRequest(0));
-      await connection.send(buildEditBufferRequest(1));
-    } catch (error_) {
-      setError(String(error_));
-      setIsLoading(false);
-    }
-  }, [connection]);
+    // Send the first message (part 0 request)
+    await sendNextMessage();
+  }, [connection, sendNextMessage]);
 
   /**
-   * Subscribe to device messages.
-   * No state dependency - uses the store directly.
+   * Subscribe to device messages and drive the session.
    */
   useEffect(() => {
     if (!connection) return;
@@ -78,31 +85,35 @@ export function useDcxState(connection: DcxConnection | undefined) {
       const message = parseMessage(data);
       if (!message) return;
 
-      // Handle edit buffer responses
-      if (message.type === 'editBuffer') {
-        if (message.part === 0) {
-          part0Ref.current = message.data;
-        } else if (message.part === 1) {
-          part1Ref.current = message.data;
-        }
+      // Feed message to the session (only if downloading)
+      const session = sessionRef.current;
+      if (session.getPhase() === EditBufferPhase.DOWNLOADING) {
+        session.processResponse(message);
 
-        // If both parts received, parse state
-        if (part0Ref.current && part1Ref.current) {
-          // Concatenate parts (already 8-bit decoded by sysex parser)
-          const combined = new Uint8Array(
-            part0Ref.current.length + part1Ref.current.length,
-          );
-          combined.set(part0Ref.current);
-          combined.set(part1Ref.current, part0Ref.current.length);
-
-          const newState = parseEditBuffer(combined);
-          dcxStore.setFullState(newState);
+        // Check if session just completed
+        if (session.isComplete()) {
+          const newState = session.getState();
+          if (newState) {
+            console.log('[useDcxState] State parsed, setting full state');
+            dcxStore.setFullState(newState);
+          }
           setIsLoading(false);
+          // Reset session to IDLE so it doesn't retrigger
+          session.reset();
+        } else if (session.isError()) {
+          console.error('[useDcxState] Session error:', session.getError());
+          setError(session.getError());
+          setIsLoading(false);
+          session.reset();
+        } else {
+          // Send next message if there's one queued (e.g., part 1 request)
+          void sendNextMessage();
         }
       }
 
       // Handle direct parameter updates (real-time changes)
       if (message.type === 'direct') {
+        console.log('[useDcxState] Received direct update:', message.parameters);
         for (const {channel, param, value} of message.parameters) {
           dcxStore.applyDirectUpdate(channel, param, value);
         }
@@ -110,7 +121,7 @@ export function useDcxState(connection: DcxConnection | undefined) {
     });
 
     return unsubscribe;
-  }, [connection]); // Only depends on connection, not state!
+  }, [connection, sendNextMessage]);
 
   /**
    * Set a setup parameter.

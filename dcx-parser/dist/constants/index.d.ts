@@ -57,6 +57,7 @@ declare const constants: {
     CMD_STATUS: 33;
     CMD_LISTEN_MODE: 63;
     RSP_SEARCH: 0;
+    RSP_STATUS: 4;
     RSP_DUMP: 16;
     RSP_ACK: 82;
     PACKET_TYPE_HEADER: 1;

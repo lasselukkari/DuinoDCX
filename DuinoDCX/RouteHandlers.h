@@ -2,7 +2,6 @@
 #define ROUTE_HANDLERS_H
 
 #include "Platform.h"
-#include "Ultradrive.h"
 #include "aWOT.h"
 
 using namespace awot;
@@ -10,27 +9,19 @@ using namespace awot;
 // Maximum number of concurrent SSE clients
 #define MAX_SSE_CLIENTS 4
 
-extern Ultradrive *deviceManagerPtr;
-extern char pendingClientId[40];
+// Forward serial bytes to SSE clients (called from loop())
+void processSerialToSse();
 
-// Existing handlers
-void getDevice(Request &req, Response &res);
-void getStatus(Request &req, Response &res);
-void selectDevice(Request &req, Response &res);
-void getState(Request &req, Response &res);
-void createDirectCommand(Request &req, Response &res);
-
-void refresh(Request &req, Response &res);
-void handleSysex(Request &req, Response &res);
+// HTTP handler: forward request body to serial, broadcast direct commands
+void forwardToSerial(Request &req, Response &res);
 
 // SSE handler
 void sseEventsHandler(Request &req, Response &res);
 
-// SSE client management (unified across platforms)
+// SSE client management
 int countSseClients();
-void sendToSseClients(const uint8_t *data, size_t length,
-                      const char *targetClientId = nullptr);
-void storeSseClient(PlatformClient &client, const char *clientId = nullptr);
+void sendToSseClients(const uint8_t *data, size_t length);
+void storeSseClient(PlatformClient &client);
 
 void setupApiRoutes(Router &router);
 

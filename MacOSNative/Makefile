@@ -20,8 +20,7 @@ ARDUINO_SOURCES = ArduinoCore-API/api/Print.cpp \
                   ArduinoCore-API/api/Common.cpp
 
 # DuinoDCX source files (from parent directory)
-DUINODCX_SOURCES = ../DuinoDCX/Ultradrive.cpp \
-                   ../DuinoDCX/App.cpp \
+DUINODCX_SOURCES = ../DuinoDCX/App.cpp \
                    ../DuinoDCX/Request.cpp \
                    ../DuinoDCX/Response.cpp \
                    ../DuinoDCX/Response.cpp \
@@ -37,7 +36,7 @@ APP_SOURCES = ../DuinoDCX/DuinoDCX.ino
 
 # Object files
 ARDUINO_OBJECTS = Print.o Stream.o WString.o IPAddress.o Common.o
-DUINODCX_OBJECTS = Ultradrive.o App.o Request.o Response.o Router.o RouteHandlers.o
+DUINODCX_OBJECTS = App.o Request.o Response.o Router.o RouteHandlers.o
 PLATFORM_OBJECTS = MacOSSocket.o MacOSSerial.o
 APP_OBJECTS = DuinoDCX.o
 
@@ -70,9 +69,6 @@ Common.o: ArduinoCore-API/api/Common.cpp
 	$(CXX) $(CXXFLAGS) $(INCLUDES) -c -o $@ $<
 
 # DuinoDCX objects
-Ultradrive.o: ../DuinoDCX/Ultradrive.cpp
-	$(CXX) $(CXXFLAGS) $(INCLUDES) -c -o $@ $<
-
 App.o: ../DuinoDCX/App.cpp
 	$(CXX) $(CXXFLAGS) $(INCLUDES) -c -o $@ $<
 

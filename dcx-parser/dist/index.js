@@ -19,7 +19,7 @@ export { encode8to7, decode7to8 } from './protocol/encoding.js';
 // Checksum
 export { calculateChecksum, verifyChecksum } from './protocol/checksum.js';
 // SysEx message building
-export { buildHeader, buildPingCommand, buildPageDumpRequest, buildEditBufferRequest, buildRecallCommand, buildStoreCommand, buildSyncCommand, buildDataPacket, buildHeaderPacket, buildPagePacket, buildDirectCommand, buildListenModeCommand, buildParameterChangeCommand, } from './commands/builders.js';
+export { buildHeader, buildPingCommand, buildSearchCommand, BROADCAST_DEVICE_ID, buildPageDumpRequest, buildEditBufferRequest, buildRecallCommand, buildStoreCommand, buildSyncCommand, buildDataPacket, buildHeaderPacket, buildPagePacket, buildDirectCommand, buildListenModeCommand, buildParameterChangeCommand, } from './commands/builders.js';
 export { setupCommands, inputOutputCommands, equalizerCommands, outputCommands, } from './commands/commands.js';
 // SysEx message parsing
 export { parseMessage, parseDevices, isValidSysex, extractSysexMessages, } from './protocol/sysex.js';
@@ -36,6 +36,7 @@ export { parsePreset } from './preset-parser.js';
 export * as constants from './constants/index.js';
 export { BackupSession } from './transport/backup.js';
 export { RestoreSession } from './transport/restore.js';
+export { EditBufferSession, EditBufferPhase } from './transport/edit-buffer.js';
 export { parseStatus } from './status-parser.js';
 export { parseDcxFile, parseDcxPresets, assemblePagesIntoDcxFile, splitDcxFileIntoPages, createRestoreHeader, getPresetNames, isValidDcxFile, DCX_SIGNATURE, DCX_TERMINATOR, } from './dcx-file.js';
 export function camelize(string_) {

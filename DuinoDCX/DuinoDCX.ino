@@ -12,7 +12,6 @@
 #include "Platform.h"
 #include "RouteHandlers.h"
 #include "StaticFiles.h"
-#include "Ultradrive.h"
 #include "aWOT.h"
 
 bool shouldRestart = false;
@@ -45,14 +44,17 @@ void setupSignalHandlers() {
 
 #endif
 
-PlatformSerial *ultradriveSerial = nullptr;
-Ultradrive *deviceManagerPtr = nullptr;
+// Serial port globals for RouteHandlers
+PlatformSerial *serialPort = nullptr;
+int rtsPin = RTS_PIN;
+int ctsPin = CTS_PIN;
+bool flowControl = false;
+
 Preferences preferences;
 char basicAuth[BASIC_AUTH_LENGTH];
 char softApSsid[SOFT_AP_SSID_LENGTH];
 char softApPassword[SOFT_AP_PASSWORD_LENGTH];
 char mdnsName[MDDNS_NAME_LENGTH];
-bool flowControl;
 bool autoDisableAP;
 
 char authBuffer[AUTH_BUFFER_LENGHT];
@@ -363,7 +365,7 @@ void processWebServer() {
     App::ProcessResult result = app.process(&client, options);
 
     if (result.responseOpen) {
-      storeSseClient(client, pendingClientId);
+      storeSseClient(client);
       return;
     }
     client.stop();
@@ -393,15 +395,13 @@ void setupHttpServer() {
 
 void setup() {
   Serial.begin(38400);
-  ultradriveSerial = new PlatformSerial(2);
-  ultradriveSerial->setPins(RX2_PIN, TX2_PIN); // No-op on macOS
-  ultradriveSerial->begin(38400);
-  deviceManagerPtr = new Ultradrive(ultradriveSerial, RTS_PIN, CTS_PIN);
+  serialPort = new PlatformSerial(2);
+  serialPort->setPins(RX2_PIN, TX2_PIN); // No-op on macOS
+  serialPort->begin(38400);
   loadPreferences();
   if (flowControl) {
-    deviceManagerPtr->enableFlowControl(true);
-    pinMode(RTS_PIN, OUTPUT);
-    pinMode(CTS_PIN, INPUT_PULLUP);
+    pinMode(rtsPin, OUTPUT);
+    pinMode(ctsPin, INPUT_PULLUP);
   }
 
   WiFi.begin();
@@ -426,8 +426,7 @@ void setup() {
 }
 
 void loop() {
-  unsigned long now = millis();
-  deviceManagerPtr->processIncoming(now);
+  processSerialToSse(); // Forward serial → SSE
   processWebServer();
 #ifdef PLATFORM_ARDUINO
   restartIfNeeded();
@@ -439,7 +438,7 @@ void loop() {
 int main() {
   setupSignalHandlers();
   setup();
-  if (!ultradriveSerial) {
+  if (!serialPort) {
     return 1;
   }
 
@@ -452,9 +451,8 @@ int main() {
     usleep(1000);
   }
 
-  ultradriveSerial->end();
-  delete deviceManagerPtr;
-  delete ultradriveSerial;
+  serialPort->end();
+  delete serialPort;
 
   std::cout << "Goodbye!" << std::endl;
   return 0;

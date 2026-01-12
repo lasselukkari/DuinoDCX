@@ -51,6 +51,8 @@ export {calculateChecksum, verifyChecksum} from './protocol/checksum.js';
 export {
   buildHeader,
   buildPingCommand,
+  buildSearchCommand,
+  BROADCAST_DEVICE_ID,
   buildPageDumpRequest,
   buildEditBufferRequest,
   buildRecallCommand,
@@ -107,6 +109,7 @@ export * as constants from './constants/index.js';
 export type {DcxConnection} from './transport/types.js';
 export {BackupSession} from './transport/backup.js';
 export {RestoreSession} from './transport/restore.js';
+export {EditBufferSession, EditBufferPhase} from './transport/edit-buffer.js';
 
 export {parseStatus} from './status-parser.js';
 

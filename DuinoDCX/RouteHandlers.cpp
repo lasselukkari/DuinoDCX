@@ -1,73 +1,88 @@
 #include "RouteHandlers.h"
 
+// Global serial pointer (set in DuinoDCX.ino setup())
+extern PlatformSerial *serialPort;
+extern int rtsPin;
+extern int ctsPin;
+extern bool flowControl;
+
 // Unified SSE client storage
 // Works on both platforms since PlatformClient is copyable
 // (WiFiClient/MacOSClient)
-struct SseClientSlot {
-  PlatformClient client;
-  char clientId[40];
-};
+static PlatformClient sseClients[MAX_SSE_CLIENTS];
 
-static SseClientSlot sseClients[MAX_SSE_CLIENTS];
+// Buffer for accumulating serial data before sending to SSE
+static const size_t SSE_BUFFER_SIZE = 1015;
+static uint8_t sseBuffer[SSE_BUFFER_SIZE];
 
-char pendingClientId[40] = {0};
+// Buffer for incoming commands (to check if direct command for broadcast)
+static const size_t CMD_BUFFER_SIZE = 256;
+static uint8_t cmdBuffer[CMD_BUFFER_SIZE];
 
-// NOTE: getDevice, getStatus, selectDevice, getState were removed
-// as they relied on internal state buffers that have been refactored out.
-// The UI now relies exclusively on SSE for state updates.
+// SysEx command byte position and direct command value
+static const int COMMAND_BYTE_INDEX = 6;
+static const uint8_t CMD_DIRECT = 0x20;
 
-void createDirectCommand(Request &req, Response &res) {
-  // Buffer for reading the command
-  uint8_t buffer[256];
-  int bytesRead = 0;
+// Forward incoming serial bytes to SSE (called from loop())
+// Buffers until SysEx terminator (0xF7) before sending
+void processSerialToSse() {
+  if (serialPort->available() > 0) {
+    // Read until terminator (0xF7) or buffer full
+    size_t bytesRead =
+        serialPort->readBytesUntil(0xF7, sseBuffer, SSE_BUFFER_SIZE - 1);
+    if (bytesRead > 0) {
+      // Add the terminator back (readBytesUntil doesn't include it)
+      sseBuffer[bytesRead] = 0xF7;
+      bytesRead++;
+      sendToSseClients(sseBuffer, bytesRead);
+    }
+  }
+}
 
-  while (req.left()) {
-    // Read a byte
-    int b = req.read();
-    if (b >= 0 && (size_t)bytesRead < sizeof(buffer)) {
-      buffer[bytesRead++] = (uint8_t)b;
+// Forward command to serial, and broadcast direct commands to all SSE clients
+void forwardToSerial(Request &req, Response &res) {
+  // Read command into buffer first (so we can check if it's a direct command)
+  size_t cmdLen = 0;
+  while (req.left() && cmdLen < CMD_BUFFER_SIZE) {
+    cmdBuffer[cmdLen++] = (uint8_t)req.read();
+  }
+
+  if (cmdLen == 0) {
+    res.sendStatus(400);
+    return;
+  }
+
+  // Flow control: raise RTS, wait for CTS
+  if (flowControl) {
+    digitalWrite(rtsPin, HIGH);
+    unsigned long start = millis();
+    while (millis() - start <= 1000) {
+      if (digitalRead(ctsPin) == HIGH)
+        break;
     }
   }
 
-  // Send buffered data to device
-  if (bytesRead > 0) {
-    deviceManagerPtr->write(buffer, bytesRead);
+  // Write to serial
+  serialPort->write(cmdBuffer, cmdLen);
 
-    // Broadcast to all SSE clients to keep them in sync
-    sendToSseClients(buffer, bytesRead, nullptr); // nullptr = broadcast to all
+  // Flow control: wait for TX complete, lower RTS
+  if (flowControl) {
+    serialPort->flush();
+    digitalWrite(rtsPin, LOW);
   }
 
-  res.sendStatus(204);
-}
-
-void refresh(Request &req, Response &res) {
-  (void)req;
-  deviceManagerPtr->syncSelectedDevice();
-  deviceManagerPtr->syncSelectedDevice();
-  res.sendStatus(200);
-}
-
-void handleSysex(Request &req, Response &res) {
-  char *clientId = req.get("X-Client-Id");
-  deviceManagerPtr->setActiveClient(clientId);
-
-  while (req.left()) {
-    deviceManagerPtr->processOutgoing(&req);
+  // If this is a direct command, broadcast to all SSE clients
+  // Direct commands change settings and the device doesn't echo them back
+  if (cmdLen > COMMAND_BYTE_INDEX &&
+      cmdBuffer[COMMAND_BYTE_INDEX] == CMD_DIRECT) {
+    sendToSseClients(cmdBuffer, cmdLen);
   }
+
   res.sendStatus(204);
 }
 
 void sseEventsHandler(Request &req, Response &res) {
   (void)req;
-
-  // Extract client ID from query string if present
-  // e.g. /api/events?clientId=xxxxx
-  if (!req.query("clientId", pendingClientId, 39)) {
-    pendingClientId[0] = '\0';
-  } else {
-    // Ensure null termination (req.query likely does it but good to be safe)
-    pendingClientId[39] = '\0';
-  }
 
   res.status(200);
   res.set("Content-Type", "text/event-stream");
@@ -75,31 +90,20 @@ void sseEventsHandler(Request &req, Response &res) {
   res.set("Connection", "keep-alive");
   res.flush();
   res.keepOpen();
-
-  // Trigger full sync when a new client connects
-  deviceManagerPtr->syncSelectedDevice();
 }
 
 int countSseClients() {
   int count = 0;
   for (int i = 0; i < MAX_SSE_CLIENTS; i++) {
-    if (sseClients[i].client.connected())
+    if (sseClients[i].connected())
       count++;
   }
   return count;
 }
 
-void sendToSseClients(const uint8_t *data, size_t length,
-                      const char *targetClientId) {
+void sendToSseClients(const uint8_t *data, size_t length) {
   for (int i = 0; i < MAX_SSE_CLIENTS; i++) {
-    if (sseClients[i].client.connected()) {
-      // If targetClientId is specified, check for match
-      if (targetClientId && targetClientId[0] != '\0') {
-        if (strcmp(sseClients[i].clientId, targetClientId) != 0) {
-          continue;
-        }
-      }
-
+    if (sseClients[i].connected()) {
       // Build SSE message: "data: <hex>\n\n"
       // Pre-calculate size: 6 (data: ) + length*2 (hex) + 2 (\n\n)
       size_t msgLen = 6 + length * 2 + 2;
@@ -122,12 +126,12 @@ void sendToSseClients(const uint8_t *data, size_t length,
       // Native: send as chunked transfer encoding
       char chunkHeader[16];
       snprintf(chunkHeader, sizeof(chunkHeader), "%zx\r\n", msgLen);
-      sseClients[i].client.write((uint8_t *)chunkHeader, strlen(chunkHeader));
-      sseClients[i].client.write((uint8_t *)message, msgLen);
-      sseClients[i].client.write((uint8_t *)"\r\n", 2);
+      sseClients[i].write((uint8_t *)chunkHeader, strlen(chunkHeader));
+      sseClients[i].write((uint8_t *)message, msgLen);
+      sseClients[i].write((uint8_t *)"\r\n", 2);
 #else
       // Arduino: WiFiClient handles chunking automatically
-      sseClients[i].client.write((uint8_t *)message, msgLen);
+      sseClients[i].write((uint8_t *)message, msgLen);
 #endif
 
       free(message);
@@ -135,25 +139,16 @@ void sendToSseClients(const uint8_t *data, size_t length,
   }
 }
 
-void storeSseClient(PlatformClient &client, const char *clientId) {
+void storeSseClient(PlatformClient &client) {
   for (int i = 0; i < MAX_SSE_CLIENTS; i++) {
-    if (!sseClients[i].client.connected()) {
-      sseClients[i].client = client;
-      if (clientId && strlen(clientId) > 0) {
-        strncpy(sseClients[i].clientId, clientId, 39);
-        sseClients[i].clientId[39] = '\0';
-      } else {
-        sseClients[i].clientId[0] = '\0';
-      }
+    if (!sseClients[i].connected()) {
+      sseClients[i] = client;
       break;
     }
   }
 }
 
 void setupApiRoutes(Router &router) {
-  // NOTE: /state and /status routes removed - UI uses SSE exclusively
-  router.post("/commands", &createDirectCommand);
-  router.post("/sysex", &handleSysex);
+  router.post("/commands", &forwardToSerial);
   router.get("/events", &sseEventsHandler);
-  router.post("/refresh", &refresh);
 }

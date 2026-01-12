@@ -11,7 +11,7 @@
  * - 7-to-8 bit encoding (encoding.ts)
  * - Parameter value mapping (parameter-mappings.ts)
  */
-import { SYSEX_START, SYSEX_END, VENDOR_ID, COMMAND_BYTE_INDEX, RSP_SEARCH, RSP_DUMP, RSP_ACK, CMD_DUMP_REQUEST, CMD_DIRECT, CMD_STATUS, HEADER_SIZE, } from '../constants/protocol.js';
+import { SYSEX_START, SYSEX_END, VENDOR_ID, COMMAND_BYTE_INDEX, RSP_SEARCH, RSP_STATUS, RSP_DUMP, RSP_ACK, CMD_DUMP_REQUEST, CMD_DIRECT, CMD_STATUS, HEADER_SIZE, } from '../constants/protocol.js';
 import { verifyChecksum } from './checksum.js';
 import { decode7to8 } from './encoding.js';
 /**
@@ -32,6 +32,15 @@ export function parseMessage(message) {
     const deviceId = message[4];
     const command = message[COMMAND_BYTE_INDEX];
     switch (command) {
+        case RSP_STATUS: {
+            // Status/ping response (0x04) contains channel levels and free memory
+            return {
+                type: 'status',
+                deviceId,
+                command,
+                data: message,
+            };
+        }
         case RSP_SEARCH: {
             return parseSearchResponse(message, deviceId);
         }

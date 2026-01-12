@@ -9,7 +9,6 @@ import {
   VENDOR_ID,
   MODEL_ID,
   DEFAULT_DEVICE_ID,
-  CMD_PING,
   CMD_DUMP_REQUEST,
   CMD_RECALL,
   CMD_STORE,
@@ -43,11 +42,39 @@ export function buildHeader(deviceId: number, command: number): Uint8Array {
 }
 
 /**
- * Build a ping/search command.
- * Used to detect devices on the bus.
+ * Build a ping/status request command.
+ * Sends command 0x44 to request device status including channel levels.
+ * Device responds with 0x04 containing input/output levels and free memory.
+ *
+ * From old Ultradrive.cpp:
+ *   byte pingCommand[] = {0xF0, 0x00, 0x20, 0x32, deviceId, 0x0E, 0x44, 0x00, 0x00, 0xF7};
  */
 export function buildPingCommand(deviceId = DEFAULT_DEVICE_ID): Uint8Array {
-  return new Uint8Array([...buildHeader(deviceId, CMD_PING), SYSEX_END]);
+  // Command 0x44 requests status, device responds with 0x04
+  return new Uint8Array([
+    ...buildHeader(deviceId, 0x44),
+    0x00,
+    0x00,
+    SYSEX_END,
+  ]);
+}
+
+/** Broadcast address for search commands */
+export const BROADCAST_DEVICE_ID = 0x20;
+
+/**
+ * Build a search command (broadcast discovery).
+ * Discovers all devices on the bus.
+ *
+ * From old Ultradrive.cpp:
+ *   byte searchCommand[] = {0xF0, 0x00, 0x20, 0x32, 0x20, 0x0E, 0x40, 0xF7};
+ */
+export function buildSearchCommand(): Uint8Array {
+  // Command 0x40 with broadcast device ID 0x20, device responds with 0x00
+  return new Uint8Array([
+    ...buildHeader(BROADCAST_DEVICE_ID, 0x40),
+    SYSEX_END,
+  ]);
 }
 
 /**

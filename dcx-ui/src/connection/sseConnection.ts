@@ -4,9 +4,13 @@
  * This adapter bridges the dcx-parser library's transport-agnostic
  * DcxConnection interface with the dcx-ui's SSE (Server-Sent Events)
  * architecture.
+ *
+ * The backend streams raw serial bytes, which are accumulated here
+ * into complete SysEx messages before being dispatched to listeners.
  */
 
 import type {DcxConnection} from 'dcx-parser';
+import {createByteAccumulator} from './byteAccumulator.js';
 
 /** Hex string to Uint8Array */
 function hexToBytes(hex: string): Uint8Array {
@@ -40,19 +44,31 @@ export function createSseConnection(
   /** Check if connected */
   isConnected: () => boolean;
 } {
-  const {baseUrl = '', clientId} = options;
+  const {baseUrl = ''} = options;
   let eventSource: EventSource | undefined;
   const listeners = new Set<(data: Uint8Array) => void>();
+
+  // Byte accumulator dispatches complete messages to listeners
+  const accumulator = createByteAccumulator((message: Uint8Array) => {
+    for (const listener of listeners) {
+      try {
+        listener(message);
+      } catch (error) {
+        console.error('[SseConnection] Listener error:', error);
+      }
+    }
+  });
 
   function connect() {
     if (eventSource) return;
 
-    const url = `${baseUrl}/api/events?clientId=${clientId}`;
+    const url = `${baseUrl}/api/events`;
     console.log('[SseConnection] Connecting to:', url);
     eventSource = new EventSource(url);
 
     eventSource.addEventListener('open', () => {
       console.log('[SseConnection] Connected');
+      accumulator.reset(); // Clear any stale buffer on reconnect
     });
 
     eventSource.addEventListener('message', (event: MessageEvent) => {
@@ -61,14 +77,7 @@ export function createSseConnection(
 
       try {
         const bytes = hexToBytes(rawData);
-
-        for (const listener of listeners) {
-          try {
-            listener(bytes);
-          } catch (error) {
-            console.error('[SseConnection] Listener error:', error);
-          }
-        }
+        accumulator.feed(bytes); // Accumulate and dispatch complete messages
       } catch (error) {
         console.error('[SseConnection] Parse error:', error);
       }

@@ -16,8 +16,10 @@ describe('sysex', () => {
   describe('buildPingCommand', () => {
     it('should build correct ping command', () => {
       const cmd = buildPingCommand(0x00);
+      // Command 0x44 requests status, device responds with 0x04
+      // Format: F0 00 20 32 {deviceId} 0E 44 00 00 F7
       expect(cmd).toEqual(
-        new Uint8Array([0xf0, 0x00, 0x20, 0x32, 0x00, 0x0e, 0x40, 0xf7]),
+        new Uint8Array([0xf0, 0x00, 0x20, 0x32, 0x00, 0x0e, 0x44, 0x00, 0x00, 0xf7]),
       );
     });
   });

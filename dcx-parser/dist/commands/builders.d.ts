@@ -3,10 +3,24 @@
  */
 export declare function buildHeader(deviceId: number, command: number): Uint8Array;
 /**
- * Build a ping/search command.
- * Used to detect devices on the bus.
+ * Build a ping/status request command.
+ * Sends command 0x44 to request device status including channel levels.
+ * Device responds with 0x04 containing input/output levels and free memory.
+ *
+ * From old Ultradrive.cpp:
+ *   byte pingCommand[] = {0xF0, 0x00, 0x20, 0x32, deviceId, 0x0E, 0x44, 0x00, 0x00, 0xF7};
  */
 export declare function buildPingCommand(deviceId?: number): Uint8Array;
+/** Broadcast address for search commands */
+export declare const BROADCAST_DEVICE_ID = 32;
+/**
+ * Build a search command (broadcast discovery).
+ * Discovers all devices on the bus.
+ *
+ * From old Ultradrive.cpp:
+ *   byte searchCommand[] = {0xF0, 0x00, 0x20, 0x32, 0x20, 0x0E, 0x40, 0xF7};
+ */
+export declare function buildSearchCommand(): Uint8Array;
 /**
  * Build a page dump request.
  * Requests a specific memory page (0-11) from the device.

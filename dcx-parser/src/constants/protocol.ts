@@ -27,6 +27,7 @@ export const CMD_LISTEN_MODE = 0x3f;
 
 // Response types (received from device)
 export const RSP_SEARCH = 0x00;
+export const RSP_STATUS = 0x04; // Status/ping response
 export const RSP_DUMP = 0x10;
 export const RSP_ACK = 0x52;
 
