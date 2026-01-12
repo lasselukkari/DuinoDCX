@@ -14,6 +14,7 @@ import {
   parseSequential,
   parseInputChannel,
   parseOutputChannel,
+  parseInputChannelNames,
 } from './parser-utils.js';
 
 export function parsePreset(input: Uint8Array | Uint8Array[]): ExtendedState {
@@ -129,6 +130,10 @@ export function parsePreset(input: Uint8Array | Uint8Array[]): ExtendedState {
     outputs[name] = parseOutputChannel(cursor);
   }
 
+  // Parse Input Channel Names from trailing block
+  parseInputChannelNames(cursor, inputs);
+
+
   return {
     header,
     setup,
@@ -136,3 +141,4 @@ export function parsePreset(input: Uint8Array | Uint8Array[]): ExtendedState {
     outputs,
   };
 }
+

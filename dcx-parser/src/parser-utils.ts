@@ -190,3 +190,27 @@ export function parseOutputChannel(cursor: Cursor): OutputChannel {
 
   return {...prefix, equalizers, ...extra} as unknown as OutputChannel;
 }
+
+/**
+ * Parse input channel names from trailing UTF-16LE block.
+ * After outputs, there's 24 bytes of padding, then 4 input channel names.
+ * Each name: 16 bytes (8 UTF-16LE chars) + 4 bytes padding = 20 bytes.
+ */
+export function parseInputChannelNames(
+  cursor: Cursor,
+  inputs: Record<string, InputChannel>,
+): void {
+  const inputNames = ['A', 'B', 'C', 'Sum'] as const;
+  const inputNameOffset = cursor.offset + 24; // Skip 24-byte padding
+
+  for (let i = 0; i < inputNames.length; i++) {
+    const nameStart = inputNameOffset + i * 20;
+    if (nameStart + 16 <= cursor.buffer.length) {
+      const nameBytes = cursor.buffer.slice(nameStart, nameStart + 16);
+      const decoder = new TextDecoder('utf-16le');
+      const channelName = decoder.decode(nameBytes).trim();
+      inputs[inputNames[i]].channelName = channelName;
+    }
+  }
+}
+

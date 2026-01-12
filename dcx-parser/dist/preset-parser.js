@@ -1,6 +1,6 @@
 import { decode7to8 } from './protocol/encoding.js';
 import { PRESET_SETUP_PARAMETERS, INPUT_NAMES, OUTPUT_NAMES } from './structure.js';
-import { readString, readU16LE, readBytes, parseSequential, parseInputChannel, parseOutputChannel, } from './parser-utils.js';
+import { readString, readU16LE, readBytes, parseSequential, parseInputChannel, parseOutputChannel, parseInputChannelNames, } from './parser-utils.js';
 export function parsePreset(input) {
     let buffer;
     if (Array.isArray(input)) {
@@ -89,6 +89,8 @@ export function parsePreset(input) {
     for (const name of OUTPUT_NAMES) {
         outputs[name] = parseOutputChannel(cursor);
     }
+    // Parse Input Channel Names from trailing block
+    parseInputChannelNames(cursor, inputs);
     return {
         header,
         setup,

@@ -76,13 +76,21 @@ Used to detect presence and get the device name.
 - **Response**: `F0 00 20 32 00 0E 00 01 11 44 43 ... F7`
   - The response contains "DCX2496" in ASCII.
 
-### 2. Recall Preset (`0x52`)
-Used to load a preset from the device's internal memory into the active edit buffer.
-- **Format**: `F0 00 20 32 <DevID> <ModelID> 52 <PresetNumber> F7`
-- **Example**: `F0 00 20 32 00 0E 52 01 F7` (Recall Preset 1)
-- **Behavior**: This appears to be a "fire-and-forget" command. The device does not send an Acknowledge (ACK) response.
-  - **Note**: In the DCX-Remote capture (`capture.log`), the app did not send `0x52` for recall.
-    It used `0x10` write blocks after setting transmit mode.
+### 2. Set Device Name (`0x25`)
+Used to rename the device to a custom name.
+- **Format**: `F0 00 20 32 <DevID> 0E 25 [16-byte ASCII name, space-padded] F7`
+- **Example**: `F0 00 20 32 00 0E 25 58 58 58 58 58 58 58 58 58 58 58 58 58 58 58 58 F7` renames the device to "XXXXXXXXXXXXXXXX".
+- **Usage**: Sent by DCX-Remote during initialization (with model name like "DCX2496") and can be used to set a custom device name.
+
+### 2b. Set Device ID (`0x22`)
+Used to change the device's MIDI device ID (for multi-unit setups).
+- **Format**: `F0 00 20 32 <CurrentDevID> 0E 22 <NewDevID> F7`
+- **Range**: Device ID 0-15 (0x00-0x0F). Max 16 devices.
+- **Example**: 
+  - `F0 00 20 32 00 0E 22 01 F7` changes device ID from 0 to 1.
+  - `F0 00 20 32 01 0E 22 00 F7` changes device ID from 1 back to 0.
+- **Note**: After changing the ID, subsequent commands must use the new device ID in the header.
+
 
 ### 3a. Remote Control Enable (`0x3F`)
 Enables direct parameter changes. Must be sent before `CMD_DIRECT`.
@@ -103,13 +111,18 @@ Sets a single parameter value.
 - **Example** (Set Ch 1 Param 2 to +6dB):
   `F0 00 20 32 00 0E 20 01 01 02 01 52 F7`
 
-### 4. Store Preset (`0x53`)
-Used to save the current settings to a preset slot.
-- **Format**: `F0 00 20 32 <DevID> <ModelID> 53 <PresetNumber> F7`
-- **Example**: `F0 00 20 32 00 0E 53 01 F7` (Store to Preset 1)
-- **Behavior**: Likely "fire-and-forget". *Caution: This overwrites data.*
-  - **Note**: In the DCX-Remote capture (`capture.log`), the app did not send `0x53` for store.
-    It used `0x10` write blocks to update memory pages.
+### Total State Push (DCX-Remote Recall Behavior)
+
+Traffic analysis of `DCX-Remote.exe` reveals that clicking "Recall" in the Windows application does **NOT** send `CMD_RECALL (0x52)`. Instead, it uploads the preset as a full Edit Buffer using `CMD_WRITE_DATA (0x10)`.
+
+**Observed Initialization Sequence:**
+1. **CMD_DEVICE_NAME (0x25)**: `F0 00 20 32 00 0E 25 "DCX2496         " F7` (16-byte name, space-padded)
+2. **CMD_LISTEN_MODE (0x3F)**: `F0 00 20 32 00 0E 3F 04 00 F7` (Enable transmit mode)
+3. **Edit Buffer Page 0 (0x10)**: `F0 00 20 32 00 0E 10 01 01 00 02 00 00 ...` (~1015 bytes)
+4. **Device requests Page 1 (0x50)**: `F0 00 20 32 00 0E 50 01 00 01 F7`
+5. **Edit Buffer Page 1 (0x10)**: `F0 00 20 32 00 0E 10 01 01 00 02 00 01 ...` (~911 bytes)
+
+**Implication**: DCX-Remote treats "Recall" as a synchronization of the local UI state to the device's volatile edit buffer. This ensures that any software-side modifications are preserved even if the hardware preset has changed.
 
 ### 4. Request Preset Dump (`0x50`)
 

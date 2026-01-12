@@ -102,6 +102,7 @@
     },
     "inputs": {
         "A": {
+            "channelName": "INPUT A",
             "gain": 0,
             "mute": false,
             "isDelayOn": false,
@@ -184,6 +185,7 @@
             }
         },
         "B": {
+            "channelName": "INPUT B",
             "gain": 0,
             "mute": false,
             "isDelayOn": false,
@@ -266,6 +268,7 @@
             }
         },
         "C": {
+            "channelName": "INPUT C",
             "gain": 0,
             "mute": false,
             "isDelayOn": false,
@@ -348,6 +351,7 @@
             }
         },
         "Sum": {
+            "channelName": "SUM",
             "gain": 0,
             "mute": false,
             "isDelayOn": false,

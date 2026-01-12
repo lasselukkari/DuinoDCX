@@ -17,6 +17,7 @@ import {
   parseSequential,
   parseInputChannel,
   parseOutputChannel,
+  parseInputChannelNames,
 } from './parser-utils.js';
 
 // Export for tests if needed, but better to export from utils
@@ -104,6 +105,10 @@ export function parseEditBuffer(decoded: Uint8Array): ExtendedState {
     outputs[name] = parseOutputChannel(cursor);
   }
 
+  // 4. Parse Input Channel Names from trailing block
+  parseInputChannelNames(cursor, inputs);
+
+
   return {
     header,
     setup,
@@ -111,3 +116,4 @@ export function parseEditBuffer(decoded: Uint8Array): ExtendedState {
     outputs,
   };
 }
+
