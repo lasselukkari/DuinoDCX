@@ -15,40 +15,21 @@
 #include "Ultradrive.h"
 #include "aWOT.h"
 
-// ============================================================================
-// Platform-Specific Globals
-// ============================================================================
+bool shouldRestart = false;
 
 #ifdef PLATFORM_ARDUINO
 
-Preferences preferences;
-WiFiServer httpServer(80);
-HardwareSerial UltradriveSerial(2);
-Ultradrive deviceManager(&UltradriveSerial, RTS_PIN, CTS_PIN);
-Ultradrive *deviceManagerPtr = &deviceManager;
+void restartIfNeeded() {
+  if (shouldRestart) {
+    delay(5000);
+    ESP.restart();
+  }
+}
 
-char basicAuth[BASIC_AUTH_LENGTH];
-char softApSsid[SOFT_AP_SSID_LENGTH];
-char softApPassword[SOFT_AP_PASSWORD_LENGTH];
-char mdnsName[MDDNS_NAME_LENGTH];
-bool flowControl;
-bool autoDisableAP;
-
-char authBuffer[AUTH_BUFFER_LENGHT];
-Request::HeaderNode authHeader = {"Authorization", authBuffer,
-                                  AUTH_BUFFER_LENGHT, nullptr};
-char ssidBuffer[SSID_MAX_LENGTH];
-char passwordBuffer[PASSWORD_MAX_LENGHT];
-unsigned long lastReconnect;
-bool shouldRestart = false;
-
-#endif // PLATFORM_ARDUINO
+#endif
 
 #ifdef PLATFORM_NATIVE
 
-PlatformServer httpServer(HTTP_PORT);
-PlatformSerial *ultradriveSerial = nullptr;
-Ultradrive *deviceManagerPtr = nullptr;
 volatile bool shouldExit = false;
 
 void signalHandler(int sig) {
@@ -62,19 +43,29 @@ void setupSignalHandlers() {
   signal(SIGTERM, signalHandler);
 }
 
-#endif // PLATFORM_NATIVE
+#endif
 
-// ============================================================================
-// Shared Globals
-// ============================================================================
+PlatformSerial *ultradriveSerial = nullptr;
+Ultradrive *deviceManagerPtr = nullptr;
+Preferences preferences;
+char basicAuth[BASIC_AUTH_LENGTH];
+char softApSsid[SOFT_AP_SSID_LENGTH];
+char softApPassword[SOFT_AP_PASSWORD_LENGTH];
+char mdnsName[MDDNS_NAME_LENGTH];
+bool flowControl;
+bool autoDisableAP;
+
+char authBuffer[AUTH_BUFFER_LENGHT];
+Request::HeaderNode authHeader = {"Authorization", authBuffer,
+                                  AUTH_BUFFER_LENGHT, nullptr};
+PlatformServer httpServer(HTTP_PORT);
 
 App app;
 Router apiRouter;
 unsigned long requestStart;
 
-// ============================================================================
-// Shared Request Handlers
-// ============================================================================
+char ssidBuffer[SSID_MAX_LENGTH];
+char passwordBuffer[PASSWORD_MAX_LENGHT];
 
 void logRequestStart(Request &req, Response &res) {
   unsigned long now = millis();
@@ -140,12 +131,6 @@ void getVersion(Request &req, Response &res) {
   res.print("}");
 }
 
-// ============================================================================
-// ESP32 Arduino-Specific Handlers
-// ============================================================================
-
-#ifdef PLATFORM_ARDUINO
-
 void auth(Request &req, Response &res) {
   char *authHeaderValue = req.get("Authorization");
 
@@ -165,7 +150,7 @@ void update(Request &req, Response &res) {
     return res.sendStatus(500);
   }
 
-  if (Update.writeStream(req) != contentLength) {
+  if (Update.writeStream(req) != (size_t)contentLength) {
     return res.sendStatus(500);
   }
 
@@ -368,43 +353,8 @@ void loadPreferences() {
   preferences.end();
 }
 
-void restartIfNeeded() {
-  if (shouldRestart) {
-    delay(5000);
-    ESP.restart();
-  }
-}
-
-#endif // PLATFORM_ARDUINO
-
-// ============================================================================
-// macOS/Linux Native-Specific Handlers
-// ============================================================================
-
-#ifdef PLATFORM_NATIVE
-
-void getNetworks(Request &req, Response &res) {
-  (void)req;
-  res.set("Content-Type", "application/json");
-  res.print("[]"); // No WiFi scanning on desktop
-}
-
-void getConnection(Request &req, Response &res) {
-  (void)req;
-  res.set("Content-Type", "application/json");
-  res.print("{\"current\":\"localhost\",\"ip\":\"127.0.0.1\"}");
-}
-
-#endif // PLATFORM_NATIVE
-
-// ============================================================================
-// Web Server Processing (Shared with platform differences)
-// ============================================================================
-
-#ifdef PLATFORM_ARDUINO
-
 void processWebServer() {
-  WiFiClient client = httpServer.available();
+  PlatformClient client = httpServer.available();
 
   if (client.connected()) {
     App::ProcessOptions options;
@@ -412,126 +362,17 @@ void processWebServer() {
     options.headerCount = 1;
     App::ProcessResult result = app.process(&client, options);
 
-    // If this was an SSE request, store the client for later
     if (result.responseOpen) {
-      storeSseClient(client);
-    }
-  }
-}
-
-#endif // PLATFORM_ARDUINO
-
-#ifdef PLATFORM_NATIVE
-
-// SSE client management for macOS
-struct SseClientSlot {
-  int socket;
-  char clientId[40];
-};
-
-#define MAX_SSE_SLOTS 4
-SseClientSlot sseSlots[MAX_SSE_SLOTS] = {
-    {-1, ""}, {-1, ""}, {-1, ""}, {-1, ""}};
-
-void storeSseClientSocket(int socket, const char *clientId) {
-  for (int i = 0; i < MAX_SSE_SLOTS; i++) {
-    if (sseSlots[i].socket < 0) {
-      sseSlots[i].socket = socket;
-      if (clientId && strlen(clientId) > 0) {
-        strncpy(sseSlots[i].clientId, clientId, 39);
-        sseSlots[i].clientId[39] = '\0';
-      } else {
-        sseSlots[i].clientId[0] = '\0';
-      }
-      std::cout << "SSE client connected (slot " << i << ", socket " << socket
-                << ", id " << sseSlots[i].clientId << ")" << std::endl;
-      break;
-    }
-  }
-}
-
-int countSseClients() {
-  int count = 0;
-  for (int i = 0; i < MAX_SSE_SLOTS; i++) {
-    if (sseSlots[i].socket >= 0)
-      count++;
-  }
-  return count;
-}
-
-void sendToSseClients(const uint8_t *data, size_t length,
-                      const char *targetClientId) {
-  for (int i = 0; i < MAX_SSE_SLOTS; i++) {
-    int sock = sseSlots[i].socket;
-    if (sock >= 0) {
-      // If targetClientId is specified, check for match
-      if (targetClientId && targetClientId[0] != '\0') {
-        if (strcmp(sseSlots[i].clientId, targetClientId) != 0) {
-          continue;
-        }
-      }
-
-      // Build SSE message: "data: <hex>\n\n"
-      std::string message;
-      message.reserve(length * 2 + 8);
-      message += "data: ";
-
-      const char hexChars[] = "0123456789ABCDEF";
-      for (size_t j = 0; j < length; j++) {
-        message += hexChars[(data[j] >> 4) & 0xF];
-        message += hexChars[data[j] & 0xF];
-      }
-      message += "\n\n";
-
-      // Send chunked (transfer encoding is chunked)
-      char chunkHeader[16];
-      snprintf(chunkHeader, sizeof(chunkHeader), "%zx\r\n", message.size());
-
-      ssize_t sent = send(sock, chunkHeader, strlen(chunkHeader), MSG_NOSIGNAL);
-      if (sent > 0) {
-        sent = send(sock, message.c_str(), message.size(), MSG_NOSIGNAL);
-      }
-      if (sent > 0) {
-        sent = send(sock, "\r\n", 2, MSG_NOSIGNAL);
-      }
-
-      if (sent <= 0) {
-        // Client disconnected
-        std::cout << "SSE client disconnected (slot " << i << ")" << std::endl;
-        close(sock);
-        sseSlots[i].socket = -1;
-        sseSlots[i].clientId[0] = '\0';
-      }
-    }
-  }
-}
-
-void processWebServer() {
-  PlatformClient client = httpServer.available();
-
-  if (client.connected()) {
-    int socketFd = client.getSocket();
-    App::ProcessResult result = app.process(&client);
-
-    // If this was an SSE request, store socket and don't close
-    if (result.responseOpen) {
-      storeSseClientSocket(socketFd, pendingClientId);
+      storeSseClient(client, pendingClientId);
       return;
     }
     client.stop();
   }
 }
 
-#endif // PLATFORM_NATIVE
-
-// ============================================================================
-// HTTP Server Setup
-// ============================================================================
-
 void setupHttpServer() {
   setupApiRoutes(apiRouter);
 
-#ifdef PLATFORM_ARDUINO
   apiRouter.get("/connection", &getConnection);
   apiRouter.patch("/connection", &updateConnection);
   apiRouter.del("/connection", &removeConnection);
@@ -539,45 +380,26 @@ void setupHttpServer() {
   apiRouter.patch("/settings", &updateSettings);
   apiRouter.get("/networks", &getNetworks);
   apiRouter.post("/update", &update);
-#endif
-
-#ifdef PLATFORM_NATIVE
-  apiRouter.get("/networks", &getNetworks);
-  apiRouter.get("/connection", &getConnection);
-#endif
-
   apiRouter.get("/version", &getVersion);
-
   app.use(&logRequestStart);
-
-#ifdef PLATFORM_ARDUINO
   app.use(&auth);
-#endif
-
   app.use("/api", &apiRouter);
   app.use("/", staticFiles());
   app.get(handleSpa);
-
   app.use(&logRequestEnd);
 
   httpServer.begin();
 }
 
-// ============================================================================
-// Arduino Entry Points
-// ============================================================================
-
-#ifdef PLATFORM_ARDUINO
-
 void setup() {
   Serial.begin(38400);
-  UltradriveSerial.setPins(RX2_PIN, TX2_PIN);
-  UltradriveSerial.begin(38400);
-
+  ultradriveSerial = new PlatformSerial(2);
+  ultradriveSerial->setPins(RX2_PIN, TX2_PIN); // No-op on macOS
+  ultradriveSerial->begin(38400);
+  deviceManagerPtr = new Ultradrive(ultradriveSerial, RTS_PIN, CTS_PIN);
   loadPreferences();
-
   if (flowControl) {
-    deviceManager.enableFlowControl(true);
+    deviceManagerPtr->enableFlowControl(true);
     pinMode(RTS_PIN, OUTPUT);
     pinMode(CTS_PIN, INPUT_PULLUP);
   }
@@ -598,73 +420,38 @@ void setup() {
 
   setupHttpServer();
 
+  // mDNS (stubbed on native)
   MDNS.begin(mdnsName);
-  MDNS.addService("http", "tcp", 80);
+  MDNS.addService("http", "tcp", HTTP_PORT);
 }
 
 void loop() {
   unsigned long now = millis();
-  deviceManager.processIncoming(now);
+  deviceManagerPtr->processIncoming(now);
   processWebServer();
+#ifdef PLATFORM_ARDUINO
   restartIfNeeded();
+#endif
 }
-
-#endif // PLATFORM_ARDUINO
-
-// ============================================================================
-// macOS/Linux Entry Point
-// ============================================================================
 
 #ifdef PLATFORM_NATIVE
 
 int main() {
-  // Get serial port from environment variable or use default
-  const char *serialPort = getenv("DUINODCX_SERIAL_PORT");
-  if (!serialPort) {
-    serialPort = DEFAULT_SERIAL_PORT;
-  }
-
-  // Set up signal handlers
   setupSignalHandlers();
-
-  std::cout << "DuinoDCX macOS Native" << std::endl;
-  std::cout << "=====================" << std::endl;
-  std::cout << "Serial port: " << serialPort << std::endl;
-  std::cout << "  (set DUINODCX_SERIAL_PORT env var to change)" << std::endl;
-  std::cout << "HTTP port:   " << HTTP_PORT << std::endl;
-  std::cout << std::endl;
-
-  // Initialize serial
-  ultradriveSerial = new PlatformSerial(serialPort);
-  ultradriveSerial->begin(38400);
-
-  if (!(*ultradriveSerial)) {
-    std::cerr << "Failed to open serial port. Exiting." << std::endl;
-    delete ultradriveSerial;
+  setup();
+  if (!ultradriveSerial) {
     return 1;
   }
 
-  // Initialize Ultradrive manager (no flow control pins on macOS)
-  deviceManagerPtr = new Ultradrive((HardwareSerial *)ultradriveSerial, 0, 0);
-
-  // Initialize HTTP server
-  setupHttpServer();
   std::cout << "HTTP server started on http://localhost:" << HTTP_PORT
             << std::endl;
   std::cout << "Press Ctrl+C to exit" << std::endl;
   std::cout << std::endl;
-
-  // Main loop
   while (!shouldExit) {
-    unsigned long now = millis();
-    deviceManagerPtr->processIncoming(now);
-    processWebServer();
-
-    // Small delay to prevent CPU spinning
-    usleep(1000); // 1ms
+    loop();
+    usleep(1000);
   }
 
-  // Cleanup
   ultradriveSerial->end();
   delete deviceManagerPtr;
   delete ultradriveSerial;

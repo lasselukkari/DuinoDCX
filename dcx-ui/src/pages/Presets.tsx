@@ -27,20 +27,19 @@ function Presets() {
   const [showModal, setShowModal] = useState(false);
 
   // When backup completes, load the data into the file hook
-  // When backup completes, load the data into the file hook
   useEffect(() => {
     if (backup.status === 'completed' && backup.dcxData) {
       dcxFile.loadFromBuffer(backup.dcxData);
       toast.success('Presets loaded from device!');
     }
-  }, [backup.status, backup.dcxData, dcxFile]);
+  }, [backup.status, backup.dcxData, dcxFile.loadFromBuffer]);
 
   // Auto-fetch on mount when connected and no data
   useEffect(() => {
     if (connection && !dcxFile.dcxData && backup.status === 'idle') {
       void backup.start();
     }
-  }, [connection, dcxFile, backup]);
+  }, [connection, dcxFile.dcxData, backup.status, backup.start]);
 
   // Handle preset click - show in modal
   const handlePresetClick = useCallback(

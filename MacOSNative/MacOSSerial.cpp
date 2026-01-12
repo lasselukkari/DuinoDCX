@@ -14,6 +14,13 @@
 MacOSSerial::MacOSSerial(const char *devicePath)
     : _fd(-1), _devicePath(devicePath), _baudRate(0), _opened(false) {}
 
+// Arduino HardwareSerial compatibility - uses env var for port path
+MacOSSerial::MacOSSerial(int uartNum) : _fd(-1), _baudRate(0), _opened(false) {
+  (void)uartNum; // Ignored on macOS
+  const char *envPort = getenv("DUINODCX_SERIAL_PORT");
+  _devicePath = envPort ? envPort : DEFAULT_SERIAL_PORT;
+}
+
 MacOSSerial::~MacOSSerial() { end(); }
 
 void MacOSSerial::begin(unsigned long baudRate) {

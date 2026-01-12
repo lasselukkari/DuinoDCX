@@ -20,6 +20,8 @@ private:
 
 public:
   MacOSSerial(const char *devicePath = DEFAULT_SERIAL_PORT);
+  // Arduino HardwareSerial compatibility (uses env var for port)
+  MacOSSerial(int uartNum);
   ~MacOSSerial();
 
   // HardwareSerial-like interface

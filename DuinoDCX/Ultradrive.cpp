@@ -1,7 +1,7 @@
 #include "Ultradrive.h"
 #include "RouteHandlers.h"
 
-Ultradrive::Ultradrive(HardwareSerial *serial, int rtsPin, int ctsPin)
+Ultradrive::Ultradrive(PlatformSerial *serial, int rtsPin, int ctsPin)
     : selectedDevice(0), serial(serial), rtsPin(rtsPin), ctsPin(ctsPin),
       isFirstRun(true), flowControl(false) {}
 

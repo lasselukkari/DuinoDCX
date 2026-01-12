@@ -133,8 +133,14 @@ PinStatus digitalRead(pin_size_t pinNumber) {
 // ============================================================================
 
 int MacOSClient::connect(IPAddress ip, uint16_t port) {
-  _socket = socket(AF_INET, SOCK_STREAM, 0);
-  if (_socket < 0) {
+  // Clean up any existing connection
+  if (_state) {
+    _state->release();
+    _state = nullptr;
+  }
+
+  int sock = socket(AF_INET, SOCK_STREAM, 0);
+  if (sock < 0) {
     return 0;
   }
 
@@ -144,13 +150,12 @@ int MacOSClient::connect(IPAddress ip, uint16_t port) {
   addr.sin_port = htons(port);
   addr.sin_addr.s_addr = htonl((uint32_t)ip);
 
-  if (::connect(_socket, (struct sockaddr *)&addr, sizeof(addr)) < 0) {
-    close(_socket);
-    _socket = -1;
+  if (::connect(sock, (struct sockaddr *)&addr, sizeof(addr)) < 0) {
+    close(sock);
     return 0;
   }
 
-  _connected = true;
+  _state = new SocketState(sock);
   return 1;
 }
 
@@ -167,78 +172,67 @@ int MacOSClient::connect(const char *host, uint16_t port) {
 size_t MacOSClient::write(uint8_t byte) { return write(&byte, 1); }
 
 size_t MacOSClient::write(const uint8_t *buf, size_t size) {
-  if (_socket < 0 || !_connected)
+  if (!_state || _state->socket < 0)
     return 0;
 
-  ssize_t result = send(_socket, buf, size, 0);
+  ssize_t result = send(_state->socket, buf, size, 0);
   if (result < 0) {
-    _connected = false;
     return 0;
   }
   return (size_t)result;
 }
 
 int MacOSClient::available() {
-  if (_socket < 0 || !_connected)
+  if (!_state || _state->socket < 0)
     return 0;
 
   // Use select with zero timeout to check if data is available
   fd_set readfds;
   FD_ZERO(&readfds);
-  FD_SET(_socket, &readfds);
+  FD_SET(_state->socket, &readfds);
 
   struct timeval tv = {0, 0};
-  int result = select(_socket + 1, &readfds, nullptr, nullptr, &tv);
+  int result = select(_state->socket + 1, &readfds, nullptr, nullptr, &tv);
 
-  if (result > 0 && FD_ISSET(_socket, &readfds)) {
+  if (result > 0 && FD_ISSET(_state->socket, &readfds)) {
     // Peek to see how much data is available
     uint8_t buf[1];
-    result = recv(_socket, buf, 1, MSG_PEEK | MSG_DONTWAIT);
+    result = recv(_state->socket, buf, 1, MSG_PEEK | MSG_DONTWAIT);
     if (result > 0)
       return 1; // At least 1 byte available
-    if (result == 0) {
-      // Connection closed
-      _connected = false;
-    }
   }
   return 0;
 }
 
 int MacOSClient::read() {
-  if (_socket < 0 || !_connected)
+  if (!_state || _state->socket < 0)
     return -1;
 
   uint8_t b;
-  ssize_t result = recv(_socket, &b, 1, 0);
+  ssize_t result = recv(_state->socket, &b, 1, 0);
   if (result <= 0) {
-    if (result == 0)
-      _connected = false;
     return -1;
   }
   return b;
 }
 
 int MacOSClient::read(uint8_t *buf, size_t size) {
-  if (_socket < 0 || !_connected)
+  if (!_state || _state->socket < 0)
     return 0;
 
-  ssize_t result = recv(_socket, buf, size, 0);
+  ssize_t result = recv(_state->socket, buf, size, 0);
   if (result < 0)
     return 0;
-  if (result == 0)
-    _connected = false;
   return (int)result;
 }
 
 int MacOSClient::peek() {
-  if (_socket < 0 || !_connected)
+  if (!_state || _state->socket < 0)
     return -1;
 
   uint8_t b;
-  ssize_t result = recv(_socket, &b, 1, MSG_PEEK);
+  ssize_t result = recv(_state->socket, &b, 1, MSG_PEEK);
   if (result <= 0) {
-    if (result == 0)
-      _connected = false;
     return -1;
   }
   return b;
@@ -249,31 +243,30 @@ void MacOSClient::flush() {
 }
 
 void MacOSClient::stop() {
-  if (_socket >= 0) {
-    close(_socket);
-    _socket = -1;
+  if (_state) {
+    if (_state->socket >= 0) {
+      close(_state->socket);
+      _state->socket = -1;
+    }
   }
-  _connected = false;
 }
 
 uint8_t MacOSClient::connected() {
-  if (_socket < 0)
+  if (!_state || _state->socket < 0)
     return 0;
 
   // Check if still connected by peeking
-  if (_connected) {
-    uint8_t buf;
-    int result = recv(_socket, &buf, 1, MSG_PEEK | MSG_DONTWAIT);
-    if (result == 0) {
-      // Connection closed by peer
-      _connected = false;
-    } else if (result < 0 && errno != EAGAIN && errno != EWOULDBLOCK) {
-      // Error other than "would block"
-      _connected = false;
-    }
+  uint8_t buf;
+  int result = recv(_state->socket, &buf, 1, MSG_PEEK | MSG_DONTWAIT);
+  if (result == 0) {
+    // Connection closed by peer
+    return 0;
+  } else if (result < 0 && errno != EAGAIN && errno != EWOULDBLOCK) {
+    // Error other than "would block"
+    return 0;
   }
 
-  return _connected ? 1 : 0;
+  return 1;
 }
 
 // ============================================================================

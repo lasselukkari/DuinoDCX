@@ -17,7 +17,7 @@ import {
 } from 'dcx-parser';
 import 'bootswatch/dist/slate/bootstrap.min.css';
 import 'react-toastify/dist/ReactToastify.css';
-import './app.css';
+import './App.css';
 import {useDcxState} from '@/hooks/useDcxState.js';
 import ConfigNavigation from '@/components/ConfigNavigation.js';
 import DeviceNavigation from '@/components/DeviceNavigation.js';

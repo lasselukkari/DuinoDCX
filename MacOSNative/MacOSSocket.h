@@ -21,38 +21,81 @@
 #include "Arduino.h"
 #include "Client.h"
 
+// Reference-counted socket state - enables copy semantics like WiFiClient
+struct SocketState {
+  int socket;
+  int refCount;
+
+  SocketState(int s) : socket(s), refCount(1) {}
+
+  void addRef() { ++refCount; }
+
+  void release() {
+    if (--refCount == 0) {
+      if (socket >= 0) {
+        close(socket);
+      }
+      delete this;
+    }
+  }
+};
+
 class MacOSClient : public Client {
 private:
-  int _socket;
-  bool _connected;
+  SocketState *_state;
+
+  void attach(SocketState *state) {
+    _state = state;
+    if (_state)
+      _state->addRef();
+  }
+
+  void detach() {
+    if (_state) {
+      _state->release();
+      _state = nullptr;
+    }
+  }
 
 public:
-  MacOSClient() : _socket(-1), _connected(false) {}
-  MacOSClient(int socket) : _socket(socket), _connected(socket >= 0) {}
+  // Default constructor - no socket
+  MacOSClient() : _state(nullptr) {}
 
-  // Move constructor - transfer ownership
-  MacOSClient(MacOSClient &&other) noexcept
-      : _socket(other._socket), _connected(other._connected) {
-    other._socket = -1;
-    other._connected = false;
+  // Constructor from socket fd - takes ownership
+  MacOSClient(int socket)
+      : _state(socket >= 0 ? new SocketState(socket) : nullptr) {}
+
+  // Copy constructor - share socket (like WiFiClient)
+  MacOSClient(const MacOSClient &other) : _state(nullptr) {
+    attach(other._state);
+  }
+
+  // Copy assignment - share socket
+  MacOSClient &operator=(const MacOSClient &other) {
+    if (this != &other) {
+      detach();
+      attach(other._state);
+    }
+    return *this;
+  }
+
+  // Move constructor
+  MacOSClient(MacOSClient &&other) noexcept : _state(other._state) {
+    other._state = nullptr;
   }
 
   // Move assignment
   MacOSClient &operator=(MacOSClient &&other) noexcept {
     if (this != &other) {
-      if (_socket >= 0)
-        close(_socket);
-      _socket = other._socket;
-      _connected = other._connected;
-      other._socket = -1;
-      other._connected = false;
+      detach();
+      _state = other._state;
+      other._state = nullptr;
     }
     return *this;
   }
 
-  // Disable copy (socket can't be shared)
-  MacOSClient(const MacOSClient &) = delete;
-  MacOSClient &operator=(const MacOSClient &) = delete;
+  // Destructor - release reference
+  ~MacOSClient() { detach(); }
 
   // Client interface implementation
   int connect(IPAddress ip, uint16_t port) override;
@@ -66,10 +109,10 @@ public:
   void flush() override;
   void stop() override;
   uint8_t connected() override;
-  operator bool() override { return _connected; }
+  operator bool() override { return _state && _state->socket >= 0; }
 
-  // Get the underlying socket (for debugging)
-  int getSocket() const { return _socket; }
+  // Get the underlying socket
+  int getSocket() const { return _state ? _state->socket : -1; }
 };
 
 class MacOSServer {

@@ -35,7 +35,7 @@ class Config extends PureComponent<ConfigProps> {
         >
           <NavDropdown.Item
             eventKey="connection"
-            onSelect={() => {
+            onClick={() => {
               this.handleShowModal('connection');
             }}
           >
@@ -43,7 +43,7 @@ class Config extends PureComponent<ConfigProps> {
           </NavDropdown.Item>
           <NavDropdown.Item
             eventKey="settings"
-            onSelect={() => {
+            onClick={() => {
               this.handleShowModal('settings');
             }}
           >
@@ -51,7 +51,7 @@ class Config extends PureComponent<ConfigProps> {
           </NavDropdown.Item>
           <NavDropdown.Item
             eventKey="upload"
-            onSelect={() => {
+            onClick={() => {
               this.handleShowModal('upload');
             }}
           >

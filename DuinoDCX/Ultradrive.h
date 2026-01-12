@@ -46,6 +46,7 @@
 #define COMMAND_START 240
 #define TERMINATOR 247
 
+#include "Platform.h"
 #include "aWOT.h"
 #include <Arduino.h>
 #include <Stream.h>
@@ -57,7 +58,7 @@ class Ultradrive {
   } devices[MAX_DEVICES];
 
 public:
-  Ultradrive(HardwareSerial *serial, int rtsPin = 0, int ctsPin = 0);
+  Ultradrive(PlatformSerial *serial, int rtsPin = 0, int ctsPin = 0);
   void enableFlowControl(bool enabled);
   void processIncoming(unsigned long now);
   void processOutgoing(Request *req);
@@ -85,7 +86,7 @@ private:
   unsigned long lastPing;
   int selectedDevice;
 
-  HardwareSerial *serial;
+  PlatformSerial *serial;
   int rtsPin;
   int ctsPin;
 

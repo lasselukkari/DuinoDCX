@@ -1,15 +1,14 @@
 #include "RouteHandlers.h"
 
-// SSE client storage - platform-specific
-// On Arduino/ESP32: WiFiClient sseClients[MAX_SSE_CLIENTS];
-// On macOS: we need a different approach with Client pointers
-#if defined(ESP32) || defined(ESP8266)
-#include <WiFi.h>
-WiFiClient sseClients[MAX_SSE_CLIENTS];
-#else
-// macOS native: use Client pointers stored elsewhere
-// The main loop will handle client storage
-#endif
+// Unified SSE client storage
+// Works on both platforms since PlatformClient is copyable
+// (WiFiClient/MacOSClient)
+struct SseClientSlot {
+  PlatformClient client;
+  char clientId[40];
+};
+
+static SseClientSlot sseClients[MAX_SSE_CLIENTS];
 
 char pendingClientId[40] = {0};
 
@@ -81,11 +80,10 @@ void sseEventsHandler(Request &req, Response &res) {
   deviceManagerPtr->syncSelectedDevice();
 }
 
-#if defined(ESP32) || defined(ESP8266)
 int countSseClients() {
   int count = 0;
   for (int i = 0; i < MAX_SSE_CLIENTS; i++) {
-    if (sseClients[i].connected())
+    if (sseClients[i].client.connected())
       count++;
   }
   return count;
@@ -93,36 +91,64 @@ int countSseClients() {
 
 void sendToSseClients(const uint8_t *data, size_t length,
                       const char *targetClientId) {
-  (void)targetClientId; // Client ID filtering not yet implemented for ESP32
   for (int i = 0; i < MAX_SSE_CLIENTS; i++) {
-    if (sseClients[i].connected()) {
-      // SSE data format: "data: <base64-or-hex>\n\n"
-      // For binary MIDI data, send as hex
-      sseClients[i].print("data: ");
-      for (size_t j = 0; j < length; j++) {
-        if (data[j] < 16)
-          sseClients[i].print("0");
-        sseClients[i].print(data[j], HEX);
+    if (sseClients[i].client.connected()) {
+      // If targetClientId is specified, check for match
+      if (targetClientId && targetClientId[0] != '\0') {
+        if (strcmp(sseClients[i].clientId, targetClientId) != 0) {
+          continue;
+        }
       }
-      sseClients[i].print("\n\n");
+
+      // Build SSE message: "data: <hex>\n\n"
+      // Pre-calculate size: 6 (data: ) + length*2 (hex) + 2 (\n\n)
+      size_t msgLen = 6 + length * 2 + 2;
+      char *message = (char *)malloc(msgLen + 1);
+      if (!message)
+        continue;
+
+      char *p = message;
+      memcpy(p, "data: ", 6);
+      p += 6;
+
+      const char hexChars[] = "0123456789ABCDEF";
+      for (size_t j = 0; j < length; j++) {
+        *p++ = hexChars[(data[j] >> 4) & 0xF];
+        *p++ = hexChars[data[j] & 0xF];
+      }
+      memcpy(p, "\n\n", 2);
+
+#ifdef PLATFORM_NATIVE
+      // Native: send as chunked transfer encoding
+      char chunkHeader[16];
+      snprintf(chunkHeader, sizeof(chunkHeader), "%zx\r\n", msgLen);
+      sseClients[i].client.write((uint8_t *)chunkHeader, strlen(chunkHeader));
+      sseClients[i].client.write((uint8_t *)message, msgLen);
+      sseClients[i].client.write((uint8_t *)"\r\n", 2);
+#else
+      // Arduino: WiFiClient handles chunking automatically
+      sseClients[i].client.write((uint8_t *)message, msgLen);
+#endif
+
+      free(message);
     }
   }
 }
 
-void storeSseClient(WiFiClient &client) {
+void storeSseClient(PlatformClient &client, const char *clientId) {
   for (int i = 0; i < MAX_SSE_CLIENTS; i++) {
-    if (!sseClients[i].connected()) {
-      sseClients[i] = client;
+    if (!sseClients[i].client.connected()) {
+      sseClients[i].client = client;
+      if (clientId && strlen(clientId) > 0) {
+        strncpy(sseClients[i].clientId, clientId, 39);
+        sseClients[i].clientId[39] = '\0';
+      } else {
+        sseClients[i].clientId[0] = '\0';
+      }
       break;
     }
   }
 }
-#else
-// macOS: functions defined in DuinoDCXMac.cpp
-extern int countSseClients();
-extern void sendToSseClients(const uint8_t *data, size_t length,
-                             const char *targetClientId);
-#endif
 
 void setupApiRoutes(Router &router) {
   // NOTE: /state and /status routes removed - UI uses SSE exclusively
