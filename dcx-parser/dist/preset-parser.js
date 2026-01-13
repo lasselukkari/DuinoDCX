@@ -1,30 +1,6 @@
-import { decode7to8 } from './protocol/encoding.js';
 import { PRESET_SETUP_PARAMETERS, INPUT_NAMES, OUTPUT_NAMES } from './structure.js';
 import { readString, readU16LE, readBytes, parseSequential, parseInputChannel, parseOutputChannel, parseInputChannelNames, } from './parser-utils.js';
-export function parsePreset(input) {
-    let buffer;
-    if (Array.isArray(input)) {
-        // Concatenate pages
-        const payloads = input.map((page) => {
-            if (page[0] === 0xf0 &&
-                page[1] === 0x00 &&
-                page[2] === 0x20 &&
-                page[3] === 0x32) {
-                return decode7to8(page.slice(13, -1), { indexed: false });
-            }
-            return decode7to8(page, { indexed: false });
-        });
-        const totalSize = payloads.reduce((acc, p) => acc + p.length, 0);
-        buffer = new Uint8Array(totalSize);
-        let offset = 0;
-        for (const p of payloads) {
-            buffer.set(p, offset);
-            offset += p.length;
-        }
-    }
-    else {
-        buffer = input;
-    }
+export function parsePreset(buffer) {
     // Find XSNP signature
     let headerOffset = -1;
     for (let i = 0; i < 20; i++) {

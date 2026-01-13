@@ -2,6 +2,7 @@ import * as fs from 'node:fs';
 import * as path from 'node:path';
 import {describe, it, expect} from 'vitest';
 import Parser from '../index.js';
+import {decode7to8} from '../protocol/encoding.js';
 
 const {parseMessage, parseEditBuffer, parsePreset, parseDcxPresets} = Parser;
 
@@ -36,6 +37,36 @@ function normalizeForJsonComparison(object: unknown): unknown {
 
   return object;
 }
+
+/**
+ * Helper to decode and concatenate SysEx preset pages.
+ * Extracts 7-to-8 encoded data from SysEx messages and combines into single buffer.
+ */
+function decodePresetPages(pages: Uint8Array[]): Uint8Array {
+  const payloads = pages.map((page) => {
+    // Check for SysEx header (F0 00 20 32 = Behringer)
+    if (
+      page[0] === 0xf0 &&
+      page[1] === 0x00 &&
+      page[2] === 0x20 &&
+      page[3] === 0x32
+    ) {
+      // Strip SysEx header (13 bytes) and footer (1 byte), then decode
+      return decode7to8(page.slice(13, -1), {indexed: false});
+    }
+    return decode7to8(page, {indexed: false});
+  });
+
+  const totalSize = payloads.reduce((acc, p) => acc + p.length, 0);
+  const buffer = new Uint8Array(totalSize);
+  let offset = 0;
+  for (const p of payloads) {
+    buffer.set(p, offset);
+    offset += p.length;
+  }
+  return buffer;
+}
+
 
 describe('State Integration Test', () => {
   // Use absolute path to src/fixtures to ensure tests work from both src/ and dist/
@@ -113,7 +144,7 @@ describe('State Integration Test', () => {
     expect(presetPages.length).toBeGreaterThan(0);
 
     // 2. Parse the first preset from the pages
-    const firstPreset = parsePreset(presetPages);
+    const firstPreset = parsePreset(decodePresetPages(presetPages));
 
     // 3. Load and parse the edit buffer for comparison
     const bin0 = fs.readFileSync(
@@ -396,7 +427,7 @@ describe('State Integration Test', () => {
       }
     }
 
-    const firstPreset = parsePreset(presetPages);
+    const firstPreset = parsePreset(decodePresetPages(presetPages));
     const firstPresetNormalized: Record<string, unknown> =
       normalizeForJsonComparison(firstPreset) as Record<string, unknown>;
 
