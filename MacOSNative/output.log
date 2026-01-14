@@ -2,6 +2,274 @@ Serial port /dev/cu.usbserial-1430 opened at 38400 baud
 HTTP server started on http://localhost:3000
 Press Ctrl+C to exit
 
-212: HTTP POST /api/commands 
-Shutting down...
-Goodbye!
+[MacOSClient] Copy ctor: other._state=140635837317824
+[MacOSClient] attach: socket=5 refCount=2
+[processWebServer] responseOpen=true
+[MacOSClient] detach: socket=5 refCount=2
+[MacOSClient] Copy ctor: other._state=140635835227024
+[MacOSClient] attach: socket=6 refCount=2
+[processWebServer] responseOpen=true
+[MacOSClient] detach: socket=6 refCount=2
+[MacOSClient] Copy ctor: other._state=140635839414400
+[MacOSClient] attach: socket=7 refCount=2
+[processWebServer] responseOpen=true
+[MacOSClient] detach: socket=7 refCount=2
+12327: HTTP GET /inputs [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=8 refCount=1
+12432: HTTP GET /.well-known/appspecific/com.chrome.devtools.json [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=8 refCount=1
+[MacOSClient] Copy ctor: other._state=140635836268736
+[MacOSClient] attach: socket=8 refCount=2
+[processWebServer] responseOpen=true
+[MacOSClient] detach: socket=8 refCount=2
+[MacOSClient] Copy ctor: other._state=140635839414464
+[MacOSClient] attach: socket=9 refCount=2
+[processWebServer] responseOpen=true
+[MacOSClient] detach: socket=9 refCount=2
+[MacOSClient] Copy ctor: other._state=140635840462976
+[MacOSClient] attach: socket=10 refCount=2
+[processWebServer] responseOpen=true
+[MacOSClient] detach: socket=10 refCount=2
+[MacOSClient] Copy ctor: other._state=140635839414528
+[MacOSClient] attach: socket=11 refCount=2
+[processWebServer] responseOpen=true
+[MacOSClient] detach: socket=11 refCount=2
+[MacOSClient] Copy ctor: other._state=140635839414544
+[MacOSClient] attach: socket=12 refCount=2
+[processWebServer] responseOpen=true
+[MacOSClient] detach: socket=12 refCount=2
+4906229: HTTP GET /inputs [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=13 refCount=1
+4906439: HTTP GET /.well-known/appspecific/com.chrome.devtools.json [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=13 refCount=1
+[MacOSClient] Copy ctor: other._state=140635840463040
+[MacOSClient] attach: socket=13 refCount=2
+[processWebServer] responseOpen=true
+[MacOSClient] detach: socket=13 refCount=2
+4972321: HTTP GET /.well-known/appspecific/com.chrome.devtools.json [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=14 refCount=1
+5018000: HTTP GET / [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=14 refCount=1
+[MacOSClient] Copy ctor: other._state=140635836268800
+[MacOSClient] attach: socket=14 refCount=2
+[processWebServer] responseOpen=true
+[MacOSClient] detach: socket=14 refCount=2
+5047967: HTTP GET /outputs [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=15 refCount=1
+5048030: HTTP GET /.well-known/appspecific/com.chrome.devtools.json [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=15 refCount=1
+[MacOSClient] Copy ctor: other._state=140635836268864
+[MacOSClient] attach: socket=15 refCount=2
+[MacOSClient] detach: socket=15 refCount=2
+[processWebServer] responseOpen=true
+[MacOSClient] detach: socket=15 refCount=1
+[MacOSClient] Copy ctor: other._state=140635825783152
+[MacOSClient] attach: socket=15 refCount=2
+[processWebServer] responseOpen=true
+[MacOSClient] detach: socket=15 refCount=2
+5059154: HTTP GET /outputs [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=16 refCount=1
+5059179: HTTP GET /.well-known/appspecific/com.chrome.devtools.json [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=16 refCount=1
+[MacOSClient] Copy ctor: other._state=140635841511600
+[MacOSClient] attach: socket=16 refCount=2
+[processWebServer] responseOpen=true
+[MacOSClient] detach: socket=16 refCount=2
+5479957: HTTP GET /outputs/crossover [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=17 refCount=1
+5480004: HTTP GET /.well-known/appspecific/com.chrome.devtools.json [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=17 refCount=1
+[MacOSClient] Copy ctor: other._state=140635839414560
+[MacOSClient] attach: socket=17 refCount=2
+[processWebServer] responseOpen=true
+[MacOSClient] detach: socket=17 refCount=2
+5483639: HTTP GET /outputs/crossover [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5483679: HTTP GET /.well-known/appspecific/com.chrome.devtools.json [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5483685: HTTP GET /assets/index-Bujff3C6.js [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5483696: HTTP GET /assets/index-et8rKCz2.css [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5483758: HTTP GET /outputs/crossover [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5483785: HTTP GET /.well-known/appspecific/com.chrome.devtools.json [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5483788: HTTP GET /assets/index-et8rKCz2.css [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5483793: HTTP GET /assets/index-Bujff3C6.js [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5483798: HTTP GET /manifest.json [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5483831: HTTP GET /outputs/crossover [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5483854: HTTP GET /.well-known/appspecific/com.chrome.devtools.json [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5483857: HTTP GET /assets/index-Bujff3C6.js [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5483891: HTTP GET /assets/index-et8rKCz2.css [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5483926: HTTP GET /outputs/crossover [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5483953: HTTP GET /assets/index-Bujff3C6.js [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5483993: HTTP GET /assets/index-et8rKCz2.css [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5483998: HTTP GET /.well-known/appspecific/com.chrome.devtools.json [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5484039: HTTP GET /outputs/crossover [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5484108: HTTP GET /.well-known/appspecific/com.chrome.devtools.json [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5484113: HTTP GET /assets/index-et8rKCz2.css [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5484116: HTTP GET /assets/index-Bujff3C6.js [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5484157: HTTP GET /outputs/crossover [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5484177: HTTP GET /assets/index-Bujff3C6.js [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5484181: HTTP GET /.well-known/appspecific/com.chrome.devtools.json [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5484206: HTTP GET /assets/index-et8rKCz2.css [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5484242: HTTP GET /outputs/crossover [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5484258: HTTP GET /.well-known/appspecific/com.chrome.devtools.json [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5484270: HTTP GET /assets/index-Bujff3C6.js [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5484284: HTTP GET /assets/index-et8rKCz2.css [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5484333: HTTP GET /outputs/crossover [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5484370: HTTP GET /.well-known/appspecific/com.chrome.devtools.json [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5484406: HTTP GET /assets/index-et8rKCz2.css [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5484409: HTTP GET /assets/index-Bujff3C6.js [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5484423: HTTP GET /outputs/crossover [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5484456: HTTP GET /assets/index-et8rKCz2.css [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5484459: HTTP GET /assets/index-Bujff3C6.js [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5484467: HTTP GET /.well-known/appspecific/com.chrome.devtools.json [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5484469: HTTP GET /manifest.json [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5484498: HTTP GET /outputs/crossover [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5484531: HTTP GET /.well-known/appspecific/com.chrome.devtools.json [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5484534: HTTP GET /assets/index-et8rKCz2.css [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5484537: HTTP GET /assets/index-Bujff3C6.js [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5484572: HTTP GET /outputs/crossover [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5484608: HTTP GET /.well-known/appspecific/com.chrome.devtools.json [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5484613: HTTP GET /assets/index-Bujff3C6.js [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5484625: HTTP GET /assets/index-et8rKCz2.css [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5484665: HTTP GET /outputs/crossover [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5484701: HTTP GET /.well-known/appspecific/com.chrome.devtools.json [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5484706: HTTP GET /assets/index-et8rKCz2.css [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5484712: HTTP GET /assets/index-Bujff3C6.js [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5484771: HTTP GET /outputs/crossover [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5484793: HTTP GET /.well-known/appspecific/com.chrome.devtools.json [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5484797: HTTP GET /assets/index-et8rKCz2.css [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5484802: HTTP GET /assets/index-Bujff3C6.js [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5484807: HTTP GET /manifest.json [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5484847: HTTP GET /outputs/crossover [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5484913: HTTP GET /.well-known/appspecific/com.chrome.devtools.json [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5484917: HTTP GET /assets/index-et8rKCz2.css [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5484924: HTTP GET /assets/index-Bujff3C6.js [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5484999: HTTP GET /outputs/crossover [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5485052: HTTP GET /assets/index-et8rKCz2.css [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5485054: HTTP GET /assets/index-Bujff3C6.js [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5485060: HTTP GET /.well-known/appspecific/com.chrome.devtools.json [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5485115: HTTP GET /outputs/crossover [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5485137: HTTP GET /.well-known/appspecific/com.chrome.devtools.json [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5485234: HTTP GET /assets/index-et8rKCz2.css [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5485241: HTTP GET /assets/index-Bujff3C6.js [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5485281: HTTP GET /manifest.json [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5485284: HTTP GET /outputs/crossover [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5485286: HTTP GET /outputs/crossover [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5485322: HTTP GET /outputs/crossover [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5485339: HTTP GET /.well-known/appspecific/com.chrome.devtools.json [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5485349: HTTP GET /assets/index-Bujff3C6.js [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5485354: HTTP GET /manifest.json [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5485358: HTTP GET /assets/index-et8rKCz2.css [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5485361: HTTP GET /assets/index-Bujff3C6.js [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5485369: HTTP GET /assets/index-et8rKCz2.css [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5485424: HTTP GET /outputs/crossover [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5485429: HTTP GET /.well-known/appspecific/com.chrome.devtools.json [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5485454: HTTP GET /.well-known/appspecific/com.chrome.devtools.json [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5485462: HTTP GET /assets/index-et8rKCz2.css [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5485466: HTTP GET /assets/index-Bujff3C6.js [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5485511: HTTP GET /outputs/crossover [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5485549: HTTP GET /.well-known/appspecific/com.chrome.devtools.json [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5485553: HTTP GET /assets/index-et8rKCz2.css [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5485556: HTTP GET /assets/index-Bujff3C6.js [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5485595: HTTP GET /outputs/crossover [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5485628: HTTP GET /.well-known/appspecific/com.chrome.devtools.json [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5485631: HTTP GET /assets/index-et8rKCz2.css [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5485634: HTTP GET /assets/index-Bujff3C6.js [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5485667: HTTP GET /outputs/crossover [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5485706: HTTP GET /assets/index-Bujff3C6.js [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5485716: HTTP GET /assets/index-et8rKCz2.css [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+5485723: HTTP GET /.well-known/appspecific/com.chrome.devtools.json [processWebServer] responseOpen=true
+[MacOSClient] detach: socket=18 refCount=1
+[MacOSClient] Copy ctor: other._state=140635836268864
+[MacOSClient] attach: socket=18 re

@@ -25,7 +25,8 @@ DUINODCX_SOURCES = ../DuinoDCX/App.cpp \
                    ../DuinoDCX/Response.cpp \
                    ../DuinoDCX/Response.cpp \
                    ../DuinoDCX/Router.cpp \
-                   ../DuinoDCX/RouteHandlers.cpp
+                   ../DuinoDCX/RouteHandlers.cpp \
+                   ../DuinoDCX/WebSocket.cpp
 
 # Platform adapter source files
 PLATFORM_SOURCES = MacOSSocket.cpp \
@@ -36,7 +37,7 @@ APP_SOURCES = ../DuinoDCX/DuinoDCX.ino
 
 # Object files
 ARDUINO_OBJECTS = Print.o Stream.o WString.o IPAddress.o Common.o
-DUINODCX_OBJECTS = App.o Request.o Response.o Router.o RouteHandlers.o
+DUINODCX_OBJECTS = App.o Request.o Response.o Router.o RouteHandlers.o WebSocket.o
 PLATFORM_OBJECTS = MacOSSocket.o MacOSSerial.o
 APP_OBJECTS = DuinoDCX.o
 
@@ -82,6 +83,9 @@ Router.o: ../DuinoDCX/Router.cpp
 	$(CXX) $(CXXFLAGS) $(INCLUDES) -c -o $@ $<
 
 RouteHandlers.o: ../DuinoDCX/RouteHandlers.cpp
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -c -o $@ $<
+
+WebSocket.o: ../DuinoDCX/WebSocket.cpp
 	$(CXX) $(CXXFLAGS) $(INCLUDES) -c -o $@ $<
 
 # Platform adapter objects

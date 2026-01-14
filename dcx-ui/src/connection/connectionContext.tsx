@@ -1,8 +1,8 @@
 /**
- * Connection Context Provider using SSE-based DcxConnection.
+ * Connection Context Provider using WebSocket-based DcxConnection.
  *
- * This replaces the old DeviceConnectionProvider with one that uses
- * the dcx-parser library's DcxConnection interface.
+ * This replaces the old SSE-based provider with WebSocket for
+ * bidirectional communication using the dcx-parser library's DcxConnection interface.
  */
 
 import {
@@ -13,8 +13,8 @@ import {
   useMemo,
   type ReactNode,
 } from 'react';
-import type {DcxConnection} from 'dcx-parser';
-import {createSseConnection} from './sseConnection.js';
+import type { DcxConnection } from 'dcx-parser';
+import { createWsConnection } from './wsConnection.js';
 
 type DcxConnectionContextValue = {
   connection: DcxConnection & {
@@ -48,17 +48,15 @@ export function DcxConnectionProvider({
   // Generate persistent Client ID
   const clientIdRef = useRef<string>(
     Math.random().toString(36).slice(2, 15) +
-      Math.random().toString(36).slice(2, 15),
+    Math.random().toString(36).slice(2, 15),
   );
 
   // Create connection once
   const connectionRef = useRef<
-    ReturnType<typeof createSseConnection> | undefined
+    ReturnType<typeof createWsConnection> | undefined
   >(undefined);
 
-  connectionRef.current ??= createSseConnection({
-    clientId: clientIdRef.current,
-  });
+  connectionRef.current ??= createWsConnection({});
 
   const connection = connectionRef.current;
 

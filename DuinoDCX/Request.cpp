@@ -8,27 +8,15 @@
 
 using namespace awot;
 
-Request::Request(Client* client, Response* m_response, HeaderNode* headerTail,
-                 char* urlBuffer, int urlBufferLength, unsigned long timeout,
-                 void* context)
-    : context(context),
-      m_stream(client),
-      m_response(m_response),
-      m_method(UNKNOWN),
-      m_minorVersion(-1),
-      m_pushback(),
-      m_pushbackDepth(0),
-      m_readingContent(false),
-      m_left(0),
-      m_bytesRead(0),
-      m_headerTail(headerTail),
-      m_query(NULL),
-      m_queryLength(0),
-      m_readTimedout(false),
-      m_path(urlBuffer),
-      m_pathLength(urlBufferLength - 1),
-      m_pattern(NULL),
-      m_route(NULL),
+Request::Request(Client *client, Response *m_response, HeaderNode *headerTail,
+                 char *urlBuffer, int urlBufferLength, unsigned long timeout,
+                 void *context)
+    : context(context), m_stream(client), m_response(m_response),
+      m_method(UNKNOWN), m_minorVersion(-1), m_pushback(), m_pushbackDepth(0),
+      m_readingContent(false), m_left(0), m_bytesRead(0),
+      m_headerTail(headerTail), m_query(NULL), m_queryLength(0),
+      m_readTimedout(false), m_path(urlBuffer),
+      m_pathLength(urlBufferLength - 1), m_pattern(NULL), m_route(NULL),
       m_next(true) {
   _timeout = timeout;
 }
@@ -41,10 +29,12 @@ int Request::available() {
 
 int Request::bytesRead() { return m_bytesRead; }
 
-Stream* Request::stream() { return m_stream; }
+Stream *Request::stream() { return m_stream; }
 
-char* Request::get(const char* name) {
-  HeaderNode* headerNode = m_headerTail;
+Client *Request::client() { return m_stream; }
+
+char *Request::get(const char *name) {
+  HeaderNode *headerNode = m_headerTail;
 
   while (headerNode != NULL) {
     if (App::strcmpi(headerNode->name, name) == 0) {
@@ -59,7 +49,7 @@ char* Request::get(const char* name) {
 
 void Request::flush() { return m_response->flush(); }
 
-bool Request::form(char* name, int nameLength, char* value, int valueLength) {
+bool Request::form(char *name, int nameLength, char *value, int valueLength) {
   int ch;
   bool foundSomething = false;
   bool readingName = true;
@@ -116,7 +106,7 @@ int Request::left() { return m_left + m_pushbackDepth; }
 
 Request::MethodType Request::method() { return m_method; }
 
-char* Request::path() { return m_path; }
+char *Request::path() { return m_path; }
 
 int Request::peek() {
   int ch = read();
@@ -137,12 +127,12 @@ void Request::push(uint8_t ch) {
   }
 }
 
-char* Request::query() { return m_query; }
+char *Request::query() { return m_query; }
 
-bool Request::query(const char* name, char* buffer, int bufferLength) {
+bool Request::query(const char *name, char *buffer, int bufferLength) {
   memset(buffer, 0, bufferLength);
 
-  char* position = m_query;
+  char *position = m_query;
   int nameLength = strlen(name);
 
   while ((position = strstr(position, name))) {
@@ -187,7 +177,7 @@ int Request::read() {
   return ch;
 }
 
-int Request::read(uint8_t* buf, size_t size) {
+int Request::read(uint8_t *buf, size_t size) {
   int ret = 0;
 
   while (m_pushbackDepth > 0) {
@@ -212,7 +202,7 @@ int Request::read(uint8_t* buf, size_t size) {
   return ret;
 }
 
-bool Request::route(const char* name, char* buffer, int bufferLength) {
+bool Request::route(const char *name, char *buffer, int bufferLength) {
   int part = 0;
   int i = 1;
 
@@ -238,10 +228,10 @@ bool Request::route(const char* name, char* buffer, int bufferLength) {
   return false;
 }
 
-bool Request::route(int number, char* buffer, int bufferLength) {
+bool Request::route(int number, char *buffer, int bufferLength) {
   memset(buffer, 0, bufferLength);
   int part = -1;
-  const char* routeStart = m_route;
+  const char *routeStart = m_route;
 
   while (*routeStart) {
     if (*routeStart++ == '/') {
@@ -266,7 +256,7 @@ void Request::next() { m_next = true; }
 
 size_t Request::write(uint8_t data) { return m_response->write(data); }
 
-size_t Request::write(const uint8_t* buffer, size_t bufferLength) {
+size_t Request::write(const uint8_t *buffer, size_t bufferLength) {
   return m_response->write(buffer, bufferLength);
 }
 
@@ -301,7 +291,7 @@ bool Request::m_processMethod() {
 }
 
 bool Request::m_readURL() {
-  char* request = m_path;
+  char *request = m_path;
   int bufferLeft = m_pathLength;
   int ch;
 
@@ -359,7 +349,7 @@ bool Request::m_readVersion() {
 }
 
 void Request::m_processURL() {
-  char* qmLocation = strchr(m_path, '?');
+  char *qmLocation = strchr(m_path, '?');
   int qmOffset = (qmLocation == NULL) ? 0 : 1;
 
   m_pathLength = (qmLocation == NULL) ? strlen(m_path) : (qmLocation - m_path);
@@ -384,7 +374,7 @@ bool Request::m_processHeaders() {
 
       canEnd = true;
     } else {
-      HeaderNode* headerNode = m_headerTail;
+      HeaderNode *headerNode = m_headerTail;
 
       while (headerNode != NULL) {
         P(headerSeparator) = ":";
@@ -417,7 +407,7 @@ bool Request::m_processHeaders() {
   return true;
 }
 
-bool Request::m_headerValue(char* buffer, int bufferLength) {
+bool Request::m_headerValue(char *buffer, int bufferLength) {
   int ch;
 
   if (buffer[0] != '\0') {
@@ -445,7 +435,7 @@ bool Request::m_headerValue(char* buffer, int bufferLength) {
   return false;
 }
 
-bool Request::m_readInt(int& number) {
+bool Request::m_readInt(int &number) {
   bool negate = false;
   bool gotNumber = false;
 
@@ -486,15 +476,15 @@ bool Request::m_readInt(int& number) {
   return gotNumber;
 }
 
-void Request::m_setRoute(const char* route, const char* pattern) {
+void Request::m_setRoute(const char *route, const char *pattern) {
   m_route = route;
   m_pattern = pattern;
 }
 
 int Request::m_getUrlPathLength() { return m_pathLength; }
 
-bool Request::m_expect(const char* expected) {
-  const char* candidate = expected;
+bool Request::m_expect(const char *expected) {
+  const char *candidate = expected;
 
   while (*candidate != 0) {
     int ch = m_timedRead();
@@ -516,8 +506,8 @@ bool Request::m_expect(const char* expected) {
   return true;
 }
 
-bool Request::m_expectP(const unsigned char* expected) {
-  const unsigned char* candidate = expected;
+bool Request::m_expectP(const unsigned char *expected) {
+  const unsigned char *candidate = expected;
 
   while (pgm_read_byte(candidate) != 0) {
     int ch = m_timedRead();
@@ -542,7 +532,8 @@ bool Request::m_expectP(const unsigned char* expected) {
 bool Request::m_skipSpace() {
   int ch;
 
-  while ((ch = m_timedRead()) != -1 && (ch == ' ' || ch == '\t'));
+  while ((ch = m_timedRead()) != -1 && (ch == ' ' || ch == '\t'))
+    ;
 
   if (ch == -1) {
     return false;
@@ -554,7 +545,7 @@ bool Request::m_skipSpace() {
 }
 
 void Request::m_reset() {
-  HeaderNode* headerNode = m_headerTail;
+  HeaderNode *headerNode = m_headerTail;
   while (headerNode != NULL) {
     headerNode->buffer[0] = '\0';
     headerNode = headerNode->next;

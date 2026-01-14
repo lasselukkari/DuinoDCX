@@ -20,19 +20,49 @@
   THE SOFTWARE.
 */
 
-#ifndef AWOT_H_
-#define AWOT_H_
+#ifndef AWOT_WEBSOCKET_COMMON_H_
+#define AWOT_WEBSOCKET_COMMON_H_
 
-#include "App.h"
-#include "Request.h"
-#include "Response.h"
-#include "Router.h"
-#include "StreamClient.h"
-#include "WebSocket.h"
-#include "aWOT_common.h"
+#include <Arduino.h>
+#include <stdint.h>
 
-#ifndef ENABLE_AWOT_NAMESPACE
-using namespace awot;
+#include "Client.h"
+
+#ifndef WEBSOCKET_MAX_CLIENTS
+#if defined(LOW_MEMORY_MCU)
+#define WEBSOCKET_MAX_CLIENTS 2
+#else
+#define WEBSOCKET_MAX_CLIENTS 4
 #endif
+#endif
+
+#ifndef WEBSOCKET_BUFFER_SIZE
+#if defined(LOW_MEMORY_MCU)
+#define WEBSOCKET_BUFFER_SIZE 128
+#else
+#define WEBSOCKET_BUFFER_SIZE 256
+#endif
+#endif
+
+#ifndef WEBSOCKET_MAX_ROOMS
+#define WEBSOCKET_MAX_ROOMS 8
+#endif
+
+namespace awot {
+
+// WebSocket opcodes (RFC 6455)
+enum WebSocketOpcode {
+  WS_OPCODE_CONTINUATION = 0x00,
+  WS_OPCODE_TEXT = 0x01,
+  WS_OPCODE_BINARY = 0x02,
+  WS_OPCODE_CLOSE = 0x08,
+  WS_OPCODE_PING = 0x09,
+  WS_OPCODE_PONG = 0x0A
+};
+
+// Forward declaration
+class WebSocket;
+
+}  // namespace awot
 
 #endif

@@ -5,6 +5,8 @@
 #include "MacOSSocket.h"
 
 #include <iostream>
+#include <poll.h>
+#include <sys/ioctl.h>
 
 // ============================================================================
 // SerialClass implementation (from Arduino.h)
@@ -186,22 +188,12 @@ int MacOSClient::available() {
   if (!_state || _state->socket < 0)
     return 0;
 
-  // Use select with zero timeout to check if data is available
-  fd_set readfds;
-  FD_ZERO(&readfds);
-  FD_SET(_state->socket, &readfds);
-
-  struct timeval tv = {0, 0};
-  int result = select(_state->socket + 1, &readfds, nullptr, nullptr, &tv);
-
-  if (result > 0 && FD_ISSET(_state->socket, &readfds)) {
-    // Peek to see how much data is available
-    uint8_t buf[1];
-    result = recv(_state->socket, buf, 1, MSG_PEEK | MSG_DONTWAIT);
-    if (result > 0)
-      return 1; // At least 1 byte available
+  // Use FIONREAD to get actual number of bytes available
+  int bytesAvailable = 0;
+  if (ioctl(_state->socket, FIONREAD, &bytesAvailable) < 0) {
+    return 0;
   }
-  return 0;
+  return bytesAvailable;
 }
 
 int MacOSClient::read() {
@@ -252,20 +244,50 @@ void MacOSClient::stop() {
 }
 
 uint8_t MacOSClient::connected() {
-  if (!_state || _state->socket < 0)
-    return 0;
-
-  // Check if still connected by peeking
-  uint8_t buf;
-  int result = recv(_state->socket, &buf, 1, MSG_PEEK | MSG_DONTWAIT);
-  if (result == 0) {
-    // Connection closed by peer
-    return 0;
-  } else if (result < 0 && errno != EAGAIN && errno != EWOULDBLOCK) {
-    // Error other than "would block"
+  if (!_state || _state->socket < 0) {
     return 0;
   }
 
+  // Use poll() to check socket state without consuming data
+  struct pollfd pfd;
+  pfd.fd = _state->socket;
+  pfd.events = POLLIN;
+  pfd.revents = 0;
+
+  int ret = poll(&pfd, 1, 0); // non-blocking poll
+
+  if (ret < 0) {
+    // Poll error
+    return 0;
+  }
+
+  // Check for errors first (but NOT POLLHUP with data available)
+  if (pfd.revents & (POLLERR | POLLNVAL)) {
+    // Actual socket error
+    return 0;
+  }
+
+  // If there's data available, connection is still usable (even with POLLHUP)
+  if (pfd.revents & POLLIN) {
+    // Data available - check if it's EOF (peer closed) with MSG_PEEK
+    uint8_t buf;
+    int result = recv(_state->socket, &buf, 1, MSG_PEEK | MSG_DONTWAIT);
+    if (result == 0) {
+      // recv returned 0 = peer closed AND no more data
+      return 0;
+    }
+    // result > 0 means data available - connection still usable
+    // result < 0 with EAGAIN is fine (no data right now)
+    return 1;
+  }
+
+  // No data available - now check if POLLHUP alone
+  if (pfd.revents & POLLHUP) {
+    // Connection closed with no pending data
+    return 0;
+  }
+
+  // Socket appears connected (no flags = idle but connected)
   return 1;
 }
 

@@ -6,22 +6,17 @@
 
 using namespace awot;
 
-// Maximum number of concurrent SSE clients
-#define MAX_SSE_CLIENTS 4
+// WebSocket instance (defined in RouteHandlers.cpp)
+extern WebSocket ws;
 
-// Forward serial bytes to SSE clients (called from loop())
-void processSerialToSse();
+// Forward serial bytes to WebSocket clients (called from loop())
+void processSerialToWs();
 
-// HTTP handler: forward request body to serial, broadcast direct commands
-void forwardToSerial(Request &req, Response &res);
+// WebSocket message handler (receives commands from clients)
+void onWsMessage(WebSocketMessage &msg);
 
-// SSE handler
-void sseEventsHandler(Request &req, Response &res);
-
-// SSE client management
-int countSseClients();
-void sendToSseClients(const uint8_t *data, size_t length);
-void storeSseClient(PlatformClient &client);
+// WebSocket upgrade handler
+void wsUpgradeHandler(Request &req, Response &res);
 
 void setupApiRoutes(Router &router);
 

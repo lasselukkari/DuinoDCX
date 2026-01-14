@@ -46,12 +46,21 @@ private:
 
   void attach(SocketState *state) {
     _state = state;
-    if (_state)
+    if (_state) {
       _state->addRef();
+      Serial.print("[MacOSClient] attach: socket=");
+      Serial.print(_state->socket);
+      Serial.print(" refCount=");
+      Serial.println(_state->refCount);
+    }
   }
 
   void detach() {
     if (_state) {
+      Serial.print("[MacOSClient] detach: socket=");
+      Serial.print(_state->socket);
+      Serial.print(" refCount=");
+      Serial.println(_state->refCount);
       _state->release();
       _state = nullptr;
     }
@@ -67,6 +76,8 @@ public:
 
   // Copy constructor - share socket (like WiFiClient)
   MacOSClient(const MacOSClient &other) : _state(nullptr) {
+    Serial.print("[MacOSClient] Copy ctor: other._state=");
+    Serial.println(other._state ? (long)(void *)other._state : 0);
     attach(other._state);
   }
 

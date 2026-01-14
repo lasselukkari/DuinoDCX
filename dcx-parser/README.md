@@ -206,9 +206,6 @@ The parser uses `src/structure.ts` as the single source of truth for parameter o
 - Setup parameters follow immediately after name
 - 4-byte offset difference vs edit buffer (83 - 79 = 4)
 
-**Parameter Order (Verified):**
-- `dynamicEqualizerFrequency` comes BEFORE `dynamicEqualizerQ` (order matters!)
-- All parameters in `INPUT_CHANNEL_PARAMETERS` and `OUTPUT_CHANNEL_PARAMS` verified against device
 
 ### Parsers
 - `preset-parser.ts`: Parses `.dcx` files and SysEx Memory Dumps.
@@ -508,9 +505,6 @@ From factory-presets.dcx analysis (verified 2026-01-09):
 
 ---
 
-### 9. Compact Preset Delta Format (Verified 2026-01-09)
-
-Presets 2-60 use a compact delta encoding format that stores only the differences from Preset 1.
 
 #### Directory Entry Structure (14 bytes)
 

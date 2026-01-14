@@ -29,7 +29,7 @@
 
 #include "Client.h"
 
-#if defined(STD_FUNCTION_MIDDLEWARE) || defined(ESP8266) || defined(ESP32) || \
+#if defined(STD_FUNCTION_MIDDLEWARE) || defined(ESP8266) || defined(ESP32) ||  \
     (defined(__has_include) && __has_include(<functional>))
 #ifndef STD_FUNCTION_MIDDLEWARE
 #define STD_FUNCTION_MIDDLEWARE
@@ -39,7 +39,7 @@
 
 #define CRLF "\r\n"
 
-#if defined(__AVR_ATmega328P__) || defined(__AVR_ATmega32U4__) || \
+#if defined(__AVR_ATmega328P__) || defined(__AVR_ATmega32U4__) ||              \
     defined(__AVR_ATmega16U4__) || defined(_AVR_ATmega328__)
 #define LOW_MEMORY_MCU
 #endif
@@ -71,18 +71,18 @@
 // Calculate chunk header size based on buffer size
 // Header format: "<hex_size>\r\n" + data + "\r\n"
 #if SERVER_OUTPUT_BUFFER_SIZE <= 0xF
-#define CHUNK_HEADER_SIZE 3  // "F\r\n"
+#define CHUNK_HEADER_SIZE 3 // "F\r\n"
 #elif SERVER_OUTPUT_BUFFER_SIZE <= 0xFF
-#define CHUNK_HEADER_SIZE 4  // "FF\r\n"
+#define CHUNK_HEADER_SIZE 4 // "FF\r\n"
 #elif SERVER_OUTPUT_BUFFER_SIZE <= 0xFFF
-#define CHUNK_HEADER_SIZE 5  // "FFF\r\n"
+#define CHUNK_HEADER_SIZE 5 // "FFF\r\n"
 #elif SERVER_OUTPUT_BUFFER_SIZE <= 0xFFFF
-#define CHUNK_HEADER_SIZE 6  // "FFFF\r\n"
+#define CHUNK_HEADER_SIZE 6 // "FFFF\r\n"
 #else
-#define CHUNK_HEADER_SIZE 10  // "FFFFFFFF\r\n"
+#define CHUNK_HEADER_SIZE 10 // "FFFFFFFF\r\n"
 #endif
 
-#define CHUNK_TRAILER_SIZE 2  // "\r\n"
+#define CHUNK_TRAILER_SIZE 2 // "\r\n"
 #define CHUNK_OVERHEAD (CHUNK_HEADER_SIZE + CHUNK_TRAILER_SIZE)
 #define CHUNK_DATA_SIZE (SERVER_OUTPUT_BUFFER_SIZE - CHUNK_OVERHEAD)
 
@@ -91,10 +91,9 @@
 #endif
 
 #ifdef __AVR__
-#define P(name)                         \
-  static const unsigned char name[]     \
-      __attribute__((section(".progmem" \
-                             "." #name)))
+#define P(name)                                                                \
+  static const unsigned char name[] __attribute__((section(".progmem"          \
+                                                           "." #name)))
 #else
 #define P(name) static const unsigned char name[] PROGMEM
 #endif
@@ -106,7 +105,46 @@ class Response;
 class Request;
 class Router;
 class App;
+class WebSocket;
 
-}  // namespace awot
+} // namespace awot
+
+// WebSocket support - set to 0 to disable WebSocket and save ~2KB flash
+#ifndef AWOT_WEBSOCKET_SUPPORT
+#define AWOT_WEBSOCKET_SUPPORT 1
+#endif
+
+// WebSocket configuration (only used if AWOT_WEBSOCKET_SUPPORT is enabled)
+#if AWOT_WEBSOCKET_SUPPORT
+
+#ifndef WEBSOCKET_MAX_CLIENTS
+#if defined(LOW_MEMORY_MCU)
+#define WEBSOCKET_MAX_CLIENTS 2
+#else
+#define WEBSOCKET_MAX_CLIENTS 4
+#endif
+#endif
+
+#ifndef WEBSOCKET_DEFAULT_BUFFER_SIZE
+#if defined(LOW_MEMORY_MCU)
+#define WEBSOCKET_DEFAULT_BUFFER_SIZE 128
+#else
+#define WEBSOCKET_DEFAULT_BUFFER_SIZE 256
+#endif
+#endif
+
+#ifndef WEBSOCKET_MAX_ROOMS
+#define WEBSOCKET_MAX_ROOMS 8
+#endif
+
+// WebSocket opcodes (RFC 6455)
+#define WS_OPCODE_CONTINUATION 0x00
+#define WS_OPCODE_TEXT 0x01
+#define WS_OPCODE_BINARY 0x02
+#define WS_OPCODE_CLOSE 0x08
+#define WS_OPCODE_PING 0x09
+#define WS_OPCODE_PONG 0x0A
+
+#endif // AWOT_WEBSOCKET_SUPPORT
 
 #endif

@@ -40,6 +40,7 @@ void signalHandler(int sig) {
 void setupSignalHandlers() {
   signal(SIGINT, signalHandler);
   signal(SIGTERM, signalHandler);
+  signal(SIGPIPE, SIG_IGN); // Ignore SIGPIPE - handle write errors gracefully
 }
 
 #endif
@@ -58,8 +59,15 @@ char mdnsName[MDDNS_NAME_LENGTH];
 bool autoDisableAP;
 
 char authBuffer[AUTH_BUFFER_LENGHT];
-Request::HeaderNode authHeader = {"Authorization", authBuffer,
-                                  AUTH_BUFFER_LENGHT, nullptr};
+char wsKeyBuffer[32]; // Buffer for Sec-WebSocket-Key header
+
+// Headers MUST be an array - aWOT accesses them via array index, not linked
+// list
+// Sec-WebSocket-Key header for WebSocket upgrade
+Request::HeaderNode requestHeaders[] = {
+    {"Sec-WebSocket-Key", wsKeyBuffer, sizeof(wsKeyBuffer), nullptr},
+    {"Authorization", authBuffer, AUTH_BUFFER_LENGHT, nullptr}};
+
 PlatformServer httpServer(HTTP_PORT);
 
 App app;
@@ -360,20 +368,26 @@ void processWebServer() {
 
   if (client.connected()) {
     App::ProcessOptions options;
-    options.headers = &authHeader;
-    options.headerCount = 1;
+    options.headers = requestHeaders;
+    options.headerCount = 2;
     App::ProcessResult result = app.process(&client, options);
 
-    if (result.responseOpen) {
-      storeSseClient(client);
-      return;
+    Serial.print("[processWebServer] responseOpen=");
+    Serial.println(result.responseOpen ? "true" : "false");
+
+    if (!result.responseOpen) {
+      Serial.println("[processWebServer] Calling client.stop()");
+      client.stop();
     }
-    client.stop();
   }
 }
 
 void setupHttpServer() {
   setupApiRoutes(apiRouter);
+
+  // WebSocket endpoint - registered before auth since browsers can't send
+  // Basic Auth headers during WebSocket upgrade handshake
+  app.get("/api/ws", &wsUpgradeHandler);
 
   apiRouter.get("/connection", &getConnection);
   apiRouter.patch("/connection", &updateConnection);
@@ -426,7 +440,8 @@ void setup() {
 }
 
 void loop() {
-  processSerialToSse(); // Forward serial → SSE
+  processSerialToWs(); // Forward serial → WebSocket
+  ws.poll();           // Poll WebSocket for incoming messages
   processWebServer();
 #ifdef PLATFORM_ARDUINO
   restartIfNeeded();
