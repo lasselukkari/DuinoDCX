@@ -13,8 +13,8 @@ import {
   useMemo,
   type ReactNode,
 } from 'react';
-import type { DcxConnection } from 'dcx-parser';
-import { createWsConnection } from './wsConnection.js';
+import type {DcxConnection} from 'dcx-parser';
+import {createWsConnection} from './wsConnection.js';
 
 type DcxConnectionContextValue = {
   connection: DcxConnection & {
@@ -48,7 +48,7 @@ export function DcxConnectionProvider({
   // Generate persistent Client ID
   const clientIdRef = useRef<string>(
     Math.random().toString(36).slice(2, 15) +
-    Math.random().toString(36).slice(2, 15),
+      Math.random().toString(36).slice(2, 15),
   );
 
   // Create connection once

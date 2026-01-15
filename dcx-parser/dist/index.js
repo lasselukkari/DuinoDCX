@@ -37,6 +37,12 @@ export * as constants from './constants/index.js';
 export { BackupSession } from './transport/backup.js';
 export { RestoreSession } from './transport/restore.js';
 export { EditBufferSession, EditBufferPhase } from './transport/edit-buffer.js';
+export { DeviceSession, DevicePhase } from './transport/device-session.js';
+export { SearchSession, SearchPhase } from './transport/search.js';
+export { PingSession, PingPhase } from './transport/ping.js';
+export { DeviceCoordinator, CoordinatorPhase, OperationType } from './transport/device-coordinator.js';
+export { FakeDevice } from './transport/fake-device.js';
+// TestHarness is only for tests - not exported to avoid require() in browser
 export { parseStatus } from './status-parser.js';
 export { parseDcxFile, parseDcxPresets, assemblePagesIntoDcxFile, splitDcxFileIntoPages, createRestoreHeader, getPresetNames, isValidDcxFile, DCX_SIGNATURE, DCX_TERMINATOR, } from './dcx-file.js';
 export function camelize(string_) {

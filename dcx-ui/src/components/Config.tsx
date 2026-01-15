@@ -5,10 +5,10 @@ import Modal from 'react-bootstrap/Modal';
 import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import {useRouter} from '@tanstack/react-router';
+import {buildSearchCommand} from 'dcx-parser';
 import Connection from '@/connection.tsx';
 import Settings from '@/components/Settings.tsx';
 import Upload from '@/components/Upload.tsx';
-import {triggerSearch} from '@/hooks/useDevicePolling.js';
 
 type ConfigProps = {
   readonly isXs: boolean;
@@ -25,7 +25,9 @@ function Config({isXs}: ConfigProps) {
 
   const handleRescan = useCallback(() => {
     if (connection) {
-      void triggerSearch(connection);
+      // Send search command to trigger device discovery
+      const searchCmd = buildSearchCommand();
+      void connection.send(searchCmd);
     }
   }, [connection]);
 

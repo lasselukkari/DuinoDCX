@@ -1,15 +1,15 @@
 002c:err:wineboot:process_run_key Error running cmd L"C:\\windows\\system32\\winemenubuilder.exe -a -r" (2).
-00c4:err:hid:handle_DeviceMatchingCallback Ignoring HID device 0x7f84d1362bd0 (vid 05ac, pid 027e): not a joystick or gamepad
-00c4:err:hid:handle_DeviceMatchingCallback Ignoring HID device 0x7f84d13844a0 (vid 05ac, pid 8600): not a joystick or gamepad
-00c4:err:hid:handle_DeviceMatchingCallback Ignoring HID device 0x7f84d1372500 (vid 05ac, pid 027e): not a joystick or gamepad
-00c4:err:hid:handle_DeviceMatchingCallback Ignoring HID device 0x7f84d1362630 (vid 05ac, pid 027e): not a joystick or gamepad
-00c4:err:hid:handle_DeviceMatchingCallback Ignoring HID device 0x7f84d1372af0 (vid 05ac, pid 8103): not a joystick or gamepad
-00c4:err:hid:handle_DeviceMatchingCallback Ignoring HID device 0x7f84d13732a0 (vid 05ac, pid 8102): not a joystick or gamepad
-00c4:err:hid:handle_DeviceMatchingCallback Ignoring HID device 0x7f84d1362e60 (vid 05ac, pid 027e): not a joystick or gamepad
-00c4:err:hid:handle_DeviceMatchingCallback Ignoring HID device 0x7f84d1362940 (vid 05ac, pid 027e): not a joystick or gamepad
-00c4:err:hid:handle_DeviceMatchingCallback Ignoring HID device 0x7f84d1372d80 (vid 05ac, pid 8302): not a joystick or gamepad
-00c4:err:hid:handle_DeviceMatchingCallback Ignoring HID device 0x7f84d1372710 (vid 05ac, pid 8262): not a joystick or gamepad
-00c4:err:hid:handle_DeviceMatchingCallback Ignoring HID device 0x7f84d1373010 (vid 05ac, pid 8102): not a joystick or gamepad
+00c4:err:hid:handle_DeviceMatchingCallback Ignoring HID device 0x7fc6cf847f50 (vid 05ac, pid 8103): not a joystick or gamepad
+00c4:err:hid:handle_DeviceMatchingCallback Ignoring HID device 0x7fc6cf859500 (vid 05ac, pid 027e): not a joystick or gamepad
+00c4:err:hid:handle_DeviceMatchingCallback Ignoring HID device 0x7fc6cf848700 (vid 05ac, pid 8102): not a joystick or gamepad
+00c4:err:hid:handle_DeviceMatchingCallback Ignoring HID device 0x7fc6cf8481e0 (vid 05ac, pid 8302): not a joystick or gamepad
+00c4:err:hid:handle_DeviceMatchingCallback Ignoring HID device 0x7fc6cf8bb120 (vid 05ac, pid 027e): not a joystick or gamepad
+00c4:err:hid:handle_DeviceMatchingCallback Ignoring HID device 0x7fc6cf8bac00 (vid 05ac, pid 8600): not a joystick or gamepad
+00c4:err:hid:handle_DeviceMatchingCallback Ignoring HID device 0x7fc6cf859790 (vid 05ac, pid 8262): not a joystick or gamepad
+00c4:err:hid:handle_DeviceMatchingCallback Ignoring HID device 0x7fc6cf859270 (vid 05ac, pid 027e): not a joystick or gamepad
+00c4:err:hid:handle_DeviceMatchingCallback Ignoring HID device 0x7fc6cf848470 (vid 05ac, pid 8102): not a joystick or gamepad
+00c4:err:hid:handle_DeviceMatchingCallback Ignoring HID device 0x7fc6cf8bb3b0 (vid 05ac, pid 027e): not a joystick or gamepad
+00c4:err:hid:handle_DeviceMatchingCallback Ignoring HID device 0x7fc6cf8bae90 (vid 05ac, pid 027e): not a joystick or gamepad
 0024:err:environ:init_peb starting L"Z:\\Users\\lasselukkari\\Documents\\DuinoDCX\\DCX2496_V1_16\\DCX2496_V1_16\\DCX-Remote.exe" in experimental wow64 mode
 [mvk-info] MoltenVK version 1.3.0, supporting Vulkan version 1.3.313.
 	The following 126 Vulkan extensions are supported:
@@ -302,3 +302,4 @@
 [mvk-info] Created VkInstance for Vulkan version 1.0.0, as requested by app, with the following 2 Vulkan extensions enabled:
 	VK_KHR_external_memory_capabilities v1
 	VK_KHR_get_physical_device_properties2 v2
+wineserver crashed, please enable coredumps (ulimit -c unlimited) and restart.

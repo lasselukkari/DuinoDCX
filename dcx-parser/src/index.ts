@@ -8,18 +8,18 @@
  */
 
 // Types
-import {isOutputChannel} from './types/index.js';
+import { isOutputChannel } from './types/index.js';
 import {
   setupCommands,
   inputOutputCommands,
   equalizerCommands,
   outputCommands,
 } from './commands/commands.js';
-import {parseMessage, parseDevices} from './protocol/sysex.js';
-import {parseEditBuffer} from './edit-buffer-parser.js';
-import {parsePreset} from './preset-parser.js';
-import {parseStatus} from './status-parser.js';
-import {getPresetNames, parseDcxPresets} from './dcx-file.js';
+import { parseMessage, parseDevices } from './protocol/sysex.js';
+import { parseEditBuffer } from './edit-buffer-parser.js';
+import { parsePreset } from './preset-parser.js';
+import { parseStatus } from './status-parser.js';
+import { getPresetNames, parseDcxPresets } from './dcx-file.js';
 
 export type {
   State,
@@ -32,8 +32,8 @@ export type {
   Status,
 } from './types/index.js';
 
-export type {ParameterDefinition} from './model/param-lookup.js';
-export type {ParsedMessage} from './protocol/sysex.js';
+export type { ParameterDefinition } from './model/param-lookup.js';
+export type { ParsedMessage } from './protocol/sysex.js';
 export type {
   DcxFile,
   PresetSlot,
@@ -42,10 +42,10 @@ export type {
 } from './dcx-file.js';
 
 // Encoding (7-to-8 bit transformation)
-export {encode8to7, decode7to8} from './protocol/encoding.js';
+export { encode8to7, decode7to8 } from './protocol/encoding.js';
 
 // Checksum
-export {calculateChecksum, verifyChecksum} from './protocol/checksum.js';
+export { calculateChecksum, verifyChecksum } from './protocol/checksum.js';
 
 // SysEx message building
 export {
@@ -65,7 +65,7 @@ export {
   buildListenModeCommand,
   buildParameterChangeCommand,
 } from './commands/builders.js';
-export type {ParameterTarget} from './commands/builders.js';
+export type { ParameterTarget } from './commands/builders.js';
 
 export {
   type Command,
@@ -95,23 +95,38 @@ export {
   applyToState,
 } from './model/param-lookup.js';
 
+// Byte offset mapping for buffer updates
+export {
+  getByteOffset,
+  getByteOffsetForDirect,
+  type ByteOffset,
+} from './model/byte-offsets.js';
+
 // OLD HELPERS REMOVED (createEmptyState etc might reference old types)
 // If UI needs them, we must check. 'model/helpers.js' is legacy.
 
 // NEW PARSERS (V2)
-export {parseEditBuffer} from './edit-buffer-parser.js';
-export {parsePreset} from './preset-parser.js';
+export { parseEditBuffer } from './edit-buffer-parser.js';
+export { parsePreset } from './preset-parser.js';
 
 // Re-export constants
 export * as constants from './constants/index.js';
 
 // Transport layer
-export type {DcxConnection} from './transport/types.js';
-export {BackupSession} from './transport/backup.js';
-export {RestoreSession} from './transport/restore.js';
-export {EditBufferSession, EditBufferPhase} from './transport/edit-buffer.js';
+export type { DcxConnection } from './transport/types.js';
+export { BackupSession } from './transport/backup.js';
+export { RestoreSession } from './transport/restore.js';
+export { EditBufferSession, EditBufferPhase } from './transport/edit-buffer.js';
+export { DeviceStateBuffer, PAGE_SIZE } from './state/device-state-buffer.js';
+export { PresetBuffer } from './state/preset-buffer.js';
+export { DeviceSession, DevicePhase } from './transport/device-session.js';
+export { SearchSession, SearchPhase } from './transport/search.js';
+export { PingSession, PingPhase } from './transport/ping.js';
+export { DeviceCoordinator, CoordinatorPhase, OperationType, type DeviceData } from './transport/device-coordinator.js';
+export { FakeDevice } from './transport/fake-device.js';
+// TestHarness is only for tests - not exported to avoid require() in browser
 
-export {parseStatus} from './status-parser.js';
+export { parseStatus } from './status-parser.js';
 
 export {
   parseDcxFile,
@@ -156,6 +171,6 @@ const Parser = {
 };
 
 export default Parser;
-export {dcxStore, DcxStore} from './store/dcx-store.js';
+export { dcxStore, DcxStore } from './store/dcx-store.js';
 
-export {isOutputChannel} from './types/index.js';
+export { isOutputChannel } from './types/index.js';

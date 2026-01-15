@@ -1,9 +1,5 @@
 #include "RouteHandlers.h"
 
-#ifdef PLATFORM_NATIVE
-#include "../MacOSNative/MacOSSocket.h"
-#endif
-
 // Global serial pointer (set in DuinoDCX.ino setup())
 extern PlatformSerial *serialPort;
 extern int rtsPin;
@@ -20,6 +16,13 @@ static uint8_t wsBuffer[WS_BUFFER_SIZE];
 // SysEx command byte position and direct command value
 static const int COMMAND_BYTE_INDEX = 6;
 static const uint8_t CMD_DIRECT = 0x20;
+
+// Coordination message prefix (for multi-client sync)
+static const uint8_t COORD_PREFIX = 0xFF;
+static const uint8_t COORD_YOU_ARE_PINGER = 0x10;
+
+// Track which client is the designated pinger (-1 = none)
+static int pingerClientId = -1;
 
 // Forward incoming serial bytes to WebSocket clients (called from loop())
 // Buffers until SysEx terminator (0xF7) before sending
@@ -57,6 +60,13 @@ void onWsMessage(WebSocketMessage &msg) {
     return;
   }
 
+  // Check for coordination message (0xFF prefix)
+  // These are broadcast to all clients, NOT sent to serial
+  if (cmdBuffer[0] == COORD_PREFIX) {
+    ws.broadcastBinary(cmdBuffer, cmdLen);
+    return;
+  }
+
   // Skip serial write if no serial port available
   if (!serialPort) {
     return;
@@ -89,38 +99,45 @@ void onWsMessage(WebSocketMessage &msg) {
   }
 }
 
+// WebSocket upgrade handler - platform-agnostic implementation
+// Client cloning is handled internally via setClientCloneFunc()
 void wsUpgradeHandler(Request &req, Response &res) {
-#ifdef PLATFORM_NATIVE
-  // On native platform, we need to heap-allocate the client because:
-  // - req.client() returns a pointer to stack-allocated client
-  // - This pointer becomes invalid when request scope ends
-  // - MacOSClient copy constructor shares socket via reference counting
-  char *keyHeader = req.get("Sec-WebSocket-Key");
-  if (!keyHeader || strlen(keyHeader) == 0) {
-    res.sendStatus(400);
-    return;
-  }
-
-  MacOSClient *wsClient =
-      new MacOSClient(*static_cast<MacOSClient *>(req.client()));
-  if (ws.upgrade(wsClient, keyHeader)) {
-    res.bypassResponse();
-  } else {
-    delete wsClient;
-    res.sendStatus(400);
-  }
-#else
-  // On Arduino, WiFiClient handles socket sharing via reference counting
-  // The clean API handles everything internally
   if (!ws.upgrade(req, res)) {
     res.sendStatus(400);
   }
-#endif
+}
+
+// WebSocket connect handler - assign pinger role to first client
+void onWsConnect(int clientId) {
+  if (pingerClientId < 0) {
+    pingerClientId = clientId;
+    // Send "you are the pinger" message to this client
+    uint8_t msg[] = {COORD_PREFIX, COORD_YOU_ARE_PINGER, (uint8_t)clientId};
+    ws.sendBinary(clientId, msg, sizeof(msg));
+  }
+}
+
+// WebSocket disconnect handler - reassign pinger if needed
+void onWsDisconnect(int clientId) {
+  if (clientId == pingerClientId) {
+    // Find next connected client to be pinger
+    pingerClientId = -1;
+    for (int i = 0; i < WEBSOCKET_MAX_CLIENTS; i++) {
+      if (ws.connected(i)) {
+        pingerClientId = i;
+        uint8_t msg[] = {COORD_PREFIX, COORD_YOU_ARE_PINGER, (uint8_t)i};
+        ws.sendBinary(i, msg, sizeof(msg));
+        break;
+      }
+    }
+  }
 }
 
 void setupApiRoutes(Router &router) {
   (void)router; // Not used for API routes; WS is registered directly in app
 
-  // Register WebSocket message handler
+  // Register WebSocket handlers
   ws.onMessage(onWsMessage);
+  ws.onConnect(onWsConnect);
+  ws.onDisconnect(onWsDisconnect);
 }

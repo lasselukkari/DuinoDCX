@@ -10,7 +10,7 @@
 
 import type {ParsedMessage} from '../protocol/sysex.js';
 import {buildEditBufferRequest} from '../commands/builders.js';
-import {parseEditBuffer} from '../edit-buffer-parser.js';
+import {DeviceStateBuffer} from '../state/device-state-buffer.js';
 import type {State} from '../types/index.js';
 
 const TOTAL_PARTS = 2;
@@ -38,7 +38,7 @@ export class EditBufferSession {
   private readonly messageQueue: Uint8Array[] = [];
   private readonly parts = new Map<number, Uint8Array>();
   private nextPartToRequest = 0;
-  private state: State | undefined = undefined;
+  private buffer: DeviceStateBuffer | undefined = undefined;
   private errorMessage: string | undefined = undefined;
 
   /**
@@ -54,7 +54,7 @@ export class EditBufferSession {
     this.phase = EditBufferPhase.DOWNLOADING;
     this.parts.clear();
     this.nextPartToRequest = 0;
-    this.state = undefined;
+    this.buffer = undefined;
     this.errorMessage = undefined;
 
     // Queue only the first part request
@@ -69,7 +69,7 @@ export class EditBufferSession {
     this.phase = EditBufferPhase.IDLE;
     this.parts.clear();
     this.nextPartToRequest = 0;
-    this.state = undefined;
+    this.buffer = undefined;
     this.errorMessage = undefined;
     this.messageQueue.length = 0;
   }
@@ -149,10 +149,18 @@ export class EditBufferSession {
   }
 
   /**
+   * Get the binary buffer (only available after completion).
+   */
+  public getBuffer(): DeviceStateBuffer | undefined {
+    return this.buffer;
+  }
+
+  /**
    * Get the parsed state (only available after completion).
+   * Delegates to buffer's getState() method.
    */
   public getState(): State | undefined {
-    return this.state;
+    return this.buffer?.getState();
   }
 
   /**
@@ -176,7 +184,7 @@ export class EditBufferSession {
 
   private assembleAndComplete(): void {
     try {
-      console.log('[EditBufferSession] Both parts received, parsing state');
+      console.log('[EditBufferSession] Both parts received, creating buffer');
       // Get parts in order
       const part0 = this.parts.get(0);
       const part1 = this.parts.get(1);
@@ -185,15 +193,10 @@ export class EditBufferSession {
         throw new Error('Missing edit buffer parts');
       }
 
-      // Concatenate parts
-      const combined = new Uint8Array(part0.length + part1.length);
-      combined.set(part0);
-      combined.set(part1, part0.length);
-
-      // Parse the combined data
-      this.state = parseEditBuffer(combined);
+      // Create DeviceStateBuffer from parts (binary as source of truth)
+      this.buffer = DeviceStateBuffer.fromParts(part0, part1);
       this.phase = EditBufferPhase.COMPLETED;
-      console.log('[EditBufferSession] State parsed successfully');
+      console.log('[EditBufferSession] Buffer created successfully');
     } catch (error) {
       this.errorMessage = String(error);
       this.phase = EditBufferPhase.ERROR;

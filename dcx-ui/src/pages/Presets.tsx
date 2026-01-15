@@ -1,50 +1,51 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Modal from 'react-bootstrap/Modal';
 import ProgressBar from 'react-bootstrap/ProgressBar';
 import Badge from 'react-bootstrap/Badge';
-import {toast} from 'react-toastify';
-import {isValidDcxFile, type PresetEntry} from 'dcx-parser';
-import {useDcxBackup} from '@/hooks/useDcxBackup.js';
-import {useDcxFile} from '@/hooks/useDcxFile.js';
-import {useDcxConnection} from '@/connection/connectionContext.js';
+import { toast } from 'react-toastify';
+import { isValidDcxFile, type ParsedPreset, CoordinatorPhase } from 'dcx-parser';
+import { useDcxFile } from '@/hooks/useDcxFile.js';
+import { useDeviceContext } from '@/router.js';
 
 function Presets() {
-  const {connection} = useDcxConnection();
+  // Get presets from context (device download) and request function
+  const { phase, presets: devicePresets, presetProgress, isDownloadingPresets, requestPresets } =
+    useDeviceContext();
 
-  // Use the backup hook for fetching from device
-  const backup = useDcxBackup(connection);
-
-  // Use the file hook for parsing .dcx data
+  // File hook for user-uploaded .dcx files (separate from device download)
   const dcxFile = useDcxFile();
 
   // Modal state
-  const [selectedPreset, setSelectedPreset] = useState<PresetEntry | undefined>(
+  const [selectedPreset, setSelectedPreset] = useState<ParsedPreset | undefined>(
     undefined,
   );
   const [showModal, setShowModal] = useState(false);
 
-  // When backup completes, load the data into the file hook
+  // Auto-fetch when session becomes IDLE and we don't have presets
   useEffect(() => {
-    if (backup.status === 'completed' && backup.dcxData) {
-      dcxFile.loadFromBuffer(backup.dcxData);
-      toast.success('Presets loaded from device!');
+    if (phase === CoordinatorPhase.IDLE && devicePresets.length === 0 && !isDownloadingPresets) {
+      console.log('[Presets] Phase is IDLE, requesting presets');
+      void requestPresets();
     }
-  }, [backup.status, backup.dcxData, dcxFile.loadFromBuffer]);
+  }, [phase, devicePresets.length, isDownloadingPresets, requestPresets]);
 
-  // Auto-fetch on mount when connected and no data
+  // Debug: log when devicePresets changes
   useEffect(() => {
-    if (connection && !dcxFile.dcxData && backup.status === 'idle') {
-      void backup.start();
-    }
-  }, [connection, dcxFile.dcxData, backup.status, backup.start]);
+    console.log('[Presets] devicePresets changed, length:', devicePresets.length);
+  }, [devicePresets]);
+
+  // Merged presets: use file presets if loaded, otherwise device presets
+  const presets = useMemo(() => {
+    return dcxFile.presets.length > 0 ? dcxFile.presets : devicePresets;
+  }, [dcxFile.presets, devicePresets]);
 
   // Handle preset click - show in modal
   const handlePresetClick = useCallback(
     (slot: number) => {
-      const preset = dcxFile.getPreset(slot);
+      const preset = presets[slot];
       if (!preset || preset.isEmpty) {
         toast.info(`Preset ${slot} is empty`);
         return;
@@ -53,7 +54,7 @@ function Presets() {
       setSelectedPreset(preset);
       setShowModal(true);
     },
-    [dcxFile],
+    [presets],
   );
 
   // Handle download
@@ -114,19 +115,18 @@ function Presets() {
 
   // Handle refresh from device
   const handleRefresh = useCallback(() => {
-    if (backup.status === 'downloading') {
+    if (isDownloadingPresets) {
       toast.info('Already syncing...');
       return;
     }
 
     dcxFile.clear();
-    backup.reset();
-    void backup.start();
-  }, [backup, dcxFile]);
+    void requestPresets();
+  }, [isDownloadingPresets, dcxFile, requestPresets]);
 
-  const isLoading = backup.status === 'downloading';
-  const hasData = dcxFile.dcxData !== undefined;
-  const nonEmptyCount = dcxFile.presets.filter((p) => !p.isEmpty).length;
+  const isLoading = isDownloadingPresets;
+  const hasData = presets.length > 0;
+  const nonEmptyCount = presets.filter((p) => !p.isEmpty).length;
 
   return (
     <>
@@ -151,27 +151,22 @@ function Presets() {
             <div className="mb-3">
               <div className="d-flex justify-content-between mb-1">
                 <span className="small text-muted">
-                  Downloading page {Math.floor(backup.progress * 12)}/12...
+                  Downloading page {Math.floor(presetProgress * 12)}/12...
                 </span>
                 <span className="small text-muted">
-                  {Math.round(backup.progress * 100)}%
+                  {Math.round(presetProgress * 100)}%
                 </span>
               </div>
               <ProgressBar
                 animated
-                now={backup.progress * 100}
+                now={presetProgress * 100}
                 variant="info"
-                style={{height: '8px'}}
+                style={{ height: '8px' }}
               />
             </div>
           ) : null}
 
-          {/* Error state */}
-          {backup.status === 'error' && (
-            <div className="alert alert-danger">
-              <strong>Error:</strong> {backup.error ?? 'Failed to load presets'}
-            </div>
-          )}
+          {/* Error state - removed since DeviceSession handles errors internally */}
 
           {/* Download/Upload buttons */}
           <div className="d-flex justify-content-between align-items-center mb-3">
@@ -204,7 +199,7 @@ function Presets() {
                 id="dcx-upload-input"
                 type="file"
                 accept=".dcx"
-                style={{display: 'none'}}
+                style={{ display: 'none' }}
                 onChange={(event) => {
                   void handleUpload(event);
                 }}
@@ -226,16 +221,16 @@ function Presets() {
 
           {hasData ? (
             <ListGroup
-              style={{maxHeight: '400px', overflowY: 'auto'}}
+              style={{ maxHeight: '400px', overflowY: 'auto' }}
               className="mt-3"
             >
-              {dcxFile.presets.map((preset) => (
+              {presets.map((preset) => (
                 <ListGroup.Item
                   key={preset.slot}
                   action={!preset.isEmpty}
                   className="d-flex justify-content-between align-items-center"
                   variant={preset.isEmpty ? 'dark' : undefined}
-                  style={{cursor: preset.isEmpty ? 'default' : 'pointer'}}
+                  style={{ cursor: preset.isEmpty ? 'default' : 'pointer' }}
                   onClick={() => {
                     if (!preset.isEmpty) {
                       handlePresetClick(preset.slot);

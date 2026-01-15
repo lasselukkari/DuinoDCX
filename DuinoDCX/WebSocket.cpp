@@ -41,7 +41,6 @@ static const char HTTP_101[] PROGMEM = "HTTP/1.1 101 Switching Protocols\r\n";
 static const char UPGRADE_WS[] PROGMEM = "Upgrade: websocket\r\n";
 static const char CONNECTION_UPGRADE[] PROGMEM = "Connection: Upgrade\r\n";
 static const char SEC_ACCEPT[] PROGMEM = "Sec-WebSocket-Accept: ";
-static const char CRLF_STR[] PROGMEM = "\r\n";
 
 // -----------------------------------------------------------------------------
 // WebSocketMessage implementation
@@ -113,7 +112,8 @@ void WebSocketMessage::flush() {
 
 WebSocket::WebSocket()
     : m_roomCount(0), m_messageHandler(nullptr), m_connectHandler(nullptr),
-      m_disconnectHandler(nullptr), m_buffer(nullptr), m_bufferLength(0) {
+      m_disconnectHandler(nullptr), m_buffer(nullptr), m_bufferLength(0),
+      m_cloneFunc(nullptr) {
   for (int i = 0; i < WEBSOCKET_MAX_CLIENTS; i++) {
     m_clients[i].client = nullptr;
     m_clients[i].connected = false;
@@ -138,6 +138,8 @@ void WebSocket::onDisconnect(ConnectHandler handler) {
   m_disconnectHandler = handler;
 }
 
+void WebSocket::setClientCloneFunc(ClientCloneFunc func) { m_cloneFunc = func; }
+
 void WebSocket::setBuffer(uint8_t *buffer, int length) {
   m_buffer = buffer;
   m_bufferLength = length;
@@ -156,96 +158,47 @@ bool WebSocket::upgrade(Request &req, Response &res) {
     return false;
   }
 
-  // Perform the upgrade using existing method
-  if (!upgrade(client, key)) {
+  // If a clone function is registered (native platforms), use it to create
+  // a heap-allocated copy of the client. This handles the case where
+  // req.client() returns a stack-allocated client that would be destroyed
+  // when the request handler returns.
+  if (m_cloneFunc) {
+    client = m_cloneFunc(client);
+    if (!client) {
+      return false;
+    }
+  }
+
+  // Find slot for the new client
+  int slot = m_findSlot();
+  if (slot < 0) {
+    if (m_cloneFunc) {
+      delete client;
+    }
     return false;
+  }
+
+  // Send WebSocket handshake
+  if (!m_sendHandshake(client, key)) {
+    if (m_cloneFunc) {
+      delete client;
+    }
+    return false;
+  }
+
+  // Register the client
+  m_clients[slot].client = client;
+  m_clients[slot].connected = true;
+  m_clients[slot].rooms = 0;
+  m_clients[slot].inFragment = false;
+
+  if (m_connectHandler) {
+    m_connectHandler(slot);
   }
 
   // Tell aWOT to not send any more data on this connection
   res.bypassResponse();
   return true;
-}
-
-bool WebSocket::upgrade(Client *client, const char *key) {
-  int slot = m_findSlot();
-  if (slot < 0) {
-    return false;
-  }
-
-  if (!m_sendHandshake(client, key)) {
-    return false;
-  }
-
-  m_clients[slot].client = client;
-  m_clients[slot].connected = true;
-  m_clients[slot].rooms = 0;
-  m_clients[slot].inFragment = false;
-
-  if (m_connectHandler) {
-    m_connectHandler(slot);
-  }
-
-  return true;
-}
-
-// Static method to compute Sec-WebSocket-Accept header value
-void WebSocket::computeAcceptKey(const char *clientKey, char *acceptKey,
-                                 size_t acceptKeyLen) {
-  if (acceptKeyLen < 32) {
-    if (acceptKeyLen > 0)
-      acceptKey[0] = '\0';
-    return;
-  }
-
-  // Concatenate key + GUID
-  char combined[64];
-  size_t keyLen = strlen(clientKey);
-
-  // Copy GUID from PROGMEM
-  char guid[40];
-  for (size_t i = 0; i < sizeof(guid) - 1; i++) {
-    char c = pgm_read_byte(WS_GUID + i);
-    if (c == 0) {
-      guid[i] = 0;
-      break;
-    }
-    guid[i] = c;
-  }
-  size_t guidLen = strlen(guid);
-
-  if (keyLen + guidLen >= sizeof(combined)) {
-    acceptKey[0] = '\0';
-    return;
-  }
-
-  memcpy(combined, clientKey, keyLen);
-  memcpy(combined + keyLen, guid, guidLen + 1);
-
-  // Compute SHA-1 hash
-  uint8_t hash[20];
-  m_sha1((const uint8_t *)combined, keyLen + guidLen, hash);
-
-  // Base64 encode
-  m_base64Encode(hash, 20, acceptKey);
-}
-
-// Add a client after external handshake (via aWOT Response)
-int WebSocket::addClient(Client *client) {
-  int slot = m_findSlot();
-  if (slot < 0) {
-    return -1;
-  }
-
-  m_clients[slot].client = client;
-  m_clients[slot].connected = true;
-  m_clients[slot].rooms = 0;
-  m_clients[slot].inFragment = false;
-
-  if (m_connectHandler) {
-    m_connectHandler(slot);
-  }
-
-  return slot;
 }
 
 void WebSocket::poll() {
@@ -414,6 +367,11 @@ void WebSocket::m_closeClient(int clientId) {
 
   if (m_disconnectHandler && m_clients[clientId].connected) {
     m_disconnectHandler(clientId);
+  }
+
+  // Delete heap-allocated clients if clone function was used
+  if (m_cloneFunc && m_clients[clientId].client) {
+    delete m_clients[clientId].client;
   }
 
   m_clients[clientId].connected = false;

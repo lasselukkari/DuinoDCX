@@ -29,6 +29,8 @@ void restartIfNeeded() {
 
 #ifdef PLATFORM_NATIVE
 
+#include "../MacOSNative/MacOSSocket.h"
+
 volatile bool shouldExit = false;
 
 void signalHandler(int sig) {
@@ -41,6 +43,14 @@ void setupSignalHandlers() {
   signal(SIGINT, signalHandler);
   signal(SIGTERM, signalHandler);
   signal(SIGPIPE, SIG_IGN); // Ignore SIGPIPE - handle write errors gracefully
+}
+
+// Clone function for WebSocket client lifetime management
+// On native platform, req.client() returns stack-allocated client that
+// dies when request scope ends. This creates a heap-allocated copy that
+// shares the socket via reference counting.
+Client *cloneMacOSClient(Client *c) {
+  return new MacOSClient(*static_cast<MacOSClient *>(c));
 }
 
 #endif
@@ -433,6 +443,11 @@ void setup() {
   }
 
   setupHttpServer();
+
+#ifdef PLATFORM_NATIVE
+  // Register client clone function for WebSocket lifetime management
+  ws.setClientCloneFunc(cloneMacOSClient);
+#endif
 
   // mDNS (stubbed on native)
   MDNS.begin(mdnsName);

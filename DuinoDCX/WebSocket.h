@@ -81,29 +81,24 @@ public:
   typedef void (*MessageHandler)(WebSocketMessage &msg);
   typedef void (*ConnectHandler)(int clientId);
 
+  // Function type for client cloning (platform provides this)
+  // Returns heap-allocated clone of the client, or nullptr on failure
+  // Used by platforms where req.client() returns stack-allocated objects
+  typedef Client *(*ClientCloneFunc)(Client *);
+
   WebSocket();
+
+  // Set the client clone function (call before any upgrades)
+  // Native platforms should set this to handle stack-allocated client lifetime
+  void setClientCloneFunc(ClientCloneFunc func);
 
   // Event handlers
   void onMessage(MessageHandler handler);
   void onConnect(ConnectHandler handler);
   void onDisconnect(ConnectHandler handler);
 
-  // Compute Sec-WebSocket-Accept value for HTTP 101 response
-  // Use this when sending the handshake through aWOT Response
-  static void computeAcceptKey(const char *clientKey, char *acceptKey,
-                               size_t acceptKeyLen);
-
-  // Add a client after handshake was sent externally (via aWOT Response)
-  // Returns client ID or -1 if no slots available
-  int addClient(Client *client);
-
   // Upgrade from aWOT Request/Response - handles everything internally
-  // This is the recommended way to handle WebSocket upgrades
   bool upgrade(Request &req, Response &res);
-
-  // Legacy: Attempt WebSocket upgrade from HTTP request (sends handshake
-  // itself)
-  bool upgrade(Client *client, const char *key);
 
   // Buffer configuration for memory-constrained devices
   void setBuffer(uint8_t *buffer, int length);
@@ -151,6 +146,9 @@ private:
   // User-configured buffer (optional)
   uint8_t *m_buffer;
   int m_bufferLength;
+
+  // Platform-specific client clone function (optional)
+  ClientCloneFunc m_cloneFunc;
 
   int m_findRoom(const char *room);
   int m_addRoom(const char *room);
