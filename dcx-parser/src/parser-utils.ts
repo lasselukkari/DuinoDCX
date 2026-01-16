@@ -156,6 +156,10 @@ export function parseSequential(
         cursor.offset += 4;
         const value = ((b3 << 24) | (b2 << 16) | (b1 << 8) | b0) >>> 0;
         result[name] = value;
+      } else if (type === 'uint8') {
+        const value = cursor.buffer[cursor.offset];
+        cursor.offset += 1;
+        result[name] = value;
       }
     }
   }

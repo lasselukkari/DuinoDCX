@@ -1,0 +1,13 @@
+[15:38:42.038] Opened real device: /dev/cu.usbserial-1430
+[15:38:42.040] Virtual port created: /dev/ttys005
+[15:38:42.040] 
+[15:38:42.040] *** Configure your application to use: /dev/ttys005 ***
+[15:38:42.040]     (You may need to create a symlink for Wine)
+[15:38:42.040] 
+[15:38:42.040] To create a symlink for Wine:
+[15:38:42.040]     ln -sf /dev/ttys005 ~/.wine/dosdevices/com1
+[15:38:42.040] 
+[15:38:42.040] Press Ctrl+C to stop
+[15:38:42.040] ============================================================
+[15:39:52.365] APP->DEV [  24] F0 00 20 32 00 0E 25 31 32 33 34 35 36 37 38 39 30 31 32 33 34 35 36 F7
+[15:39:52.366]   >> CMD_0x25 dev=0 model=0x0E params=31323334353637383930313233343536

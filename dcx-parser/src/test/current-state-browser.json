@@ -84,6 +84,9 @@
         }
     },
     "setup": {
+        "deviceName": "DCX2496",
+        "activePresetNumber": 0,
+        "activePresetName": "2*3WAY",
         "delayUnits": "mm",
         "muteOutsWhenPowered": false,
         "outputConfig": "lmhlmh",

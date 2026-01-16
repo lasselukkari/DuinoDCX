@@ -81,14 +81,18 @@ export function parsePreset(buffer: Uint8Array): ExtendedState {
   // Remove internal fields
   delete setupRaw.setup_header;
 
+  // Fields not stored in presets (only in Edit Buffer) - add defaults:
+  // delayUnits: global UI preference
+  // outputConfig: derived from output channel assignments (TODO: compute from outputs)
+  // isDelayCorrectionOn: not stored in presets
+  // muteOutsWhenPowered: global setting, not in presets
+  setupRaw.delayUnits = 'mm';
+  setupRaw.isDelayCorrectionOn = false;
+  setupRaw.muteOutsWhenPowered = false;
+  // outputConfig is NOT defaulted here - it should be computed from output configs
+  // For now, leave it undefined and let the calling code handle it
+
   const setup = setupRaw;
-
-  // Add missing setup fields to match Edit Buffer structure
-  // These are likely global settings not stored in presets, or in the header we skipped
-  // TODO: Verify this
-  setup.delayUnits ??= 'mm'; // Default
-
-  setup.muteOutsWhenPowered ??= false; // Default
 
   // Parse 4 Input Channels
   const inputs: Record<string, InputChannel> = {};

@@ -1,8 +1,6 @@
 Looking for COM ports ..
 Searching for DCX2496.
 Connected thru COM port 1
-Connected to sadsadasdsadasda
-Connected to sadsadasdsadasda
-Sync Pc -> DCX2496..
-  Sending ...
-Connected thru COM port 1
+Connected to DCX2496         
+Connected to DCX2496         
+Connected to 1234567890123456
