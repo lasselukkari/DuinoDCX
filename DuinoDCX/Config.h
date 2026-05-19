@@ -1,4 +1,4 @@
-#define VERSION "v0.0.39"
+#define VERSION "v0.0.40"
 #define BUILD_DATE __DATE__ " " __TIME__
 #define DEFAULT_SOFT_AP_SSID "DCX2496"
 #define DEFAULT_SOFT_AP_PASSWORD "Ultradrive"
